@@ -1,0 +1,39 @@
+---
+import MangaContentWarning from "../../../components/MangaContentWarning.astro";
+import MangaReader from "../../../components/MangaReader.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import type { SidebarModel } from "../../../config/navigation";
+import { getMangaChaptersForSeries, getPublishedMangaChapters, getPublishedMangaSeries, type MangaChapterEntry, type MangaSeriesEntry } from "../../../lib/content";
+
+export async function getStaticPaths() {
+  const [series, chapters] = await Promise.all([getPublishedMangaSeries(), getPublishedMangaChapters()]);
+  const bySlug = new Map(series.map((entry) => [entry.data.slug, entry]));
+  return chapters.flatMap((chapter) => {
+    const parent = bySlug.get(chapter.data.series);
+    return parent ? [{ params: { slug: parent.data.slug, chapter: chapter.data.slug }, props: { series: parent, chapter } }] : [];
+  });
+}
+
+interface Props { series: MangaSeriesEntry; chapter: MangaChapterEntry; }
+const { series, chapter } = Astro.props;
+const chapters = await getMangaChaptersForSeries(series.data.slug);
+const chapterIndex = chapters.findIndex((entry) => entry.data.slug === chapter.data.slug);
+const previous = chapterIndex > 0 ? chapters[chapterIndex - 1] : undefined;
+const next = chapterIndex >= 0 ? chapters[chapterIndex + 1] : undefined;
+const previousChapter = previous ? { href: `/manga/${series.data.slug}/${previous.data.slug}`, label: `Chapter ${previous.data.number}` } : undefined;
+const nextChapter = next ? { href: `/manga/${series.data.slug}/${next.data.slug}`, label: `Chapter ${next.data.number}` } : undefined;
+const continuationItems = [
+  previous ? { href: `/manga/${series.data.slug}/${previous.data.slug}`, label: `Previous: chapter ${previous.data.number}` } : undefined,
+  next ? { href: `/manga/${series.data.slug}/${next.data.slug}`, label: `Next: chapter ${next.data.number}` } : undefined,
+].filter((item): item is { href: string; label: string } => Boolean(item));
+const sidebar: SidebarModel = {
+  heading: series.data.title,
+  groups: [
+    { items: [{ href: "/shelf/manga", label: "All manga" }, { href: `/manga/${series.data.slug}`, label: "Series details" }] },
+    { label: "Chapters", items: chapters.map((entry) => ({ href: `/manga/${series.data.slug}/${entry.data.slug}`, label: `Chapter ${entry.data.number}`, current: entry.data.slug === chapter.data.slug })) },
+    ...(continuationItems.length ? [{ label: "Continue reading", items: continuationItems }] : []),
+  ],
+};
+---
+
+<BaseLayout title={`${series.data.title} — Chapter ${chapter.data.number}`} description={`Read chapter ${chapter.data.number} of ${series.data.title}.`} sidebar={sidebar} readerDock><MangaContentWarning rating={series.data.rating}><MangaReader {series} {chapter} previousChapter={previousChapter} nextChapter={nextChapter} /></MangaContentWarning></BaseLayout>

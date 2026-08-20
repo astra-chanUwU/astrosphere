@@ -1,0 +1,49 @@
+---
+import type { SidebarModel } from "../config/navigation";
+
+interface Props { model: SidebarModel; }
+const { model } = Astro.props;
+---
+
+<aside class="sidebar" data-reader-navigation aria-label={model.heading}>
+  <details open>
+    <summary>{model.heading}</summary>
+    <nav aria-label={model.heading} tabindex="-1">
+      {model.groups.map((group) => (
+        <section class="group">
+          {group.label && <p>{group.label}</p>}
+          <ul>
+            {group.items.map((item) => <li>{item.href ? <a href={item.href} class:list={{ active: item.current }} aria-current={item.current ? "page" : undefined} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined}>{item.label}</a> : <span>{item.label}</span>}</li>)}
+          </ul>
+        </section>
+      ))}
+    </nav>
+  </details>
+</aside>
+
+<script>
+  const syncSidebarDisclosure = () => {
+    const disclosure = document.querySelector<HTMLDetailsElement>(".sidebar details");
+    if (!disclosure) return;
+    disclosure.open = !window.matchMedia("(max-width: 48rem)").matches;
+  };
+  document.addEventListener("astro:page-load", syncSidebarDisclosure);
+</script>
+
+<style>
+  .sidebar { align-self: stretch; border-right: 1px solid var(--color-border); min-width: 0; padding: var(--space-3) 0; }
+  summary { display: none; }
+  .group > p { color: var(--color-muted); font-size: var(--text-sm); margin: 0; padding: 0 var(--space-3) var(--space-1); }
+  .group + .group { margin-top: var(--space-3); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  a, span { display: block; font-size: var(--text-sm); font-weight: 600; padding: .34rem var(--space-3); text-decoration: none; }
+  a.active { background: var(--color-surface); color: var(--color-text); }
+  @media (max-width: 48rem) {
+    .sidebar { border-bottom: 1px solid var(--color-border); border-right: 0; padding: 0; }
+    summary { align-items: center; cursor: pointer; display: flex; font-size: var(--text-sm); font-weight: 600; min-height:2.75rem; padding: .3rem var(--gutter); }
+    summary::marker { color: var(--color-muted); }
+    nav { padding-bottom: var(--space-2); }
+    .group + .group { margin-top: var(--space-2); }
+    a, span { align-items: center; display: flex; min-height:2.75rem; padding: .3rem var(--gutter); }
+  }
+</style>

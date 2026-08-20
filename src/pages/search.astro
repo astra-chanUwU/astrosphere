@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search" description="Search the AstroSphere archive." indexForSearch={false}>
+  <div class="page-shell search-page" data-pagefind-search>
+    <header>
+      <p class="eyebrow">archive discovery</p>
+      <h1>Search AstroSphere</h1>
+      <p>Full-text search across published archive pages. Manga is indexed by series, not chapter.</p>
+    </header>
+    <label class="search-input"><span>Search</span><input type="search" autocomplete="off" placeholder="ghost, cyberpunk, witch, archive..." data-search-input /></label>
+    <section class="filters" aria-label="Search filters">
+      <div><p>Type</p><div class="kind-filters" data-kind-filters><button type="button" data-kind="all" aria-pressed="true">all</button><button type="button" data-kind="essay" aria-pressed="false">essays</button><button type="button" data-kind="note" aria-pressed="false">notes</button><button type="button" data-kind="manga" aria-pressed="false">manga</button><button type="button" data-kind="image-set" aria-pressed="false">image sets</button><button type="button" data-kind="signals" aria-pressed="false">signals</button><button type="button" data-kind="sphere" aria-pressed="false">spheres</button><button type="button" data-kind="trail" aria-pressed="false">trails</button></div></div>
+      <label>Sphere <select data-sphere-filter><option value="">all spheres</option></select></label>
+      <label>Tag <select data-tag-filter><option value="">all tags</option></select></label>
+    </section>
+    <p class="status" aria-live="polite" data-search-status>Loading the archive index…</p>
+    <ol class="results" data-search-results></ol>
+  </div>
+</BaseLayout>
+
+<script>
+  import "../scripts/pagefind-search";
+</script>
+
+<script is:inline type="module">
+  try {
+    const pagefind = await import("/pagefind/pagefind.js");
+    window.__astrospherePagefind = pagefind;
+  } catch (error) {
+    window.__astrospherePagefindError = error;
+  }
+  window.dispatchEvent(new Event("astrosphere:pagefind-ready"));
+</script>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-3); }
+  .eyebrow { color: var(--color-accent); font-size: var(--text-xs); letter-spacing: .1em; margin: 0; text-transform: uppercase; }
+  h1 { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500; margin: var(--space-1) 0; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  .search-input { display: grid; gap: var(--space-1); max-width: var(--reading-width); }
+  .search-input span, .filters p, .filters label { color: var(--color-muted); font-size: var(--text-sm); }
+  input, select { background: var(--color-surface); border: var(--border-width) solid var(--color-border); color: var(--color-text); font: inherit; min-height: 2.75rem; padding: .35rem .5rem; }
+  input { font-size: var(--text-lg); width: 100%; }
+  .filters { align-items: end; display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  .filters > label { display: grid; gap: var(--space-1); }
+  .filters p { margin: 0 0 var(--space-1); }
+  .kind-filters { display: flex; flex-wrap: wrap; gap: .25rem; }
+  button { background: transparent; border: var(--border-width) solid var(--color-border); color: var(--color-text); cursor: pointer; font: inherit; min-height: 2.4rem; padding: .2rem .5rem; }
+  button[aria-pressed="true"] { background: var(--color-astral-blue); border-color: var(--color-astral-blue); color: #fff; }
+  .status { color: var(--color-muted); font-size: var(--text-sm); margin: var(--space-3) 0 var(--space-1); }
+  .results { list-style: none; margin: 0; max-width: var(--reading-width); min-width: 0; padding: 0; }
+  :global(.results li) { border-top: 1px solid var(--color-border); min-width: 0; padding: var(--space-2) 0; }
+  :global(.results a) { display: block; overflow-wrap: anywhere; }
+  :global(.results p) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; margin: var(--space-1) 0 0; overflow: hidden; overflow-wrap: anywhere; }
+  @media (max-width: 48rem) { .filters { align-items: stretch; } .filters > label { flex: 1 1 10rem; } select { width: 100%; } }
+</style>

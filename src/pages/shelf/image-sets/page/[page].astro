@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from "astro";
+import ShelfArchive from "../../../../components/ShelfArchive.astro";
+import { SHELF_PAGE_SIZE } from "../../../../config/shelf";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getShelfArchive } from "../../../../lib/shelf";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const entries = await getShelfArchive("image-sets");
+  return paginate(entries, { pageSize: SHELF_PAGE_SIZE })
+    .filter((path) => Number(path.params.page) > 1);
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const chapterCountBySeriesSlug = new Map<string, number>();
+---
+
+<BaseLayout title={`Image-set Shelf — page ${page.currentPage}`} description="The full image-set archive on the Shelf.">
+  <div class="page-shell">
+    <header><p class="eyebrow">The Shelf / visual collections</p><p>All published image sets in the visual archive.</p></header>
+    <ShelfArchive category="image-sets" entries={page.data} currentPage={page.currentPage} lastPage={page.lastPage} {chapterCountBySeriesSlug} />
+  </div>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+</style>

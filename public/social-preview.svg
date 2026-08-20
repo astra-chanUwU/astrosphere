@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">AstroSphere</title>
+  <desc id="description">Astro Chan's personal collection of manga, games, images, essays, research, and strange little experiments.</desc>
+  <rect width="1200" height="630" fill="#f5f5f3"/>
+  <circle cx="965" cy="315" r="188" fill="#ececea" stroke="#626b70" stroke-width="3"/>
+  <circle cx="965" cy="315" r="104" fill="none" stroke="#796a5f" stroke-width="3"/>
+  <path d="M777 315h376M965 127v376" stroke="#d4d4cf" stroke-width="2"/>
+  <text x="90" y="270" fill="#252525" font-family="Georgia, serif" font-size="94">AstroSphere</text>
+  <text x="96" y="342" fill="#6f6f6b" font-family="system-ui, sans-serif" font-size="29">Astro Chan's corner of the internet</text>
+</svg>

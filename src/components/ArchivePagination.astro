@@ -1,0 +1,37 @@
+---
+import { getArchivePageHref } from "../lib/archive";
+
+interface Props {
+  basePath: string;
+  currentPage: number;
+  lastPage: number;
+}
+
+const { basePath, currentPage, lastPage } = Astro.props;
+const pageNumbers = [...new Set([1, lastPage, currentPage - 1, currentPage, currentPage + 1])]
+  .filter((pageNumber) => pageNumber >= 1 && pageNumber <= lastPage)
+  .sort((left, right) => left - right);
+---
+
+{lastPage >= 1 && <nav class="pagination" aria-label="Pagination">
+  <p class="status">Page {currentPage} of {lastPage}</p>
+  <ol>
+    {currentPage > 1 && <li><a href={getArchivePageHref(basePath, currentPage - 1)}>Previous</a></li>}
+    {pageNumbers.map((pageNumber, index) => <>
+      {index > 0 && pageNumber - pageNumbers[index - 1] > 1 && <li class="ellipsis" aria-hidden="true">…</li>}
+      <li><a href={getArchivePageHref(basePath, pageNumber)} aria-current={pageNumber === currentPage ? "page" : undefined} aria-label={`Page ${pageNumber}`}>{pageNumber}</a></li>
+    </>)}
+    {currentPage < lastPage && <li><a href={getArchivePageHref(basePath, currentPage + 1)}>Next</a></li>}
+  </ol>
+</nav>}
+
+<style>
+  .pagination { border-top: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-top: var(--space-4); padding-top: var(--space-3); }
+  .status { color: var(--color-muted); font-size: var(--text-sm); margin: 0; }
+  ol { display: flex; flex-wrap: wrap; gap: var(--space-1); list-style: none; margin: 0; padding: 0; }
+  a { border: 1px solid var(--color-border); color: var(--color-muted); display: block; min-width: 2rem; padding: .25rem .45rem; text-align: center; text-decoration: none; }
+  a[aria-current="page"] { border-color: var(--color-accent); color: var(--color-accent); font-weight: 700; }
+  a:hover { color: var(--color-accent); }
+  a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .ellipsis { color: var(--color-muted); padding: .25rem .1rem; }
+</style>

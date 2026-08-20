@@ -1,0 +1,7 @@
+---
+import { hasConfiguredWorkEmail, siteConfig } from "../config/site";
+interface Props { heading?: string; copy?: string; }
+const { heading = "Have a project in mind?", copy = "Send me a short description of what you’re trying to make, what already exists, and what kind of help you need." } = Astro.props;
+---
+<section class="cta" aria-labelledby="work-contact-heading"><h2 id="work-contact-heading">{heading}</h2><p>{copy}</p>{hasConfiguredWorkEmail ? <a class="action" href={`mailto:${siteConfig.workEmail}`}>Email {siteConfig.name}</a> : <><a class="action" href="/contact">Visit the contact page</a>{import.meta.env.DEV && <p class="development-note">Set <code>siteConfig.workEmail</code> to enable the email link.</p>}</>}</section>
+<style>.cta{border-left:var(--accent-border-width) solid var(--color-accent);margin-block:var(--section-space);max-width:var(--reading-width);padding:var(--space-3)}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;margin:0}p{line-height:var(--leading-normal)}.action{display:inline-block;font-weight:600}.development-note{color:var(--color-muted);font-size:var(--text-sm);margin-bottom:0}code{font-family:var(--font-sans)}</style>

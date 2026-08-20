@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Compact Astrosphere monogram in the wordmark's 8px block language. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 40 56" shape-rendering="crispEdges" role="img" aria-labelledby="title">
+  <title id="title">Astrosphere</title>
+  <path fill="#159ee6" d="M8 0h24v8H8zM0 8h8v40H0zM32 8h8v40h-8zM8 24h24v8H8z"/>
+</svg>

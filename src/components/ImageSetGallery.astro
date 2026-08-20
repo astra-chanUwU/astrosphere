@@ -1,0 +1,10 @@
+---
+import type { ImageSetEntry } from "../lib/content";
+import MediaGallery from "./MediaGallery.astro";
+
+interface Props { imageSet: ImageSetEntry; }
+const { imageSet } = Astro.props;
+const media = [imageSet.data.hero, ...imageSet.data.media].filter((item): item is NonNullable<typeof item> => Boolean(item));
+---
+
+<MediaGallery {media} title="Image set gallery" />

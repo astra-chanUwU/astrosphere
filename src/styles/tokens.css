@@ -1,0 +1,23 @@
+:root {
+  color-scheme: light;
+  --color-bg: #ffffff; --color-surface: #f4f4f4; --color-text: #111111; --color-muted: #555555;
+  --color-border: #bcbcbc; --color-astral-blue: #087fbf; --color-nebula-purple: #7654c9; --color-accent: var(--color-astral-blue); --color-accent-warm: var(--color-nebula-purple);
+  --color-paper: #111111; --color-moss: #111111; --color-ember: #111111; --color-ocean: #111111; --color-dusk: #111111; --color-mineral: #111111;
+  --font-sans: "IBM Plex Sans", Arial, Helvetica, sans-serif;
+  --font-serif: "IBM Plex Sans", Arial, Helvetica, sans-serif;
+  --font-mono: "Consola Mono", "SFMono-Regular", Consolas, monospace;
+  --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1rem; --text-xl: 1.35rem; --text-2xl: clamp(1.65rem, 3vw, 2rem);
+  --leading-tight: 1.2; --leading-normal: 1.45; --leading-reading: 1.55;
+  --space-1: .3rem; --space-2: .65rem; --space-3: 1rem; --space-4: 1.5rem; --space-5: 2.25rem; --space-6: 3.5rem;
+  --border-width: 1px; --accent-border-width: 3px; --label-tracking: .08em;
+  --radius-sm: 0; --radius-md: 0; --reading-width: 44rem; --content-width: 72rem; --gutter: clamp(.9rem, 2vw, 1.25rem); --section-space: clamp(1.75rem, 4vw, 3rem); --transition-fast: 0ms;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #111111; --color-surface: #1b1b1b; --color-text: #eeeeee; --color-muted: #b8b8b8;
+  --color-border: #666666; --color-astral-blue: #159ee6; --color-nebula-purple: #b195ff; --color-accent: var(--color-astral-blue); --color-accent-warm: var(--color-nebula-purple);
+  --color-paper: #eeeeee; --color-moss: #eeeeee; --color-ember: #eeeeee; --color-ocean: #eeeeee; --color-dusk: #eeeeee; --color-mineral: #eeeeee;
+}
+
+@media (max-width: 40rem) { :root { --section-space: 1.75rem; } }

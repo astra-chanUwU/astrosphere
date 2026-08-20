@@ -1,0 +1,47 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import ImageSetGallery from "../../components/ImageSetGallery.astro";
+import MangaContentWarning from "../../components/MangaContentWarning.astro";
+import { getPublishedImageSets } from "../../lib/content";
+import type { SidebarModel } from "../../config/navigation";
+
+export async function getStaticPaths() {
+  const imageSets = await getPublishedImageSets();
+  return imageSets.map((imageSet) => ({ params: { slug: imageSet.data.slug }, props: { imageSet } }));
+}
+
+interface Props { imageSet: CollectionEntry<"imageSets">; }
+const { imageSet } = Astro.props;
+const { Content } = await render(imageSet);
+const sidebar: SidebarModel = {
+  heading: "Image-set details",
+  groups: [
+    { items: [{ href: "/shelf", label: "The Shelf" }, { href: "/shelf/image-sets", label: "All image sets" }] },
+    { label: "Tags", items: imageSet.data.tags.map((tag) => ({ href: `/tags/${tag}`, label: `#${tag}` })) },
+  ],
+};
+---
+
+<BaseLayout title={imageSet.data.title} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "image-set" }, ...imageSet.data.tags.map((value) => ({ name: "tag", value }))]}>
+  <MangaContentWarning rating={imageSet.data.rating}><div class="page-shell">
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "The Shelf", href: "/shelf" }, { label: "Image sets", href: "/shelf/image-sets" }, { label: imageSet.data.title }]}/>
+    <header><p class="eyebrow">Image set</p><h1>{imageSet.data.title}</h1><p class="summary">{imageSet.data.summary}</p></header>
+    <div class="meta">{imageSet.data.author && <span>By {imageSet.data.author}</span>}<span>{imageSet.data.media.length + (imageSet.data.hero ? 1 : 0)} images</span></div>
+    <ImageSetGallery {imageSet} />
+    <article class="prose"><Content/></article>
+    {(imageSet.data.sourceUrl || imageSet.data.credits.length > 0) && <section class="links"><h2>Sources and credits</h2>{imageSet.data.sourceUrl && <a href={imageSet.data.sourceUrl}>View source material</a>}{imageSet.data.credits.map((credit) => <p>{credit}</p>)}</section>}
+  </div></MangaContentWarning>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding-top: var(--section-space); }
+  .eyebrow, .meta { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  h1 { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
+  .summary { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  .meta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+  .links { display: flex; flex-direction: column; gap: var(--space-1); margin-top: var(--space-4); max-width: var(--reading-width); }
+  .links h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; }
+  .links p { color: var(--color-muted); margin: 0; }
+</style>

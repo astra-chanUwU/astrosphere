@@ -1,0 +1,28 @@
+---
+import ArtifactCard from "../../components/ArtifactCard.astro";
+import MangaSeriesCard from "../../components/MangaSeriesCard.astro";
+import SignalCard from "../../components/SignalCard.astro";
+import ImageSetCard from "../../components/ImageSetCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getContentForTag, getPublishedMangaChapters, getPublishedTags } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const tags = await getPublishedTags();
+  return tags.map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const [{ artifacts, manga, signals, imageSets }, chapters] = await Promise.all([
+  getContentForTag(tag),
+  getPublishedMangaChapters(),
+]);
+const chapterCounts = new Map<string, number>();
+for (const chapter of chapters) {
+  chapterCounts.set(chapter.data.series, (chapterCounts.get(chapter.data.series) ?? 0) + 1);
+}
+const count = artifacts.length + manga.length + signals.length + imageSets.length;
+---
+
+<BaseLayout title={`Tag: ${tag}`} description={`Published items tagged ${tag}.`}><div class="page-shell"><header><p class="eyebrow">Tag archive</p><h1>Tag: {tag}</h1><p>{count} {count === 1 ? "item" : "items"} in the archive.</p></header>{artifacts.length > 0 && <section aria-labelledby="artifacts-heading"><h2 id="artifacts-heading">Artifacts</h2><div>{artifacts.map((artifact) => <ArtifactCard {artifact}/>)}</div></section>}{manga.length > 0 && <section aria-labelledby="manga-heading"><h2 id="manga-heading">Manga</h2><div>{manga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCounts.get(series.data.slug) ?? 0}/>)}</div></section>}{imageSets.length > 0 && <section aria-labelledby="image-sets-heading"><h2 id="image-sets-heading">Image sets</h2><div>{imageSets.map((imageSet) => <ImageSetCard {imageSet}/>)}</div></section>}{signals.length > 0 && <section aria-labelledby="signals-heading"><h2 id="signals-heading">Signals</h2><div>{signals.map((signal) => <SignalCard {signal}/>)}</div></section>}</div></BaseLayout>
+
+<style>header{max-width:var(--reading-width);padding:var(--section-space) 0 var(--space-4)}.eyebrow{color:var(--color-accent);font-size:var(--text-xs);letter-spacing:.1em;margin:0;text-transform:uppercase}h1{font-family:var(--font-serif);font-size:var(--text-2xl);font-weight:500;margin:var(--space-1) 0}header p:last-child{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading)}section{margin:var(--section-space) 0}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;margin:0}</style>

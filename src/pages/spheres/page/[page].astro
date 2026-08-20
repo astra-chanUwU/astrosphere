@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArchivePagination from "../../../components/ArchivePagination.astro";
+import SphereCard from "../../../components/SphereCard.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../../lib/archive";
+import { getPublishedArtifacts, getPublishedSpheres } from "../../../lib/content";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allSpheres = await getPublishedSpheres();
+  const roots = allSpheres.filter((sphere) => !sphere.data.parent);
+  const spheres = roots.flatMap((sphere) => [sphere, ...allSpheres.filter((child) => child.data.parent === sphere.data.slug)]);
+  return paginate(spheres, { pageSize: ARCHIVE_PAGE_SIZE }).filter((path) => Number(path.params.page) > 1);
+}) satisfies GetStaticPaths;
+const { page } = Astro.props;
+const [allSpheres, artifacts] = await Promise.all([getPublishedSpheres(), getPublishedArtifacts()]);
+const countsFor = (sphereSlug: string) => ({ childCount: allSpheres.filter((child) => child.data.parent === sphereSlug).length, artifactCount: artifacts.filter((artifact) => artifact.data.spheres.includes(sphereSlug)).length });
+---
+
+<BaseLayout title={`Spheres — page ${page.currentPage}`} description="The thematic territories of AstroSphere."><div class="page-shell sphere-ledger"><header><p class="eyebrow">Field guide / territories</p><h1>Spheres</h1><p>The thematic territories of AstroSphere.</p></header><section aria-label="Territories">{page.data.map((sphere) => <div class:list={{ "sphere-child": Boolean(sphere.data.parent) }}><SphereCard {sphere} {...countsFor(sphere.data.slug)} /></div>)}<ArchivePagination basePath="/spheres" currentPage={page.currentPage} lastPage={page.lastPage} /></section></div></BaseLayout>
+<style>.sphere-ledger{max-width:var(--reading-width);padding-bottom:var(--section-space)}header{padding:var(--section-space) 0 var(--space-4)}.eyebrow{color:var(--color-muted);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--label-tracking);text-transform:uppercase}h1{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;margin:var(--space-1) 0}header p:last-child{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading)}.sphere-child{margin-left:clamp(1rem,4vw,3rem)}</style>

@@ -1,0 +1,11 @@
+---
+import type { MangaSeriesEntry } from "../lib/content";
+interface Props { series: MangaSeriesEntry; }
+const { series } = Astro.props;
+---
+
+<section class="meta" aria-label="Series information"><dl><div><dt>Author</dt><dd>{series.data.authors.map((person) => <a href={`/manga/creators/${person.slug}`}>{person.name}</a>)}</dd></div><div><dt>Artist</dt><dd>{series.data.artists.map((person) => <a href={`/manga/creators/${person.slug}`}>{person.name}</a>)}</dd></div><div><dt>Status</dt><dd>{series.data.status}</dd></div><div><dt>Tags</dt><dd>{series.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</dd></div></dl><p>{series.data.description}</p></section>
+
+<style>
+  .meta { max-width: var(--reading-width); } dl { border-block: 1px solid var(--color-border); display: grid; gap: var(--space-1); margin: var(--space-3) 0; padding: var(--space-2) 0; } dl div { display: grid; gap: var(--space-1); grid-template-columns: 6rem 1fr; } dt { color: var(--color-muted); font-size: var(--text-sm); } dd { display: flex; flex-wrap: wrap; gap: .3rem .8rem; margin: 0; text-transform: capitalize; } p { line-height: var(--leading-reading); }
+</style>

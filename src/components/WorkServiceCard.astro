@@ -1,0 +1,6 @@
+---
+interface Props { title: string; description: string; examples: string[]; }
+const { title, description, examples } = Astro.props;
+---
+<article><h3>{title}</h3><p>{description}</p><ul>{examples.map((example) => <li>{example}</li>)}</ul><a href="#start-a-conversation">Talk about this kind of project</a></article>
+<style>article{border-top:var(--border-width) solid var(--color-border);padding:var(--space-2) 0}h3{font-family:var(--font-serif);font-size:var(--text-lg);font-weight:500;margin:0}p{line-height:var(--leading-normal)}ul{color:var(--color-muted);line-height:var(--leading-normal);padding-left:var(--space-3)}a{font-size:var(--text-sm)}</style>

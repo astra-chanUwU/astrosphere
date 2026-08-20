@@ -1,0 +1,26 @@
+---
+import type { SignalEntry } from "../lib/content";
+
+interface Props {
+  signal: SignalEntry;
+}
+
+const { signal } = Astro.props;
+---
+
+<article data-signal-rating={signal.data.rating}>
+  <p class="label">{signal.data.rating}</p>
+  <h2><a href={signal.data.url} target="_blank" rel="noopener noreferrer">{signal.data.title} ↗</a></h2>
+  <p class="summary">{signal.data.summary}</p>
+  <p class="tags">{signal.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</p>
+</article>
+
+<style>
+  article { border-top: 1px solid var(--color-border); padding: var(--space-2) 0; }
+  .label { color: var(--color-accent); font-size: var(--text-xs); letter-spacing: .1em; margin: 0; text-transform: uppercase; }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-1) 0; }
+  h2 a { text-decoration: none; }
+  .summary { line-height: var(--leading-normal); margin: 0; max-width: 40rem; }
+  .tags { color: var(--color-muted); display: flex; flex-wrap: wrap; font-size: var(--text-sm); gap: .3rem .8rem; margin: var(--space-1) 0 0; text-transform: capitalize; }
+  html[data-sfw="on"] article[data-signal-rating="mixed"], html[data-sfw="on"] article[data-signal-rating="nsfw"] { display: none; }
+</style>

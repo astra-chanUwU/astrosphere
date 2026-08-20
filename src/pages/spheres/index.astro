@@ -1,0 +1,33 @@
+---
+import ArchivePagination from "../../components/ArchivePagination.astro";
+import SphereCard from "../../components/SphereCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
+import { getPublishedArtifacts, getPublishedSpheres } from "../../lib/content";
+
+const [spheres, artifacts] = await Promise.all([getPublishedSpheres(), getPublishedArtifacts()]);
+const roots = spheres.filter((sphere) => !sphere.data.parent);
+const orderedSpheres = roots.flatMap((sphere) => [sphere, ...spheres.filter((child) => child.data.parent === sphere.data.slug)]);
+const currentPage = 1;
+const lastPage = Math.ceil(orderedSpheres.length / ARCHIVE_PAGE_SIZE);
+const countsFor = (sphereSlug: string) => ({ childCount: spheres.filter((child) => child.data.parent === sphereSlug).length, artifactCount: artifacts.filter((artifact) => artifact.data.spheres.includes(sphereSlug)).length });
+---
+
+<BaseLayout title="Spheres" description="The thematic territories of AstroSphere.">
+  <div class="page-shell sphere-ledger">
+    <header><p class="eyebrow">Field guide / territories</p><h1>Spheres</h1><p>Places to enter the archive through a shared terrain, question, or atmosphere.</p><span>{spheres.length} territories</span></header>
+    <section aria-labelledby="territories-heading"><h2 id="territories-heading">Territories</h2>{orderedSpheres.slice(0, ARCHIVE_PAGE_SIZE).map((sphere) => <div class:list={{ "sphere-child": Boolean(sphere.data.parent) }}><SphereCard {sphere} {...countsFor(sphere.data.slug)} /></div>)}<ArchivePagination basePath="/spheres" {currentPage} {lastPage} /></section>
+  </div>
+</BaseLayout>
+
+<style>
+  .sphere-ledger { max-width: var(--reading-width); padding-bottom: var(--section-space); }
+  header { padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow, header span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  h1, h2 { font-family: var(--font-serif); font-weight: 500; line-height: var(--leading-tight); }
+  h1 { font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: -.045em; margin: 0; }
+  header > p:last-of-type { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); max-width: 42rem; }
+  section { border-top: 1px solid var(--color-border); }
+  h2 { font-size: var(--text-xl); margin: var(--space-3) 0 0; }
+  .sphere-child { margin-left: clamp(1rem, 4vw, 3rem); }
+</style>

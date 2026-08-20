@@ -1,0 +1,75 @@
+---
+---
+
+<aside class="reader-dock" data-reader-dock aria-label="Reading controls" hidden>
+  <progress data-reader-progress aria-label="Reading progress" max="100" value="0"></progress>
+  <div class="reader-dock__actions">
+    <button type="button" data-reader-top aria-label="Jump to the top">↑</button>
+    <button type="button" data-reader-end aria-label="Jump to the end">↓</button>
+    <button type="button" data-reader-open-navigation aria-label="Open page navigation">☰</button>
+  </div>
+</aside>
+
+<script>
+  declare global {
+    interface Window {
+      __astrosphereReaderDockInitialized?: boolean;
+      __astrosphereReaderDockController?: AbortController;
+    }
+  }
+
+  const initializeReaderDock = () => {
+    window.__astrosphereReaderDockController?.abort();
+
+    const dock = document.querySelector<HTMLElement>("[data-reader-dock]");
+    const progress = dock?.querySelector<HTMLProgressElement>("[data-reader-progress]");
+    const header = document.querySelector<HTMLElement>("[data-reader-header]");
+    if (!dock || !progress || !header) return;
+
+    const controller = new AbortController();
+    window.__astrosphereReaderDockController = controller;
+    let pendingFrame: number | undefined;
+    const scrollBehavior = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    const updateProgress = () => {
+      pendingFrame = undefined;
+      const maximum = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      progress.value = Math.round((window.scrollY / maximum) * 100);
+      dock.hidden = header.getBoundingClientRect().bottom > 0;
+    };
+    const scheduleProgressUpdate = () => {
+      if (pendingFrame !== undefined) return;
+      pendingFrame = requestAnimationFrame(updateProgress);
+    };
+
+    dock.querySelector<HTMLButtonElement>("[data-reader-top]")?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    }, { signal: controller.signal });
+    dock.querySelector<HTMLButtonElement>("[data-reader-end]")?.addEventListener("click", () => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: scrollBehavior() });
+    }, { signal: controller.signal });
+    dock.querySelector<HTMLButtonElement>("[data-reader-open-navigation]")?.addEventListener("click", () => {
+      const sidebar = document.querySelector<HTMLElement>("[data-reader-navigation]");
+      const disclosure = sidebar?.querySelector<HTMLDetailsElement>("details");
+      if (disclosure) disclosure.open = true;
+      sidebar?.querySelector<HTMLElement>("nav")?.focus();
+    }, { signal: controller.signal });
+    window.addEventListener("scroll", scheduleProgressUpdate, { passive: true, signal: controller.signal });
+    window.addEventListener("resize", scheduleProgressUpdate, { signal: controller.signal });
+    requestAnimationFrame(updateProgress);
+  };
+
+  if (!window.__astrosphereReaderDockInitialized) {
+    window.__astrosphereReaderDockInitialized = true;
+    document.addEventListener("astro:page-load", initializeReaderDock);
+  }
+</script>
+
+<style>
+  .reader-dock { background: var(--color-bg); border: 1px solid var(--color-border); bottom: var(--space-3); box-shadow: 0 .25rem 1rem color-mix(in srgb, var(--color-text) 14%, transparent); position: fixed; right: var(--space-3); width: 8.75rem; z-index: 10; }
+  progress { accent-color: var(--color-accent); display: block; height: .25rem; width: 100%; }
+  .reader-dock__actions { display: grid; grid-template-columns: repeat(3, 1fr); }
+  button { background: transparent; border: 0; color: var(--color-text); cursor: pointer; font: inherit; font-size: var(--text-lg); min-height: 2.75rem; min-width: 2.75rem; }
+  button + button { border-left: 1px solid var(--color-border); }
+  button:hover { background: var(--color-surface); color: var(--color-nebula-purple); }
+  @media (max-width: 48rem) { .reader-dock { bottom: var(--space-2); right: var(--space-2); } }
+</style>

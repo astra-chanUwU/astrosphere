@@ -1,0 +1,11 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { getPublishedPages } from "../lib/content";
+const now = (await getPublishedPages()).find((page) => page.data.pageType === "now");
+const rendered = now ? await render(now) : undefined;
+const Content = rendered?.Content;
+---
+<BaseLayout title="Now" description={now?.data.summary ?? "Current notes from AstroSphere."}><div class="page-shell"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: now?.data.title ?? "Now" }]}/><article class="prose"><h1>{now?.data.title ?? "Now"}</h1>{Content ? <Content/> : <p class="empty">There is no current note published at the moment. Please return another time.</p>}</article></div></BaseLayout>
+<style>article{padding-top:var(--section-space)}h1{font-size:var(--text-2xl);font-weight:500;line-height:var(--leading-tight)}.empty{color:var(--color-muted)}</style>

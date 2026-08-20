@@ -1,0 +1,106 @@
+---
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import ReaderDock from "../components/ReaderDock.astro";
+import SiteSidebar from "../components/SiteSidebar.astro";
+import { resolveSidebar, type SidebarModel } from "../config/navigation";
+import { siteConfig } from "../config/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  canonicalUrl?: string;
+  indexForSearch?: boolean;
+  pagefindFilters?: Array<{ name: string; value: string }>;
+  readerDock?: boolean;
+  sidebar?: SidebarModel;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  image = siteConfig.socialImage,
+  type = "website",
+  canonicalUrl,
+  indexForSearch = true,
+  pagefindFilters = [],
+  readerDock = false,
+  sidebar,
+} = Astro.props;
+const pageTitle = title === siteConfig.archiveName ? title : `${title} · ${siteConfig.archiveName}`;
+const headerTitle = Astro.url.pathname === "/" ? "Astro Chan's corner of the internet" : title;
+const canonical = canonicalUrl ?? new URL(Astro.url.pathname, Astro.site ?? siteConfig.siteUrl).href;
+const socialImage = new URL(image, Astro.site ?? siteConfig.siteUrl).href;
+const resolvedSidebar = sidebar ?? resolveSidebar(Astro.url.pathname);
+---
+<!doctype html>
+<html lang="en" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.archiveName} RSS`} href="/rss.xml" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={siteConfig.archiveName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    {pagefindFilters.map((filter) => <meta data-pagefind-filter={`${filter.name}:${filter.value}`} />)}
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("astrosphere-theme");
+        const theme = stored === "light" || stored === "dark"
+          ? stored
+          : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = theme;
+        if (localStorage.getItem("astrosphere-crt") === "on") document.documentElement.dataset.crt = "on";
+        document.documentElement.dataset.sfw = localStorage.getItem("astrosphere-sfw") === "off" ? "off" : "on";
+      })();
+    </script>
+    <script is:inline>
+      document.addEventListener("astro:before-swap", (event) => {
+        event.newDocument.documentElement.dataset.theme = document.documentElement.dataset.theme;
+        if (document.documentElement.dataset.crt === "on") event.newDocument.documentElement.dataset.crt = "on";
+        event.newDocument.documentElement.dataset.sfw = document.documentElement.dataset.sfw;
+      });
+    </script>
+    <script is:inline>
+      const secureExternalLinks = () => {
+        document.querySelectorAll('a[href^="http"]').forEach((link) => {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        });
+      };
+      document.addEventListener("astro:page-load", secureExternalLinks);
+    </script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body data-pagefind-ignore={indexForSearch ? undefined : true}>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <SiteHeader title={headerTitle} />
+    <div class="site-layout">
+      <SiteSidebar model={resolvedSidebar} />
+      <div class="site-content"><main id="content" data-pagefind-body={indexForSearch ? true : undefined}><slot /></main><SiteFooter /></div>
+    </div>
+    {readerDock && <ReaderDock />}
+    <canvas id="crt-shader" aria-hidden="true" transition:persist></canvas>
+    <script>
+      import "../scripts/crt-shader";
+      import "../scripts/content-warning";
+    </script>
+  </body>
+</html>

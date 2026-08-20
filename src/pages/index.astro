@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getHomepageSelections, homepageConfig } from "../config/homepage";
+import {
+  assertPublishingGuardrails,
+  getPublishedArtifacts,
+  getPublishedMangaSeries,
+  getPublishedSpheres,
+  getPublishedTrails,
+  getRandomArtifact,
+} from "../lib/content";
+
+if (import.meta.env.PROD) await assertPublishingGuardrails();
+
+const [spheres, artifacts, trails, mangaSeries, randomArtifact] = await Promise.all([
+  getPublishedSpheres(),
+  getPublishedArtifacts(),
+  getPublishedTrails(),
+  getPublishedMangaSeries(),
+  getRandomArtifact(),
+]);
+const { focus, constellation } = getHomepageSelections(artifacts, homepageConfig);
+const selectBySlug = <T extends { data: { slug: string } }>(entries: T[], slugs: string[]) => {
+  const bySlug = new Map(entries.map((entry) => [entry.data.slug, entry]));
+  return slugs.flatMap((slug) => {
+    const entry = bySlug.get(slug);
+    return entry ? [entry] : [];
+  });
+};
+const visualArtifacts = selectBySlug(artifacts, homepageConfig.visualArtifactSlugs);
+const mangaShelf = selectBySlug(mangaSeries, homepageConfig.mangaSlugs);
+const featuredSpheres = spheres.filter((sphere) => sphere.data.featured).slice(0, 3);
+const shownSpheres = [...featuredSpheres, ...spheres.filter((sphere) => !sphere.data.featured)].slice(0, 3);
+const featuredTrails = selectBySlug(trails, ["cyberpunk-thread", "ghost-in-the-shell-orbit"]);
+---
+
+<BaseLayout title="AstroSphere" description="Astro Chan's personal collection of manga, games, images, essays, research, and strange little experiments.">
+  <div class="page-shell home">
+    <header class="opening" aria-labelledby="home-title">
+      <p class="eyebrow">Astro Chan’s personal index</p>
+      <h1 id="home-title">A place for things that deserve a second look.</h1>
+      <p class="intro">Manga, games, images, essays, research, and the small connections that make them stay with me.</p>
+      <nav class="doorways" aria-label="Start exploring">
+        <a href="/artifacts">Read the archive <span>→</span></a>
+        <a href="/shelf">Visit the shelf <span>→</span></a>
+        <a href="/trails">Follow a trail <span>→</span></a>
+        {randomArtifact && <a href={`/artifacts/${randomArtifact.data.slug}`}>Open something random <span>↗</span></a>}
+      </nav>
+    </header>
+
+    <section class="now" aria-labelledby="now-title">
+      <div class="section-heading"><div><p class="eyebrow">A small constellation</p><h2 id="now-title">Things I keep thinking about.</h2></div><a href="/artifacts">All artifacts</a></div>
+      {focus && <article class="focus-note"><p>{focus.data.type.replace("-", " ")}</p><h3><a href={`/artifacts/${focus.data.slug}`}>{focus.data.title}</a></h3><span>{focus.data.summary}</span><a href={`/artifacts/${focus.data.slug}`}>Read the note →</a></article>}
+      {constellation.length > 0 && <ol class="constellation">{constellation.map((artifact, index) => <li><span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><div><p>{artifact.data.type.replace("-", " ")}</p><a href={`/artifacts/${artifact.data.slug}`}>{artifact.data.title}</a></div></li>)}</ol>}
+    </section>
+
+    <section class="archive-map" aria-labelledby="map-title">
+      <div class="section-heading"><div><p class="eyebrow">Ways of entering</p><h2 id="map-title">Take the route that suits your mood.</h2></div></div>
+      <div class="map-links">
+        <a href="/artifacts"><span>01</span><strong>Artifacts</strong><em>{artifacts.length} notes, essays, and references</em></a>
+        <a href="/shelf"><span>02</span><strong>Shelf</strong><em>{mangaSeries.length} manga, doujinshi, and image sets</em></a>
+        <a href="/trails"><span>03</span><strong>Trails</strong><em>{trails.length} hand-made ways through</em></a>
+        <a href="/spheres"><span>04</span><strong>Spheres</strong><em>{spheres.length} territories to return to</em></a>
+      </div>
+    </section>
+
+    {mangaShelf.length > 0 && <section class="manga-shelf" data-home-section="manga-shelf" aria-labelledby="manga-shelf-title"><div class="section-heading"><div><p class="eyebrow">Manga kept close</p><h2 id="manga-shelf-title">A small shelf of worlds.</h2></div><a href="/shelf/manga">All manga</a></div><ol class="manga-list">{mangaShelf.map((series, index) => <li data-manga-rating={series.data.rating}><span>{String(index + 1).padStart(2, "0")}</span><div><p>{series.data.originalTitle}</p><h3><a href={`/manga/${series.data.slug}`}>{series.data.title}</a></h3></div><em>{series.data.status} · {series.data.publicationYear}</em></li>)}</ol><p class="sfw-note">The shelf follows the site’s SFW setting. Switch it off in the header to reveal marked titles.</p></section>}
+
+    {visualArtifacts.length > 0 && <section class="visual-notes" data-home-section="visual-scrapbook" aria-labelledby="scrapbook-title"><div class="section-heading"><div><p class="eyebrow">Visual notes from the archive</p><h2 id="scrapbook-title">Images worth returning to.</h2></div><a href="/artifacts">All artifacts</a></div><ul>{visualArtifacts.map((artifact) => <li><p>{artifact.data.type.replace("-", " ")}</p><a href={`/artifacts/${artifact.data.slug}`}>{artifact.data.title}</a></li>)}</ul></section>}
+
+    <section class="entry-points" aria-label="Selected archive entrances">
+      <div class="trails-doorway"><div class="section-heading"><div><p class="eyebrow">Two ways through</p><h2>Take a trail.</h2></div><a href="/trails">All trails</a></div><div class="trail-grid">{featuredTrails.map((trail) => <article class="trail-card"><p>{trail.data.estimatedTime ?? "A short route"} · {trail.data.items.length} stops</p><h3><a href={`/trails/${trail.data.slug}`}>{trail.data.title}</a></h3><span>{trail.data.summary}</span><a href={`/trails/${trail.data.slug}`}>Follow the route →</a></article>)}</div></div>
+      <div class="sphere-doorway"><div class="section-heading"><div><p class="eyebrow">Places to return to</p><h2>Choose a sphere.</h2></div><a href="/spheres">All spheres</a></div><ul class="spheres">{shownSpheres.map((sphere) => <li><p>{sphere.data.palette}</p><a href={`/spheres/${sphere.data.slug}`}>{sphere.data.title}</a><span>{sphere.data.summary}</span></li>)}</ul></div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .home { max-width:var(--reading-width); padding-bottom:var(--section-space); }
+  .eyebrow, .focus-note > p, .constellation p, .map-links span, .manga-list > li > span, .visual-notes li p, .trail-card p, .spheres p { color:var(--color-muted); font-family:var(--font-mono); font-size:var(--text-xs); letter-spacing:var(--label-tracking); margin:0; text-transform:uppercase; }
+  h1, h2, h3 { font-family:var(--font-serif); font-weight:400; line-height:var(--leading-tight); }
+  .opening { border-bottom:1px solid var(--color-border); padding:clamp(4rem, 12vw, 10rem) 0 clamp(3rem, 8vw, 7rem); }
+  h1 { font-size:clamp(3.25rem, 8vw, 7rem); letter-spacing:-.065em; margin:var(--space-2) 0 0; max-width:10ch; }
+  .intro { font-family:var(--font-serif); font-size:clamp(1.15rem, 2vw, 1.5rem); line-height:var(--leading-reading); margin:var(--space-4) 0 0; max-width:39rem; }
+  .doorways { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); margin-top:clamp(3rem, 6vw, 5rem); max-width:48rem; }
+  .doorways a { border-top:1px solid var(--color-border); color:inherit; display:flex; justify-content:space-between; padding:var(--space-2) 0; text-decoration:none; }
+  .doorways a span { color:var(--color-accent); }
+  .now, .archive-map, .manga-shelf, .visual-notes, .entry-points { border-top:1px solid var(--color-border); margin-top:clamp(4rem, 10vw, 8rem); padding-top:var(--space-3); }
+  .section-heading { align-items:baseline; display:flex; gap:var(--space-2); justify-content:space-between; margin-bottom:var(--space-3); }
+  .section-heading h2 { font-size:clamp(1.6rem, 3vw, 2.6rem); letter-spacing:-.035em; margin:0; }
+  .section-heading > a { color:var(--color-muted); font-size:var(--text-sm); white-space:nowrap; }
+  .focus-note { border-left:3px solid var(--color-accent); max-width:48rem; padding:var(--space-2) 0 var(--space-2) var(--space-3); }
+  .focus-note h3 { font-size:clamp(2rem, 4vw, 3.5rem); letter-spacing:-.045em; margin:var(--space-1) 0; }
+  .focus-note h3 a, .constellation a, .manga-list h3 a, .visual-notes li > a, .trail-card h3 a, .spheres a { color:inherit; text-decoration:none; }
+  .focus-note > span { display:block; line-height:var(--leading-reading); margin:0 0 var(--space-2); max-width:40rem; }
+  .constellation, .manga-list, .visual-notes ul, .spheres { list-style:none; margin:var(--space-4) 0 0; padding:0; }
+  .constellation { max-width:48rem; }
+  .constellation li { align-items:baseline; border-top:1px solid var(--color-border); display:grid; gap:var(--space-3); grid-template-columns:2.5rem 1fr; padding:var(--space-2) 0; }
+  .constellation li > span { color:var(--color-accent); font-family:var(--font-mono); font-size:var(--text-xs); letter-spacing:var(--label-tracking); }
+  .constellation a { display:block; font-family:var(--font-serif); font-size:var(--text-lg); margin-top:.15rem; }
+  .map-links { border-top:1px solid var(--color-border); }
+  .map-links a { align-items:baseline; border-bottom:1px solid var(--color-border); color:inherit; display:grid; gap:var(--space-3); grid-template-columns:2.5rem minmax(10rem, 1fr) minmax(0, 1.5fr); padding:var(--space-3) 0; text-decoration:none; }
+  .map-links strong { font-family:var(--font-serif); font-size:var(--text-xl); font-weight:400; }
+  .map-links em { color:var(--color-muted); font-size:var(--text-sm); font-style:normal; }
+  .manga-list { border-top:1px solid var(--color-border); }
+  .manga-list li { align-items:baseline; border-bottom:1px solid var(--color-border); display:grid; gap:var(--space-3); grid-template-columns:2.5rem minmax(0, 1fr) auto; padding:var(--space-2) 0; }
+  .manga-list h3 { font-size:var(--text-xl); margin:.2rem 0 0; }
+  .manga-list li > em { color:var(--color-muted); font-size:var(--text-sm); font-style:normal; }
+  :global(html[data-sfw="on"]) .manga-list li[data-manga-rating="explicit"] { display:none; }
+  .sfw-note { color:var(--color-muted); font-size:var(--text-sm); margin:var(--space-3) 0 0; }
+  .visual-notes ul { border-top:1px solid var(--color-border); display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .visual-notes li { border-bottom:1px solid var(--color-border); padding:var(--space-3) var(--space-3) var(--space-3) 0; }
+  .visual-notes li:nth-child(even) { padding-left:var(--space-3); padding-right:0; }
+  .visual-notes li > a { display:block; font-family:var(--font-serif); font-size:var(--text-xl); line-height:var(--leading-tight); margin-top:var(--space-1); }
+  .entry-points { display:grid; gap:clamp(4rem, 10vw, 8rem); }
+  .trail-grid, .spheres { border-top:1px solid var(--color-border); }
+  .trail-card, .spheres li { border-bottom:1px solid var(--color-border); padding:var(--space-3) 0; }
+  .trail-card { border-left:3px solid var(--color-accent); padding-left:var(--space-3); }
+  .trail-card h3 { font-size:var(--text-xl); margin:var(--space-1) 0; }
+  .trail-card > span, .spheres li > span { display:block; line-height:var(--leading-reading); margin-bottom:var(--space-2); max-width:42rem; }
+  .spheres a { display:block; font-family:var(--font-serif); font-size:var(--text-xl); margin:var(--space-1) 0; }
+  @media (max-width:40rem) { .doorways, .visual-notes ul { grid-template-columns:1fr; } .map-links a, .manga-list li { grid-template-columns:2rem minmax(0, 1fr); } .map-links em, .manga-list li > em { grid-column:2; } .visual-notes li:nth-child(even) { padding-left:0; } .section-heading { align-items:flex-start; flex-direction:column; } }
+</style>

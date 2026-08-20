@@ -1,0 +1,11 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import WorkContactCta from "../components/WorkContactCta.astro";
+import { getPublishedPages } from "../lib/content";
+const contact = (await getPublishedPages()).find((page) => page.data.pageType === "contact");
+if (!contact) throw new Error("A published page with pageType: contact is required for /contact.");
+const { Content } = await render(contact);
+---
+<BaseLayout title={contact.data.title} description={contact.data.summary}><div class="page-shell"><article class="prose"><h1>{contact.data.title}</h1><Content/></article><WorkContactCta heading="Start a conversation" copy="A few details about the project, its current state, and what you need help with are enough to begin."/></div></BaseLayout>
+<style>article{padding-top:var(--section-space)}h1{font-size:var(--text-2xl);font-weight:500;line-height:var(--leading-tight)}</style>

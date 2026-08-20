@@ -1,0 +1,29 @@
+---
+import type { Media } from "../types/content";
+interface Props { media: Media; priority?: boolean; }
+const { media, priority = false } = Astro.props;
+const label = media.title ?? media.alt ?? "Archive media";
+---
+<figure>
+  {media.kind === "image" && <img class="media-image" src={media.src} alt={media.alt ?? ""} width={media.width} height={media.height} loading={priority ? "eager" : "lazy"} decoding="async" />}
+  {media.kind === "image" && <a class="full-size-link" href={media.src} target="_blank" rel="noopener noreferrer">Open full size</a>}
+  {media.kind === "audio" && <audio controls preload="metadata" src={media.src}>Your browser cannot play this audio. <a href={media.src}>Download {label}</a>.</audio>}
+  {media.kind === "video" && <video controls preload="metadata" src={media.src} poster={media.poster} width={media.width} height={media.height} loop={media.loop} muted={media.muted} autoplay={media.autoplay}>Your browser cannot play this video. <a href={media.src}>Download {label}</a>.</video>}
+  {(media.kind === "iframe" || media.kind === "embed") && (
+    <div class="embed">
+      <iframe src={media.src} title={label} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <p><a href={media.src}>Open {label} in a new page</a></p>
+    </div>
+  )}
+  {(media.caption || media.credit) && <figcaption>{media.caption}{media.caption && media.credit && " — "}{media.credit}</figcaption>}
+</figure>
+
+<style>
+  figure { margin: var(--space-3) 0; }
+  img, video, iframe, .embed { background: var(--color-surface); border: var(--border-width) solid var(--color-border); width: 100%; }
+  audio { width: 100%; }
+  iframe { aspect-ratio: 16 / 9; display: block; }
+  .embed p { font-size: var(--text-sm); margin: var(--space-1); }
+  .full-size-link { display: inline-block; font-size: var(--text-sm); margin-top: var(--space-1); }
+  figcaption { color: var(--color-muted); font-size: var(--text-sm); line-height: var(--leading-normal); margin-top: var(--space-1); }
+</style>

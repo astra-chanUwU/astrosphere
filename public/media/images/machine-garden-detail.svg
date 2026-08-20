@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Sensor detail in tall grass</title>
+  <desc id="description">A close geometric study of a rust-toned sensor surrounded by tall stems.</desc>
+  <rect width="1200" height="800" fill="#e5e3dc"/>
+  <g stroke="#66706a" stroke-width="13" stroke-linecap="round" opacity=".82">
+    <path d="M50 800 170 128M130 800 82 245m180 555 42-690m74 690L322 268m169 532 31-630m101 630-19-706m93 706 72-612m94 612-25-677m117 677 88-598m67 598-18-703"/>
+  </g>
+  <g transform="translate(420 235)">
+    <rect width="360" height="260" rx="18" fill="#806a60"/>
+    <rect x="35" y="38" width="290" height="160" rx="8" fill="#f5f5f3"/>
+    <circle cx="180" cy="118" r="52" fill="#65727a"/>
+    <path d="M90 260 60 565m210-305 30 305" stroke="#252525" stroke-width="18"/>
+  </g>
+</svg>

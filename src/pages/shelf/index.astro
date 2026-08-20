@@ -1,0 +1,70 @@
+---
+import ImageSetCard from "../../components/ImageSetCard.astro";
+import MangaSeriesCard from "../../components/MangaSeriesCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedMangaChapters } from "../../lib/content";
+import { getShelfSelections } from "../../lib/shelf";
+
+const [selections, chapters] = await Promise.all([getShelfSelections(), getPublishedMangaChapters()]);
+const chapterCountBySeriesSlug = new Map<string, number>();
+for (const chapter of chapters) {
+  chapterCountBySeriesSlug.set(
+    chapter.data.series,
+    (chapterCountBySeriesSlug.get(chapter.data.series) ?? 0) + 1,
+  );
+}
+---
+
+<BaseLayout title="The Shelf" description="Comics, doujinshi, and image collections kept close at hand.">
+  <div class="page-shell">
+    <header>
+      <p class="eyebrow">A visual reading room</p>
+      <h1>The Shelf</h1>
+      <p>Comics, doujinshi, and image collections kept close at hand.</p>
+    </header>
+
+    <section aria-labelledby="manga-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Sequential work</p><h2 id="manga-heading">Manga</h2></div>
+        <a href="/shelf/manga">Browse all manga →</a>
+      </div>
+      {selections.manga.length
+        ? selections.manga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)
+        : <p>No manga is curated on the Shelf yet.</p>}
+    </section>
+
+    <section aria-labelledby="doujinshi-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Short books and fanworks</p><h2 id="doujinshi-heading">Doujinshi</h2></div>
+        <a href="/shelf/doujinshi">Browse all doujinshi →</a>
+      </div>
+      {selections.doujinshi.length
+        ? selections.doujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)
+        : <p>No doujinshi is curated on the Shelf yet.</p>}
+    </section>
+
+    <section aria-labelledby="image-sets-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Collected images and studies</p><h2 id="image-sets-heading">Image sets</h2></div>
+        <a href="/shelf/image-sets">Browse all image sets →</a>
+      </div>
+      {selections.imageSets.length
+        ? selections.imageSets.map((imageSet) => <ImageSetCard {imageSet} />)
+        : <p>No image sets are curated on the Shelf yet.</p>}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  h1, h2 { font-family: var(--font-serif); font-weight: 500; line-height: var(--leading-tight); }
+  h1 { font-size: var(--text-2xl); margin: 0; }
+  header > p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  section { max-width: var(--reading-width); margin-bottom: var(--section-space); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading .eyebrow { margin: 0 0 var(--space-1); }
+  .section-heading a { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin: 0; }
+  @media (max-width: 38rem) { .section-heading { align-items: start; flex-direction: column; } }
+</style>

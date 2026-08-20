@@ -1,0 +1,28 @@
+---
+import ShelfArchive from "../../../components/ShelfArchive.astro";
+import { SHELF_PAGE_SIZE } from "../../../config/shelf";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getPublishedMangaChapters } from "../../../lib/content";
+import { getShelfArchive } from "../../../lib/shelf";
+
+const [entries, chapters] = await Promise.all([getShelfArchive("doujinshi"), getPublishedMangaChapters()]);
+const chapterCountBySeriesSlug = new Map<string, number>();
+for (const chapter of chapters) {
+  chapterCountBySeriesSlug.set(chapter.data.series, (chapterCountBySeriesSlug.get(chapter.data.series) ?? 0) + 1);
+}
+const currentPage = 1;
+const lastPage = Math.ceil(entries.length / SHELF_PAGE_SIZE);
+---
+
+<BaseLayout title="Doujinshi Shelf" description="The full doujinshi archive on the Shelf.">
+  <div class="page-shell">
+    <header><p class="eyebrow">The Shelf / short books and fanworks</p><p>All published doujinshi in the reading archive.</p></header>
+    <ShelfArchive category="doujinshi" entries={entries.slice(0, SHELF_PAGE_SIZE)} {currentPage} {lastPage} {chapterCountBySeriesSlug} />
+  </div>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+</style>

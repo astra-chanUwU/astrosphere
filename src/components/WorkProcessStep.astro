@@ -1,0 +1,6 @@
+---
+interface Props { number: number; title: string; description: string; }
+const { number, title, description } = Astro.props;
+---
+<article><span>{String(number).padStart(2, "0")}</span><div><h3>{title}</h3><p>{description}</p></div></article>
+<style>article{border-top:var(--border-width) solid var(--color-border);display:grid;gap:var(--space-2);grid-template-columns:2rem 1fr;padding:var(--space-2) 0}span{color:var(--color-muted);font-size:var(--text-sm)}h3{font-family:var(--font-serif);font-size:var(--text-lg);font-weight:500;margin:0}p{line-height:var(--leading-normal);margin-bottom:0}</style>

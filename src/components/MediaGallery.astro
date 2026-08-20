@@ -1,0 +1,31 @@
+---
+import type { Media } from "../types/content";
+import MediaFrame from "./MediaFrame.astro";
+
+interface Props {
+  media: Media[];
+  title?: string;
+}
+
+const { media, title = "Media" } = Astro.props;
+const allImages = media.every((item) => item.kind === "image");
+---
+
+{media.length > 0 && (
+  <section class:list={["gallery", { "gallery--images": allImages }]} aria-labelledby="media-gallery-heading">
+    <h2 id="media-gallery-heading">{title}</h2>
+    <div class="items">
+      {media.map((item) => <MediaFrame media={item} />)}
+    </div>
+  </section>
+)}
+
+<style>
+  .gallery { margin-top: var(--section-space); }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; }
+  .items { display: grid; gap: var(--space-3); }
+  .gallery--images .items { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+  .items :global(figure) { margin: 0; }
+  .gallery--images .items :global(figure) { aspect-ratio: 4 / 3; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; }
+  .gallery--images .items :global(.media-image) { height: 100%; min-height: 0; object-fit: contain; }
+</style>

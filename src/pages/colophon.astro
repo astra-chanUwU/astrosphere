@@ -1,0 +1,11 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPublishedPages } from "../lib/content";
+
+const colophon = (await getPublishedPages()).find((page) => page.data.pageType === "colophon");
+if (!colophon) throw new Error("A published page with pageType: colophon is required for /colophon.");
+const { Content } = await render(colophon);
+---
+<BaseLayout title={colophon.data.title} description={colophon.data.summary}><div class="page-shell"><article class="prose"><h1>{colophon.data.title}</h1><Content/></article></div></BaseLayout>
+<style>article{padding-top:var(--section-space)}h1{font-size:var(--text-2xl);font-weight:500;line-height:var(--leading-tight)}</style>

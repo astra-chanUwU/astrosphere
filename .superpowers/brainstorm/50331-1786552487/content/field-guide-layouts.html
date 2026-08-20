@@ -1,0 +1,67 @@
+<style>
+  :root { --ink:#17181b; --paper:#f4f0e8; --blue:#2d63d6; --violet:#7654c9; --line:#c9c1b3; }
+  body { background:var(--paper); color:var(--ink); }
+  .intro { max-width:760px; margin:0 auto 28px; }
+  .intro h2 { font-family:Georgia,serif; font-size:clamp(28px,4vw,48px); letter-spacing:-.04em; margin-bottom:8px; }
+  .intro p { color:#5f5b55; max-width:620px; }
+  .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; max-width:1100px; margin:0 auto; }
+  .choice { border:1px solid var(--line); border-radius:14px; padding:14px; background:#fbf9f4; cursor:pointer; transition:.2s ease; }
+  .choice:hover,.choice.selected { border-color:var(--blue); box-shadow:0 0 0 3px #2d63d622; transform:translateY(-2px); }
+  .choice h3 { font-family:Georgia,serif; font-size:22px; margin:14px 0 4px; }
+  .choice > p { color:#6d685f; margin:0 0 14px; font-size:14px; }
+  .screen { overflow:hidden; border:1px solid #d8d0c3; border-radius:10px; background:#fffdf9; min-height:390px; }
+  .bar { display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid #ddd6cc; font:11px ui-monospace,monospace; text-transform:uppercase; letter-spacing:.09em; color:#77716a; }
+  .hero { padding:22px 18px 18px; background:linear-gradient(135deg,#ece6d9 0 53%,#dfe7f4 53%); }
+  .hero small { font:10px ui-monospace,monospace; text-transform:uppercase; color:#596578; }
+  .hero h4 { font:26px Georgia,serif; line-height:1; max-width:280px; margin:9px 0 7px; }
+  .hero p { font-size:12px; max-width:310px; color:#5d5b57; }
+  .tiles { padding:15px 18px; display:grid; grid-template-columns:1.15fr .85fr; gap:10px; }
+  .tile { min-height:88px; border-top:2px solid var(--blue); padding-top:8px; }
+  .tile:nth-child(2) { border-color:var(--violet); }
+  .tile:nth-child(3) { border-color:#c6854d; }
+  .tile b { display:block; font:10px ui-monospace,monospace; text-transform:uppercase; color:#77716a; }
+  .tile strong { display:block; font:16px Georgia,serif; margin-top:6px; }
+  .trail-map { padding:25px 18px 15px; background:radial-gradient(circle at 85% 16%,#ece8ff,transparent 28%),#f9f6ee; min-height:235px; position:relative; }
+  .trail-map:before { content:""; position:absolute; left:41px; top:74px; width:80%; border-top:1px dashed #a8a2b4; transform:rotate(-9deg); }
+  .node { position:relative; z-index:1; display:flex; gap:9px; align-items:flex-start; margin-bottom:22px; }
+  .dot { width:13px; height:13px; flex:0 0 13px; border:3px solid var(--violet); background:#fff; border-radius:50%; margin-top:2px; }
+  .node:first-child .dot { background:var(--violet); }
+  .node b { display:block; font:10px ui-monospace,monospace; color:#77716a; text-transform:uppercase; }
+  .node strong { display:block; font:16px Georgia,serif; margin-top:3px; }
+  .trail-footer { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:15px 18px; border-top:1px solid #ddd6cc; }
+  .trail-footer div { border-left:2px solid var(--violet); padding-left:8px; font-size:11px; }
+  @media(max-width:720px){ .choices{grid-template-columns:1fr;} }
+</style>
+<div class="intro">
+  <p class="label">Visual direction · field guide</p>
+  <h2>Which shape feels like AstroSphere?</h2>
+  <p>Both options use the same content, but emphasize a different way of exploring it. Click the one that feels closer to the collection you want to grow.</p>
+</div>
+<div class="choices">
+  <div class="choice" data-choice="atlas" onclick="toggleSelect(this)">
+    <div class="screen">
+      <div class="bar"><span>AstroSphere / artifacts</span><span>01—32</span></div>
+      <div class="hero"><small>Field note · featured artifact</small><h4>The archive is a constellation.</h4><p>A visual entry point into essays, notes, recordings, and experiments.</p></div>
+      <div class="tiles">
+        <div class="tile"><b>Latest essay</b><strong>Machine at the Edge of the Garden</strong></div>
+        <div class="tile"><b>Browse by</b><strong>Type / sphere / date</strong></div>
+        <div class="tile"><b>Find your way</b><strong>Open a random artifact →</strong></div>
+      </div>
+    </div>
+    <h3>A. The Atlas</h3>
+    <p>Artifacts become a visual index: one featured entry, then a varied grid of signals and metadata.</p>
+  </div>
+  <div class="choice" data-choice="routes" onclick="toggleSelect(this)">
+    <div class="screen">
+      <div class="bar"><span>AstroSphere / trails</span><span>routes through</span></div>
+      <div class="trail-map">
+        <div class="node"><span class="dot"></span><div><b>01 · start here</b><strong>Cyberpunk Thread</strong></div></div>
+        <div class="node"><span class="dot"></span><div><b>02 · atmosphere</b><strong>Ghost in the Shell Orbit</strong></div></div>
+        <div class="node"><span class="dot"></span><div><b>03 · detour</b><strong>Machines with a Soul</strong></div></div>
+      </div>
+      <div class="trail-footer"><div><b>04</b><br/>published routes</div><div><b>28</b><br/>stops to wander through</div></div>
+    </div>
+    <h3>B. The Route Map</h3>
+    <p>Trails become the main navigation metaphor: large route cards, stop counts, spheres, and a clear starting point.</p>
+  </div>
+</div>

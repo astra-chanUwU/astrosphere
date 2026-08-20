@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">Machine at the edge of a garden</title>
+  <desc id="description">A neutral geometric field with grasses and a small observation instrument.</desc>
+  <rect width="1200" height="720" fill="#ececea"/>
+  <path d="M0 472c170-58 320-28 470 12 195 52 357 3 730-83v319H0Z" fill="#d4d4cf"/>
+  <path d="M0 548c225-42 365 22 533 13 209-11 398-104 667-97v256H0Z" fill="#c1c6c0"/>
+  <g stroke="#66706a" stroke-width="8" stroke-linecap="round">
+    <path d="m90 604 18-125m26 123-9-147m51 151 17-114m39 108-5-169m61 172 14-132m47 137-7-109m609 93 14-133m35 127-4-159m58 167 19-123m34 130-6-176"/>
+  </g>
+  <g transform="translate(744 214)">
+    <rect x="0" y="70" width="170" height="175" rx="8" fill="#73736d"/>
+    <rect x="18" y="89" width="134" height="102" rx="4" fill="#f5f5f3"/>
+    <circle cx="85" cy="140" r="27" fill="#65727a"/>
+    <path d="M85 70V0m-24 0h48M40 245l-24 178m114-178 24 178" stroke="#252525" stroke-width="12"/>
+  </g>
+</svg>

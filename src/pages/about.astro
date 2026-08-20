@@ -1,0 +1,11 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { getPublishedPages } from "../lib/content";
+const about = (await getPublishedPages()).find((page) => page.data.pageType === "about");
+if (!about) throw new Error("A published page with pageType: about is required for /about.");
+const { Content } = await render(about);
+---
+<BaseLayout title={about.data.title} description={about.data.summary}><div class="page-shell"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: about.data.title }]}/><article class="prose"><h1>{about.data.title}</h1><Content/></article></div></BaseLayout>
+<style>article{padding-top:var(--section-space)}h1{font-size:var(--text-2xl);font-weight:500;line-height:var(--leading-tight)}</style>

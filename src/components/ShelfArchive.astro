@@ -1,0 +1,45 @@
+---
+import ImageSetCard from "./ImageSetCard.astro";
+import MangaSeriesCard from "./MangaSeriesCard.astro";
+import ArchivePagination from "./ArchivePagination.astro";
+import type { ImageSetEntry, MangaSeriesEntry } from "../lib/content";
+import type { ShelfCategory } from "../lib/shelf";
+
+interface Props {
+  category: ShelfCategory;
+  entries: MangaSeriesEntry[] | ImageSetEntry[];
+  currentPage: number;
+  lastPage: number;
+  chapterCountBySeriesSlug: Map<string, number>;
+}
+
+const { category, entries, currentPage, lastPage, chapterCountBySeriesSlug } = Astro.props;
+const heading = category === "image-sets" ? "Image sets" : category === "doujinshi" ? "Doujinshi" : "Manga";
+const entryLabel = category === "image-sets" ? "image set" : category === "doujinshi" ? "doujinshi" : "title";
+const emptyMessage = category === "image-sets" ? "No image sets are published yet." : category === "doujinshi" ? "No doujinshi is published yet." : "No manga is published yet.";
+const mangaEntries = entries as MangaSeriesEntry[];
+const imageSetEntries = entries as ImageSetEntry[];
+const basePath = `/shelf/${category}`;
+---
+
+<section class="shelf-archive" aria-labelledby="shelf-archive-heading">
+  <header>
+    <h1 id="shelf-archive-heading">{heading}</h1>
+    <p>{entries.length} {entries.length === 1 ? entryLabel : `${entryLabel}s`} on this page.</p>
+  </header>
+  {entries.length
+    ? category === "image-sets"
+      ? imageSetEntries.map((imageSet) => <ImageSetCard {imageSet} />)
+      : mangaEntries.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)
+    : <p class="empty">{emptyMessage}</p>}
+  <ArchivePagination {basePath} {currentPage} {lastPage} />
+</section>
+
+<style>
+  .shelf-archive { max-width: var(--reading-width); }
+  header { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); justify-content: space-between; padding-bottom: var(--space-2); }
+  h1 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  header p, .empty { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
+  .empty { padding: var(--space-3) 0; }
+  @media (max-width: 38rem) { header { align-items: start; flex-direction: column; } }
+</style>

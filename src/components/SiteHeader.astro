@@ -1,0 +1,57 @@
+---
+import { primaryNavigation, utilityNavigation } from "../config/navigation";
+interface Props { title: string; }
+const { title } = Astro.props;
+---
+<header><div class="brand-row"><a class="brand" href="/" aria-label="AstroSphere home"><img src="/astrosphere.svg" alt="AstroSphere" /></a><p>{title}</p></div><div class="nav-row"><nav class="primary-navigation" aria-label="Primary navigation">{primaryNavigation.map((link) => <a href={link.href}>{link.label}</a>)}</nav><nav class="utility-navigation" aria-label="Archive utilities">{utilityNavigation.map((link) => <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.icon === "search" && <svg class="search-icon" aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8.5" cy="8.5" r="5.25"/><path d="m12.5 12.5 4 4"/></svg>}<span>{link.label}</span>{link.external && <span class="external-indicator" aria-hidden="true">↗</span>}</a>)}</nav><div class="appearance-controls"><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">dark</button><button class="crt-toggle" id="crt-toggle" type="button" aria-label="Enable CRT mode">crt: off</button><button class="sfw-toggle" id="sfw-toggle" type="button" aria-label="Show only SFW manga">sfw: on</button></div></div></header>
+<script>
+  const setupThemeToggle = () => {
+    const button = document.querySelector<HTMLButtonElement>("#theme-toggle");
+    if (!button) return;
+    const root = document.documentElement;
+    const setTheme = (theme: "light" | "dark") => {
+      root.dataset.theme = theme;
+      button.textContent = theme === "dark" ? "light" : "dark";
+      button.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} theme`);
+    };
+    setTheme(root.dataset.theme === "dark" ? "dark" : "light");
+    button.addEventListener("click", () => {
+      const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("astrosphere-theme", nextTheme);
+      setTheme(nextTheme);
+    });
+    const crtButton = document.querySelector<HTMLButtonElement>("#crt-toggle");
+    const setCrt = (enabled: boolean) => {
+      if (enabled) root.dataset.crt = "on";
+      else delete root.dataset.crt;
+      crtButton!.textContent = enabled ? "crt: on" : "crt: off";
+      crtButton!.setAttribute("aria-label", `${enabled ? "Disable" : "Enable"} CRT mode`);
+      document.dispatchEvent(new CustomEvent("astrosphere:crt-change"));
+    };
+    if (crtButton) {
+      setCrt(root.dataset.crt === "on");
+      crtButton.addEventListener("click", () => {
+        const enabled = root.dataset.crt !== "on";
+        localStorage.setItem("astrosphere-crt", enabled ? "on" : "off");
+        setCrt(enabled);
+      });
+    }
+    const sfwButton = document.querySelector<HTMLButtonElement>("#sfw-toggle");
+    const setSfw = (enabled: boolean) => {
+      root.dataset.sfw = enabled ? "on" : "off";
+      sfwButton!.textContent = enabled ? "sfw: on" : "sfw: off";
+      sfwButton!.setAttribute("aria-label", enabled ? "Show all content ratings" : "Show only SFW content");
+      document.dispatchEvent(new CustomEvent("astrosphere:sfw-change"));
+    };
+    if (sfwButton) {
+      setSfw(root.dataset.sfw !== "off");
+      sfwButton.addEventListener("click", () => {
+        const enabled = root.dataset.sfw === "off";
+        localStorage.setItem("astrosphere-sfw", enabled ? "on" : "off");
+        setSfw(enabled);
+      });
+    }
+  };
+  document.addEventListener("astro:page-load", setupThemeToggle);
+</script>
+<style>header{--header-gutter:.65rem;border-bottom:1px solid var(--color-border)}.brand-row{align-items:center;display:flex;gap:var(--space-3);padding:var(--space-2) var(--header-gutter)}.brand{display:block;line-height:0}.brand img{height:1.7rem;width:auto}.brand-row p{color:var(--color-muted);font-size:var(--text-sm);font-style:italic;margin:0}.nav-row{align-items:center;background:var(--color-astral-blue);display:flex;gap:var(--space-3);padding:.3rem var(--header-gutter)}.primary-navigation,.utility-navigation,.appearance-controls{align-items:center;display:flex;flex-wrap:wrap;gap:var(--space-3)}.utility-navigation{border-left:1px solid color-mix(in srgb,#fff 55%,transparent);padding-left:var(--space-3)}.appearance-controls{margin-left:auto}.primary-navigation a,.utility-navigation a{color:#fff;font-size:var(--text-sm);font-weight:600;text-decoration:none}.utility-navigation a{align-items:center;display:inline-flex;gap:.25rem}.search-icon{height:1em;width:1em}.external-indicator{font-size:.9em;line-height:1}.theme-toggle,.crt-toggle,.sfw-toggle{background:transparent;border:1px solid color-mix(in srgb,#fff 65%,transparent);border-radius:0;color:#fff;cursor:pointer;font:inherit;font-size:var(--text-sm);padding:.1rem .4rem}.theme-toggle:hover,.crt-toggle:hover,.sfw-toggle:hover{background:#fff;color:var(--color-astral-blue)}@media(max-width:48rem){.brand-row{gap:var(--space-2);padding-inline:var(--gutter)}.brand-row p{min-width:0}.nav-row{align-items:stretch;flex-direction:column;gap:0;padding:0}.primary-navigation,.utility-navigation{display:grid;gap:1px;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.utility-navigation{background:color-mix(in srgb,var(--color-astral-blue) 88%,#000);border-left:0;border-top:1px solid color-mix(in srgb,#fff 35%,transparent);padding-left:0}.primary-navigation a,.utility-navigation a{align-items:center;display:flex;min-height:2.75rem;padding-inline:var(--gutter)}.appearance-controls{background:color-mix(in srgb,var(--color-astral-blue) 82%,#000);border-top:1px solid color-mix(in srgb,#fff 35%,transparent);display:grid;gap:1px;grid-template-columns:repeat(3,minmax(0,1fr));margin-left:0;padding-inline:0;width:100%}.theme-toggle,.crt-toggle,.sfw-toggle{min-height:2.75rem;padding-inline:.25rem;white-space:nowrap}}</style>

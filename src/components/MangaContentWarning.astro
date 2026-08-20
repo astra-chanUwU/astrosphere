@@ -1,0 +1,11 @@
+---
+import type { MangaRating } from "../lib/content-rating";
+interface Props { rating: MangaRating; }
+const { rating } = Astro.props;
+---
+
+{rating === "explicit" ? <section class="route" data-explicit-route data-unlocked="false"><div class="warning" data-pagefind-ignore><p>Adult content</p><p class="warning-title">This title is marked explicit.</p><p>Your SFW preference is on. This archive is intended for responsible adults.</p><button type="button" data-confirm-adult-content>Continue to this title</button></div><div class="protected"><slot /></div></section> : <slot />}
+
+<style>
+  .warning { border-left: 3px solid var(--color-nebula-purple); margin: var(--space-4) var(--space-3); max-width: var(--reading-width); padding: var(--space-3); } .warning>p:first-child { color: var(--color-nebula-purple); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; } .warning-title { font-size: var(--text-xl); margin: var(--space-1) 0; } .warning p { line-height: var(--leading-normal); } button { background: var(--color-bg); border: 1px solid var(--color-astral-blue); border-radius: 0; color: var(--color-astral-blue); cursor: pointer; font: inherit; padding: .25rem .5rem; } :global(html[data-sfw="on"]) [data-explicit-route][data-unlocked="false"] .protected { display: none; } :global(html[data-sfw="on"]) [data-explicit-route][data-unlocked="true"] .warning, :global(html[data-sfw="off"]) [data-explicit-route] .warning { display: none; }
+</style>

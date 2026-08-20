@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  sphere: CollectionEntry<"spheres">;
+  childCount?: number;
+  artifactCount?: number;
+}
+
+const { sphere, childCount = 0, artifactCount = 0 } = Astro.props;
+---
+
+<article class="sphere-row" data-palette={sphere.data.palette}>
+  <div class="sphere-copy">
+    <p class="marker">{sphere.data.palette}</p>
+    <h2><a href={`/spheres/${sphere.data.slug}`}>{sphere.data.title}</a></h2>
+    <p class="summary">{sphere.data.summary}</p>
+    <footer>{childCount > 0 && <span>{childCount} child {childCount === 1 ? "sphere" : "spheres"}</span>}<span>{artifactCount} {artifactCount === 1 ? "artifact" : "artifacts"}</span></footer>
+  </div>
+  {sphere.data.cover?.kind === "image" && <a class="cover" href={`/spheres/${sphere.data.slug}`} aria-label={`Enter ${sphere.data.title}`}><img src={sphere.data.cover.src} alt={sphere.data.cover.alt ?? sphere.data.title} width={sphere.data.cover.width} height={sphere.data.cover.height} loading="lazy" decoding="async" /></a>}
+</article>
+
+<style>
+  .sphere-row { border-top: 1px solid var(--color-border); border-left: 3px solid var(--sphere-accent, var(--color-accent)); display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1fr) minmax(7rem, 10rem); padding: var(--space-3); }
+  [data-palette="paper"] { --sphere-accent: var(--color-paper); } [data-palette="moss"] { --sphere-accent: var(--color-moss); } [data-palette="ember"] { --sphere-accent: var(--color-ember); } [data-palette="ocean"] { --sphere-accent: var(--color-ocean); } [data-palette="dusk"] { --sphere-accent: var(--color-dusk); } [data-palette="mineral"] { --sphere-accent: var(--color-mineral); }
+  .marker, footer { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .marker { color: var(--sphere-accent); margin: 0 0 var(--space-1); }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  h2 a { color: inherit; text-decoration: none; }
+  .summary { line-height: var(--leading-reading); margin: var(--space-1) 0; max-width: 42rem; }
+  footer { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+  .cover { align-self: start; display: block; }
+  .cover img { display: block; height: clamp(5rem,12vw,7rem); object-fit: cover; width: 100%; }
+  @media (max-width: 32rem) { .sphere-row { grid-template-columns: 1fr; } .cover { max-width: 12rem; } }
+</style>

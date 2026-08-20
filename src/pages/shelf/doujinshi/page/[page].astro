@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths } from "astro";
+import ShelfArchive from "../../../../components/ShelfArchive.astro";
+import { SHELF_PAGE_SIZE } from "../../../../config/shelf";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getPublishedMangaChapters } from "../../../../lib/content";
+import { getShelfArchive } from "../../../../lib/shelf";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const entries = await getShelfArchive("doujinshi");
+  return paginate(entries, { pageSize: SHELF_PAGE_SIZE })
+    .filter((path) => Number(path.params.page) > 1);
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const chapters = await getPublishedMangaChapters();
+const chapterCountBySeriesSlug = new Map<string, number>();
+for (const chapter of chapters) {
+  chapterCountBySeriesSlug.set(chapter.data.series, (chapterCountBySeriesSlug.get(chapter.data.series) ?? 0) + 1);
+}
+---
+
+<BaseLayout title={`Doujinshi Shelf — page ${page.currentPage}`} description="The full doujinshi archive on the Shelf.">
+  <div class="page-shell">
+    <header><p class="eyebrow">The Shelf / short books and fanworks</p><p>All published doujinshi in the reading archive.</p></header>
+    <ShelfArchive category="doujinshi" entries={page.data} currentPage={page.currentPage} lastPage={page.lastPage} {chapterCountBySeriesSlug} />
+  </div>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+</style>

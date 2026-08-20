@@ -1,0 +1,8 @@
+---
+import { isConfiguredSupportValue, supportConfig, type SupportContact } from "../config/support";
+const year = new Date().getFullYear();
+const contactHref = (contact: SupportContact) => contact.kind === "email" ? `mailto:${contact.value}` : contact.value;
+const socials = supportConfig.contacts.filter((contact) => isConfiguredSupportValue(contact.value));
+---
+<footer><div class="identity"><strong>AstroSphere</strong><p>Astro Chan's corner of the internet — manga, games, images, essays, and things I am still figuring out.</p><span>© {year}</span></div><div class="utilities"><a href="/rss.xml">RSS</a><a href="/contact">Contact</a><a href="/support">Support</a>{socials.map((social) => <a href={contactHref(social)}>{social.label}</a>)}</div></footer>
+<style>footer{border-top:1px solid var(--color-border);color:var(--color-muted);display:flex;gap:var(--space-3);justify-content:space-between;margin-top:var(--section-space);padding:var(--space-4) var(--gutter)}.identity{display:flex;flex-direction:column;gap:var(--space-1)}.utilities{align-content:start;display:flex;flex-wrap:wrap;gap:var(--space-1) var(--space-2);justify-content:flex-end}.utilities a{font-size:var(--text-sm)}p{margin:0;max-width:28rem}strong{color:var(--color-text)}@media(max-width:35rem){footer{flex-direction:column}.utilities{justify-content:flex-start}}</style>

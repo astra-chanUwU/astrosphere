@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SignalCard from "../../components/SignalCard.astro";
+import { getPublishedSignals } from "../../lib/content";
+
+const signals = await getPublishedSignals();
+const sections = [
+  { id: "manga", title: "Manga" },
+  { id: "art-imageboards", title: "Art & Imageboards" },
+  { id: "hentai-reading", title: "Hentai Reading" },
+  { id: "anime", title: "Anime" },
+  { id: "anime-physical", title: "Anime & Physical" },
+  { id: "community", title: "Community" },
+] as const;
+---
+
+<BaseLayout title="Signals" description="Websites worth returning to." pagefindFilters={[{ name: "kind", value: "signals" }, ...signals.flatMap((signal) => signal.data.tags.map((value) => ({ name: "tag", value }))), ...signals.flatMap((signal) => signal.data.spheres.map((value) => ({ name: "sphere", value })))]}>
+  <div class="page-shell">
+    <header>
+      <h1>Signals</h1>
+      <p>Websites, archives, and reading rooms worth returning to. The SFW control hides entries labelled mixed or NSFW.</p>
+    </header>
+    {sections.map((section) => {
+      const entries = signals.filter((signal) => signal.data.category === section.id);
+      return entries.length > 0 && <section aria-labelledby={`${section.id}-heading`}><h2 id={`${section.id}-heading`}>{section.title}</h2>{entries.map((signal) => <SignalCard {signal} />)}</section>;
+    })}
+  </div>
+</BaseLayout>
+
+<style>
+  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
+  h1 { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500; margin: 0; }
+  p { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  section { margin: var(--section-space) 0; } h2 { font-size: var(--text-xl); margin: 0 0 var(--space-2); }
+</style>

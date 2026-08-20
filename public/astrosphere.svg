@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Astrosphere rendered in the same 8px modular, solid-block language as dwm.svg. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="56" viewBox="0 0 520 56" shape-rendering="crispEdges" role="img" aria-labelledby="title">
+  <title id="title">astrosphere</title>
+  <defs fill="#159ee6">
+    <path id="a" d="M8 0h24v8H8zM0 8h8v40H0zM32 8h8v40h-8zM8 24h24v8H8z"/>
+    <path id="s" d="M0 0h40v8H0zM0 8h8v16H0zM0 24h40v8H0zM32 32h8v16h-8zM0 48h40v8H0z"/>
+    <path id="t" d="M0 0h40v8H0zM16 8h8v48h-8z"/>
+    <path id="r" d="M0 0h32v8H0zM0 8h8v48H0zM32 8h8v24h-8zM8 24h24v8H8zM24 32h8v8h-8zM32 40h8v16h-8z"/>
+    <path id="o" d="M8 0h24v8H8zM0 8h8v40H0zM32 8h8v40h-8zM8 48h24v8H8z"/>
+    <path id="p" d="M0 0h32v8H0zM0 8h8v48H0zM32 8h8v24h-8zM8 24h24v8H8z"/>
+    <path id="h" d="M0 0h8v56H0zM32 0h8v56h-8zM8 24h24v8H8z"/>
+    <path id="e" d="M0 0h40v8H0zM0 8h8v40H0zM0 24h32v8H0zM0 48h40v8H0z"/>
+  </defs>
+  <g fill="#159ee6">
+    <use href="#a" x="0"/><use href="#s" x="48"/><use href="#t" x="96"/>
+    <use href="#r" x="144"/><use href="#o" x="192"/><use href="#s" x="240"/>
+    <use href="#p" x="288"/><use href="#h" x="336"/><use href="#e" x="384"/>
+    <use href="#r" x="432"/><use href="#e" x="480"/>
+  </g>
+</svg>

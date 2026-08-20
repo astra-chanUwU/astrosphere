@@ -1,0 +1,33 @@
+---
+slug: black-souls-ii-puss-in-boots
+title: "Puss in Boots"
+type: essay
+status: published
+summary: "A source-faithful BLACKSOULS II character dossier covering appearances, route choices, encounters, and adult-content context."
+publishedAt: "2026-08-13"
+spheres: [games]
+tags: [black-souls, black-souls-ii, characters, guides]
+hero:
+  kind: image
+  src: /media/images/black-souls-ii-puss-in-boots/puss-in-boots-appeared.webp
+  alt: "Puss in Boots appeared"
+  credit: "Character guide imagery from FGGuides; rights reserved."
+related: [black-souls-ii, black-souls-ii-characters]
+sourceUrl: https://fgguides.com/blacksouls/puss-in-boots/
+notes: "Adults-only game: this source guide may describe explicit H-scenes, coercive routes, violence, and spoilers."
+---
+
+# Puss in Boots
+
+
+
+## Guide notes
+
+
+
+## Source gallery
+
+<figure><img src="/media/images/black-souls-ii-puss-in-boots/puss-in-boots-appeared.webp" alt="Puss in Boots appeared" loading="lazy" decoding="async" /><figcaption>Puss in Boots appeared</figcaption></figure>
+
+> This entry is a local, source-faithful adaptation of the linked FGGuides page.
+
