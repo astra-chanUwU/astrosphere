@@ -1,8 +1,8 @@
 ---
 slug: yani-neko
-title: Yani Neko
+title: Chainsmoker Cat
 originalTitle: Yani Neko
-aliases: [Chainsmoker Cat]
+aliases: [Yani Neko]
 visibility: published
 status: ongoing
 publicationYear: 2023
@@ -51,4 +51,4 @@ art:
 featured: false
 ---
 
-*Yani Neko* is an ongoing manga by Nyan Nyan Factory.
+*Chainsmoker Cat* is an ongoing manga by Nyan Nyan Factory.
