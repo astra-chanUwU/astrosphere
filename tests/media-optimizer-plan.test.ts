@@ -206,6 +206,22 @@ test("plans one supported source file from its absolute source path", async () =
   ]);
 });
 
+test("preserves a direct source path when its inspector reports a relative basename", async () => {
+  const plan = await planMediaOptimization({
+    ...options,
+    source: "/source/page.jpg",
+  }, {
+    inspectSource: async () => [
+      { path: "page.jpg", format: "jpeg", bytes: 10 },
+    ],
+    pathExists: async () => false,
+    sourceIsFile: true,
+  });
+
+  expect(plan.items[0]?.sourcePath).toBe("/source/page.jpg");
+  expect(plan.items[0]?.sourceRelativePath).toBe("page.jpg");
+});
+
 test("naturally sorts media paths with a stable page-name order", () => {
   expect(naturalSortMediaPaths(["010.png", "2.jpg", "001.webp", "cover.jpg"])).toEqual([
     "001.webp",

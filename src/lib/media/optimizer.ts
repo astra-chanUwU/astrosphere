@@ -50,6 +50,8 @@ export type OptimizeResult = {
 export type PlanMediaOptimizationAdapters = {
   inspectSource: (source: string) => Promise<OptimizationSource[]>;
   pathExists: (path: string) => Promise<boolean>;
+  /** The inspected source is one file, so its execution path is `options.source`. */
+  sourceIsFile?: boolean;
 };
 
 type AcceptedSource = {
@@ -196,7 +198,9 @@ export const planMediaOptimization = async (
     const format = acceptedFormat(source, sourceRelativePath);
     accepted.push({
       source,
-      sourcePath: isAbsolute(source.path)
+      sourcePath: adapters.sourceIsFile
+        ? options.source
+        : isAbsolute(source.path)
         ? source.path
         : join(options.source, sourceRelativePath),
       sourceRelativePath,
