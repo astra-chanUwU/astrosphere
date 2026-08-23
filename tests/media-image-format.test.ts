@@ -10,6 +10,16 @@ const isoBmff = (...brands: string[]): Uint8Array => {
   return bytes(0, 0, 0, content.length + 4, ...content);
 };
 
+const extendedIsoBmff = (compatibleBrand: string): Uint8Array =>
+  bytes(
+    0, 0, 0, 1,
+    ...new TextEncoder().encode("ftyp"),
+    0, 0, 0, 0, 0, 0, 0, 28,
+    ...new TextEncoder().encode("mif1"),
+    0, 0, 0, 0,
+    ...new TextEncoder().encode(compatibleBrand),
+  );
+
 test("detects formats from bytes instead of extensions", () => {
   expect(detectImageFormatFromBytes(bytes(0xff, 0xd8, 0xff, 0xe0))).toBe("jpeg");
   expect(detectImageFormatFromBytes(bytes(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a))).toBe("png");
@@ -22,6 +32,11 @@ test("detects AVIF and animated AVIF compatible brands in ISO-BMFF bytes", () =>
   expect(detectImageFormatFromBytes(isoBmff("mif1", "0000", "avif"))).toBe("avif");
   expect(detectImageFormatFromBytes(isoBmff("mif1", "0000", "avis"))).toBe("avif");
   expect(detectImageFormatFromBytes(isoBmff("mif1", "0000", "heic"))).toBe("unknown");
+});
+
+test("detects AVIF and AVIS brands in extended-size ISO-BMFF boxes", () => {
+  expect(detectImageFormatFromBytes(extendedIsoBmff("avif"))).toBe("avif");
+  expect(detectImageFormatFromBytes(extendedIsoBmff("avis"))).toBe("avif");
 });
 
 test("detects a file by its bytes rather than its extension", async () => {

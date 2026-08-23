@@ -19,9 +19,14 @@ const hasPrefix = (bytes: Uint8Array, prefix: number[]): boolean =>
 const isAvif = (bytes: Uint8Array): boolean => {
   if (bytes.length < 20 || textAt(bytes, 4, 4) !== "ftyp") return false;
 
-  const boxSize = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(0);
-  const end = boxSize === 0 ? bytes.length : Math.min(bytes.length, boxSize);
-  for (let offset = 16; offset + 4 <= end; offset += 4) {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const boxSize = view.getUint32(0);
+  const compatibleBrandStart = boxSize === 1 ? 24 : 16;
+  if (bytes.length < compatibleBrandStart) return false;
+
+  const declaredSize = boxSize === 1 ? view.getBigUint64(8) : BigInt(boxSize);
+  const end = boxSize === 0 ? bytes.length : Number(declaredSize > BigInt(bytes.length) ? BigInt(bytes.length) : declaredSize);
+  for (let offset = compatibleBrandStart; offset + 4 <= end; offset += 4) {
     const brand = textAt(bytes, offset, 4);
     if (brand === "avif" || brand === "avis") return true;
   }
