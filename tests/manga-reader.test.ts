@@ -14,9 +14,8 @@ test("creates WebP manga page URLs when a chapter uses WebP pages", () => {
   expect(createMangaPageSrc("/manga/ghost-in-the-shell/chapter-000", 1, "webp")).toBe("/manga/ghost-in-the-shell/chapter-000/001.webp");
 });
 
-test("creates manga page URLs on a configured media origin", () => {
-  expect(createMangaPageSrc("/manga/example/chapter-001", 1, "webp", "http://localhost:4322/manga"))
-    .toBe("http://localhost:4322/manga/example/chapter-001/001.webp");
+test("rejects manga page paths outside the manga media root", () => {
+  expect(() => createMangaPageSrc("/media/example/chapter-001", 1)).toThrow("Expected a /manga page path");
 });
 
 test("sorts manga chapters numerically", () => {
@@ -48,8 +47,9 @@ test("manga reader renders previous, series, and next controls at both ends", ()
   expect(reader).toContain("data-reader-header");
 });
 
-test("manga reader passes the configured asset base to page URL generation", () => {
-  expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension, mangaAssetBaseUrl)");
+test("manga reader passes root-relative chapter paths to page URL generation", () => {
+  expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension)");
+  expect(reader).not.toContain("PUBLIC_MANGA_ASSET_BASE_URL");
 });
 
 test("manga chapter controls retain visible space between links when they wrap", () => {

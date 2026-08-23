@@ -1,15 +1,13 @@
 ---
 import type { MangaSeriesEntry } from "../lib/content";
-import { resolveMangaAssetUrl } from "../lib/manga-assets";
 
 interface Props { series: MangaSeriesEntry; chapterCount: number; }
 const { series, chapterCount } = Astro.props;
-const mangaAssetBaseUrl = import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL;
 ---
 
 <article data-manga-rating={series.data.rating}>
   <a class="cover" href={`/manga/${series.data.slug}`}>
-    {series.data.cover && <img src={resolveMangaAssetUrl(series.data.cover.src, mangaAssetBaseUrl)} alt={series.data.cover.alt ?? `${series.data.title} cover`} loading="lazy" decoding="async" />}
+    {series.data.cover && <img src={series.data.cover.src} alt={series.data.cover.alt ?? `${series.data.title} cover`} loading="lazy" decoding="async" />}
   </a>
   <div class="details"><p class="format">{series.data.format.replace("one-shot", "one-shot").replace("web-comic", "web comic")}</p><h2><a href={`/manga/${series.data.slug}`}>{series.data.title}</a></h2><p class="original">{series.data.originalTitle}</p><p class="meta">{series.data.status} · {chapterCount} {chapterCount === 1 ? "chapter" : "chapters"}</p><p class="credits"><span>Author: {series.data.authors.map((person) => <a href={`/manga/creators/${person.slug}`}>{person.name}</a>)}</span><span>Artist: {series.data.artists.map((person) => <a href={`/manga/creators/${person.slug}`}>{person.name}</a>)}</span></p><p class="tags">{series.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</p></div>
 </article>

@@ -12,7 +12,6 @@ interface Props {
 const { series, chapter, previousChapter, nextChapter } = Astro.props;
 const pages = Array.from({ length: chapter.data.pageCount }, (_, index) => index + 1);
 const installmentLabel = getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title);
-const mangaAssetBaseUrl = import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL;
 ---
 
 <article class="reader">
@@ -22,7 +21,7 @@ const mangaAssetBaseUrl = import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL;
     <a href={`/manga/${series.data.slug}`}>Series details</a>
     {nextChapter && <a href={nextChapter.href}>{nextChapter.label} →</a>}
   </nav>
-  <ol>{pages.map((page) => <li><img src={createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension, mangaAssetBaseUrl)} alt={`${series.data.title}, chapter ${chapter.data.number}, page ${page}`} width={chapter.data.pageWidth} height={chapter.data.pageHeight} loading={page === 1 ? "eager" : "lazy"} fetchpriority={page === 1 ? "high" : "auto"} decoding="async" /></li>)}</ol>
+  <ol>{pages.map((page) => <li><img src={createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension)} alt={`${series.data.title}, chapter ${chapter.data.number}, page ${page}`} width={chapter.data.pageWidth} height={chapter.data.pageHeight} loading={page === 1 ? "eager" : "lazy"} fetchpriority={page === 1 ? "high" : "auto"} decoding="async" /></li>)}</ol>
   <nav class="chapter-navigation" aria-label="Chapter navigation">
     {previousChapter && <a href={previousChapter.href}>← {previousChapter.label}</a>}
     <a href={`/manga/${series.data.slug}`}>Series details</a>

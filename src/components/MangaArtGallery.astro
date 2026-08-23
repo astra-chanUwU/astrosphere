@@ -1,13 +1,11 @@
 ---
 import type { MangaSeriesEntry } from "../lib/content";
-import { resolveMangaAssetUrl } from "../lib/manga-assets";
 
 interface Props {
   art: MangaSeriesEntry["data"]["art"];
 }
 
 const { art } = Astro.props;
-const mangaAssetBaseUrl = import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL;
 ---
 
 {art.length > 0 && (
@@ -15,7 +13,7 @@ const mangaAssetBaseUrl = import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL;
     <h2 id="art-heading">Artwork</h2>
     <div class="art-grid">
       {art.map((piece) => {
-        const src = resolveMangaAssetUrl(piece.src, mangaAssetBaseUrl);
+        const src = piece.src;
         return (
           <figure>
             <img {src} alt={piece.alt} loading="lazy" decoding="async" />
