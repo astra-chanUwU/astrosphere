@@ -1,4 +1,10 @@
-export type MediaErrorKind = "usage" | "configuration" | "validation" | "optimization" | "synchronization";
+export type MediaErrorKind =
+  | "usage"
+  | "configuration"
+  | "validation"
+  | "optimization"
+  | "synchronization"
+  | "maintenance";
 
 export const mediaExitCodes = {
   usage: 2,
@@ -6,6 +12,7 @@ export const mediaExitCodes = {
   validation: 4,
   optimization: 5,
   synchronization: 6,
+  maintenance: 7,
 } as const;
 
 export class MediaError extends Error {

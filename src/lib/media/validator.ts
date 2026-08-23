@@ -26,14 +26,45 @@ export type MediaValidationReport = {
   orphans: MediaOrphan[];
 };
 
+export type MediaLibraryFile = {
+  filePath: string;
+  publicPath: string;
+  relativePath: string;
+  bytes: number;
+  mtimeMs: number;
+  format: ImageFormat;
+  device: number;
+  inode: number;
+  /** Retains discovered-entry failures so validation can replay them without I/O. */
+  issue?: { kind: "missing" | "unsafe"; message?: string };
+};
+
+export type MediaLibrarySnapshot = {
+  root: string;
+  files: MediaLibraryFile[];
+};
+
 export type MediaFileInspection =
   | { kind: "missing" }
   | { kind: "unsafe"; message?: string }
-  | { kind: "file"; format: ImageFormat; bytes: number };
+  | {
+      kind: "file";
+      format: ImageFormat;
+      bytes: number;
+      mtimeMs?: number;
+      device?: number;
+      inode?: number;
+    };
+
+export type ScanManagedMediaAdapters = {
+  walkManagedFiles?: (root: string) => Promise<string[]>;
+  inspectFile?: (path: string) => Promise<MediaFileInspection>;
+};
 
 export type ValidateMediaOptions = {
   root: string;
   references: MediaReference[];
+  snapshot?: MediaLibrarySnapshot;
   walkManagedFiles?: (root: string) => Promise<string[]>;
   inspectFile?: (path: string) => Promise<MediaFileInspection>;
 };
@@ -60,6 +91,9 @@ const inspectMediaFile = async (path: string): Promise<MediaFileInspection> => {
     kind: "file",
     format: detectImageFormatFromBytes(header),
     bytes: info.size,
+    mtimeMs: info.mtimeMs,
+    device: info.dev,
+    inode: info.ino,
   };
 };
 
@@ -162,18 +196,84 @@ const publicPathForFile = (root: string, filePath: string): string => {
   return `/media/images/${imagePath.replaceAll("\\", "/")}`;
 };
 
+export const scanManagedMedia = async (
+  root: string,
+  adapters: ScanManagedMediaAdapters = {},
+): Promise<MediaLibrarySnapshot> => {
+  if (!adapters.walkManagedFiles) {
+    const layout = getMediaLayout(root);
+    for (const directory of [layout.manga, layout.images]) {
+      let info;
+      try {
+        info = await lstat(directory);
+      } catch (error) {
+        if (hasErrorCode(error, "ENOENT")) continue;
+        throw error;
+      }
+      if (!info.isDirectory() || info.isSymbolicLink()) {
+        throw new Error(`Managed media namespace must be a real directory: ${directory}`);
+      }
+    }
+  }
+  const walkManagedFiles = adapters.walkManagedFiles ?? walkManagedMediaFiles;
+  const inspectFile = adapters.inspectFile ?? inspectMediaFile;
+  const filePaths = [...new Set(await walkManagedFiles(root))].sort();
+  const files: MediaLibraryFile[] = [];
+
+  for (const filePath of filePaths) {
+    const inspection = await inspectFile(filePath);
+    const publicPath = publicPathForFile(root, filePath);
+    const base = {
+      filePath,
+      publicPath,
+      relativePath: relative(root, filePath).replaceAll("\\", "/"),
+    };
+    if (inspection.kind === "file") {
+      files.push({
+        ...base,
+        bytes: inspection.bytes,
+        mtimeMs: inspection.mtimeMs ?? 0,
+        format: inspection.format,
+        device: inspection.device ?? 0,
+        inode: inspection.inode ?? 0,
+      });
+    } else {
+      files.push({
+        ...base,
+        bytes: 0,
+        mtimeMs: 0,
+        format: "unknown",
+        device: 0,
+        inode: 0,
+        issue: inspection,
+      });
+    }
+  }
+
+  files.sort((left, right) => left.publicPath.localeCompare(right.publicPath));
+  return { root, files };
+};
+
 export const validateMedia = async (
   options: ValidateMediaOptions,
 ): Promise<MediaValidationReport> => {
-  const walkManagedFiles = options.walkManagedFiles ?? walkManagedMediaFiles;
-  const inspectFile = options.inspectFile ?? inspectMediaFile;
-  const files = [...new Set(await walkManagedFiles(options.root))].sort();
-  const inspectionCache = new Map<string, Promise<MediaFileInspection>>();
-  const inspect = (path: string): Promise<MediaFileInspection> => {
-    let inspection = inspectionCache.get(path);
+  if (options.snapshot && resolveSnapshotRoot(options.snapshot.root) !== resolveSnapshotRoot(options.root)) {
+    throw new Error("Media library snapshot root does not match validation root");
+  }
+  const snapshot = options.snapshot ?? await scanManagedMedia(options.root, {
+    walkManagedFiles: options.walkManagedFiles,
+    inspectFile: options.inspectFile,
+  });
+  const files = snapshot.files;
+  const byFilePath = new Map(files.map((file) => [file.filePath, file]));
+  const fallbackInspectionCache = new Map<string, Promise<MediaFileInspection>>();
+  const inspectionFor = (file: MediaLibraryFile): MediaFileInspection =>
+    file.issue ?? { kind: "file", format: file.format, bytes: file.bytes };
+  const inspectOmittedReference = (filePath: string): Promise<MediaFileInspection> => {
+    let inspection = fallbackInspectionCache.get(filePath);
     if (!inspection) {
-      inspection = inspectFile(path);
-      inspectionCache.set(path, inspection);
+      inspection = (options.inspectFile ?? inspectMediaFile)(filePath);
+      fallbackInspectionCache.set(filePath, inspection);
     }
     return inspection;
   };
@@ -201,18 +301,25 @@ export const validateMedia = async (
       });
       continue;
     }
-    const issue = issueForInspection(reference, await inspect(filePath));
+    const file = byFilePath.get(filePath);
+    const issue = issueForInspection(
+      reference,
+      file
+        ? inspectionFor(file)
+        : options.snapshot
+          ? { kind: "missing" }
+          : await inspectOmittedReference(filePath),
+    );
     if (issue) addIssue(issue);
   }
 
   const orphans: MediaOrphan[] = [];
-  for (const filePath of files) {
-    const publicPath = publicPathForFile(options.root, filePath);
+  for (const file of files) {
+    const { filePath, publicPath } = file;
     if (referencedPaths.has(publicPath)) {
-      await inspect(filePath);
       continue;
     }
-    const inspection = await inspect(filePath);
+    const inspection = inspectionFor(file);
     const filesystemReference = {
       source: "filesystem",
       field: "file",
@@ -245,6 +352,9 @@ export const validateMedia = async (
     orphans,
   };
 };
+
+const resolveSnapshotRoot = (root: string): string =>
+  root.replace(/[\\/]+$/, "") || root;
 
 export const formatMediaValidationReport = (
   report: MediaValidationReport,

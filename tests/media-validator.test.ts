@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   formatMediaValidationReport,
+  scanManagedMedia,
   validateMedia,
 } from "../src/lib/media/validator";
 
@@ -51,6 +52,31 @@ test("reports extension mismatches and corrupt known image files", async () => {
     inspectFile: async () => ({ kind: "file", format: "unknown", bytes: 2 }),
   });
   expect(corrupt.errors[0]?.code).toBe("corrupt");
+});
+
+test("preserves custom reference inspection when an unsupplied snapshot walk omits the file", async () => {
+  let inspections = 0;
+  const report = await validateMedia({
+    root: "/media",
+    references: [{
+      source: "src/content/image-sets/set.md",
+      field: "hero.src",
+      publicPath: "/media/images/set/used.webp",
+    }],
+    walkManagedFiles: async () => [],
+    inspectFile: async () => {
+      inspections += 1;
+      return { kind: "file", format: "webp", bytes: 12 };
+    },
+  });
+
+  expect(inspections).toBe(1);
+  expect(report).toEqual({
+    references: 1,
+    files: 0,
+    errors: [],
+    orphans: [],
+  });
 });
 
 test("reports only valid unreferenced managed files as orphans", async () => {
@@ -119,6 +145,83 @@ test("rejects unsafe discovered entries and does not call them orphans", async (
     expect(report.orphans).toEqual([]);
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("validates a supplied library snapshot without walking or inspecting files", async () => {
+  let walks = 0;
+  let inspections = 0;
+  const report = await validateMedia({
+    root: "/media",
+    references: [
+      {
+        source: "src/content/image-sets/set.md",
+        field: "hero.src",
+        publicPath: "/media/images/set/used.webp",
+      },
+    ],
+    snapshot: {
+      root: "/media",
+      files: [
+        {
+          filePath: "/media/images/set/unused.gif",
+          publicPath: "/media/images/set/unused.gif",
+          relativePath: "images/set/unused.gif",
+          bytes: 6,
+          mtimeMs: 20,
+          format: "gif",
+          device: 1,
+          inode: 2,
+        },
+        {
+          filePath: "/media/images/set/used.webp",
+          publicPath: "/media/images/set/used.webp",
+          relativePath: "images/set/used.webp",
+          bytes: 12,
+          mtimeMs: 10,
+          format: "webp",
+          device: 1,
+          inode: 1,
+        },
+      ],
+    },
+    walkManagedFiles: async () => {
+      walks += 1;
+      return [];
+    },
+    inspectFile: async () => {
+      inspections += 1;
+      return { kind: "missing" };
+    },
+  });
+
+  expect({ walks, inspections }).toEqual({ walks: 0, inspections: 0 });
+  expect(report).toEqual({
+    references: 1,
+    files: 2,
+    errors: [],
+    orphans: [
+      {
+        publicPath: "/media/images/set/unused.gif",
+        filePath: "/media/images/set/unused.gif",
+        bytes: 6,
+      },
+    ],
+  });
+});
+
+test("refuses a symlinked managed namespace instead of scanning its target", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-validator-root-"));
+  const target = await mkdtemp(join(tmpdir(), "media-validator-target-"));
+  try {
+    await mkdir(join(root, "manga"));
+    await writeFile(join(target, "escaped.webp"), webp);
+    await symlink(target, join(root, "images"));
+
+    await expect(scanManagedMedia(root)).rejects.toThrow("real directory");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+    await rm(target, { recursive: true, force: true });
   }
 });
 

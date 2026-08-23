@@ -6,15 +6,26 @@ import { join, resolve } from "node:path";
 import {
   addHelp,
   mediaHelp,
+  maintenanceHelp,
   optimizeHelp,
   parseAddArgs,
   parseMediaCommand,
+  parseMaintainArgs,
   parseOptimizeArgs,
   parseRemoveArgs,
   removeHelp,
   parseSyncArgs,
   parseValidateArgs,
 } from "../src/lib/media/cli";
+import {
+  exitCodeForMediaError,
+  mediaExitCodes,
+  MediaError,
+} from "../src/lib/media/errors";
+import type {
+  MaintenanceEnvelope,
+  MaintenanceErrorEnvelope,
+} from "../src/lib/media/maintenance-types";
 
 const pngHeader = Uint8Array.from([
   0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
@@ -55,6 +66,9 @@ test("parses the shared command vocabulary", () => {
     command: "remove",
     args: ["manga", "series"],
   });
+  expect(() => parseMediaCommand(["maintain", "plan"])).toThrow(
+    "Unknown media command",
+  );
   expect(() => parseMediaCommand(["manga:serve"])).toThrow(
     "Unknown media command",
   );
@@ -68,6 +82,118 @@ test("parses the shared command vocabulary", () => {
   expect(optimizeHelp).toContain(
     "media:optimize <source> --output <destination> --profile <reader|gallery>",
   );
+  expect(mediaHelp).not.toContain("media:maintain");
+  expect(maintenanceHelp).toContain("media:maintain plan");
+});
+
+test("parses maintenance planning and application arguments", () => {
+  expect(parseMaintainArgs(["plan"], 12)).toEqual({
+    action: "plan",
+    quality: 85,
+  });
+  expect(parseMaintainArgs(["plan", "--quality", "91"], 12)).toEqual({
+    action: "plan",
+    quality: 91,
+  });
+  expect(
+    parseMaintainArgs(["apply", "20260823t120000z-a1b2c3d4", "--jobs", "3"], 12),
+  ).toEqual({
+    action: "apply",
+    operationId: "20260823t120000z-a1b2c3d4",
+    jobs: 3,
+  });
+  expect(parseMaintainArgs(["apply", "safe-id"], 12)).toEqual({
+    action: "apply",
+    operationId: "safe-id",
+    jobs: 4,
+  });
+  const singleProcessorApply = parseMaintainArgs(["apply", "safe-id"], 0);
+  expect(singleProcessorApply.action).toBe("apply");
+  if (singleProcessorApply.action === "apply") {
+    expect(singleProcessorApply.jobs).toBe(1);
+  }
+  const manyProcessorApply = parseMaintainArgs(["apply", "safe-id"], 10);
+  expect(manyProcessorApply.action).toBe("apply");
+  if (manyProcessorApply.action === "apply") {
+    expect(manyProcessorApply.jobs).toBe(4);
+  }
+});
+
+test("rejects unsafe or ambiguous maintenance arguments", () => {
+  expect(() => parseMaintainArgs(["apply", "../manifest"], 4)).toThrow(
+    "operation ID",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-ID"], 4)).toThrow(
+    "lowercase",
+  );
+  expect(() => parseMaintainArgs(["apply"], 4)).toThrow("operation ID");
+  expect(() => parseMaintainArgs(["apply", "safe-id", "extra"], 4)).toThrow(
+    "operation ID",
+  );
+  expect(() => parseMaintainArgs(["plan", "--jobs", "2"], 4)).toThrow(
+    "Unknown plan option",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--quality", "80"], 4)).toThrow(
+    "Unknown apply option",
+  );
+  expect(() => parseMaintainArgs(["plan", "--quality", "0"], 4)).toThrow(
+    "1 to 100",
+  );
+  expect(() => parseMaintainArgs(["plan", "--quality", "101"], 4)).toThrow(
+    "1 to 100",
+  );
+  expect(() => parseMaintainArgs(["plan", "--quality", "1.5"], 4)).toThrow(
+    "1 to 100",
+  );
+  expect(() => parseMaintainArgs(["plan", "--quality", "85", "--quality", "90"], 4)).toThrow(
+    "may only be specified once",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--jobs", "0"], 4)).toThrow(
+    "1 to 32",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--jobs", "33"], 4)).toThrow(
+    "1 to 32",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--jobs", "1.5"], 4)).toThrow(
+    "1 to 32",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--jobs", "2", "--jobs", "3"], 4)).toThrow(
+    "may only be specified once",
+  );
+  expect(() => parseMaintainArgs(["apply", "safe-id", "--unknown"], 4)).toThrow(
+    "Unknown apply option",
+  );
+  expect(() => parseMaintainArgs(["archive"], 4)).toThrow("Unknown maintain action");
+  const parseWithoutProcessor = parseMaintainArgs as unknown as (
+    argv: string[],
+  ) => unknown;
+  expect(() => parseWithoutProcessor(["apply", "safe-id"])).toThrow(
+    "processor count",
+  );
+});
+
+test("exposes versioned maintenance envelopes and exit category", () => {
+  const success: MaintenanceEnvelope<{ files: number }> = {
+    schemaVersion: 1,
+    command: "media:maintain",
+    ok: true,
+    result: { files: 2 },
+  };
+  const failure: MaintenanceErrorEnvelope = {
+    schemaVersion: 1,
+    command: "media:maintain",
+    ok: false,
+    error: {
+      category: "usage",
+      code: "invalid_arguments",
+      message: "bad arguments",
+      context: { retryable: false },
+    },
+  };
+  expect(success.ok).toBe(true);
+  expect(failure.error.category).toBe("usage");
+  expect(mediaExitCodes.maintenance).toBe(7);
+  expect(exitCodeForMediaError(new MediaError("maintenance", "failed"))).toBe(7);
 });
 
 test("parses a safe unavailable manga chapter removal", () => {

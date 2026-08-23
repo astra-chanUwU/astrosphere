@@ -699,6 +699,432 @@ export const releaseDirectoryCapability = (
   capability.descriptor = -1;
 };
 
+const relativeCapabilityName = (name: string): void => {
+  if (
+    name.length === 0 ||
+    name === "." ||
+    name === ".." ||
+    name.includes("/") ||
+    name.includes("\\") ||
+    name.includes("\0")
+  ) {
+    throw new Error(`Unsafe capability-relative entry name: ${name}`);
+  }
+};
+
+export const assertRetainedDirectoryCapability = (
+  capability: DirectoryCapability,
+): void => {
+  const info = fstatSync(capability.descriptor);
+  if (
+    !info.isDirectory() ||
+    info.dev !== capability.device ||
+    info.ino !== capability.inode
+  ) {
+    throw new Error(`Retained directory changed: ${capability.path}`);
+  }
+};
+
+export const retainRelativeDirectoryCapability = (
+  parent: DirectoryCapability,
+  name: string,
+): DirectoryCapability => {
+  relativeCapabilityName(name);
+  assertRetainedDirectoryCapability(parent);
+  const descriptor = openRelativeDirectorySync(parent.descriptor, name);
+  try {
+    const info = fstatSync(descriptor);
+    if (!info.isDirectory()) {
+      throw new Error(`Retained relative path is not a directory: ${name}`);
+    }
+    return {
+      path: join(parent.path, name),
+      descriptor,
+      device: info.dev,
+      inode: info.ino,
+    };
+  } catch (error) {
+    closeSync(descriptor);
+    throw error;
+  }
+};
+
+export const createOrRetainRelativeDirectoryCapability = (
+  parent: DirectoryCapability,
+  name: string,
+  mode = 0o700,
+): DirectoryCapability => {
+  try {
+    return retainRelativeDirectoryCapability(parent, name);
+  } catch {
+    relativeCapabilityName(name);
+    assertRetainedDirectoryCapability(parent);
+    makeRelativeDirectorySync(parent.descriptor, name, mode);
+    return retainRelativeDirectoryCapability(parent, name);
+  }
+};
+
+export const openRelativeFileDescriptor = (
+  parent: DirectoryCapability,
+  name: string,
+  flags: number,
+  mode = 0,
+): number => {
+  relativeCapabilityName(name);
+  assertRetainedDirectoryCapability(parent);
+  return openRelativeDescriptorSync(parent.descriptor, name, flags, mode);
+};
+
+export const relativeDirectoryEntryExists = (
+  parent: DirectoryCapability,
+  name: string,
+): boolean => {
+  relativeCapabilityName(name);
+  assertRetainedDirectoryCapability(parent);
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    let descriptor = -1;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        fdopendir: { args: ["i32"], returns: "ptr" },
+        readdir: { args: ["ptr"], returns: "ptr" },
+        closedir: { args: ["ptr"], returns: "i32" },
+      });
+      descriptor = openRelativeDirectorySync(parent.descriptor, ".");
+      const directory = library.symbols.fdopendir(descriptor);
+      if (!directory) throw new Error("Unable to enumerate retained directory");
+      descriptor = -1;
+      try {
+        while (true) {
+          const entry = library.symbols.readdir(directory);
+          if (!entry) return false;
+          const record = new Uint8Array(
+            toArrayBuffer(
+              entry as never,
+              0,
+              process.platform === "darwin" ? 1048 : 280,
+            ),
+          );
+          const nameOffset = process.platform === "darwin" ? 21 : 19;
+          let nameLength = 0;
+          while (
+            nameOffset + nameLength < record.byteLength &&
+            record[nameOffset + nameLength] !== 0
+          ) {
+            nameLength += 1;
+          }
+          const entryName = new TextDecoder().decode(
+            record.subarray(nameOffset, nameOffset + nameLength),
+          );
+          if (entryName === name) return true;
+        }
+      } finally {
+        library.symbols.closedir(directory);
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      if (descriptor >= 0) closeSync(descriptor);
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound directory enumeration is unavailable on ${process.platform}.`,
+  );
+};
+
+export const publishRelativeFileNoReplace = (
+  parent: DirectoryCapability,
+  stagingName: string,
+  destinationName: string,
+): void => {
+  relativeCapabilityName(stagingName);
+  relativeCapabilityName(destinationName);
+  assertRetainedDirectoryCapability(parent);
+  publishRelativeNoReplaceSync(parent.descriptor, stagingName, destinationName);
+};
+
+export const linkRelativeFileNoReplace = (
+  sourceParent: DirectoryCapability,
+  sourceName: string,
+  destinationParent: DirectoryCapability,
+  destinationName: string,
+): void => {
+  relativeCapabilityName(sourceName);
+  relativeCapabilityName(destinationName);
+  assertRetainedDirectoryCapability(sourceParent);
+  assertRetainedDirectoryCapability(destinationParent);
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        linkat: {
+          args: ["i32", "cstring", "i32", "cstring", "i32"],
+          returns: "i32",
+        },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.linkat(
+            sourceParent.descriptor,
+            posixPath(sourceName),
+            destinationParent.descriptor,
+            posixPath(destinationName),
+            0,
+          ),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound no-replace hard-link publication is unavailable on ${process.platform}.`,
+  );
+};
+
+export const renameRelativeFileReplace = (
+  parent: DirectoryCapability,
+  sourceName: string,
+  destinationName: string,
+): void => {
+  relativeCapabilityName(sourceName);
+  relativeCapabilityName(destinationName);
+  assertRetainedDirectoryCapability(parent);
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        renameat: {
+          args: ["i32", "cstring", "i32", "cstring"],
+          returns: "i32",
+        },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.renameat(
+            parent.descriptor,
+            posixPath(sourceName),
+            parent.descriptor,
+            posixPath(destinationName),
+          ),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound relative rename is unavailable on ${process.platform}.`,
+  );
+};
+
+export const exchangeRelativeFiles = (
+  parent: DirectoryCapability,
+  firstName: string,
+  secondName: string,
+): void => {
+  relativeCapabilityName(firstName);
+  relativeCapabilityName(secondName);
+  assertRetainedDirectoryCapability(parent);
+  if (process.platform === "darwin") {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary("/usr/lib/libSystem.B.dylib", {
+        renameatx_np: {
+          args: ["i32", "cstring", "i32", "cstring", "u32"],
+          returns: "i32",
+        },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.renameatx_np(
+            parent.descriptor,
+            posixPath(firstName),
+            parent.descriptor,
+            posixPath(secondName),
+            0x00000002,
+          ),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Fail closed below.
+    } finally {
+      library?.close();
+    }
+  }
+  if (process.platform === "linux") {
+    for (const libraryName of linuxLibcNames(process.arch)) {
+      let library: ArchiveNativeLibrary | undefined;
+      try {
+        library = openArchiveNativeLibrary(libraryName, {
+          renameat2: {
+            args: ["i32", "cstring", "i32", "cstring", "u32"],
+            returns: "i32",
+          },
+        });
+        if (
+          nativeCallSucceeded(
+            library.symbols.renameat2(
+              parent.descriptor,
+              posixPath(firstName),
+              parent.descriptor,
+              posixPath(secondName),
+              2,
+            ),
+          )
+        ) {
+          return;
+        }
+      } catch {
+        // Try compatible libc names and then the direct syscall.
+      } finally {
+        library?.close();
+      }
+    }
+    const syscallNumber = linuxRenameat2Syscall(process.arch);
+    if (syscallNumber !== null) {
+      for (const libraryName of linuxLibcNames(process.arch)) {
+        let library: ArchiveNativeLibrary | undefined;
+        try {
+          library = openArchiveNativeLibrary(libraryName, {
+            syscall: {
+              args: ["i64", "i64", "cstring", "i64", "cstring", "u64"],
+              returns: "i64",
+            },
+          });
+          if (
+            nativeCallSucceeded(
+              library.symbols.syscall(
+                syscallNumber,
+                parent.descriptor,
+                posixPath(firstName),
+                parent.descriptor,
+                posixPath(secondName),
+                2,
+              ),
+            )
+          ) {
+            return;
+          }
+        } catch {
+          // Try the next compatible libc name before failing closed.
+        } finally {
+          library?.close();
+        }
+      }
+    }
+  }
+  throw new Error(
+    `Capability-bound atomic file exchange is unavailable on ${process.platform}.`,
+  );
+};
+
+export const unlinkRelativeFile = (
+  parent: DirectoryCapability,
+  name: string,
+): void => {
+  relativeCapabilityName(name);
+  assertRetainedDirectoryCapability(parent);
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        unlinkat: { args: ["i32", "cstring", "i32"], returns: "i32" },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.unlinkat(parent.descriptor, posixPath(name), 0),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound relative unlink is unavailable on ${process.platform}.`,
+  );
+};
+
+export const removeRelativeDirectory = (
+  parent: DirectoryCapability,
+  name: string,
+): void => {
+  relativeCapabilityName(name);
+  assertRetainedDirectoryCapability(parent);
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  const removeDirectoryFlag = process.platform === "darwin" ? 0x80 : 0x200;
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        unlinkat: { args: ["i32", "cstring", "i32"], returns: "i32" },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.unlinkat(
+            parent.descriptor,
+            posixPath(name),
+            removeDirectoryFlag,
+          ),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound relative directory removal is unavailable on ${process.platform}.`,
+  );
+};
+
 const cloneDirectoryCapability = (
   capability: DirectoryCapability,
 ): DirectoryCapability => {

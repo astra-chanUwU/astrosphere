@@ -1,8 +1,15 @@
 import { resolve } from "node:path";
 import { MediaError } from "./errors";
 import type { OptimizeOptions, OptimizerProfile } from "./optimizer";
+import type { MaintainArgs } from "./maintenance-types";
 
-export type MediaCommand = "serve" | "optimize" | "validate" | "sync" | "add" | "remove";
+export type MediaCommand =
+  | "serve"
+  | "optimize"
+  | "validate"
+  | "sync"
+  | "add"
+  | "remove";
 
 export const mediaHelp = `Usage:
   bun run media:serve
@@ -11,6 +18,15 @@ export const mediaHelp = `Usage:
   bun run media:optimize <source> --output <destination> --profile <reader|gallery> [options]
   bun run media:validate
   bun run media:sync [--dry-run] [--prune]`;
+
+export const maintenanceHelp = `Usage:
+  bun run media:maintain plan [--quality <1..100>]
+  bun run media:maintain apply <operation-id> [--jobs <1..32>]
+
+Options:
+  --quality <1..100>  WebP quality (default: 85; plan only)
+  --jobs <1..32>     Maximum parallel jobs (default: up to 4)
+  -h, --help         Show this help`;
 
 export const optimizeHelp = `Usage:
   bun run media:optimize <source> --output <destination> --profile <reader|gallery> [options]
@@ -31,7 +47,14 @@ export const removeHelp = `Usage:
 
 Removes a chapter's heavy media after confirmation while preserving its published entry as currently unavailable.`;
 
-const commands: MediaCommand[] = ["serve", "optimize", "validate", "sync", "add", "remove"];
+const commands: MediaCommand[] = [
+  "serve",
+  "optimize",
+  "validate",
+  "sync",
+  "add",
+  "remove",
+];
 
 export const parseMediaCommand = (
   argv: string[],
@@ -47,6 +70,137 @@ export const parseMediaCommand = (
 };
 
 const optimizeProfiles: OptimizerProfile[] = ["reader", "gallery"];
+
+export type {
+  MaintainArgs,
+  MaintenanceEnvelope,
+  MaintenanceErrorBody,
+  MaintenanceErrorEnvelope,
+} from "./maintenance-types";
+
+export const maintenanceOperationIdPattern =
+  /^[a-z0-9][a-z0-9-]{0,79}$/;
+
+export const defaultMaintenanceJobs = (processors: number): number =>
+  Math.max(1, Math.min(4, Math.floor(processors)));
+
+const requireMaintainValue = (
+  argv: string[],
+  index: number,
+  option: string,
+): string => {
+  const value = argv[index + 1];
+  if (!value || value.startsWith("--")) {
+    throw new MediaError("usage", `${option} requires a value`);
+  }
+  return value;
+};
+
+const parseMaintenanceInteger = (
+  value: string,
+  option: "--quality" | "--jobs",
+  minimum: number,
+  maximum: number,
+): number => {
+  if (!/^\d+$/.test(value)) {
+    throw new MediaError(
+      "usage",
+      `${option} must be an integer from ${minimum} to ${maximum}`,
+    );
+  }
+  const parsed = Number(value);
+  if (!Number.isSafeInteger(parsed) || parsed < minimum || parsed > maximum) {
+    throw new MediaError(
+      "usage",
+      `${option} must be an integer from ${minimum} to ${maximum}`,
+    );
+  }
+  return parsed;
+};
+
+const validateMaintenanceOperationId = (operationId: string): void => {
+  if (!maintenanceOperationIdPattern.test(operationId)) {
+    throw new MediaError(
+      "usage",
+      "operation ID must contain only lowercase letters, numbers, and hyphens (1 to 80 characters)",
+    );
+  }
+};
+
+export const parseMaintainArgs = (
+  argv: string[],
+  availableProcessors: number,
+): MaintainArgs => {
+  if (
+    typeof availableProcessors !== "number" ||
+    !Number.isFinite(availableProcessors)
+  ) {
+    throw new MediaError("usage", "available processor count is required");
+  }
+  const [action, ...args] = argv;
+  if (!action) throw new MediaError("usage", maintenanceHelp);
+
+  if (action === "plan") {
+    let quality = 85;
+    const seen = new Set<string>();
+    for (let index = 0; index < args.length; index += 1) {
+      const argument = args[index]!;
+      if (argument !== "--quality") {
+        throw new MediaError("usage", `Unknown plan option: ${argument}`);
+      }
+      if (seen.has(argument)) {
+        throw new MediaError("usage", `${argument} may only be specified once`);
+      }
+      seen.add(argument);
+      quality = parseMaintenanceInteger(
+        requireMaintainValue(args, index, argument),
+        "--quality",
+        1,
+        100,
+      );
+      index += 1;
+    }
+    return { action, quality };
+  }
+
+  if (action !== "apply") {
+    throw new MediaError("usage", `Unknown maintain action: ${action}`);
+  }
+
+  let operationId: string | undefined;
+  let jobs = defaultMaintenanceJobs(availableProcessors);
+  const seen = new Set<string>();
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index]!;
+    if (!argument.startsWith("--")) {
+      if (operationId) {
+        throw new MediaError("usage", "Only one operation ID is allowed");
+      }
+      validateMaintenanceOperationId(argument);
+      operationId = argument;
+      continue;
+    }
+    if (argument !== "--jobs") {
+      throw new MediaError("usage", `Unknown apply option: ${argument}`);
+    }
+    if (seen.has(argument)) {
+      throw new MediaError("usage", `${argument} may only be specified once`);
+    }
+    seen.add(argument);
+    jobs = parseMaintenanceInteger(
+      requireMaintainValue(args, index, argument),
+      "--jobs",
+      1,
+      32,
+    );
+    index += 1;
+  }
+
+  if (!operationId) {
+    throw new MediaError("usage", "operation ID is required");
+  }
+  return { action, operationId, jobs };
+};
 
 const requireOptimizeValue = (
   argv: string[],
