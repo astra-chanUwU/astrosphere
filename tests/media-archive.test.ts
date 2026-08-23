@@ -48,6 +48,12 @@ test("normalizes safe archive paths and rejects ambiguous separators", () => {
   }
 });
 
+test("rejects unzip member selectors with pattern or option syntax", () => {
+  for (const unsafe of ["page*.jpg", "page?.jpg", "page[0].jpg", "-page.jpg"]) {
+    expect(() => validateArchiveEntryPath(unsafe)).toThrow("unsafe archive path");
+  }
+});
+
 test("rejects unsafe entries returned by unzip", async () => {
   await expectRejection(listZipEntries("/tmp/book.cbz", async () => commandResult("page.jpg\nfolder\\..\\secret\n")), "unsafe archive path");
 });
@@ -55,8 +61,8 @@ test("rejects unsafe entries returned by unzip", async () => {
 test("keeps normalized directory entries distinct from files", async () => {
   const entries = await listZipEntries("/tmp/book.cbz", async () => commandResult("pages//./\npages//./001.jpg\n"));
   expect(entries).toEqual([
-    { path: "pages/", isDirectory: true },
-    { path: "pages/001.jpg", isDirectory: false },
+    { path: "pages/", selector: "pages//./", isDirectory: true },
+    { path: "pages/001.jpg", selector: "pages//./001.jpg", isDirectory: false },
   ]);
 });
 
@@ -91,6 +97,31 @@ test("reads at most one ZIP entry stream chunk and terminates the child", async 
   expect(calls).toEqual([["unzip", "-p", "/tmp/book.cbz", "001.jpg"]]);
   expect(Array.from(header)).toEqual(Array.from({ length: 32 }, (_, index) => index));
   expect(killed).toBeTrue();
+});
+
+test("uses the raw ZIP selector when an entry path is normalized", async () => {
+  const [entry] = await listZipEntries("/tmp/book.cbz", async () => commandResult("book//chapter/./001.jpg\n"));
+  const calls: string[][] = [];
+
+  await readZipEntryHeader("/tmp/book.cbz", entry, (argv) => {
+    calls.push(argv);
+    return {
+      stdout: new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(new Uint8Array([0xff, 0xd8]));
+        },
+      }),
+      exited: Promise.resolve(0),
+      kill: () => undefined,
+    };
+  });
+
+  expect(entry).toEqual({
+    path: "book/chapter/001.jpg",
+    selector: "book//chapter/./001.jpg",
+    isDirectory: false,
+  });
+  expect(calls).toEqual([["unzip", "-p", "/tmp/book.cbz", "book//chapter/./001.jpg"]]);
 });
 
 test("reports a ZIP entry read that exits before yielding bytes", async () => {
@@ -186,6 +217,27 @@ test("preserves a destination this extraction did not create", async () => {
   try {
     await expectRejection(extractZipArchive("/tmp/book.cbz", destination, async () => commandResult("page.jpg\n")));
     expect(await readFile(marker, "utf8")).toBe("keep me");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("preserves a destination replaced before extraction failure cleanup", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const destination = join(root, "extracted");
+  const marker = join(destination, "replacement.txt");
+  try {
+    await expectRejection(
+      extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
+        if (argv[1] === "-Z1") return commandResult("page.jpg\n");
+        await rm(destination, { recursive: true, force: true });
+        await mkdir(destination);
+        await writeFile(marker, "replacement");
+        return commandResult("", 1, "bad archive");
+      }),
+      "Unable to extract ZIP archive",
+    );
+    expect(await readFile(marker, "utf8")).toBe("replacement");
   } finally {
     await rm(root, { recursive: true, force: true });
   }

@@ -5,6 +5,7 @@ import { type CommandRunner, runCommand } from "./process";
 export type ArchiveEntry = {
   path: string;
   isDirectory: boolean;
+  selector?: string;
 };
 
 export type ZipEntryHeaderProcess = {
@@ -35,6 +36,8 @@ export const validateArchiveEntryPath = (entryPath: string): string => {
     entryPath.length === 0 ||
     /[\0\r\n\\]/.test(entryPath) ||
     entryPath.startsWith("/") ||
+    entryPath.startsWith("-") ||
+    /[*?\[\]]/.test(entryPath) ||
     /^[A-Za-z]:/.test(entryPath)
   ) {
     return unsafeArchivePath();
@@ -56,10 +59,10 @@ export const listZipEntries = async (source: string, runner: CommandRunner = run
   const output = new TextDecoder().decode(result.stdout);
   if (output.length === 0) return [];
   const lines = output.endsWith("\n") ? output.slice(0, -1).split("\n") : output.split("\n");
-  return lines.map((entryPath) => ({
-    path: validateArchiveEntryPath(entryPath),
-    isDirectory: entryPath.endsWith("/"),
-  }));
+  return lines.map((entryPath) => {
+    const path = validateArchiveEntryPath(entryPath);
+    return { path, selector: entryPath, isDirectory: entryPath.endsWith("/") };
+  });
 };
 
 const spawnZipEntryHeader: ZipEntryHeaderSpawner = (argv) =>
@@ -70,8 +73,9 @@ export const readZipEntryHeader = async (
   entry: ArchiveEntry | string,
   spawn: ZipEntryHeaderSpawner = spawnZipEntryHeader,
 ): Promise<Uint8Array> => {
-  const entryPath = validateArchiveEntryPath(typeof entry === "string" ? entry : entry.path);
-  const child = spawn(["unzip", "-p", source, entryPath]);
+  const selector = typeof entry === "string" ? entry : entry.selector ?? entry.path;
+  validateArchiveEntryPath(selector);
+  const child = spawn(["unzip", "-p", source, selector]);
   const reader = child.stdout.getReader();
 
   try {
@@ -153,11 +157,15 @@ export const extractZipArchive = async (
 ): Promise<ArchiveEntry[]> => {
   const entries = await listZipEntries(source, runner);
   const destinationPath = resolve(destination);
-  let ownsDestination = false;
+  let ownedDestination: { device: number; inode: number } | undefined;
 
   try {
     await mkdir(destinationPath, { mode: 0o700 });
-    ownsDestination = true;
+    const destinationInfo = await lstat(destinationPath);
+    if (destinationInfo.isSymbolicLink() || !destinationInfo.isDirectory()) {
+      throw new Error("Unsafe ZIP extraction destination");
+    }
+    ownedDestination = { device: destinationInfo.dev, inode: destinationInfo.ino };
 
     const result = await runner(["unzip", "-qq", source, "-d", destinationPath]);
     if (result.exitCode !== 0) throw archiveCommandError("extract ZIP archive", result.exitCode, result.stderr);
@@ -165,11 +173,16 @@ export const extractZipArchive = async (
     await verifyExtractedTree(destinationPath);
     return entries;
   } catch (error) {
-    if (ownsDestination) {
+    if (ownedDestination !== undefined) {
       try {
-        await rm(destinationPath, { recursive: true, force: true });
+        const destinationInfo = await lstat(destinationPath);
+        if (destinationInfo.dev === ownedDestination.device && destinationInfo.ino === ownedDestination.inode) {
+          await rm(destinationPath, { recursive: true, force: true });
+        }
       } catch (cleanupError) {
-        throw new AggregateError([error, cleanupError], "ZIP extraction failed and its destination could not be removed");
+        if (!(cleanupError instanceof Error && "code" in cleanupError && cleanupError.code === "ENOENT")) {
+          throw new AggregateError([error, cleanupError], "ZIP extraction failed and its destination could not be removed");
+        }
       }
     }
     throw error;
