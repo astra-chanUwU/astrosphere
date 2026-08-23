@@ -1,5 +1,12 @@
 import { expect, test } from "bun:test";
-import { mkdirSync, renameSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  symlinkSync,
+  writeFileSync,
+  writeSync,
+} from "node:fs";
 import {
   mkdir,
   mkdtemp,
@@ -438,6 +445,32 @@ test("a missing conversion tool fails before staging", async () => {
   });
 });
 
+test("rejects an unsupported transaction platform before mutation", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destination = join(root, "output");
+    await mkdir(source);
+    await Bun.write(join(source, "page.webp"), webp);
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        { ...tools, platform: "win32" },
+      ),
+      "not supported on win32",
+    );
+
+    expect(await Bun.file(destination).exists()).toBe(false);
+    expect(await stagingNames(root)).toEqual([]);
+  });
+});
+
 test("creates gallery parents and verifies every staged output", async () => {
   await withTemporaryRoot(async (root) => {
     const source = join(root, "source");
@@ -633,6 +666,115 @@ test("pins the destination parent at the exact publication boundary", async () =
   });
 });
 
+test("a destination-parent swap during conversion leaves no redirected output", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destinationParent = join(root, "target");
+    const heldParent = join(root, "held-target");
+    const destination = join(destinationParent, "output");
+    const marker = join(destinationParent, "replacement.txt");
+    await mkdir(source);
+    await mkdir(destinationParent);
+    await Bun.write(join(source, "page.jpg"), jpeg);
+
+    let conversionReached = false;
+    const runner: CommandRunner = async (argv, options) => {
+      if (argv[0] !== "cwebp") {
+        return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+      }
+
+      conversionReached = true;
+      renameSync(destinationParent, heldParent);
+      mkdirSync(destinationParent);
+      writeFileSync(marker, "preserve");
+
+      const descriptors = (
+        options as typeof options & { inheritedDescriptors?: number[] }
+      )?.inheritedDescriptors;
+      const retainedOutput = descriptors?.[1];
+      if (retainedOutput !== undefined) {
+        writeSync(retainedOutput, webp, 0, webp.byteLength, 0);
+      } else {
+        const pathnameOutput = argv[argv.indexOf("-o") + 1]!;
+        await mkdir(dirname(pathnameOutput), { recursive: true });
+        await Bun.write(pathnameOutput, webp);
+      }
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        { ...tools, runner },
+      ),
+      "destination parent changed",
+    );
+
+    expect(conversionReached).toBeTrue();
+    expect(await readFile(marker, "utf8")).toBe("preserve");
+    expect(await readdir(destinationParent)).toEqual(["replacement.txt"]);
+    expect(await readdir(heldParent)).toEqual([]);
+    expect(await Bun.file(destination).exists()).toBe(false);
+  });
+});
+
+test("a directory-source replacement after inspection cannot change conversion input", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const heldSource = join(root, "inspected-source");
+    const destination = join(root, "output");
+    const originalPage = new Uint8Array([...jpeg, 0x11]);
+    const replacementPage = new Uint8Array([...jpeg, 0x22, 0x33]);
+    await mkdir(source);
+    await Bun.write(join(source, "page.jpg"), originalPage);
+
+    let sourceReplaced = false;
+    let convertedInput = new Uint8Array();
+    const runner: CommandRunner = async (_argv, options) => {
+      const descriptors = options?.inheritedDescriptors;
+      if (!descriptors?.[0] || !descriptors[1]) {
+        throw new Error("conversion descriptors were not retained");
+      }
+      convertedInput = new Uint8Array(readFileSync(descriptors[0]));
+      writeSync(descriptors[1], webp, 0, webp.byteLength, 0);
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+
+    await optimizeMedia(
+      {
+        source,
+        destination,
+        profile: "reader",
+        quality: 85,
+        dryRun: false,
+      },
+      {
+        ...tools,
+        runner,
+        which: (name) => {
+          if (!sourceReplaced) {
+            sourceReplaced = true;
+            renameSync(source, heldSource);
+            mkdirSync(source);
+            writeFileSync(join(source, "page.jpg"), replacementPage);
+          }
+          return `/tools/${name}`;
+        },
+      },
+    );
+
+    expect(sourceReplaced).toBeTrue();
+    expect(convertedInput).toEqual(originalPage);
+    expect(await Bun.file(join(destination, "001.webp")).bytes()).toEqual(webp);
+  });
+});
+
 test("extracts archives into owned temporary data and removes it after success", async () => {
   await withTemporaryRoot(async (root) => {
     const source = join(root, "chapter.cbz");
@@ -659,7 +801,7 @@ test("extracts archives into owned temporary data and removes it after success",
       { ...tools, runner },
     );
 
-    expect(calls.some((argv) => argv[0] === "unzip" && argv[1] === "-qq")).toBe(
+    expect(calls.some((argv) => argv[0] === "unzip" && argv[1] === "-p")).toBe(
       true,
     );
     expect(result).toMatchObject({
@@ -673,6 +815,129 @@ test("extracts archives into owned temporary data and removes it after success",
     expect(await Bun.file(join(destination, "001.webp")).exists()).toBe(true);
     expect(await Bun.file(source).bytes()).toEqual(before);
     expect(await stagingNames(root)).toEqual([]);
+  });
+});
+
+test("an archive replacement after inspection cannot change executed page bytes", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "chapter.cbz");
+    const heldSource = join(root, "inspected-chapter.cbz");
+    const destination = join(root, "output");
+    const originalPage = new Uint8Array([...jpeg, 0x11]);
+    const replacementPage = new Uint8Array([...jpeg, 0x22, 0x33, 0x44]);
+    await Bun.write(
+      source,
+      storedZip([{ path: "wrapper/page.jpg", bytes: originalPage }]),
+    );
+
+    let sourceReplaced = false;
+    let convertedInput = new Uint8Array();
+    const runner: CommandRunner = async (argv, options) => {
+      if (argv[0] === "unzip") return runCommand(argv, options);
+
+      const inherited = (
+        options as typeof options & { inheritedDescriptors?: number[] }
+      )?.inheritedDescriptors;
+      const sourceDescriptor =
+        inherited?.[0] ?? options?.readableDescriptors?.[0];
+      if (sourceDescriptor === undefined) {
+        throw new Error("conversion did not retain its source descriptor");
+      }
+      convertedInput = new Uint8Array(readFileSync(sourceDescriptor));
+
+      const outputDescriptor = inherited?.[1];
+      if (outputDescriptor !== undefined) {
+        writeSync(outputDescriptor, webp, 0, webp.byteLength, 0);
+      } else {
+        await Bun.write(argv[argv.indexOf("-o") + 1]!, webp);
+      }
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+
+    const result = await optimizeMedia(
+      {
+        source,
+        destination,
+        profile: "reader",
+        quality: 85,
+        dryRun: false,
+      },
+      {
+        ...tools,
+        runner,
+        which: (name) => {
+          if (!sourceReplaced) {
+            sourceReplaced = true;
+            renameSync(source, heldSource);
+            writeFileSync(
+              source,
+              storedZip([{ path: "wrapper/page.jpg", bytes: replacementPage }]),
+            );
+          }
+          return `/tools/${name}`;
+        },
+      },
+    );
+
+    expect(sourceReplaced).toBeTrue();
+    expect(convertedInput).toEqual(originalPage);
+    expect(result.originalBytes).toBe(originalPage.byteLength);
+    expect(Array.from(await Bun.file(heldSource).bytes())).toEqual(
+      Array.from(
+        storedZip([{ path: "wrapper/page.jpg", bytes: originalPage }]),
+      ),
+    );
+    expect(Array.from(await Bun.file(source).bytes())).toEqual(
+      Array.from(
+        storedZip([{ path: "wrapper/page.jpg", bytes: replacementPage }]),
+      ),
+    );
+  });
+});
+
+test("a destination-parent swap during archive extraction leaves no redirected data", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "chapter.cbz");
+    const destinationParent = join(root, "target");
+    const heldParent = join(root, "held-target");
+    const destination = join(destinationParent, "output");
+    const marker = join(destinationParent, "replacement.txt");
+    await mkdir(destinationParent);
+    await Bun.write(
+      source,
+      storedZip([{ path: "wrapper/page.jpg", bytes: jpeg }]),
+    );
+
+    let extractionReached = false;
+    const runner: CommandRunner = async (argv, options) => {
+      if (argv[0] === "unzip" && argv[1] === "-p") {
+        extractionReached = true;
+        renameSync(destinationParent, heldParent);
+        mkdirSync(destinationParent);
+        writeFileSync(marker, "preserve");
+      }
+      return runCommand(argv, options);
+    };
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        { ...tools, runner },
+      ),
+      "destination parent changed",
+    );
+
+    expect(extractionReached).toBeTrue();
+    expect(await readdir(destinationParent)).toEqual(["replacement.txt"]);
+    expect(await readFile(marker, "utf8")).toBe("preserve");
+    expect(await readdir(heldParent)).toEqual([]);
+    expect(await Bun.file(destination).exists()).toBe(false);
   });
 });
 
@@ -715,10 +980,7 @@ test("rejects an extraction replacement between ownership transfer and accountin
               join(extractionPath, "wrapper", "page.jpg"),
               new Uint8Array([...jpeg, 0x01, 0x02, 0x03, 0x04]),
             );
-            writeFileSync(
-              join(extractionPath, "replacement.txt"),
-              "preserve",
-            );
+            writeFileSync(join(extractionPath, "replacement.txt"), "preserve");
           },
         },
       ),
@@ -731,8 +993,9 @@ test("rejects an extraction replacement between ownership transfer and accountin
     expect(
       await readFile(join(replacementExtraction, "replacement.txt"), "utf8"),
     ).toBe("preserve");
-    expect(await Bun.file(join(heldExtraction, "wrapper", "page.jpg")).bytes())
-      .toEqual(jpeg);
+    expect(
+      await Bun.file(join(heldExtraction, "wrapper", "page.jpg")).bytes(),
+    ).toEqual(jpeg);
   });
 });
 

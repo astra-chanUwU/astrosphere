@@ -1,13 +1,13 @@
 import { randomUUID } from "node:crypto";
-import type { Stats } from "node:fs";
 import {
-  copyFile,
-  lstat,
-  mkdir,
-  readdir,
-  realpath,
-  stat,
-} from "node:fs/promises";
+  constants,
+  fstatSync,
+  openSync,
+  readSync,
+  writeSync,
+  type Stats,
+} from "node:fs";
+import { lstat, readdir, realpath, stat } from "node:fs/promises";
 import {
   basename,
   dirname,
@@ -28,10 +28,13 @@ import {
   publishStagedZipDirectory,
   readZipEntryHeader,
   releaseRetainedArchiveFile,
+  releaseRetainedOutputFile,
   releaseDirectoryCapability,
   releaseOwnedDirectory,
   type RetainedArchiveFile,
+  type RetainedOutputFile,
   retainOwnedArchiveFile,
+  retainOwnedOutputFile,
   retainDirectoryCapability,
   sealOwnedDirectoryForRead,
 } from "./archive";
@@ -51,6 +54,8 @@ export type OptimizationSource = {
   path: string;
   format: ImageFormat;
   bytes: number;
+  device?: number;
+  inode?: number;
 };
 
 export type OptimizationItem = {
@@ -94,6 +99,7 @@ export type OptimizeResult = {
 export type OptimizeAdapters = {
   runner?: CommandRunner;
   which?: (name: string) => string | null;
+  platform?: NodeJS.Platform;
   verifyOutput?: (path: string, runner?: CommandRunner) => Promise<void>;
   beforePinnedPublish?: () => void;
   afterArchiveOwnershipTransfer?: (extractionPath: string) => void;
@@ -144,14 +150,21 @@ const normalizeRelativePath = (path: string): string => {
     throw new Error(`Unsafe media source path: ${path}`);
   }
 
-  const normalized = segments.filter((segment) => segment !== "" && segment !== ".").join("/");
-  if (normalized.length === 0) throw new Error(`Invalid media source path: ${path}`);
+  const normalized = segments
+    .filter((segment) => segment !== "" && segment !== ".")
+    .join("/");
+  if (normalized.length === 0)
+    throw new Error(`Invalid media source path: ${path}`);
   return normalized;
 };
 
 const relativeSourcePath = (sourceRoot: string, sourcePath: string): string => {
-  const path = isAbsolute(sourcePath) ? relative(sourceRoot, sourcePath) : sourcePath;
-  return normalizeRelativePath(path || pathName(normalizeMediaSeparators(sourcePath)));
+  const path = isAbsolute(sourcePath)
+    ? relative(sourceRoot, sourcePath)
+    : sourcePath;
+  return normalizeRelativePath(
+    path || pathName(normalizeMediaSeparators(sourcePath)),
+  );
 };
 
 const portableOutputKey = (path: string): string =>
@@ -161,7 +174,10 @@ const sortNatural = <T>(values: T[], valuePath: (value: T) => string): T[] =>
   [...values].sort((left, right) => {
     const leftPath = normalizeMediaSeparators(valuePath(left));
     const rightPath = normalizeMediaSeparators(valuePath(right));
-    return naturalPathCollator.compare(leftPath, rightPath) || (leftPath < rightPath ? -1 : leftPath > rightPath ? 1 : 0);
+    return (
+      naturalPathCollator.compare(leftPath, rightPath) ||
+      (leftPath < rightPath ? -1 : leftPath > rightPath ? 1 : 0)
+    );
   });
 
 const outputPathForGallerySource = (sourceRelativePath: string): string => {
@@ -173,7 +189,9 @@ const outputPathForGallerySource = (sourceRelativePath: string): string => {
 };
 
 const readerRelativePaths = (sources: AcceptedSource[]): string[] => {
-  const segments = sources.map((source) => source.sourceRelativePath.split("/"));
+  const segments = sources.map((source) =>
+    source.sourceRelativePath.split("/"),
+  );
   const commonWrapper =
     segments.every((path) => path.length > 1) &&
     segments.every((path) => path[0] === segments[0]?.[0]);
@@ -195,10 +213,14 @@ const acceptedFormat = (
   sourceRelativePath: string,
 ): Exclude<ImageFormat, "avif" | "unknown"> => {
   if (source.format === "avif") {
-    throw new Error(`AVIF input is recognized but unsupported: ${sourceRelativePath}`);
+    throw new Error(
+      `AVIF input is recognized but unsupported: ${sourceRelativePath}`,
+    );
   }
   if (source.format === "unknown") {
-    throw new Error(`Unknown or unsupported image input: ${sourceRelativePath}`);
+    throw new Error(
+      `Unknown or unsupported image input: ${sourceRelativePath}`,
+    );
   }
   if (!supportedFormats.has(source.format)) {
     throw new Error(`Unsupported image input: ${sourceRelativePath}`);
@@ -232,15 +254,21 @@ export const planMediaOptimization = async (
   const inspectSource = adapters?.inspectSource;
   const pathExists = adapters?.pathExists;
   if (!inspectSource) throw new Error("Source inspection adapter is required.");
-  if (!pathExists) throw new Error("Destination existence adapter is required.");
+  if (!pathExists)
+    throw new Error("Destination existence adapter is required.");
 
   if (await pathExists(options.destination)) {
-    throw new Error(`Optimization destination already exists: ${options.destination}`);
+    throw new Error(
+      `Optimization destination already exists: ${options.destination}`,
+    );
   }
 
   const ignored: string[] = [];
   const accepted: AcceptedSource[] = [];
-  for (const source of sortNatural(await inspectSource(options.source), (item) => item.path)) {
+  for (const source of sortNatural(
+    await inspectSource(options.source),
+    (item) => item.path,
+  )) {
     const sourceRelativePath = relativeSourcePath(options.source, source.path);
     if (isIgnoredMediaJunk(sourceRelativePath)) {
       ignored.push(sourceRelativePath);
@@ -253,34 +281,40 @@ export const planMediaOptimization = async (
       sourcePath: adapters.sourceIsFile
         ? options.source
         : isAbsolute(source.path)
-        ? source.path
-        : join(options.source, sourceRelativePath),
+          ? source.path
+          : join(options.source, sourceRelativePath),
       sourceRelativePath,
       format,
     });
   }
 
-  if (accepted.length === 0) throw new Error("Source contains no accepted media files.");
+  if (accepted.length === 0)
+    throw new Error("Source contains no accepted media files.");
 
   const outputPaths =
     options.profile === "reader"
       ? readerRelativePaths(accepted)
       : accepted.map((source) => source.sourceRelativePath);
   const ordered = sortNatural(
-    accepted.map((source, index) => ({ source, outputPath: outputPaths[index]! })),
+    accepted.map((source, index) => ({
+      source,
+      outputPath: outputPaths[index]!,
+    })),
     ({ outputPath }) => outputPath,
   );
-  const items = ordered.map(({ source, outputPath }, index): OptimizationItem => ({
-    sourcePath: source.sourcePath,
-    sourceRelativePath: outputPath,
-    outputRelativePath:
-      options.profile === "reader"
-        ? createReaderOutputName(index + 1)
-        : outputPathForGallerySource(outputPath),
-    format: source.format,
-    action: source.format === "webp" ? "copy" : "convert",
-    bytes: source.source.bytes,
-  }));
+  const items = ordered.map(
+    ({ source, outputPath }, index): OptimizationItem => ({
+      sourcePath: source.sourcePath,
+      sourceRelativePath: outputPath,
+      outputRelativePath:
+        options.profile === "reader"
+          ? createReaderOutputName(index + 1)
+          : outputPathForGallerySource(outputPath),
+      format: source.format,
+      action: source.format === "webp" ? "copy" : "convert",
+      bytes: source.source.bytes,
+    }),
+  );
 
   const collisions = new Map<string, OptimizationItem>();
   for (const item of items) {
@@ -340,8 +374,20 @@ const isPathInside = (root: string, candidate: string): boolean => {
 
 const zipSignatures = new Set([0x04034b50, 0x05054b50, 0x06054b50, 0x08074b50]);
 
-const isZipArchive = async (path: string): Promise<boolean> => {
-  const bytes = new Uint8Array(await Bun.file(path).slice(0, 4).arrayBuffer());
+const descriptorHeader = (descriptor: number, length = 32): Uint8Array => {
+  const bytes = new Uint8Array(length);
+  const count = readSync(descriptor, bytes, 0, length, 0);
+  return bytes.slice(0, count);
+};
+
+const isZipArchive = async (
+  path: string,
+  descriptor?: number,
+): Promise<boolean> => {
+  const bytes =
+    descriptor === undefined
+      ? new Uint8Array(await Bun.file(path).slice(0, 4).arrayBuffer())
+      : descriptorHeader(descriptor, 4);
   if (bytes.byteLength < 4) return false;
   return zipSignatures.has(
     new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(
@@ -377,6 +423,8 @@ const inspectDirectory = async (
           ? "unknown"
           : await detectImageFormat(path),
         bytes: info.size,
+        device: info.dev,
+        inode: info.ino,
       });
     }
   };
@@ -388,8 +436,9 @@ const inspectDirectory = async (
 const inspectArchive = async (
   source: string,
   runner: CommandRunner,
+  sourceDescriptor?: number,
 ): Promise<OptimizationSource[]> => {
-  const entries = await listZipEntries(source, runner);
+  const entries = await listZipEntries(source, runner, sourceDescriptor);
   const sources: OptimizationSource[] = [];
   for (const entry of entries) {
     if (entry.isDirectory) continue;
@@ -397,7 +446,14 @@ const inspectArchive = async (
       path: entry.path,
       format: isIgnoredMediaJunk(entry.path)
         ? "unknown"
-        : detectImageFormatFromBytes(await readZipEntryHeader(source, entry)),
+        : detectImageFormatFromBytes(
+            await readZipEntryHeader(
+              source,
+              entry,
+              undefined,
+              sourceDescriptor,
+            ),
+          ),
       bytes: 0,
     });
   }
@@ -408,6 +464,7 @@ const inspectConcreteSource = async (
   source: string,
   sourceInfo: Stats,
   runner: CommandRunner,
+  sourceDescriptor?: number,
 ): Promise<SourceInspection> => {
   if (sourceInfo.isDirectory()) {
     return { kind: "directory", sources: await inspectDirectory(source) };
@@ -417,10 +474,10 @@ const inspectConcreteSource = async (
       `Optimization source is not a regular file or directory: ${source}`,
     );
   }
-  if (await isZipArchive(source)) {
+  if (await isZipArchive(source, sourceDescriptor)) {
     return {
       kind: "archive",
-      sources: await inspectArchive(source, runner),
+      sources: await inspectArchive(source, runner, sourceDescriptor),
     };
   }
 
@@ -429,8 +486,13 @@ const inspectConcreteSource = async (
     sources: [
       {
         path: basename(source),
-        format: await detectImageFormat(source),
+        format:
+          sourceDescriptor === undefined
+            ? await detectImageFormat(source)
+            : detectImageFormatFromBytes(descriptorHeader(sourceDescriptor)),
         bytes: sourceInfo.size,
+        device: sourceInfo.dev,
+        inode: sourceInfo.ino,
       },
     ],
   };
@@ -450,10 +512,8 @@ const pathIdentity = (info: Stats): PathIdentity => ({
   inode: info.ino,
 });
 
-const samePathIdentity = (
-  info: Stats,
-  identity: PathIdentity,
-): boolean => info.dev === identity.device && info.ino === identity.inode;
+const samePathIdentity = (info: Stats, identity: PathIdentity): boolean =>
+  info.dev === identity.device && info.ino === identity.inode;
 
 const dryRunResult = (plan: OptimizationPlan): OptimizeResult => ({
   plan,
@@ -522,6 +582,66 @@ const retainArchiveInputs = (
   }
 };
 
+const retainPathInput = (path: string): RetainedArchiveFile => {
+  const descriptor = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  try {
+    const info = fstatSync(descriptor);
+    if (!info.isFile()) throw new Error(`Media input is not a file: ${path}`);
+    return { descriptor, bytes: info.size };
+  } catch (error) {
+    releaseRetainedArchiveFile({ descriptor, bytes: 0 });
+    throw error;
+  }
+};
+
+const assertRetainedInputIdentity = (
+  input: RetainedArchiveFile,
+  source: OptimizationSource | undefined,
+): void => {
+  if (!source || source.device === undefined || source.inode === undefined) {
+    throw new Error(
+      `Media input identity was not recorded: ${source?.path ?? "unknown"}`,
+    );
+  }
+  const info = fstatSync(input.descriptor);
+  if (
+    info.dev !== source.device ||
+    info.ino !== source.inode ||
+    info.size !== source.bytes
+  ) {
+    throw new Error(`Media input changed after inspection: ${source.path}`);
+  }
+};
+
+const copyRetainedFile = (
+  source: RetainedArchiveFile,
+  destination: RetainedOutputFile,
+): void => {
+  const buffer = new Uint8Array(64 * 1024);
+  let position = 0;
+  while (true) {
+    const count = readSync(
+      source.descriptor,
+      buffer,
+      0,
+      buffer.byteLength,
+      position,
+    );
+    if (count === 0) return;
+    let written = 0;
+    while (written < count) {
+      written += writeSync(
+        destination.descriptor,
+        buffer,
+        written,
+        count - written,
+        position + written,
+      );
+    }
+    position += count;
+  }
+};
+
 export const optimizeMedia = async (
   options: OptimizeOptions,
   adapters: OptimizeAdapters = {},
@@ -531,11 +651,12 @@ export const optimizeMedia = async (
   const requestedDestinationParent = dirname(requestedDestination);
   const runner = adapters.runner ?? runCommand;
   const which = adapters.which ?? Bun.which;
-  const verifyOutput = adapters.verifyOutput ?? verifyWebp;
   let staging: OwnedDirectory | undefined;
   let extraction: OwnedDirectory | undefined;
-  let published: OwnedDirectory | undefined;
   let archiveInputs: RetainedArchiveFile[] = [];
+  let retainedSource: RetainedArchiveFile | undefined;
+  let retainedPathInputs: RetainedArchiveFile[] = [];
+  let retainedOutputs: RetainedOutputFile[] = [];
   let destinationParentCapability: DirectoryCapability | undefined;
 
   try {
@@ -570,6 +691,15 @@ export const optimizeMedia = async (
       );
     }
     sourceInfo = canonicalSourceInfo;
+    if (sourceInfo.isFile()) {
+      retainedSource = retainPathInput(canonicalSource);
+      const retainedInfo = fstatSync(retainedSource.descriptor);
+      if (!samePathIdentity(retainedInfo, pathIdentity(sourceInfo))) {
+        throw new Error(
+          `Optimization source changed during validation: ${requestedSource}`,
+        );
+      }
+    }
 
     let destinationParent: string;
     try {
@@ -608,10 +738,7 @@ export const optimizeMedia = async (
         `Optimization destination parent changed during execution: ${destinationParent}`,
       );
     }
-    const destination = join(
-      destinationParent,
-      basename(requestedDestination),
-    );
+    const destination = join(destinationParent, basename(requestedDestination));
     if (await pathExists(destination)) {
       throw new Error(
         `Optimization destination already exists: ${requestedDestination}`,
@@ -627,7 +754,12 @@ export const optimizeMedia = async (
     }
 
     const source = requestedSource;
-    const inspection = await inspectConcreteSource(source, sourceInfo, runner);
+    const inspection = await inspectConcreteSource(
+      source,
+      sourceInfo,
+      runner,
+      retainedSource?.descriptor,
+    );
     let plan = await planMediaOptimization(
       { ...options, source, destination },
       {
@@ -636,20 +768,45 @@ export const optimizeMedia = async (
         sourceIsFile: inspection.kind === "file",
       },
     );
+    plan = { ...plan, destination: requestedDestination };
 
     if (options.dryRun) {
+      if (retainedSource) releaseRetainedArchiveFile(retainedSource);
+      retainedSource = undefined;
       releaseDirectoryCapability(destinationParentCapability);
       destinationParentCapability = undefined;
       return dryRunResult(plan);
     }
 
+    const transactionPlatform = adapters.platform ?? process.platform;
+    if (transactionPlatform !== "darwin" && transactionPlatform !== "linux") {
+      throw new Error(
+        `Media optimization is not supported on ${transactionPlatform}; run it on macOS or Linux.`,
+      );
+    }
+
     const archiveSource = inspection.kind === "archive";
+    if (inspection.kind === "directory") {
+      const inspectedByPath = new Map(
+        inspection.sources.map((source) => [source.path, source]),
+      );
+      for (const item of plan.items) {
+        const input = retainPathInput(item.sourcePath);
+        try {
+          assertRetainedInputIdentity(
+            input,
+            inspectedByPath.get(item.sourcePath),
+          );
+          retainedPathInputs.push(input);
+        } catch (error) {
+          releaseRetainedArchiveFile(input);
+          throw error;
+        }
+      }
+    }
     requireOptimizationTools(plan, archiveSource, which);
 
-    staging = createStagingDirectory(
-      destination,
-      destinationParentCapability,
-    );
+    staging = createStagingDirectory(destination, destinationParentCapability);
 
     if (archiveSource) {
       const extractionPath = join(
@@ -670,6 +827,7 @@ export const optimizeMedia = async (
             archiveInputs = retained.inputs;
           },
           destinationParentCapability,
+          retainedSource?.descriptor,
         );
         if (!extraction) {
           throw new Error("Archive extraction ownership was not retained.");
@@ -677,56 +835,90 @@ export const optimizeMedia = async (
         adapters.afterArchiveOwnershipTransfer?.(extraction.path);
         sealOwnedDirectoryForRead(extraction);
       } catch (error) {
+        try {
+          const currentParent = await lstat(destinationParent);
+          if (!samePathIdentity(currentParent, parentIdentity)) {
+            throw new Error("changed");
+          }
+        } catch {
+          throw new Error(
+            `Optimization destination parent changed during execution: ${destinationParent}`,
+          );
+        }
         throw new Error(
           `Unable to extract archive "${source}": ${errorMessage(error)}`,
         );
       }
+      if (retainedSource) releaseRetainedArchiveFile(retainedSource);
+      retainedSource = undefined;
     }
 
-    const stagedOutputs = plan.items.map((item, index) => ({
-      item,
-      sourcePath: item.sourcePath,
-      archiveInput:
-        inspection.kind === "archive" ? archiveInputs[index] : undefined,
-      outputPath: join(staging!.path, item.outputRelativePath),
-    }));
-
-    for (const output of stagedOutputs) {
-      await mkdir(dirname(output.outputPath), { recursive: true });
-    }
+    const stagedOutputs = plan.items.map((item, index) => {
+      const outputFile = retainOwnedOutputFile(
+        staging!,
+        item.outputRelativePath,
+      );
+      retainedOutputs.push(outputFile);
+      return {
+        item,
+        sourcePath: item.sourcePath,
+        archiveInput:
+          inspection.kind === "archive" ? archiveInputs[index] : undefined,
+        retainedInput:
+          inspection.kind === "archive"
+            ? archiveInputs[index]
+            : inspection.kind === "file"
+              ? retainedSource
+              : retainedPathInputs[index],
+        outputPath: join(staging!.path, item.outputRelativePath),
+        outputFile,
+      };
+    });
 
     let converted = 0;
     let copied = 0;
     for (const output of stagedOutputs) {
       try {
         if (output.item.action === "copy") {
-          await copyFile(
-            output.archiveInput
-              ? `/dev/fd/${output.archiveInput.descriptor}`
-              : output.sourcePath,
-            output.outputPath,
-          );
+          if (!output.retainedInput) {
+            throw new Error("Media input was not retained.");
+          }
+          copyRetainedFile(output.retainedInput, output.outputFile);
           copied += 1;
-          if (output.archiveInput)
-            releaseRetainedArchiveFile(output.archiveInput);
           continue;
+        }
+
+        if (!output.retainedInput) {
+          throw new Error("Media input was not retained.");
         }
 
         const command = createImageCommand({
           format: output.item.format,
-          source: output.archiveInput ? "/dev/fd/3" : output.sourcePath,
+          source: output.sourcePath,
           destination: output.outputPath,
           quality: plan.quality,
         });
         if (!command) {
           throw new Error("No conversion command was produced.");
         }
-        const result = await runner(
-          command,
-          output.archiveInput
-            ? { readableDescriptors: [output.archiveInput.descriptor] }
-            : undefined,
-        );
+        const executionCommand = createImageCommand({
+          format: output.item.format,
+          source: "/dev/fd/3",
+          destination: "/dev/fd/4",
+          quality: plan.quality,
+        });
+        if (!executionCommand) {
+          throw new Error(
+            "No capability-bound conversion command was produced.",
+          );
+        }
+        const result = await runner(command, {
+          inheritedDescriptors: [
+            output.retainedInput.descriptor,
+            output.outputFile.descriptor,
+          ],
+          executionArgv: executionCommand,
+        });
         if (result.exitCode !== 0) {
           throw new Error(
             `${command[0]} exited with code ${result.exitCode}${
@@ -735,8 +927,6 @@ export const optimizeMedia = async (
           );
         }
         converted += 1;
-        if (output.archiveInput)
-          releaseRetainedArchiveFile(output.archiveInput);
       } catch (error) {
         throw new Error(
           `Unable to optimize "${output.item.sourceRelativePath}": ${errorMessage(error)}`,
@@ -747,8 +937,15 @@ export const optimizeMedia = async (
     let optimizedBytes = 0;
     for (const output of stagedOutputs) {
       try {
-        await verifyOutput(output.outputPath, runner);
-        optimizedBytes += (await stat(output.outputPath)).size;
+        if (adapters.verifyOutput) {
+          await adapters.verifyOutput(output.outputPath, runner);
+        } else {
+          await verifyWebp(output.outputPath, runner, {
+            inheritedDescriptors: [output.outputFile.descriptor],
+            executionArgv: ["webpinfo", "-quiet", "/dev/fd/3"],
+          });
+        }
+        optimizedBytes += fstatSync(output.outputFile.descriptor).size;
       } catch (error) {
         throw new Error(
           `Unable to verify output "${output.item.outputRelativePath}" for "${output.item.sourceRelativePath}": ${errorMessage(error)}`,
@@ -756,18 +953,22 @@ export const optimizeMedia = async (
       }
     }
 
+    for (const output of retainedOutputs) releaseRetainedOutputFile(output);
+    retainedOutputs = [];
+    for (const input of archiveInputs) releaseRetainedArchiveFile(input);
+    archiveInputs = [];
+    for (const input of retainedPathInputs) releaseRetainedArchiveFile(input);
+    retainedPathInputs = [];
+    if (retainedSource) releaseRetainedArchiveFile(retainedSource);
+    retainedSource = undefined;
+    if (extraction) cleanupOwnedDirectory(extraction);
+    extraction = undefined;
+
     publishOwnedDirectory(staging, destination, {
       beforePinnedPublish: adapters.beforePinnedPublish,
     });
-    published = staging;
+    releaseOwnedDirectory(staging);
     staging = undefined;
-
-    for (const input of archiveInputs) releaseRetainedArchiveFile(input);
-    archiveInputs = [];
-    if (extraction) cleanupOwnedDirectory(extraction);
-    extraction = undefined;
-    releaseOwnedDirectory(published);
-    published = undefined;
     releaseDirectoryCapability(destinationParentCapability);
     destinationParentCapability = undefined;
 
@@ -783,9 +984,15 @@ export const optimizeMedia = async (
     };
   } catch (error) {
     const cleanupErrors: unknown[] = [];
+    for (const output of retainedOutputs) releaseRetainedOutputFile(output);
+    retainedOutputs = [];
     for (const input of archiveInputs) releaseRetainedArchiveFile(input);
     archiveInputs = [];
-    for (const owned of [extraction, staging, published]) {
+    for (const input of retainedPathInputs) releaseRetainedArchiveFile(input);
+    retainedPathInputs = [];
+    if (retainedSource) releaseRetainedArchiveFile(retainedSource);
+    retainedSource = undefined;
+    for (const owned of [extraction, staging]) {
       if (!owned) continue;
       try {
         cleanupOwnedDirectory(owned);

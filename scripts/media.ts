@@ -1,11 +1,20 @@
-import { mediaHelp, parseMediaCommand, parseOptimizeArgs } from "../src/lib/media/cli";
+import {
+  mediaHelp,
+  optimizeHelp,
+  parseMediaCommand,
+  parseOptimizeArgs,
+} from "../src/lib/media/cli";
 import { requireMediaPort, requireMediaRoot } from "../src/lib/media/config";
 import { exitCodeForMediaError, MediaError } from "../src/lib/media/errors";
 import { optimizeMedia } from "../src/lib/media/optimizer";
 import { createBunMediaFetch } from "../src/lib/media/server";
 
 const serve = (args: string[]): void => {
-  if (args.length > 0) throw new MediaError("usage", "The serve command does not accept arguments.");
+  if (args.length > 0)
+    throw new MediaError(
+      "usage",
+      "The serve command does not accept arguments.",
+    );
 
   const root = requireMediaRoot();
   const port = requireMediaPort();
@@ -15,11 +24,17 @@ const serve = (args: string[]): void => {
     port,
   });
 
-  console.log(`Serving external media from ${root} at http://127.0.0.1:${server.port}`);
+  console.log(
+    `Serving external media from ${root} at http://127.0.0.1:${server.port}`,
+  );
   console.log("Public routes: /manga/* and /media/images/*");
 };
 
 const optimize = async (args: string[]): Promise<void> => {
+  if (args.length === 1 && (args[0] === "--help" || args[0] === "-h")) {
+    console.log(optimizeHelp);
+    return;
+  }
   const options = parseOptimizeArgs(args);
   const result = await optimizeMedia(options);
   if (options.dryRun) {
@@ -58,7 +73,10 @@ const run = async (): Promise<void> => {
     return;
   }
 
-  throw new MediaError("usage", `The media:${command} command is not available until its implementation plan is complete.`);
+  throw new MediaError(
+    "usage",
+    `The media:${command} command is not available until its implementation plan is complete.`,
+  );
 };
 
 try {

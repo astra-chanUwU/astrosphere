@@ -1,9 +1,5 @@
 import { expect, test } from "bun:test";
-import {
-  mkdirSync,
-  renameSync,
-  writeFileSync,
-} from "node:fs";
+import { mkdirSync, renameSync, writeFileSync } from "node:fs";
 import {
   lstat,
   mkdir,
@@ -32,6 +28,53 @@ const commandResult = (stdout = "", exitCode = 0, stderr = "") => ({
   stdout: new TextEncoder().encode(stdout),
   stderr,
 });
+
+const concatenateBytes = (parts: Uint8Array[]): Uint8Array => {
+  const result = new Uint8Array(
+    parts.reduce((total, part) => total + part.byteLength, 0),
+  );
+  let offset = 0;
+  for (const part of parts) {
+    result.set(part, offset);
+    offset += part.byteLength;
+  }
+  return result;
+};
+
+const unixSymlinkZip = (): Uint8Array => {
+  const name = new TextEncoder().encode("link");
+  const target = new TextEncoder().encode("../outside");
+  const local = new Uint8Array(30 + name.byteLength);
+  const localView = new DataView(local.buffer);
+  localView.setUint32(0, 0x04034b50, true);
+  localView.setUint16(4, 20, true);
+  localView.setUint16(6, 0x0800, true);
+  localView.setUint32(18, target.byteLength, true);
+  localView.setUint32(22, target.byteLength, true);
+  localView.setUint16(26, name.byteLength, true);
+  local.set(name, 30);
+
+  const central = new Uint8Array(46 + name.byteLength);
+  const centralView = new DataView(central.buffer);
+  centralView.setUint32(0, 0x02014b50, true);
+  centralView.setUint16(4, (3 << 8) | 20, true);
+  centralView.setUint16(6, 20, true);
+  centralView.setUint16(8, 0x0800, true);
+  centralView.setUint32(20, target.byteLength, true);
+  centralView.setUint32(24, target.byteLength, true);
+  centralView.setUint16(28, name.byteLength, true);
+  centralView.setUint32(38, (0o120777 << 16) >>> 0, true);
+  central.set(name, 46);
+
+  const end = new Uint8Array(22);
+  const endView = new DataView(end.buffer);
+  endView.setUint32(0, 0x06054b50, true);
+  endView.setUint16(8, 1, true);
+  endView.setUint16(10, 1, true);
+  endView.setUint32(12, central.byteLength, true);
+  endView.setUint32(16, local.byteLength + target.byteLength, true);
+  return concatenateBytes([local, target, central, end]);
+};
 
 const expectRejection = async (
   operation: Promise<unknown>,
@@ -136,7 +179,7 @@ test("reports a failed ZIP listing with tool output", async () => {
   );
 });
 
-test("reads at most one ZIP entry stream chunk and terminates the child", async () => {
+test("accumulates a 32-byte ZIP entry header across stream chunks", async () => {
   const calls: string[][] = [];
   let killed = false;
   let resolveExit!: (exitCode: number) => void;
@@ -152,8 +195,11 @@ test("reads at most one ZIP entry stream chunk and terminates the child", async 
       return {
         stdout: new ReadableStream<Uint8Array>({
           start(controller) {
+            controller.enqueue(new Uint8Array([0, 1]));
             controller.enqueue(
-              new Uint8Array(Array.from({ length: 40 }, (_, index) => index)),
+              new Uint8Array(
+                Array.from({ length: 38 }, (_, index) => index + 2),
+              ),
             );
           },
         }),
@@ -185,6 +231,7 @@ test("uses the raw ZIP selector when an entry path is normalized", async () => {
       stdout: new ReadableStream<Uint8Array>({
         start(controller) {
           controller.enqueue(new Uint8Array([0xff, 0xd8]));
+          controller.close();
         },
       }),
       exited: Promise.resolve(0),
@@ -277,6 +324,28 @@ test("rejects unsafe preflight entries before extraction begins", async () => {
   expect(extractionStarted).toBeFalse();
 });
 
+test("rejects symbolic-link metadata before creating extraction data", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const source = join(root, "symlink.cbz");
+  const destination = join(root, "extracted");
+  let extractionStarted = false;
+  try {
+    await writeFile(source, unixSymlinkZip());
+    await expectRejection(
+      extractZipArchive(source, destination, async (argv) => {
+        if (argv[1] === "-Z1") return commandResult("link\n");
+        extractionStarted = true;
+        return commandResult();
+      }),
+      "symbolic link",
+    );
+    expect(extractionStarted).toBeFalse();
+    expect(await readdir(root)).toEqual(["symlink.cbz"]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("rejects symbolic links created during extraction and removes its destination", async () => {
   const root = await mkdtemp(join(tmpdir(), "media-archive-"));
   const destination = join(root, "extracted");
@@ -365,16 +434,18 @@ test("preserves a replacement installed at extraction staging before cleanup", a
         await writeFile(join(stagingDestination, "page.jpg"), "owned");
         await rename(stagingDestination, heldStaging);
         await mkdir(stagingDestination);
-        await writeFile(join(stagingDestination, "replacement.txt"), "preserve");
+        await writeFile(
+          join(stagingDestination, "replacement.txt"),
+          "preserve",
+        );
         return commandResult("", 1, "bad archive");
       }),
       "bad archive",
     );
-    expect(await readFile(join(stagingDestination, "replacement.txt"), "utf8"))
-      .toBe("preserve");
-    expect(await readFile(join(heldStaging, "page.jpg"), "utf8")).toBe(
-      "owned",
-    );
+    expect(
+      await readFile(join(stagingDestination, "replacement.txt"), "utf8"),
+    ).toBe("preserve");
+    expect(await readFile(join(heldStaging, "page.jpg"), "utf8")).toBe("owned");
     await expectRejection(lstat(destination));
   } finally {
     await rm(root, { recursive: true, force: true });
@@ -432,9 +503,7 @@ test("preserves a quarantine replacement installed after ownership verification"
     expect(await readFile(join(quarantine, "replacement.txt"), "utf8")).toBe(
       "preserve",
     );
-    expect(await readFile(join(heldOwned, "owned.txt"), "utf8")).toBe(
-      "owned",
-    );
+    expect(await readFile(join(heldOwned, "owned.txt"), "utf8")).toBe("owned");
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -459,10 +528,7 @@ test("rejects a destination replacement instead of transferring false ownership"
           await publishStagedZipDirectory(stagingPath, destinationPath);
           await rename(destinationPath, heldExtraction);
           await mkdir(destinationPath);
-          await writeFile(
-            join(destinationPath, "replacement.txt"),
-            "preserve",
-          );
+          await writeFile(join(destinationPath, "replacement.txt"), "preserve");
         },
         () => {
           ownershipTransferred = true;

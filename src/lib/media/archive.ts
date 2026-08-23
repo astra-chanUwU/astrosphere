@@ -2,11 +2,12 @@ import { randomUUID } from "node:crypto";
 import {
   closeSync,
   constants,
+  fchmodSync,
   fstatSync,
   lstatSync,
   openSync,
+  readSync,
   realpathSync,
-  rmSync,
 } from "node:fs";
 import { lstat, readdir, realpath } from "node:fs/promises";
 import {
@@ -18,8 +19,8 @@ import {
   resolve,
   sep,
 } from "node:path";
-import { dlopen } from "bun:ffi";
-import { type CommandRunner, runCommand } from "./process";
+import { dlopen, toArrayBuffer } from "bun:ffi";
+import { type CommandOptions, type CommandRunner, runCommand } from "./process";
 
 export type ArchiveEntry = {
   path: string;
@@ -33,7 +34,10 @@ export type ZipEntryHeaderProcess = {
   kill: () => void;
 };
 
-export type ZipEntryHeaderSpawner = (argv: string[]) => ZipEntryHeaderProcess;
+export type ZipEntryHeaderSpawner = (
+  argv: string[],
+  options?: CommandOptions,
+) => ZipEntryHeaderProcess;
 
 export type ArchivePublisher = (
   stagingPath: string,
@@ -71,13 +75,9 @@ export type RetainedArchiveFile = {
   bytes: number;
 };
 
-type ArchiveNativeFfiType =
-  | "cstring"
-  | "ptr"
-  | "i32"
-  | "i64"
-  | "u32"
-  | "u64";
+export type RetainedOutputFile = RetainedArchiveFile;
+
+type ArchiveNativeFfiType = "cstring" | "ptr" | "i32" | "i64" | "u32" | "u64";
 
 type ArchiveNativeSymbolDefinition = {
   args: ArchiveNativeFfiType[];
@@ -454,6 +454,7 @@ const openRelativeDescriptorSync = (
   parentDescriptor: number,
   name: string,
   flags: number,
+  mode = 0,
 ): number => {
   const libraries =
     process.platform === "darwin"
@@ -474,7 +475,7 @@ const openRelativeDescriptorSync = (
         parentDescriptor,
         posixPath(name),
         flags,
-        0,
+        mode,
       );
       if (typeof descriptor === "number" && descriptor >= 0) return descriptor;
     } catch {
@@ -498,38 +499,132 @@ const removeRelativeDirectoryRecursiveSync = (
   parentDescriptor: number,
   name: string,
 ): void => {
-  if (process.platform === "darwin") {
-    const library = openArchiveNativeLibrary("/usr/lib/libSystem.B.dylib", {
-      removefileat: {
-        args: ["i32", "cstring", "ptr", "u32"],
-        returns: "i32",
-      },
-    });
-    try {
-      if (
-        !nativeCallSucceeded(
-          library.symbols.removefileat(
-            parentDescriptor,
-            posixPath(name),
-            null,
-            1,
-          ),
-        )
-      ) {
-        throw new Error(`Unable to remove owned temporary directory: ${name}`);
-      }
-      return;
-    } finally {
-      library.close();
-    }
-  }
+  const libraryNames =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  const removeDirectoryFlag = process.platform === "darwin" ? 0x80 : 0x200;
 
-  if (process.platform === "linux") {
-    rmSync(join(`/proc/self/fd/${parentDescriptor}`, name), {
-      recursive: true,
-      force: true,
-    });
-    return;
+  for (const libraryName of libraryNames) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        dup: { args: ["i32"], returns: "i32" },
+        fdopendir: { args: ["i32"], returns: "ptr" },
+        readdir: { args: ["ptr"], returns: "ptr" },
+        closedir: { args: ["ptr"], returns: "i32" },
+        unlinkat: { args: ["i32", "cstring", "i32"], returns: "i32" },
+      });
+
+      const readNames = (descriptor: number): string[] => {
+        const duplicate = library!.symbols.dup(descriptor);
+        if (typeof duplicate !== "number" || duplicate < 0) {
+          throw new Error("Unable to duplicate owned directory descriptor");
+        }
+        const directory = library!.symbols.fdopendir(duplicate);
+        if (!directory) {
+          closeSync(duplicate);
+          throw new Error("Unable to enumerate owned directory descriptor");
+        }
+        try {
+          const names: string[] = [];
+          while (true) {
+            const entry = library!.symbols.readdir(directory);
+            if (!entry) return names;
+            const record = new Uint8Array(
+              toArrayBuffer(
+                entry as never,
+                0,
+                process.platform === "darwin" ? 1048 : 280,
+              ),
+            );
+            const nameOffset = process.platform === "darwin" ? 21 : 19;
+            let nameLength = 0;
+            while (
+              nameOffset + nameLength < record.byteLength &&
+              record[nameOffset + nameLength] !== 0
+            ) {
+              nameLength += 1;
+            }
+            const entryName = new TextDecoder().decode(
+              record.subarray(nameOffset, nameOffset + nameLength),
+            );
+            if (entryName !== "." && entryName !== "..") names.push(entryName);
+          }
+        } finally {
+          library!.symbols.closedir(directory);
+        }
+      };
+
+      const unlinkRelative = (
+        descriptor: number,
+        entryName: string,
+        flags: number,
+      ): void => {
+        if (
+          !nativeCallSucceeded(
+            library!.symbols.unlinkat(descriptor, posixPath(entryName), flags),
+          )
+        ) {
+          throw new Error(
+            `Unable to remove owned temporary entry: ${entryName}`,
+          );
+        }
+      };
+
+      const emptyDirectory = (descriptor: number): void => {
+        for (const entryName of readNames(descriptor)) {
+          let childDescriptor = -1;
+          try {
+            childDescriptor = openRelativeDirectorySync(descriptor, entryName);
+          } catch {
+            unlinkRelative(descriptor, entryName, 0);
+            continue;
+          }
+          try {
+            emptyDirectory(childDescriptor);
+            const retained = fstatSync(childDescriptor);
+            let namedDescriptor = -1;
+            try {
+              namedDescriptor = openRelativeDirectorySync(
+                descriptor,
+                entryName,
+              );
+              const named = fstatSync(namedDescriptor);
+              if (retained.dev !== named.dev || retained.ino !== named.ino) {
+                throw new Error("Owned cleanup entry changed during removal");
+              }
+            } finally {
+              if (namedDescriptor >= 0) closeSync(namedDescriptor);
+            }
+            unlinkRelative(descriptor, entryName, removeDirectoryFlag);
+          } finally {
+            closeSync(childDescriptor);
+          }
+        }
+        if (readNames(descriptor).length !== 0) {
+          throw new Error("Owned temporary directory changed during cleanup");
+        }
+      };
+
+      const directoryDescriptor = openRelativeDirectorySync(
+        parentDescriptor,
+        name,
+      );
+      try {
+        emptyDirectory(directoryDescriptor);
+      } finally {
+        closeSync(directoryDescriptor);
+      }
+      unlinkRelative(parentDescriptor, name, removeDirectoryFlag);
+      return;
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
   }
 
   throw new Error(
@@ -559,11 +654,7 @@ const makeRelativeDirectorySync = (
       });
       if (
         nativeCallSucceeded(
-          library.symbols.mkdirat(
-            parentDescriptor,
-            posixPath(name),
-            mode,
-          ),
+          library.symbols.mkdirat(parentDescriptor, posixPath(name), mode),
         )
       ) {
         return;
@@ -701,10 +792,7 @@ const createOwnedTemporaryDirectory = (
   const parent =
     retainedParent ?? retainDirectoryCapability(realpathSync(dirname(prefix)));
   try {
-    return createOwnedDirectoryAt(
-      parent,
-      `${basename(prefix)}${randomUUID()}`,
-    );
+    return createOwnedDirectoryAt(parent, `${basename(prefix)}${randomUUID()}`);
   } finally {
     if (!retainedParent) releaseDirectoryCapability(parent);
   }
@@ -851,7 +939,9 @@ export const retainOwnedArchiveFile = (
     try {
       const info = fstatSync(descriptor);
       if (!info.isFile()) {
-        throw new Error(`Retained archive entry is not a file: ${relativePath}`);
+        throw new Error(
+          `Retained archive entry is not a file: ${relativePath}`,
+        );
       }
       return { descriptor, bytes: info.size };
     } catch (error) {
@@ -863,13 +953,74 @@ export const retainOwnedArchiveFile = (
   }
 };
 
-export const releaseRetainedArchiveFile = (
-  file: RetainedArchiveFile,
-): void => {
+export const retainOwnedOutputFile = (
+  owned: OwnedDirectory,
+  relativePath: string,
+): RetainedOutputFile => {
+  if (
+    relativePath.length === 0 ||
+    isAbsolute(relativePath) ||
+    relativePath.includes("\\")
+  ) {
+    throw new Error(`Unsafe retained output path: ${relativePath}`);
+  }
+  const segments = relativePath.split("/");
+  if (
+    segments.some(
+      (segment) => segment.length === 0 || segment === "." || segment === "..",
+    )
+  ) {
+    throw new Error(`Unsafe retained output path: ${relativePath}`);
+  }
+
+  let parentDescriptor = owned.descriptor;
+  let openedParent = -1;
+  try {
+    for (const segment of segments.slice(0, -1)) {
+      let nextParent: number;
+      try {
+        nextParent = openRelativeDirectorySync(parentDescriptor, segment);
+      } catch {
+        makeRelativeDirectorySync(parentDescriptor, segment, 0o700);
+        nextParent = openRelativeDirectorySync(parentDescriptor, segment);
+      }
+      if (openedParent >= 0) closeSync(openedParent);
+      openedParent = nextParent;
+      parentDescriptor = nextParent;
+    }
+
+    const descriptor = openRelativeDescriptorSync(
+      parentDescriptor,
+      segments.at(-1)!,
+      constants.O_RDWR |
+        constants.O_CREAT |
+        constants.O_EXCL |
+        constants.O_NOFOLLOW,
+      0o600,
+    );
+    try {
+      fchmodSync(descriptor, 0o600);
+      const info = fstatSync(descriptor);
+      if (!info.isFile()) {
+        throw new Error(`Retained output is not a file: ${relativePath}`);
+      }
+      return { descriptor, bytes: 0 };
+    } catch (error) {
+      closeSync(descriptor);
+      throw error;
+    }
+  } finally {
+    if (openedParent >= 0) closeSync(openedParent);
+  }
+};
+
+export const releaseRetainedArchiveFile = (file: RetainedArchiveFile): void => {
   if (file.descriptor < 0) return;
   closeSync(file.descriptor);
   file.descriptor = -1;
 };
+
+export const releaseRetainedOutputFile = releaseRetainedArchiveFile;
 
 export const publishOwnedDirectory = (
   owned: OwnedDirectory,
@@ -883,10 +1034,7 @@ export const publishOwnedDirectory = (
   } catch {
     destinationParent = dirname(requestedDestination);
   }
-  const destination = join(
-    owned.parent.path,
-    basename(requestedDestination),
-  );
+  const destination = join(owned.parent.path, basename(requestedDestination));
   if (
     destinationParent !== owned.parent.path ||
     basename(destination) === "" ||
@@ -958,10 +1106,7 @@ export const cleanupOwnedDirectory = (
       return;
     }
 
-    removeRelativeDirectoryRecursiveSync(
-      owned.parent.descriptor,
-      sealedName,
-    );
+    removeRelativeDirectoryRecursiveSync(owned.parent.descriptor, sealedName);
   } finally {
     releaseOwnedDirectory(owned);
   }
@@ -994,8 +1139,18 @@ export const validateArchiveEntryPath = (entryPath: string): string => {
 export const listZipEntries = async (
   source: string,
   runner: CommandRunner = runCommand,
+  sourceDescriptor?: number,
 ): Promise<ArchiveEntry[]> => {
-  const result = await runner(["unzip", "-Z1", source]);
+  const argv = ["unzip", "-Z1", source];
+  const result = await runner(
+    argv,
+    sourceDescriptor === undefined
+      ? undefined
+      : {
+          inheritedDescriptors: [sourceDescriptor],
+          executionArgv: ["unzip", "-Z1", "/dev/fd/3"],
+        },
+  );
   if (result.exitCode !== 0)
     throw archiveCommandError(
       "list ZIP archive",
@@ -1014,50 +1169,76 @@ export const listZipEntries = async (
   });
 };
 
-const spawnZipEntryHeader: ZipEntryHeaderSpawner = (argv) =>
-  Bun.spawn(argv, {
-    stdout: "pipe",
-    stderr: "ignore",
+const spawnZipEntryHeader: ZipEntryHeaderSpawner = (argv, options) =>
+  Bun.spawn(options?.executionArgv ?? argv, {
+    stdio: [
+      "ignore",
+      "pipe",
+      "ignore",
+      ...(options?.inheritedDescriptors ?? []),
+    ],
   }) as ZipEntryHeaderProcess;
 
 export const readZipEntryHeader = async (
   source: string,
   entry: ArchiveEntry | string,
   spawn: ZipEntryHeaderSpawner = spawnZipEntryHeader,
+  sourceDescriptor?: number,
 ): Promise<Uint8Array> => {
   const selector =
     typeof entry === "string" ? entry : (entry.selector ?? entry.path);
   validateArchiveEntryPath(selector);
-  const child = spawn(["unzip", "-p", source, selector]);
+  const argv = ["unzip", "-p", source, selector];
+  const child = spawn(
+    argv,
+    sourceDescriptor === undefined
+      ? undefined
+      : {
+          inheritedDescriptors: [sourceDescriptor],
+          executionArgv: ["unzip", "-p", "/dev/fd/3", selector],
+        },
+  );
   const reader = child.stdout.getReader();
 
   try {
-    let firstChunk: Awaited<ReturnType<typeof reader.read>>;
-    try {
-      firstChunk = await reader.read();
-    } catch (error) {
+    const header = new Uint8Array(32);
+    let length = 0;
+    while (length < header.byteLength) {
+      let chunk: Awaited<ReturnType<typeof reader.read>>;
       try {
-        child.kill();
-      } catch {
-        // Killing an already-exited child is harmless.
+        chunk = await reader.read();
+      } catch (error) {
+        try {
+          child.kill();
+        } catch {
+          // Killing an already-exited child is harmless.
+        }
+        let exitCode: number | undefined;
+        try {
+          exitCode = await child.exited;
+        } catch {
+          // Preserve stream errors when the process status is unavailable.
+        }
+        if (exitCode !== undefined && exitCode !== 0) {
+          throw archiveCommandError("read ZIP entry header", exitCode);
+        }
+        throw error;
       }
-      let exitCode: number | undefined;
-      try {
-        exitCode = await child.exited;
-      } catch {
-        // Preserve stream errors when the process status is unavailable.
+      if (chunk.done) {
+        const exitCode = await child.exited;
+        if (exitCode !== 0) {
+          throw archiveCommandError("read ZIP entry header", exitCode);
+        }
+        break;
       }
-      if (exitCode !== undefined && exitCode !== 0)
-        throw archiveCommandError("read ZIP entry header", exitCode);
-      throw error;
+      const count = Math.min(
+        chunk.value.byteLength,
+        header.byteLength - length,
+      );
+      header.set(chunk.value.subarray(0, count), length);
+      length += count;
     }
-    if (firstChunk.done) {
-      const exitCode = await child.exited;
-      if (exitCode !== 0)
-        throw archiveCommandError("read ZIP entry header", exitCode);
-      return new Uint8Array();
-    }
-    return firstChunk.value.slice(0, 32);
+    return header.slice(0, length);
   } finally {
     try {
       await reader.cancel();
@@ -1075,6 +1256,107 @@ export const readZipEntryHeader = async (
     } catch {
       // Bun reports process status through the exit code, not promise rejection.
     }
+  }
+};
+
+const readExactlyAt = (
+  descriptor: number,
+  length: number,
+  position: number,
+): Uint8Array => {
+  const bytes = new Uint8Array(length);
+  let offset = 0;
+  while (offset < length) {
+    const count = readSync(
+      descriptor,
+      bytes,
+      offset,
+      length - offset,
+      position + offset,
+    );
+    if (count === 0) throw new Error("Invalid ZIP central directory metadata");
+    offset += count;
+  }
+  return bytes;
+};
+
+const validateZipEntryTypes = (
+  source: string,
+  retainedDescriptor?: number,
+): void => {
+  let descriptor = retainedDescriptor ?? -1;
+  let ownedDescriptor = false;
+  try {
+    if (descriptor < 0) {
+      try {
+        descriptor = openSync(
+          source,
+          constants.O_RDONLY | constants.O_NOFOLLOW,
+        );
+        ownedDescriptor = true;
+      } catch (error) {
+        // Unit adapters may model an archive without a filesystem fixture.
+        if (hasErrorCode(error, "ENOENT")) return;
+        throw error;
+      }
+    }
+
+    const size = fstatSync(descriptor).size;
+    const tailLength = Math.min(size, 65_557);
+    const tailOffset = size - tailLength;
+    const tail = readExactlyAt(descriptor, tailLength, tailOffset);
+    const tailView = new DataView(
+      tail.buffer,
+      tail.byteOffset,
+      tail.byteLength,
+    );
+    let endOffset = -1;
+    for (let offset = tail.byteLength - 22; offset >= 0; offset -= 1) {
+      if (tailView.getUint32(offset, true) === 0x06054b50) {
+        endOffset = offset;
+        break;
+      }
+    }
+    if (endOffset < 0)
+      throw new Error("Invalid ZIP central directory metadata");
+
+    const entryCount = tailView.getUint16(endOffset + 10, true);
+    const centralOffset = tailView.getUint32(endOffset + 16, true);
+    if (entryCount === 0xffff || centralOffset === 0xffffffff) {
+      throw new Error("ZIP64 archives are not supported by the safe extractor");
+    }
+
+    let position = centralOffset;
+    for (let index = 0; index < entryCount; index += 1) {
+      const header = readExactlyAt(descriptor, 46, position);
+      const view = new DataView(
+        header.buffer,
+        header.byteOffset,
+        header.byteLength,
+      );
+      if (view.getUint32(0, true) !== 0x02014b50) {
+        throw new Error("Invalid ZIP central directory metadata");
+      }
+      const creatorSystem = view.getUint16(4, true) >>> 8;
+      const nameLength = view.getUint16(28, true);
+      const extraLength = view.getUint16(30, true);
+      const commentLength = view.getUint16(32, true);
+      if (creatorSystem === 3) {
+        const unixMode = view.getUint32(38, true) >>> 16;
+        const fileType = unixMode & 0o170000;
+        if (fileType === 0o120000) {
+          throw new Error("ZIP archive contains a symbolic link");
+        }
+        if (fileType !== 0 && fileType !== 0o100000 && fileType !== 0o040000) {
+          throw new Error("ZIP archive contains an unsafe special file");
+        }
+      }
+      position += 46 + nameLength + extraLength + commentLength;
+      if (position > size)
+        throw new Error("Invalid ZIP central directory metadata");
+    }
+  } finally {
+    if (ownedDescriptor && descriptor >= 0) closeSync(descriptor);
   }
 };
 
@@ -1115,49 +1397,108 @@ export const extractZipArchive = async (
   publish: ArchivePublisher = publishStagedZipDirectory,
   receiveOwnership?: ArchiveOwnershipReceiver,
   retainedParent?: DirectoryCapability,
+  sourceDescriptor?: number,
 ): Promise<ArchiveEntry[]> => {
-  const entries = await listZipEntries(source, runner);
-  const destinationPath = resolve(destination);
-  await ensurePathIsAbsent(destinationPath);
-  const staging = createOwnedTemporaryDirectory(
-    join(dirname(destinationPath), `.${basename(destinationPath)}.extract-`),
-    retainedParent,
-  );
+  let effectiveSourceDescriptor = sourceDescriptor;
+  let ownsSourceDescriptor = false;
+  if (effectiveSourceDescriptor === undefined) {
+    try {
+      effectiveSourceDescriptor = openSync(
+        source,
+        constants.O_RDONLY | constants.O_NOFOLLOW,
+      );
+      ownsSourceDescriptor = true;
+    } catch (error) {
+      // Test adapters may model an archive without a filesystem fixture.
+      if (!hasErrorCode(error, "ENOENT")) throw error;
+    }
+  }
 
   try {
-    const result = await runner(["unzip", "-qq", source, "-d", staging.path]);
-    if (result.exitCode !== 0)
-      throw archiveCommandError(
-        "extract ZIP archive",
-        result.exitCode,
-        result.stderr,
-      );
+    const entries = await listZipEntries(
+      source,
+      runner,
+      effectiveSourceDescriptor,
+    );
+    validateZipEntryTypes(source, effectiveSourceDescriptor);
+    const destinationPath = resolve(destination);
+    await ensurePathIsAbsent(destinationPath);
+    const staging = createOwnedTemporaryDirectory(
+      join(dirname(destinationPath), `.${basename(destinationPath)}.extract-`),
+      retainedParent,
+    );
 
-    await verifyExtractedTree(staging.path);
-    if (publish === publishStagedZipDirectory) {
-      publishOwnedDirectory(staging, destinationPath);
-    } else {
-      isolateOwnedDirectory(staging, "publish");
-      await publish(staging.path, destinationPath);
-      setOwnedDirectoryName(staging, basename(destinationPath));
-      if (!ownedDirectoryMatchesRelativeName(staging, staging.name)) {
-        throw new Error(
-          `Owned staging changed before publication: ${destinationPath}`,
+    try {
+      if (effectiveSourceDescriptor === undefined) {
+        const result = await runner([
+          "unzip",
+          "-qq",
+          source,
+          "-d",
+          staging.path,
+        ]);
+        if (result.exitCode !== 0) {
+          throw archiveCommandError(
+            "extract ZIP archive",
+            result.exitCode,
+            result.stderr,
+          );
+        }
+      } else {
+        for (const entry of entries) {
+          if (entry.isDirectory) continue;
+          const output = retainOwnedOutputFile(staging, entry.path);
+          try {
+            const selector = entry.selector ?? entry.path;
+            const argv = ["unzip", "-p", source, selector];
+            const result = await runner(argv, {
+              inheritedDescriptors: [effectiveSourceDescriptor],
+              executionArgv: ["unzip", "-p", "/dev/fd/3", selector],
+              stdoutDescriptor: output.descriptor,
+            });
+            if (result.exitCode !== 0) {
+              throw archiveCommandError(
+                `extract ZIP entry "${entry.path}"`,
+                result.exitCode,
+                result.stderr,
+              );
+            }
+          } finally {
+            releaseRetainedOutputFile(output);
+          }
+        }
+      }
+
+      await verifyExtractedTree(staging.path);
+      if (publish === publishStagedZipDirectory) {
+        publishOwnedDirectory(staging, destinationPath);
+      } else {
+        isolateOwnedDirectory(staging, "publish");
+        await publish(staging.path, destinationPath);
+        setOwnedDirectoryName(staging, basename(destinationPath));
+        if (!ownedDirectoryMatchesRelativeName(staging, staging.name)) {
+          throw new Error(
+            `Owned staging changed before publication: ${destinationPath}`,
+          );
+        }
+      }
+      if (receiveOwnership) receiveOwnership(staging);
+      else releaseOwnedDirectory(staging);
+      return entries;
+    } catch (error) {
+      try {
+        cleanupOwnedDirectory(staging);
+      } catch (cleanupError) {
+        throw new AggregateError(
+          [error, cleanupError],
+          "ZIP extraction failed and its staging directory could not be removed",
         );
       }
+      throw error;
     }
-    if (receiveOwnership) receiveOwnership(staging);
-    else releaseOwnedDirectory(staging);
-    return entries;
-  } catch (error) {
-    try {
-      cleanupOwnedDirectory(staging);
-    } catch (cleanupError) {
-      throw new AggregateError(
-        [error, cleanupError],
-        "ZIP extraction failed and its staging directory could not be removed",
-      );
+  } finally {
+    if (ownsSourceDescriptor && effectiveSourceDescriptor !== undefined) {
+      closeSync(effectiveSourceDescriptor);
     }
-    throw error;
   }
 };

@@ -40,11 +40,14 @@ const expectRejection = async (
 };
 
 test("naturally orders one reader directory and emits padded WebP names", async () => {
-  const plan = await planMediaOptimization(options, planner([
-    { path: "10.png", format: "png", bytes: 10 },
-    { path: "2.jpg", format: "jpeg", bytes: 20 },
-    { path: ".DS_Store", format: "unknown", bytes: 1 },
-  ]));
+  const plan = await planMediaOptimization(
+    options,
+    planner([
+      { path: "10.png", format: "png", bytes: 10 },
+      { path: "2.jpg", format: "jpeg", bytes: 20 },
+      { path: ".DS_Store", format: "unknown", bytes: 1 },
+    ]),
+  );
 
   expect(createReaderOutputName(1)).toBe("001.webp");
   expect(plan.items.map((item) => item.outputRelativePath)).toEqual([
@@ -60,10 +63,13 @@ test("naturally orders one reader directory and emits padded WebP names", async 
 });
 
 test("strips one common wrapper before finding the reader directory", async () => {
-  const plan = await planMediaOptimization(options, planner([
-    { path: "release/pages/10.png", format: "png", bytes: 10 },
-    { path: "release/pages/2.jpg", format: "jpeg", bytes: 20 },
-  ]));
+  const plan = await planMediaOptimization(
+    options,
+    planner([
+      { path: "release/pages/10.png", format: "png", bytes: 10 },
+      { path: "release/pages/2.jpg", format: "jpeg", bytes: 20 },
+    ]),
+  );
 
   expect(plan.items.map((item) => item.sourceRelativePath)).toEqual([
     "pages/2.jpg",
@@ -76,19 +82,28 @@ test("strips one common wrapper before finding the reader directory", async () =
 });
 
 test("rejects ambiguous reader trees", async () => {
-  await expectRejection(planMediaOptimization(options, planner([
-    { path: "chapter-001/001.jpg", format: "jpeg", bytes: 10 },
-    { path: "chapter-002/001.jpg", format: "jpeg", bytes: 10 },
-  ])), "multiple reader directories");
+  await expectRejection(
+    planMediaOptimization(
+      options,
+      planner([
+        { path: "chapter-001/001.jpg", format: "jpeg", bytes: 10 },
+        { path: "chapter-002/001.jpg", format: "jpeg", bytes: 10 },
+      ]),
+    ),
+    "multiple reader directories",
+  );
 });
 
 test("preserves gallery directories and basenames for every accepted file", async () => {
-  const plan = await planMediaOptimization({ ...options, profile: "gallery" }, planner([
-    { path: "set-b/cover.jpg", format: "jpeg", bytes: 10 },
-    { path: "set-a/cover.jpg", format: "jpeg", bytes: 20 },
-    { path: "set-a/animated.gif", format: "gif", bytes: 30 },
-    { path: "set-a/already.webp", format: "webp", bytes: 40 },
-  ]));
+  const plan = await planMediaOptimization(
+    { ...options, profile: "gallery" },
+    planner([
+      { path: "set-b/cover.jpg", format: "jpeg", bytes: 10 },
+      { path: "set-a/cover.jpg", format: "jpeg", bytes: 20 },
+      { path: "set-a/animated.gif", format: "gif", bytes: 30 },
+      { path: "set-a/already.webp", format: "webp", bytes: 40 },
+    ]),
+  );
 
   expect(plan.items).toEqual([
     {
@@ -127,22 +142,44 @@ test("preserves gallery directories and basenames for every accepted file", asyn
 });
 
 test("rejects portable gallery output collisions", async () => {
-  await expectRejection(planMediaOptimization({ ...options, profile: "gallery" }, planner([
-    { path: "art/Cover.JPG", format: "jpeg", bytes: 10 },
-    { path: "art/cover.png", format: "png", bytes: 20 },
-  ])), "art/cover.png");
+  await expectRejection(
+    planMediaOptimization(
+      { ...options, profile: "gallery" },
+      planner([
+        { path: "art/Cover.JPG", format: "jpeg", bytes: 10 },
+        { path: "art/cover.png", format: "png", bytes: 20 },
+      ]),
+    ),
+    "art/cover.png",
+  );
 });
 
 test("separates same-basename gallery files in different directories", async () => {
-  const plan = await planMediaOptimization({ ...options, profile: "gallery" }, planner([
-    { path: "set-b/cover.jpg", format: "jpeg", bytes: 10 },
-    { path: "set-a/cover.jpg", format: "jpeg", bytes: 20 },
-  ]));
+  const plan = await planMediaOptimization(
+    { ...options, profile: "gallery" },
+    planner([
+      { path: "set-b/cover.jpg", format: "jpeg", bytes: 10 },
+      { path: "set-a/cover.jpg", format: "jpeg", bytes: 20 },
+    ]),
+  );
 
   expect(plan.items.map((item) => item.outputRelativePath)).toEqual([
     "set-a/cover.webp",
     "set-b/cover.webp",
   ]);
+});
+
+test("rejects NFC-equivalent gallery output names", async () => {
+  await expectRejection(
+    planMediaOptimization(
+      { ...options, profile: "gallery" },
+      planner([
+        { path: "café.jpg", format: "jpeg", bytes: 10 },
+        { path: "café.png", format: "png", bytes: 20 },
+      ]),
+    ),
+    "collision",
+  );
 });
 
 test("ignores only known platform junk", () => {
@@ -154,45 +191,63 @@ test("ignores only known platform junk", () => {
 });
 
 test("rejects AVIF with its exact source path", async () => {
-  await expectRejection(planMediaOptimization(options, planner([
-    { path: "chapter/motion.avif", format: "avif", bytes: 10 },
-  ])), "chapter/motion.avif");
+  await expectRejection(
+    planMediaOptimization(
+      options,
+      planner([{ path: "chapter/motion.avif", format: "avif", bytes: 10 }]),
+    ),
+    "chapter/motion.avif",
+  );
 });
 
 test("rejects unknown inputs rather than silently omitting them", async () => {
-  await expectRejection(planMediaOptimization(options, planner([
-    { path: "chapter/notes.txt", format: "unknown", bytes: 10 },
-  ])), "chapter/notes.txt");
+  await expectRejection(
+    planMediaOptimization(
+      options,
+      planner([{ path: "chapter/notes.txt", format: "unknown", bytes: 10 }]),
+    ),
+    "chapter/notes.txt",
+  );
 });
 
 test("refuses existing destinations through the injected adapter", async () => {
   let inspected = false;
 
-  await expectRejection(planMediaOptimization(options, {
-    inspectSource: async () => {
-      inspected = true;
-      return [];
-    },
-    pathExists: async () => true,
-  }), "/output");
+  await expectRejection(
+    planMediaOptimization(options, {
+      inspectSource: async () => {
+        inspected = true;
+        return [];
+      },
+      pathExists: async () => true,
+    }),
+    "/output",
+  );
 
   expect(inspected).toBe(false);
 });
 
 test("rejects a source with no accepted media", async () => {
-  await expectRejection(planMediaOptimization(options, planner([
-    { path: "__MACOSX/._page.jpg", format: "unknown", bytes: 1 },
-    { path: ".DS_Store", format: "unknown", bytes: 1 },
-  ])), "no accepted media files");
+  await expectRejection(
+    planMediaOptimization(
+      options,
+      planner([
+        { path: "__MACOSX/._page.jpg", format: "unknown", bytes: 1 },
+        { path: ".DS_Store", format: "unknown", bytes: 1 },
+      ]),
+    ),
+    "no accepted media files",
+  );
 });
 
 test("plans one supported source file from its absolute source path", async () => {
-  const plan = await planMediaOptimization({
-    ...options,
-    source: "/source/single-page.jpeg",
-  }, planner([
-    { path: "/source/single-page.jpeg", format: "jpeg", bytes: 10 },
-  ]));
+  const plan = await planMediaOptimization(
+    {
+      ...options,
+      source: "/source/single-page.jpeg",
+    },
+    planner([{ path: "/source/single-page.jpeg", format: "jpeg", bytes: 10 }]),
+  );
 
   expect(plan.items).toEqual([
     {
@@ -207,27 +262,27 @@ test("plans one supported source file from its absolute source path", async () =
 });
 
 test("preserves a direct source path when its inspector reports a relative basename", async () => {
-  const plan = await planMediaOptimization({
-    ...options,
-    source: "/source/page.jpg",
-  }, {
-    inspectSource: async () => [
-      { path: "page.jpg", format: "jpeg", bytes: 10 },
-    ],
-    pathExists: async () => false,
-    sourceIsFile: true,
-  });
+  const plan = await planMediaOptimization(
+    {
+      ...options,
+      source: "/source/page.jpg",
+    },
+    {
+      inspectSource: async () => [
+        { path: "page.jpg", format: "jpeg", bytes: 10 },
+      ],
+      pathExists: async () => false,
+      sourceIsFile: true,
+    },
+  );
 
   expect(plan.items[0]?.sourcePath).toBe("/source/page.jpg");
   expect(plan.items[0]?.sourceRelativePath).toBe("page.jpg");
 });
 
 test("naturally sorts media paths with a stable page-name order", () => {
-  expect(naturalSortMediaPaths(["010.png", "2.jpg", "001.webp", "cover.jpg"])).toEqual([
-    "001.webp",
-    "2.jpg",
-    "010.png",
-    "cover.jpg",
-  ]);
+  expect(
+    naturalSortMediaPaths(["010.png", "2.jpg", "001.webp", "cover.jpg"]),
+  ).toEqual(["001.webp", "2.jpg", "010.png", "cover.jpg"]);
   expect(createReaderOutputName(47)).toBe("047.webp");
 });
