@@ -30,6 +30,37 @@ export type ArchivePublisher = (
   destinationPath: string,
 ) => Promise<void>;
 
+type ArchiveNativeFfiType =
+  | "cstring"
+  | "ptr"
+  | "i32"
+  | "i64"
+  | "u32"
+  | "u64";
+
+type ArchiveNativeSymbolDefinition = {
+  args: ArchiveNativeFfiType[];
+  returns: ArchiveNativeFfiType;
+};
+
+type ArchiveNativeSymbol = (...args: unknown[]) => unknown;
+
+export type ArchiveNativeLibrary = {
+  symbols: Record<string, ArchiveNativeSymbol>;
+  close: () => void;
+};
+
+export type ArchiveNativeLibraryOpener = (
+  libraryName: string,
+  symbols: Record<string, ArchiveNativeSymbolDefinition>,
+) => ArchiveNativeLibrary;
+
+export type ArchiveNativePublicationOptions = {
+  platform?: NodeJS.Platform;
+  arch?: NodeJS.Architecture;
+  openLibrary?: ArchiveNativeLibraryOpener;
+};
+
 const unsafeArchivePath = (): never => {
   throw new Error("unsafe archive path");
 };
@@ -83,47 +114,121 @@ const windowsPath = (path: string): Uint16Array => {
   return encoded;
 };
 
-export const publishStagedZipDirectory: ArchivePublisher = async (
-  stagingPath,
-  destinationPath,
-) => {
-  try {
-    if (process.platform === "darwin") {
-      const library = dlopen("/usr/lib/libSystem.B.dylib", {
-        renamex_np: { args: ["cstring", "cstring", "u32"], returns: "i32" },
-      });
-      try {
-        if (
-          library.symbols.renamex_np(
-            posixPath(stagingPath),
-            posixPath(destinationPath),
-            0x00000004,
-          ) !== 0
-        ) {
-          throw noReplacePublishError(destinationPath);
-        }
-        return;
-      } finally {
-        library.close();
-      }
-    }
+const openArchiveNativeLibrary: ArchiveNativeLibraryOpener = (
+  libraryName,
+  symbols,
+) => dlopen(libraryName, symbols) as unknown as ArchiveNativeLibrary;
 
-    if (process.platform === "linux") {
-      const library = dlopen("libc.so.6", {
+const linuxLibcNames = (arch: NodeJS.Architecture): string[] => {
+  const muslArch =
+    arch === "x64" ? "x86_64" : arch === "arm64" ? "aarch64" : null;
+  if (muslArch === null) return [];
+  return [
+    "libc.so.6",
+    `libc.musl-${muslArch}.so.1`,
+    `/lib/libc.musl-${muslArch}.so.1`,
+    `/lib/ld-musl-${muslArch}.so.1`,
+  ];
+};
+
+const linuxRenameat2Syscall = (arch: NodeJS.Architecture): number | null => {
+  if (arch === "x64") return 316;
+  if (arch === "arm64") return 276;
+  return null;
+};
+
+type LinuxNoReplaceOperation = {
+  publish: (stagingPath: Uint8Array, destinationPath: Uint8Array) => unknown;
+  close: () => void;
+};
+
+const openLinuxNoReplaceOperation = (
+  arch: NodeJS.Architecture,
+  openLibrary: ArchiveNativeLibraryOpener,
+): LinuxNoReplaceOperation => {
+  const libraryNames = linuxLibcNames(arch);
+
+  for (const libraryName of libraryNames) {
+    try {
+      const library = openLibrary(libraryName, {
         renameat2: {
           args: ["i32", "cstring", "i32", "cstring", "u32"],
           returns: "i32",
         },
       });
-      try {
-        if (
+      return {
+        publish: (stagingPath, destinationPath) =>
           library.symbols.renameat2(
             -100,
-            posixPath(stagingPath),
+            stagingPath,
             -100,
-            posixPath(destinationPath),
+            destinationPath,
             1,
-          ) !== 0
+          ),
+        close: () => library.close(),
+      };
+    } catch {
+      // Older glibc releases do not export renameat2; musl uses another soname.
+    }
+  }
+
+  const syscallNumber = linuxRenameat2Syscall(arch);
+  if (syscallNumber !== null) {
+    for (const libraryName of libraryNames) {
+      try {
+        const library = openLibrary(libraryName, {
+          syscall: {
+            args: ["i64", "i64", "cstring", "i64", "cstring", "u64"],
+            returns: "i64",
+          },
+        });
+        return {
+          publish: (stagingPath, destinationPath) =>
+            library.symbols.syscall(
+              syscallNumber,
+              -100,
+              stagingPath,
+              -100,
+              destinationPath,
+              1,
+            ),
+          close: () => library.close(),
+        };
+      } catch {
+        // Keep trying compatible libc names before failing closed.
+      }
+    }
+  }
+
+  throw new Error("No compatible Linux no-replace rename primitive");
+};
+
+const nativeCallSucceeded = (result: unknown): boolean =>
+  result === 0 || result === 0n;
+
+export const publishStagedZipDirectory = async (
+  stagingPath: string,
+  destinationPath: string,
+  options: ArchiveNativePublicationOptions = {},
+) => {
+  const platform = options.platform ?? process.platform;
+  const arch = options.arch ?? process.arch;
+  const openLibrary = options.openLibrary ?? openArchiveNativeLibrary;
+
+  try {
+    if (platform === "darwin") {
+      const library = openLibrary("/usr/lib/libSystem.B.dylib", {
+        renamex_np: { args: ["cstring", "cstring", "u32"], returns: "i32" },
+      });
+      try {
+        if (
+          !nativeCallSucceeded(
+            library.symbols.renamex_np(
+              posixPath(stagingPath),
+              posixPath(destinationPath),
+              0x00000004,
+            ),
+          )
         ) {
           throw noReplacePublishError(destinationPath);
         }
@@ -133,17 +238,35 @@ export const publishStagedZipDirectory: ArchivePublisher = async (
       }
     }
 
-    if (process.platform === "win32") {
-      const library = dlopen("kernel32.dll", {
-        MoveFileW: { args: ["ptr", "ptr"], returns: "bool" },
-      });
+    if (platform === "linux") {
+      const operation = openLinuxNoReplaceOperation(arch, openLibrary);
       try {
         if (
-          !library.symbols.MoveFileW(
-            windowsPath(stagingPath),
-            windowsPath(destinationPath),
+          !nativeCallSucceeded(
+            operation.publish(
+              posixPath(stagingPath),
+              posixPath(destinationPath),
+            ),
           )
         ) {
+          throw noReplacePublishError(destinationPath);
+        }
+        return;
+      } finally {
+        operation.close();
+      }
+    }
+
+    if (platform === "win32") {
+      const library = openLibrary("kernel32.dll", {
+        MoveFileW: { args: ["ptr", "ptr"], returns: "i32" },
+      });
+      try {
+        const result = library.symbols.MoveFileW(
+          windowsPath(stagingPath),
+          windowsPath(destinationPath),
+        );
+        if (typeof result !== "number" || result === 0) {
           throw noReplacePublishError(destinationPath);
         }
         return;
@@ -158,12 +281,12 @@ export const publishStagedZipDirectory: ArchivePublisher = async (
     )
       throw error;
     throw new Error(
-      `Atomic no-replace ZIP publication is unavailable on ${process.platform}.`,
+      `Atomic no-replace ZIP publication is unavailable on ${platform}.`,
     );
   }
 
   throw new Error(
-    `Atomic no-replace ZIP publication is unavailable on ${process.platform}.`,
+    `Atomic no-replace ZIP publication is unavailable on ${platform}.`,
   );
 };
 

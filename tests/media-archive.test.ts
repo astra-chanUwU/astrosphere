@@ -368,6 +368,131 @@ test("publishes a verified private staging tree only after extraction succeeds",
   }
 });
 
+test("falls back to the renameat2 syscall when the libc wrapper is unavailable", async () => {
+  const nativeCalls: unknown[][] = [];
+  let wrapperAttempts = 0;
+  let syscallLibrary = "";
+  let closeCalls = 0;
+
+  await publishStagedZipDirectory("/tmp/staging", "/tmp/published", {
+    platform: "linux",
+    arch: "x64",
+    openLibrary: (libraryName, symbols) => {
+      if ("renameat2" in symbols) {
+        wrapperAttempts += 1;
+        throw new Error("undefined symbol: renameat2");
+      }
+      if (libraryName !== "libc.so.6") throw new Error("library unavailable");
+
+      syscallLibrary = libraryName;
+      expect(symbols).toEqual({
+        syscall: {
+          args: ["i64", "i64", "cstring", "i64", "cstring", "u64"],
+          returns: "i64",
+        },
+      });
+      return {
+        symbols: {
+          syscall: (...args) => {
+            nativeCalls.push(args);
+            return 0n;
+          },
+        },
+        close: () => {
+          closeCalls += 1;
+        },
+      };
+    },
+  });
+
+  expect(wrapperAttempts).toBeGreaterThan(0);
+  expect(syscallLibrary).toBe("libc.so.6");
+  expect(nativeCalls).toHaveLength(1);
+  expect(nativeCalls[0]?.[0]).toBe(316);
+  expect(nativeCalls[0]?.[1]).toBe(-100);
+  expect(new TextDecoder().decode(nativeCalls[0]?.[2] as Uint8Array)).toBe(
+    "/tmp/staging\0",
+  );
+  expect(nativeCalls[0]?.[3]).toBe(-100);
+  expect(new TextDecoder().decode(nativeCalls[0]?.[4] as Uint8Array)).toBe(
+    "/tmp/published\0",
+  );
+  expect(nativeCalls[0]?.[5]).toBe(1);
+  expect(closeCalls).toBe(1);
+});
+
+test("loads Linux no-replace publication from the musl libc path", async () => {
+  let loadedLibrary = "";
+  let wrapperAttempts = 0;
+  let syscallArguments: unknown[] = [];
+
+  await publishStagedZipDirectory("/tmp/staging", "/tmp/published", {
+    platform: "linux",
+    arch: "arm64",
+    openLibrary: (libraryName, symbols) => {
+      if (libraryName !== "libc.musl-aarch64.so.1") {
+        throw new Error("library unavailable");
+      }
+      if ("renameat2" in symbols) {
+        wrapperAttempts += 1;
+        throw new Error("undefined symbol: renameat2");
+      }
+      loadedLibrary = libraryName;
+      return {
+        symbols: {
+          syscall: (...args) => {
+            syscallArguments = args;
+            return 0n;
+          },
+        },
+        close: () => undefined,
+      };
+    },
+  });
+
+  expect(loadedLibrary).toBe("libc.musl-aarch64.so.1");
+  expect(wrapperAttempts).toBe(1);
+  expect(syscallArguments[0]).toBe(276);
+  expect(syscallArguments[1]).toBe(-100);
+  expect(syscallArguments[3]).toBe(-100);
+  expect(syscallArguments[5]).toBe(1);
+});
+
+test("maps MoveFileW BOOL as i32 and accepts every nonzero success value", async () => {
+  let moveArguments: unknown[] = [];
+  let closeCalls = 0;
+
+  await publishStagedZipDirectory("C:\\staging", "C:\\published", {
+    platform: "win32",
+    arch: "x64",
+    openLibrary: (libraryName, symbols) => {
+      expect(libraryName).toBe("kernel32.dll");
+      expect(symbols).toEqual({
+        MoveFileW: { args: ["ptr", "ptr"], returns: "i32" },
+      });
+      return {
+        symbols: {
+          MoveFileW: (...args) => {
+            moveArguments = args;
+            return 0x100;
+          },
+        },
+        close: () => {
+          closeCalls += 1;
+        },
+      };
+    },
+  });
+
+  expect(Array.from(moveArguments[0] as Uint16Array)).toEqual([
+    67, 58, 92, 115, 116, 97, 103, 105, 110, 103, 0,
+  ]);
+  expect(Array.from(moveArguments[1] as Uint16Array)).toEqual([
+    67, 58, 92, 112, 117, 98, 108, 105, 115, 104, 101, 100, 0,
+  ]);
+  expect(closeCalls).toBe(1);
+});
+
 test("atomically preserves an empty destination created at no-replace publication", async () => {
   const root = await mkdtemp(join(tmpdir(), "media-archive-"));
   const destination = join(root, "extracted");
