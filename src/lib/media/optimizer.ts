@@ -27,9 +27,13 @@ import {
   publishOwnedDirectory,
   publishStagedZipDirectory,
   readZipEntryHeader,
+  releaseRetainedArchiveFile,
   releaseDirectoryCapability,
   releaseOwnedDirectory,
+  type RetainedArchiveFile,
+  retainOwnedArchiveFile,
   retainDirectoryCapability,
+  sealOwnedDirectoryForRead,
 } from "./archive";
 import { MediaError } from "./errors";
 import {
@@ -92,6 +96,7 @@ export type OptimizeAdapters = {
   which?: (name: string) => string | null;
   verifyOutput?: (path: string, runner?: CommandRunner) => Promise<void>;
   beforePinnedPublish?: () => void;
+  afterArchiveOwnershipTransfer?: (extractionPath: string) => void;
 };
 
 export type PlanMediaOptimizationAdapters = {
@@ -478,28 +483,43 @@ const requireOptimizationTools = (
   requireTool("webpinfo", which);
 };
 
-const archiveExecutionPath = (
+const archiveEntryRelativePath = (
   source: string,
-  extraction: string,
   item: OptimizationItem,
-): string => join(extraction, relative(source, item.sourcePath));
+): string => relative(source, item.sourcePath).split(sep).join("/");
 
-const updateArchiveByteAccounting = async (
+const retainArchiveInputs = (
   plan: OptimizationPlan,
   source: string,
-  extraction: string,
-): Promise<OptimizationPlan> => {
-  const items = await Promise.all(
-    plan.items.map(async (item) => ({
-      ...item,
-      bytes: (await stat(archiveExecutionPath(source, extraction, item))).size,
-    })),
-  );
-  return {
-    ...plan,
-    items,
-    originalBytes: items.reduce((total, item) => total + item.bytes, 0),
-  };
+  extraction: OwnedDirectory,
+): { plan: OptimizationPlan; inputs: RetainedArchiveFile[] } => {
+  const inputs: RetainedArchiveFile[] = [];
+  try {
+    const items = plan.items.map((item) => {
+      const relativePath = archiveEntryRelativePath(source, item);
+      let input: RetainedArchiveFile;
+      try {
+        input = retainOwnedArchiveFile(extraction, relativePath);
+      } catch (error) {
+        throw new Error(
+          `Unable to retain extracted archive entry "${relativePath}": ${errorMessage(error)}`,
+        );
+      }
+      inputs.push(input);
+      return { ...item, bytes: input.bytes };
+    });
+    return {
+      inputs,
+      plan: {
+        ...plan,
+        items,
+        originalBytes: items.reduce((total, item) => total + item.bytes, 0),
+      },
+    };
+  } catch (error) {
+    for (const input of inputs) releaseRetainedArchiveFile(input);
+    throw error;
+  }
 };
 
 export const optimizeMedia = async (
@@ -515,6 +535,7 @@ export const optimizeMedia = async (
   let staging: OwnedDirectory | undefined;
   let extraction: OwnedDirectory | undefined;
   let published: OwnedDirectory | undefined;
+  let archiveInputs: RetainedArchiveFile[] = [];
   let destinationParentCapability: DirectoryCapability | undefined;
 
   try {
@@ -643,13 +664,18 @@ export const optimizeMedia = async (
           publishStagedZipDirectory,
           (owned) => {
             extraction = owned;
+            sealOwnedDirectoryForRead(extraction);
+            const retained = retainArchiveInputs(plan, source, extraction);
+            plan = retained.plan;
+            archiveInputs = retained.inputs;
           },
           destinationParentCapability,
         );
         if (!extraction) {
           throw new Error("Archive extraction ownership was not retained.");
         }
-        plan = await updateArchiveByteAccounting(plan, source, extractionPath);
+        adapters.afterArchiveOwnershipTransfer?.(extraction.path);
+        sealOwnedDirectoryForRead(extraction);
       } catch (error) {
         throw new Error(
           `Unable to extract archive "${source}": ${errorMessage(error)}`,
@@ -657,12 +683,11 @@ export const optimizeMedia = async (
       }
     }
 
-    const stagedOutputs = plan.items.map((item) => ({
+    const stagedOutputs = plan.items.map((item, index) => ({
       item,
-      sourcePath:
-        inspection.kind === "archive"
-          ? archiveExecutionPath(source, extraction!.path, item)
-          : item.sourcePath,
+      sourcePath: item.sourcePath,
+      archiveInput:
+        inspection.kind === "archive" ? archiveInputs[index] : undefined,
       outputPath: join(staging!.path, item.outputRelativePath),
     }));
 
@@ -675,21 +700,33 @@ export const optimizeMedia = async (
     for (const output of stagedOutputs) {
       try {
         if (output.item.action === "copy") {
-          await copyFile(output.sourcePath, output.outputPath);
+          await copyFile(
+            output.archiveInput
+              ? `/dev/fd/${output.archiveInput.descriptor}`
+              : output.sourcePath,
+            output.outputPath,
+          );
           copied += 1;
+          if (output.archiveInput)
+            releaseRetainedArchiveFile(output.archiveInput);
           continue;
         }
 
         const command = createImageCommand({
           format: output.item.format,
-          source: output.sourcePath,
+          source: output.archiveInput ? "/dev/fd/3" : output.sourcePath,
           destination: output.outputPath,
           quality: plan.quality,
         });
         if (!command) {
           throw new Error("No conversion command was produced.");
         }
-        const result = await runner(command);
+        const result = await runner(
+          command,
+          output.archiveInput
+            ? { readableDescriptors: [output.archiveInput.descriptor] }
+            : undefined,
+        );
         if (result.exitCode !== 0) {
           throw new Error(
             `${command[0]} exited with code ${result.exitCode}${
@@ -698,6 +735,8 @@ export const optimizeMedia = async (
           );
         }
         converted += 1;
+        if (output.archiveInput)
+          releaseRetainedArchiveFile(output.archiveInput);
       } catch (error) {
         throw new Error(
           `Unable to optimize "${output.item.sourceRelativePath}": ${errorMessage(error)}`,
@@ -723,6 +762,8 @@ export const optimizeMedia = async (
     published = staging;
     staging = undefined;
 
+    for (const input of archiveInputs) releaseRetainedArchiveFile(input);
+    archiveInputs = [];
     if (extraction) cleanupOwnedDirectory(extraction);
     extraction = undefined;
     releaseOwnedDirectory(published);
@@ -742,6 +783,8 @@ export const optimizeMedia = async (
     };
   } catch (error) {
     const cleanupErrors: unknown[] = [];
+    for (const input of archiveInputs) releaseRetainedArchiveFile(input);
+    archiveInputs = [];
     for (const owned of [extraction, staging, published]) {
       if (!owned) continue;
       try {

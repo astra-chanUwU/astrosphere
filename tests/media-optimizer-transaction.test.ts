@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { renameSync, symlinkSync } from "node:fs";
+import { mkdirSync, renameSync, symlinkSync, writeFileSync } from "node:fs";
 import {
   mkdir,
   mkdtemp,
@@ -673,6 +673,66 @@ test("extracts archives into owned temporary data and removes it after success",
     expect(await Bun.file(join(destination, "001.webp")).exists()).toBe(true);
     expect(await Bun.file(source).bytes()).toEqual(before);
     expect(await stagingNames(root)).toEqual([]);
+  });
+});
+
+test("rejects an extraction replacement between ownership transfer and accounting", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "chapter.cbz");
+    const destination = join(root, "output");
+    const heldExtraction = join(root, "held-extraction");
+    const archive = storedZip([{ path: "wrapper/page.jpg", bytes: jpeg }]);
+    let boundaryReached = false;
+    let conversionRan = false;
+    let replacementExtraction = "";
+    await Bun.write(source, archive);
+
+    const runner: CommandRunner = async (argv, options) => {
+      if (argv[0] === "unzip") return runCommand(argv, options);
+      conversionRan = true;
+      await Bun.write(argv[argv.indexOf("-o") + 1]!, webp);
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        {
+          ...tools,
+          runner,
+          afterArchiveOwnershipTransfer: (extractionPath) => {
+            boundaryReached = true;
+            replacementExtraction = extractionPath;
+            renameSync(extractionPath, heldExtraction);
+            mkdirSync(join(extractionPath, "wrapper"), { recursive: true });
+            writeFileSync(
+              join(extractionPath, "wrapper", "page.jpg"),
+              new Uint8Array([...jpeg, 0x01, 0x02, 0x03, 0x04]),
+            );
+            writeFileSync(
+              join(extractionPath, "replacement.txt"),
+              "preserve",
+            );
+          },
+        },
+      ),
+      "staging changed",
+    );
+
+    expect(boundaryReached).toBe(true);
+    expect(conversionRan).toBe(false);
+    expect(await Bun.file(destination).exists()).toBe(false);
+    expect(
+      await readFile(join(replacementExtraction, "replacement.txt"), "utf8"),
+    ).toBe("preserve");
+    expect(await Bun.file(join(heldExtraction, "wrapper", "page.jpg")).bytes())
+      .toEqual(jpeg);
   });
 });
 

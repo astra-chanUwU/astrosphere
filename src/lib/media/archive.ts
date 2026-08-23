@@ -66,6 +66,11 @@ export type OwnedDirectoryPublicationOptions = {
   beforePinnedPublish?: () => void;
 };
 
+export type RetainedArchiveFile = {
+  descriptor: number;
+  bytes: number;
+};
+
 type ArchiveNativeFfiType =
   | "cstring"
   | "ptr"
@@ -445,9 +450,10 @@ const publishRelativeNoReplaceSync = (
   );
 };
 
-const openRelativeDirectorySync = (
+const openRelativeDescriptorSync = (
   parentDescriptor: number,
   name: string,
+  flags: number,
 ): number => {
   const libraries =
     process.platform === "darwin"
@@ -460,14 +466,15 @@ const openRelativeDirectorySync = (
     try {
       library = openArchiveNativeLibrary(libraryName, {
         openat: {
-          args: ["i32", "cstring", "i32"],
+          args: ["i32", "cstring", "i32", "u32"],
           returns: "i32",
         },
       });
       const descriptor = library.symbols.openat(
         parentDescriptor,
         posixPath(name),
-        directoryOpenFlags,
+        flags,
+        0,
       );
       if (typeof descriptor === "number" && descriptor >= 0) return descriptor;
     } catch {
@@ -480,6 +487,12 @@ const openRelativeDirectorySync = (
     `Capability-bound directory access is unavailable on ${process.platform}.`,
   );
 };
+
+const openRelativeDirectorySync = (
+  parentDescriptor: number,
+  name: string,
+): number =>
+  openRelativeDescriptorSync(parentDescriptor, name, directoryOpenFlags);
 
 const removeRelativeDirectoryRecursiveSync = (
   parentDescriptor: number,
@@ -778,7 +791,7 @@ const restoreRelativeName = (
 
 const isolateOwnedDirectory = (
   owned: OwnedDirectory,
-  purpose: "cleanup" | "publish",
+  purpose: "cleanup" | "publish" | "read",
 ): string => {
   const originalName = owned.name;
   const isolatedName = `.${originalName}.${purpose}-${randomUUID()}`;
@@ -794,6 +807,68 @@ const isolateOwnedDirectory = (
     throw new Error(`Owned staging changed before ${purpose}: ${owned.path}`);
   }
   return isolatedName;
+};
+
+export const sealOwnedDirectoryForRead = (owned: OwnedDirectory): void => {
+  isolateOwnedDirectory(owned, "read");
+};
+
+export const retainOwnedArchiveFile = (
+  owned: OwnedDirectory,
+  relativePath: string,
+): RetainedArchiveFile => {
+  if (
+    relativePath.length === 0 ||
+    isAbsolute(relativePath) ||
+    relativePath.includes("\\")
+  ) {
+    throw new Error(`Unsafe retained archive path: ${relativePath}`);
+  }
+  const segments = relativePath.split("/");
+  if (
+    segments.some(
+      (segment) => segment.length === 0 || segment === "." || segment === "..",
+    )
+  ) {
+    throw new Error(`Unsafe retained archive path: ${relativePath}`);
+  }
+
+  let parentDescriptor = owned.descriptor;
+  let openedParent = -1;
+  try {
+    for (const segment of segments.slice(0, -1)) {
+      const nextParent = openRelativeDirectorySync(parentDescriptor, segment);
+      if (openedParent >= 0) closeSync(openedParent);
+      openedParent = nextParent;
+      parentDescriptor = nextParent;
+    }
+
+    const descriptor = openRelativeDescriptorSync(
+      parentDescriptor,
+      segments.at(-1)!,
+      constants.O_RDONLY | constants.O_NOFOLLOW,
+    );
+    try {
+      const info = fstatSync(descriptor);
+      if (!info.isFile()) {
+        throw new Error(`Retained archive entry is not a file: ${relativePath}`);
+      }
+      return { descriptor, bytes: info.size };
+    } catch (error) {
+      closeSync(descriptor);
+      throw error;
+    }
+  } finally {
+    if (openedParent >= 0) closeSync(openedParent);
+  }
+};
+
+export const releaseRetainedArchiveFile = (
+  file: RetainedArchiveFile,
+): void => {
+  if (file.descriptor < 0) return;
+  closeSync(file.descriptor);
+  file.descriptor = -1;
 };
 
 export const publishOwnedDirectory = (

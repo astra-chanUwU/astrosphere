@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { closeSync, openSync } from "node:fs";
 import { basename, join } from "node:path";
 import { createImageCommand, detectImageFormat, detectImageFormatFromBytes, verifyWebp } from "../src/lib/media/image-format";
 import { requireTool, runCommand } from "../src/lib/media/process";
@@ -66,6 +67,27 @@ test("runs commands without a shell and captures their output", async () => {
   expect(new TextDecoder().decode(result.stdout)).toBe("ok");
   expect(result.stderr).toBe("note");
   expect(result.exitCode).toBe(0);
+});
+
+test("passes retained input descriptors to commands without reopening a path", async () => {
+  const path = join(import.meta.dir, ".retained-command-input");
+  await Bun.write(path, "retained bytes");
+  const descriptor = openSync(path, "r");
+  try {
+    const result = await runCommand(
+      [
+        process.execPath,
+        "-e",
+        "process.stdout.write(require('node:fs').readFileSync('/dev/fd/3'))",
+      ],
+      { readableDescriptors: [descriptor] },
+    );
+    expect(result.exitCode).toBe(0);
+    expect(new TextDecoder().decode(result.stdout)).toBe("retained bytes");
+  } finally {
+    closeSync(descriptor);
+    await Bun.file(path).delete();
+  }
 });
 
 test("reports a missing required tool", () => {

@@ -1,8 +1,23 @@
 export type CommandResult = { exitCode: number; stdout: Uint8Array; stderr: string };
-export type CommandRunner = (argv: string[], options?: { cwd?: string }) => Promise<CommandResult>;
+export type CommandOptions = {
+  cwd?: string;
+  readableDescriptors?: number[];
+};
+export type CommandRunner = (
+  argv: string[],
+  options?: CommandOptions,
+) => Promise<CommandResult>;
 
 export const runCommand: CommandRunner = async (argv, options) => {
-  const child = Bun.spawn(argv, { cwd: options?.cwd, stdout: "pipe", stderr: "pipe" });
+  const child = Bun.spawn(argv, {
+    cwd: options?.cwd,
+    stdio: [
+      "ignore",
+      "pipe",
+      "pipe",
+      ...(options?.readableDescriptors ?? []),
+    ],
+  });
   const [stdout, stderr, exitCode] = await Promise.all([
     new Response(child.stdout).bytes(),
     new Response(child.stderr).text(),
