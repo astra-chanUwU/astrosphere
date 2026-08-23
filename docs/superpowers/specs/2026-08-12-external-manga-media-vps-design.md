@@ -1,5 +1,7 @@
 # External Manga Media and VPS Deployment Design
 
+> Superseded by `docs/superpowers/specs/2026-08-23-unified-media-cli-design.md`. Retained as a historical record; do not use its commands or environment variables.
+
 ## Goal
 
 Remove manga binaries from the Astro application repository and its Git history while preserving the existing manga content model and reading URLs. Prepare the application for a small VPS where Bun builds the site, Caddy serves the generated site and a separate media tree, and Cloudflare's free proxy/CDN can optionally cache public responses.

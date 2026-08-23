@@ -216,8 +216,6 @@ She will open herself up to you and will give you even some wine so you can drin
 
 <figure><img src="/media/images/black-souls-ii-mabel-girl-of-nihility/loving-mabel.webp" alt="Loving Mabel" loading="lazy" decoding="async" /><figcaption>Loving Mabel</figcaption></figure>
 
-<figure><img src="/media/images/black-souls-ii-mabel-girl-of-nihility/mabel-welcomes-you-back-2.webp" alt="Mabel welcomes you back 2" loading="lazy" decoding="async" /><figcaption>Mabel welcomes you back 2</figcaption></figure>
-
 Mabel will mention how it’s common to believe that Great Ones are purely rational and emotionless with their tainted black souls, but she will say how besides all that, she’s still trying hard to understand your feelings and not be awkward.
 
 If you talk more to Mabel she will start rambling on how she’s the “oldestest” around, and how everyone keeps bullying her by calling her a fossil and a relic of the past. She will say how she’s poor because her only role is to prop “Alice up-up!”, and that because of that is why Alice gets to shine and be a heroine.

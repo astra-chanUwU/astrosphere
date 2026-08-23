@@ -1,4 +1,29 @@
 export type ChapterOrder = { data: { number: number } };
+export type MangaChapterAvailability = {
+  availability?: "available" | "unavailable";
+  pageCount?: number;
+};
+
+const availablePageCount = (chapter: MangaChapterAvailability): number => {
+  if (!Number.isInteger(chapter.pageCount) || (chapter.pageCount ?? 0) <= 0) {
+    throw new Error("Available manga chapter requires a positive page count.");
+  }
+  return chapter.pageCount!;
+};
+
+export const getMangaChapterAvailabilityLabel = (
+  chapter: MangaChapterAvailability,
+): string =>
+  chapter.availability === "unavailable"
+    ? "Currently unavailable"
+    : `${availablePageCount(chapter)} pages`;
+
+export const getMangaChapterPages = (
+  chapter: MangaChapterAvailability,
+): number[] =>
+  chapter.availability === "unavailable"
+    ? []
+    : Array.from({ length: availablePageCount(chapter) }, (_, index) => index + 1);
 export type MangaFormat = "manga" | "doujinshi" | "one-shot" | "artbook" | "web-comic";
 
 export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") => {

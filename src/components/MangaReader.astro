@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaInstallmentLabel } from "../lib/manga-reader";
+import { createMangaPageSrc, getMangaChapterAvailabilityLabel, getMangaChapterPages, getMangaInstallmentLabel } from "../lib/manga-reader";
 
 interface ChapterLink { href: string; label: string; }
 interface Props {
@@ -10,18 +10,20 @@ interface Props {
   nextChapter?: ChapterLink;
 }
 const { series, chapter, previousChapter, nextChapter } = Astro.props;
-const pages = Array.from({ length: chapter.data.pageCount }, (_, index) => index + 1);
+const pages = getMangaChapterPages(chapter.data);
+const availabilityLabel = getMangaChapterAvailabilityLabel(chapter.data);
+const unavailable = chapter.data.availability === "unavailable";
 const installmentLabel = getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title);
 ---
 
 <article class="reader">
-  <header data-reader-header><a href={`/manga/${series.data.slug}`}>← {series.data.title}</a><h1>{installmentLabel}</h1><p>{chapter.data.pageCount} pages</p></header>
+  <header data-reader-header><a href={`/manga/${series.data.slug}`}>← {series.data.title}</a><h1>{installmentLabel}</h1><p>{availabilityLabel}</p></header>
   <nav class="chapter-navigation" aria-label="Chapter navigation">
     {previousChapter && <a href={previousChapter.href}>← {previousChapter.label}</a>}
     <a href={`/manga/${series.data.slug}`}>Series details</a>
     {nextChapter && <a href={nextChapter.href}>{nextChapter.label} →</a>}
   </nav>
-  <ol>{pages.map((page) => <li><img src={createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension)} alt={`${series.data.title}, chapter ${chapter.data.number}, page ${page}`} width={chapter.data.pageWidth} height={chapter.data.pageHeight} loading={page === 1 ? "eager" : "lazy"} fetchpriority={page === 1 ? "high" : "auto"} decoding="async" /></li>)}</ol>
+  {unavailable ? <p class="unavailable">This chapter’s media is currently unavailable.</p> : <ol>{pages.map((page) => <li><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`${series.data.title}, chapter ${chapter.data.number}, page ${page}`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading={page === 1 ? "eager" : "lazy"} fetchpriority={page === 1 ? "high" : "auto"} decoding="async" /></li>)}</ol>}
   <nav class="chapter-navigation" aria-label="Chapter navigation">
     {previousChapter && <a href={previousChapter.href}>← {previousChapter.label}</a>}
     <a href={`/manga/${series.data.slug}`}>Series details</a>
@@ -30,5 +32,5 @@ const installmentLabel = getMangaInstallmentLabel(series.data.format, chapter.da
 </article>
 
 <style>
-  .reader { margin: 0 auto; max-width: min(100%, 62rem); } header { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: space-between; padding: var(--space-2) var(--space-3); } h1 { font-size: var(--text-lg); margin: 0; } header p { color: var(--color-muted); font-size: var(--text-sm); margin: 0; } .chapter-navigation { align-items: center; border-bottom: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; padding: var(--space-2) var(--space-3); } .chapter-navigation a { align-items: center; display: flex; min-height: 2.75rem; padding: 0 var(--space-1); } ol { list-style: none; margin: 0; padding: 0; } li { margin: 0; } img { display: block; height: auto; margin: 0 auto; max-width: 100%; width: auto; } @media (max-width: 48rem) { header { padding-inline: var(--space-2); } header a { align-items: center; display: flex; min-height: 2.75rem; } .chapter-navigation { padding-inline: var(--space-2); } img { width: 100%; } }
+  .reader { margin: 0 auto; max-width: min(100%, 62rem); } header { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: space-between; padding: var(--space-2) var(--space-3); } h1 { font-size: var(--text-lg); margin: 0; } header p { color: var(--color-muted); font-size: var(--text-sm); margin: 0; } .chapter-navigation { align-items: center; border-bottom: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; padding: var(--space-2) var(--space-3); } .chapter-navigation a { align-items: center; display: flex; min-height: 2.75rem; padding: 0 var(--space-1); } .unavailable { color: var(--color-muted); margin: var(--space-5) auto; padding: var(--space-3); text-align: center; } ol { list-style: none; margin: 0; padding: 0; } li { margin: 0; } img { display: block; height: auto; margin: 0 auto; max-width: 100%; width: auto; } @media (max-width: 48rem) { header { padding-inline: var(--space-2); } header a { align-items: center; display: flex; min-height: 2.75rem; } .chapter-navigation { padding-inline: var(--space-2); } img { width: 100%; } }
 </style>

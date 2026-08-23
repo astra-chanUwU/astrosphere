@@ -10,7 +10,6 @@ test("manga media stays root-relative and same-origin", async () => {
     read("src/pages/manga/[slug].astro"),
   ]);
   for (const source of sources) {
-    expect(source).not.toContain("PUBLIC_MANGA_ASSET_BASE_URL");
     expect(source).not.toContain("resolveMangaAssetUrl");
   }
   expect(sources.join("\n")).toContain("series.data.cover.src");

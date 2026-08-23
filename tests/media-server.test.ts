@@ -30,6 +30,10 @@ test("plans files for both managed namespaces", async () => {
 test("passes unrelated routes and handles media errors", async () => {
   expect(await planMediaResponse({ method: "GET", pathname: "/about", root: "/srv/astrosphere/media", statFile: regularFile }))
     .toEqual({ kind: "next" });
+  expect(await planMediaResponse({ method: "GET", pathname: "/manga/example", root: "/srv/astrosphere/media", statFile: regularFile }))
+    .toEqual({ kind: "next" });
+  expect(await planMediaResponse({ method: "GET", pathname: "/manga/example/chapter-001", root: "/srv/astrosphere/media", statFile: regularFile }))
+    .toEqual({ kind: "next" });
   expect(await planMediaResponse({ method: "POST", pathname: "/manga/example/001.webp", root: "/srv/astrosphere/media", statFile: regularFile }))
     .toMatchObject({ kind: "error", status: 405 });
   expect(await planMediaResponse({ method: "GET", pathname: "/manga/%2e%2e/secret.webp", root: "/srv/astrosphere/media", statFile: regularFile }))
@@ -61,5 +65,4 @@ test("Astro delegates managed media to the shared response planner", async () =>
 
   expect(config).toContain("env.MEDIA_ROOT");
   expect(config).toContain("planMediaResponse");
-  expect(config).not.toContain("IMAGE_SET_MEDIA_ROOT");
 });

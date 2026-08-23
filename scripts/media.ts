@@ -1,13 +1,47 @@
 import {
+  addHelp,
   mediaHelp,
   optimizeHelp,
+  parseAddArgs,
   parseMediaCommand,
   parseOptimizeArgs,
+  parseRemoveArgs,
+  parseSyncArgs,
+  parseValidateArgs,
+  removeHelp,
 } from "../src/lib/media/cli";
-import { requireMediaPort, requireMediaRoot } from "../src/lib/media/config";
-import { exitCodeForMediaError, MediaError } from "../src/lib/media/errors";
+import {
+  requireMediaPort,
+  requireMediaRoot,
+  requireMediaSyncTarget,
+} from "../src/lib/media/config";
+import {
+  exitCodeForMediaError,
+  mediaExitCodes,
+  MediaError,
+} from "../src/lib/media/errors";
+import { loadMediaContentEntries } from "../src/lib/media/content-source";
 import { optimizeMedia } from "../src/lib/media/optimizer";
+import { importMangaVolumes } from "../src/lib/media/manga-volume";
+import {
+  formatBatchImportResult,
+  importMediaBatch,
+} from "../src/lib/media/batch-import";
+import {
+  executeMangaChapterUnavailable,
+  planMangaChapterUnavailable,
+} from "../src/lib/media/manga-remove";
+import { collectManagedMediaReferences } from "../src/lib/media/references";
 import { createBunMediaFetch } from "../src/lib/media/server";
+import {
+  confirmPrune,
+  formatPruneManifest,
+  syncMedia,
+} from "../src/lib/media/sync";
+import {
+  formatMediaValidationReport,
+  validateMedia,
+} from "../src/lib/media/validator";
 
 const serve = (args: string[]): void => {
   if (args.length > 0)
@@ -55,6 +89,133 @@ const optimize = async (args: string[]): Promise<void> => {
   console.log(`  Saved bytes: ${result.savedBytes}`);
 };
 
+const add = async (args: string[]): Promise<void> => {
+  if (args.length === 1 && (args[0] === "--help" || args[0] === "-h")) {
+    console.log(addHelp);
+    return;
+  }
+  const options = parseAddArgs(args);
+  if (options.kind === "batch") {
+    const result = await importMediaBatch({
+      ...options,
+      projectRoot: process.cwd(),
+      mediaRoot: requireMediaRoot(),
+    });
+    console.log(formatBatchImportResult(result));
+    if (result.failed.length > 0) {
+      process.exitCode = mediaExitCodes.optimization;
+    }
+    return;
+  }
+  const result = await importMangaVolumes({
+    ...options,
+    projectRoot: process.cwd(),
+    mediaRoot: requireMediaRoot(),
+  });
+  console.log(`Imported ${result.chapters.length} ${options.status} manga chapters:`);
+  for (const chapter of result.chapters) {
+    console.log(`  Chapter ${chapter.number}: ${chapter.pageCount} pages`);
+  }
+};
+
+const remove = async (args: string[]): Promise<void> => {
+  if (args.length === 1 && (args[0] === "--help" || args[0] === "-h")) {
+    console.log(removeHelp);
+    return;
+  }
+  const options = parseRemoveArgs(args);
+  const plan = await planMangaChapterUnavailable({
+    ...options,
+    projectRoot: process.cwd(),
+    mediaRoot: requireMediaRoot(),
+  });
+  console.log(`Chapter: ${options.series} ${options.chapter}`);
+  console.log(`Remove: ${plan.fileCount} files (${plan.totalBytes} bytes)`);
+  console.log(`From: ${plan.mediaPath}`);
+  console.log("Keep entry as: Currently unavailable");
+  if (!(await confirmPrune("Type yes to continue:"))) {
+    console.log("Removal cancelled; nothing changed.");
+    return;
+  }
+  await executeMangaChapterUnavailable(plan);
+  console.log("Chapter media removed; published entry is currently unavailable.");
+};
+
+const validate = async (args: string[]): Promise<void> => {
+  parseValidateArgs(args);
+  const root = requireMediaRoot();
+  try {
+    const entries = await loadMediaContentEntries(process.cwd());
+    const references = collectManagedMediaReferences(entries);
+    const report = await validateMedia({ root, references });
+    console.log(formatMediaValidationReport(report));
+    if (report.errors.length > 0) {
+      process.exitCode = mediaExitCodes.validation;
+    }
+  } catch (error) {
+    if (error instanceof MediaError) throw error;
+    throw new MediaError(
+      "validation",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+};
+
+const sync = async (args: string[]): Promise<void> => {
+  const options = parseSyncArgs(args);
+  const root = requireMediaRoot();
+  let report;
+  try {
+    const entries = await loadMediaContentEntries(process.cwd());
+    const references = collectManagedMediaReferences(entries);
+    report = await validateMedia({ root, references });
+  } catch (error) {
+    if (error instanceof MediaError) throw error;
+    throw new MediaError(
+      "validation",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+
+  console.log(formatMediaValidationReport(report));
+  if (report.errors.length > 0) {
+    process.exitCode = mediaExitCodes.validation;
+    return;
+  }
+
+  const target = requireMediaSyncTarget();
+  try {
+    const result = await syncMedia({
+      root,
+      target,
+      dryRun: options.dryRun,
+      prune: options.prune,
+      onManifest: (manifest) => console.log(formatPruneManifest(manifest)),
+    });
+    if (!options.prune) {
+      console.log(
+        options.dryRun
+          ? "Media synchronization dry run complete; no remote files changed."
+          : "Media synchronization complete; no remote files were deleted.",
+      );
+    } else if (options.dryRun) {
+      console.log("Prune dry run complete; no remote files changed.");
+    } else if (result.manifest?.files.length === 0) {
+      console.log("Synchronization complete; there is nothing to prune.");
+    } else if (result.pruned) {
+      console.log("Synchronization and confirmed remote pruning complete.");
+    } else {
+      console.log("Synchronization complete; remote pruning was declined.");
+    }
+  } catch (error) {
+    if (error instanceof MediaError) throw error;
+    throw new MediaError(
+      "synchronization",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+};
+
 const run = async (): Promise<void> => {
   const argv = Bun.argv.slice(2);
   if (argv.length === 1 && (argv[0] === "--help" || argv[0] === "-h")) {
@@ -70,6 +231,26 @@ const run = async (): Promise<void> => {
 
   if (command === "optimize") {
     await optimize(args);
+    return;
+  }
+
+  if (command === "add") {
+    await add(args);
+    return;
+  }
+
+  if (command === "remove") {
+    await remove(args);
+    return;
+  }
+
+  if (command === "validate") {
+    await validate(args);
+    return;
+  }
+
+  if (command === "sync") {
+    await sync(args);
     return;
   }
 

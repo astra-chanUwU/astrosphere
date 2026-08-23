@@ -3,8 +3,15 @@
 - Work directly on the main branch unless explicitly told otherwise.
 - Do not run Git commands or otherwise modify Git state unless explicitly requested.
 - Manga creator frontmatter uses `{ name, slug }` entries for `authors` and `artists`; use the internal `/manga/creators/{slug}` pages and never paste Mangadex creator URLs into manga content.
-- Keep all heavy manga, doujinshi, and image-set binaries out of the repository. Manga files belong under the external `MANGA_MEDIA_ROOT`; image-set galleries belong under the external `IMAGE_SET_MEDIA_ROOT` (locally `/Users/astrochan/Documents/Workstation/astrosphere-media/images`). Keep their frontmatter URLs root-relative (`/manga/...` or `/media/images/...`) so the external media server and VPS Caddy configuration can serve them.
-- Astro dev serves `/media/images/*` from `IMAGE_SET_MEDIA_ROOT`; do not “fix” local image 404s by copying galleries into `public/`. Keep the external root populated and let the dev server route handle both local and deployed image-set URLs.
+- Keep all heavy manga, doujinshi, and image-set binaries out of the repository. Manga and doujinshi belong under `MEDIA_ROOT/manga`; image-set galleries belong under `MEDIA_ROOT/images` (locally `/Users/astrochan/Documents/Workstation/astrosphere-media`). Keep frontmatter URLs root-relative (`/manga/...` or `/media/images/...`).
+- Astro dev serves both managed URL namespaces from `MEDIA_ROOT`; never fix local media 404s by copying binaries into `public/`.
+- Keep `MEDIA_ROOT/.astrosphere/` private. It contains operation records and must never be served or synchronized.
+- Convert animated GIF sources to animated WebP with `bun run media:optimize`.
+- Import one or more chapter-labelled manga CBZ/ZIP volumes—or a folder containing them—with `bun run media:add manga-volume <source...> --series <slug>`. Imports publish by default; add `--draft` when review is needed first.
+- Import mixed doujinshi/image-set folders only through a reviewed versioned manifest: preview with `bun run media:add batch <folder> --manifest <file> --dry-run`, then rerun without `--dry-run`. Existing content may be replaced only when the manifest explicitly uses `mode: update` and `replace: true`; never weaken the collision checks.
+- Create content-only drafts with `bun run content:new <essay|doujinshi|image-set> <slug>`; the command must refuse existing destinations and must never copy binaries into the repository.
+- Free chapter storage without breaking published routes with `bun run media:remove manga <series> --chapter <number> --unavailable`; review the preview and type `yes` to remove the media while retaining a “Currently unavailable” entry.
+- Run `bun run media:validate` before synchronization. Review `bun run media:sync -- --dry-run --prune` before any confirmed prune.
 
 When starting the dev server, use background mode:
 
@@ -45,5 +52,5 @@ Consult these guides before working on related tasks:
 
 ## BLACKSOULS character galleries
 
-- Character pages may include large source-faithful galleries and H-scene route documentation; sanitize downloaded images into `IMAGE_SET_MEDIA_ROOT` and keep only root-relative `/media/images/...` references in content.
+- Character pages may include large source-faithful galleries and H-scene route documentation; optimize downloaded images into `MEDIA_ROOT/images` and keep only root-relative `/media/images/...` references in content.
 - When generating raw HTML galleries in Markdown, write real line breaks—not literal `\\n` text—between `<figure>` elements. Before handoff, verify that image-reference count equals the unique-reference count, every reference has a corresponding external WebP, and `bun run astro check` passes.

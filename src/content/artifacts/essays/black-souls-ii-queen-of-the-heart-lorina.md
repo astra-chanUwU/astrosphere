@@ -158,8 +158,6 @@ Miscellaneous interactions with Lorina.
 
 You can fight Lorina if you have 0 SEN, that’s when she will be in her demonbeast form. She’s a difficult enemy to defeat, and her whole appearance is cool but frightening at the same time.
 
-<figure><img src="/media/images/black-souls-ii-queen-of-the-heart-lorina/lorina-on-corpse-eaters.webp" alt="Lorina on corpse eaters" loading="lazy" decoding="async" /><figcaption>Lorina on corpse eaters</figcaption></figure>
-
 ### Corpse-Eaters
 
 If you beat Meryphillia, you can go back and report to Lorina that you took care of her. Lorina doesn’t like corpse-eaters at all, so she usually sends them to the Slaughterhouse so they can be killed “forever” because it’s almost impossible for them to die.
@@ -206,8 +204,6 @@ When you rape Lorina and put her in the Dungeon, you will notice that she lost h
 
 The Queen of the Heart Lorina probably used to be Lorina Liddell at some point – the girl you meet in the visual novel section of the game that’s placed way later in DLC3. Lorina Liddell is based on real-life Alice’s older sister, who went by the same full name.
 
-<figure><img src="/media/images/black-souls-ii-queen-of-the-heart-lorina/lorina-sex-on-her-throne.webp" alt="Lorina sex on her throne" loading="lazy" decoding="async" /><figcaption>Lorina sex on her throne</figcaption></figure>
-
 Even though Lorina looks slightly different than she did before, she will often display open jealousy towards Alice and will even call you “teacher” when you try to kill her.
 
 Lorina is jealous that Lewis Carroll chose Alice, her younger sister, over her. He used to be a teacher, and that’s why Lorina calls him by that name, since it’s the only one she’s used to calling him.
@@ -247,8 +243,6 @@ Lorina will use her feet to service you, she will also tease you in many other w
 - Conditions: Make love to Lorina when you reach level 3 of her covenant.
 
 Lorina really likes you, and she’s quite a passionate lover.
-
-<figure><img src="/media/images/black-souls-ii-queen-of-the-heart-lorina/lorina-card-game-2.webp" alt="Lorina card game, 2" loading="lazy" decoding="async" /><figcaption>Lorina card game, 2</figcaption></figure>
 
 - Pose: Doggy style
 

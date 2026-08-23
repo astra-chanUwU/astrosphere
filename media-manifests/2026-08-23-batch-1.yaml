@@ -1,0 +1,319 @@
+version: 1
+defaults:
+  ignoreEntries:
+    - .DS_Store
+    - ReadMe.txt
+    - final.jpg
+entries:
+  - type: doujinshi
+    archive: Futanari Akuma-san to Hiruyasumi ~Appli de Shoukan Shitara Oishiku Itadakare chaimashita~ + Happy Halloween.zip
+    mode: update
+    series: futanari-akuma-san-to-hiruyasumi
+    replace: true
+    chapters:
+      - number: 1
+        title: Doujinshi
+        pages: { from: 1, to: 39 }
+        body: The main doujinshi of *Futanari Akuma-san to Hiruyasumi*.
+      - number: 2
+        title: Happy Halloween Special
+        pages: { from: 40, to: 43 }
+        body: The *Happy Halloween* special for *Futanari Akuma-san to Hiruyasumi*.
+
+  - type: doujinshi
+    archive: Adventurers by Day_ Freaky Friends by Night.zip
+    mode: create
+    series:
+      slug: adventurers-by-day-freaky-friends-by-night
+      title: Adventurers by Day, Freaky Friends by Night
+      originalTitle: Adventurers by Day, Freaky Friends by Night
+      aliases: []
+      status: completed
+      publicationYear: 2025
+      description: A completed explicit English-translated original doujinshi by yukataro about adventuring companions whose relationship changes after dark.
+      rating: explicit
+      origin: original
+      tags: [forbidden-content, uncensored, english, translated]
+      authors: [{ name: yukataro, slug: yukataro }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - number: 1
+        title: Doujinshi
+        pages: all
+        body: The complete doujinshi of *Adventurers by Day, Freaky Friends by Night*.
+
+  - type: doujinshi
+    archive: Kyou wa Watashi ga Suru tte Itta no ni! _ But I said that youll be the one pleasured today!.zip
+    mode: create
+    series:
+      slug: kyou-wa-watashi-ga-suru-tte-itta-no-ni
+      title: But I Said That You'll Be the One Pleasured Today!
+      originalTitle: Kyou wa Watashi ga Suru tte Itta no ni!
+      aliases: [But I said that you'll be the one pleasured today!]
+      status: completed
+      publicationYear: 2023
+      description: A completed explicit English-translated Fate/Grand Order yuri doujinshi featuring Gudako and Quetzalcoatl.
+      rating: explicit
+      origin: fanwork
+      tags: [fate-grand-order, gudako, quetzalcoatl, big-breasts, big-clit, clit-stimulation, cunnilingus, females-only, fingering, kissing, sweating, yuri, english, translated]
+      authors: [{ name: sonotaozey, slug: sonotaozey }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Kyou wa Watashi ga Suru tte Itta no ni!*" }
+
+  - type: doujinshi
+    archive: Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!.zip
+    mode: create
+    series:
+      slug: nishizumi-dono-ni-haete-shimatte-mo-aishite-orimasu
+      title: Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!
+      originalTitle: Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!
+      aliases: []
+      status: completed
+      publicationYear: 2019
+      description: A completed explicit English-translated Girls und Panzer doujinshi featuring Miho Nishizumi and Yukari Akiyama.
+      rating: explicit
+      origin: fanwork
+      tags: [girls-und-panzer, miho-nishizumi, yukari-akiyama, big-breasts, blowjob, cum-swap, cunnilingus, dick-growth, futanari, kissing, nakadashi, schoolgirl-uniform, sole-dickgirl, yuri, english, translated]
+      authors: [{ name: sonotaozey, slug: sonotaozey }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!*" }
+
+  - type: doujinshi
+    archive: Yasashiku_ Sawatte_ Oku made Furete. _ Touch Me Softly_ Deep Inside..zip
+    mode: create
+    series:
+      slug: yasashiku-sawatte-oku-made-furete
+      title: Touch Me Softly, Deep Inside.
+      originalTitle: Yasashiku, Sawatte, Oku made Furete.
+      aliases: [Yasashiku Sawatte Oku made Furete]
+      status: completed
+      publicationYear: 2018
+      description: A completed explicit English-translated Girls und Panzer yuri doujinshi featuring Miho Nishizumi and Yukari Akiyama.
+      rating: explicit
+      origin: fanwork
+      tags: [girls-und-panzer, miho-nishizumi, yukari-akiyama, big-breasts, females-only, fingering, sweating, yuri, english, translated]
+      authors: [{ name: sonotaozey, slug: sonotaozey }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Yasashiku, Sawatte, Oku made Furete.*" }
+
+  - type: doujinshi
+    archive: Futodokimono no Tame no Waltz _ Waltz for Scoundrels.zip
+    mode: create
+    series:
+      slug: futodokimono-no-tame-no-waltz
+      title: Waltz for Scoundrels
+      originalTitle: Futodokimono no Tame no Waltz
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A completed explicit English-translated Love Live! Hasunosora School Idol Club doujinshi featuring Kozue Otomune and Megumi Fujishima.
+      rating: explicit
+      origin: fanwork
+      tags: [love-live-hasunosora-jogakuin-school-idol-club, kozue-otomune, megumi-fujishima, dickgirl-on-female, futanari, sole-dickgirl, sole-female, english, translated]
+      authors: [{ name: virophilia, slug: virophilia }]
+      artists: [{ name: orihi chihiro, slug: orihi-chihiro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Futodokimono no Tame no Waltz*." }
+
+  - type: doujinshi
+    archive: Ending the Divide Between Thought and Action.zip
+    mode: create
+    series:
+      slug: ending-the-divide-between-thought-and-action
+      title: Ending the Divide Between Thought and Action
+      originalTitle: Ending the Divide Between Thought and Action
+      aliases: []
+      status: completed
+      publicationYear: 2025
+      description: A completed explicit English-translated BanG Dream! yuri doujinshi featuring Anon Chihaya, Sayo Hikawa, and Soyo Nagasaki.
+      rating: explicit
+      origin: fanwork
+      tags: [bang-dream, anon-chihaya, sayo-hikawa, soyo-nagasaki, cunnilingus, females-only, kissing, yuri, english, translated]
+      authors: [{ name: virophilia, slug: virophilia }]
+      artists: [{ name: orihi chihiro, slug: orihi-chihiro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Ending the Divide Between Thought and Action*." }
+
+  - type: doujinshi
+    archive: Yuri Kyuuji ~Youen Shujin to Midara na Maid~ _ Yuri Service_ The Seductive Master and Lewd Maid.zip
+    mode: create
+    series:
+      slug: yuri-kyuuji-youen-shujin-to-midara-na-maid
+      title: "Yuri Service: The Seductive Master and Lewd Maid"
+      originalTitle: Yuri Kyuuji ~Youen Shujin to Midara na Maid~
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A completed explicit English-translated original yuri doujinshi about a seductive master and her maid.
+      rating: explicit
+      origin: original
+      tags: [females-only, maid, tribadism, yuri, english, translated]
+      authors: [{ name: noyama, slug: noyama }]
+      artists: [{ name: noyama, slug: noyama }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Yuri Kyuuji ~Youen Shujin to Midara na Maid~*." }
+
+  - type: doujinshi
+    archive: I Started Futanari Activities.zip
+    mode: create
+    series:
+      slug: i-started-futanari-activities
+      title: I Started Futanari Activities
+      originalTitle: I Started Futanari Activities
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A completed explicit English-translated original doujinshi by sella from coscoteikoku.
+      rating: explicit
+      origin: original
+      tags: [ahegao, big-balls, big-penis, blowjob, dickgirl-on-female, fft-threesome, full-packaged-futanari, futanari, group, gyaru, kissing, nakadashi, prostitution, rough-translation, scanmark, schoolgirl-uniform, sole-dickgirl, sweating, english, translated]
+      authors: [{ name: coscoteikoku, slug: coscoteikoku }]
+      artists: [{ name: sella, slug: sella }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *I Started Futanari Activities*." }
+
+  - type: doujinshi
+    archive: '[Yukataro] Skeb Request 054_ Onee-Loli Yuri (OC) [English] [Black Grimoires]-1280x.zip'
+    mode: create
+    series:
+      slug: skeb-request-054-onee-loli-yuri
+      title: "Skeb Request 054: Onee-Loli Yuri"
+      originalTitle: Skeb納品絵054 オリジナルキャラクター・おねえロリ百合3P／R18
+      aliases: [Onee-Loli Yuri]
+      status: completed
+      publicationYear: 2023
+      description: A four-page explicit English-translated original yuri request by yukataro.
+      rating: explicit
+      origin: original
+      tags: [ahegao, anal, anal-intercourse, bdsm, big-breasts, bondage, clamp, clit-stimulation, collar, females-only, femdom, fff-threesome, focus-anal, genital-piercing, group, lolicon, milf, multiple-orgasms, nipple-piercing, sex-toys, strap-on, sweating, yuri, english, translated]
+      authors: [{ name: yukataro, slug: yukataro }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Image Story, pages: all, body: "The complete four-page image story." }
+
+  - type: doujinshi
+    archive: (C90) [SONOTAOZEY (Yukataro)] Daiyojouhan Koujou Keikaku - The Regend of the Great Four-and-a-Half Tatami Room (Kantai Collection -KanColle-) [English] [qllvllp]-1280x.zip
+    mode: create
+    series:
+      slug: daiyojouhan-koujou-keikaku
+      title: The Legend of the Great Four-and-a-Half Tatami Room
+      originalTitle: 大四畳半向上計画
+      aliases: [Daiyojouhan Koujou Keikaku, The Regend of the Great Four-and-a-Half Tatami Room]
+      status: completed
+      publicationYear: 2016
+      description: A completed English-translated Kantai Collection C90 doujinshi featuring Akashi and Ooyodo.
+      rating: explicit
+      origin: fanwork
+      tags: [kantai-collection, akashi, ooyodo, females-only, glasses, multi-work-series, english, translated]
+      authors: [{ name: sonotaozey, slug: sonotaozey }]
+      artists: [{ name: yukataro, slug: yukataro }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Daiyojouhan Koujou Keikaku*." }
+
+  - type: doujinshi
+    archive: '[Rapisu] Penance and the Doctor – 6 Pages (Arknights) [English] [AKOTL]-1280x.zip'
+    mode: create
+    series:
+      slug: penance-and-the-doctor
+      title: Penance and the Doctor
+      originalTitle: ペナンスさんとドクター 全6ページ
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A six-page explicit English-translated Arknights doujinshi featuring Penance and the Doctor.
+      rating: explicit
+      origin: fanwork
+      tags: [arknights, doctor, penance, big-ass, big-breasts, kemonomimi, sole-female, sole-male, tail, english, translated]
+      authors: [{ name: Unknown, slug: unknown }]
+      artists: [{ name: rapisu, slug: rapisu }]
+      featured: false
+    chapters:
+      - { number: 1, title: Image Story, pages: all, body: "The complete six-page image story." }
+
+  - type: doujinshi
+    archive: '[Rapisu] Texas Uke ft Pen Kyuu   Texas Receiving ft Penguin Logistics (Arknights) [English]-1280x.zip'
+    mode: create
+    series:
+      slug: texas-uke-ft-pen-kyuu
+      title: Texas Receiving ft. Penguin Logistics
+      originalTitle: テキサス受 ftペン急
+      aliases: [Texas Uke ft Pen Kyuu]
+      status: completed
+      publicationYear: 2024
+      description: A five-page explicit English-translated Arknights doujinshi featuring Texas, Exusiai, and Mostima.
+      rating: explicit
+      origin: fanwork
+      tags: [arknights, texas, exusiai, mostima, ahegao, anal, anal-intercourse, dickgirl-on-female, fingering, full-packaged-futanari, futanari, group, halo, kemonomimi, sole-female, squirting, sweating, tail, x-ray, english, translated]
+      authors: [{ name: Unknown, slug: unknown }]
+      artists: [{ name: rapisu, slug: rapisu }]
+      featured: false
+    chapters:
+      - { number: 1, title: Image Story, pages: all, body: "The complete five-page image story." }
+
+  - type: doujinshi
+    archive: '[Rapisu] Blaze Translated Gallery (Arknights) [English] [DeppoTL]-1280x.zip'
+    mode: create
+    series:
+      slug: blaze-translated-gallery
+      title: Blaze Translated Gallery
+      originalTitle: ブレイズ
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A 22-page explicit English-translated Arknights image story featuring Blaze and the Doctor.
+      rating: explicit
+      origin: fanwork
+      tags: [arknights, blaze, doctor, kemonomimi, ponytail, sole-female, sole-male, stockings, tail, very-long-hair, english, translated]
+      authors: [{ name: Unknown, slug: unknown }]
+      artists: [{ name: rapisu, slug: rapisu }]
+      featured: false
+    chapters:
+      - { number: 1, title: Image Story, pages: all, body: "The complete 22-page translated gallery." }
+
+  - type: doujinshi
+    archive: Furooraito no Shiikuretto Kyouyaku _ Fluorites Secret Contract.zip
+    mode: create
+    series:
+      slug: furooraito-no-shiikuretto-kyouyaku
+      title: Fluorite's Secret Contract
+      originalTitle: フローライトのシークレット協約
+      aliases: [Furooraito no Shiikuretto Kyouyaku]
+      status: completed
+      publicationYear: 2026
+      description: "A completed explicit English-translated Arknights: Endfield doujinshi featuring Fluorite."
+      rating: explicit
+      origin: fanwork
+      tags: [arknights-endfield, fluorite, english, translated]
+      authors: [{ name: Hoshoku Shoujo, slug: hoshoku-shoujo }]
+      artists: [{ name: karasu-chan, slug: karasu-chan }]
+      featured: false
+    chapters:
+      - { number: 1, title: Doujinshi, pages: all, body: "The complete doujinshi of *Fluorite's Secret Contract*." }
+
+  - type: image-set
+    archive: '[maiqo]artist_maiqo patreon合集 22～25.11-1280x.zip'
+    mode: create
+    imageSet:
+      slug: maiqo-patreon-collection-2022-2025-11
+      title: maiqo Patreon Collection 2022–2025.11
+      summary: A 448-image Patreon collection by maiqo spanning 2022 through November 2025.
+      publishedAt: 2025-11-15
+      rating: explicit
+      tags: [maiqo, western, imageset, arknights, genshin-impact, girls-frontline, honkai-gakuen, zenless-zone-zero, belle, elysia, jane-doe, miyabi-hoshimi, raiden-shogun, yae-miko, yanagi-tsukishiro, anal, dickgirl-on-female, fff-threesome, fingering, futanari, glasses, horns, kemonomimi, kissing, pantyhose, policewoman, pregnant, shemale, strap-on, tail, thigh-high-boots, tribadism, very-long-hair, yuri]
+      spheres: [anime]
+      featured: false
+      author: maiqo
+      notes: Source metadata lists 448 images and a posting date of 2025-11-15.

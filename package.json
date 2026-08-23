@@ -9,15 +9,12 @@
     "dev": "bun run prepare:search && astro dev",
     "build": "astro build && pagefind --site dist",
     "media:serve": "bun scripts/media.ts serve",
+    "media:add": "bun scripts/media.ts add",
+    "media:remove": "bun scripts/media.ts remove",
     "media:optimize": "bun scripts/media.ts optimize",
     "media:validate": "bun scripts/media.ts validate",
     "media:sync": "bun scripts/media.ts sync",
-    "manga:sanitize": "bun scripts/sanitize-manga.ts",
-    "manga:serve": "bun scripts/serve-manga.ts",
-    "manga:sync": "bun scripts/sync-manga.ts",
-    "image-sets:sync": "bun scripts/sync-image-sets.ts",
-    "manga:validate": "bun scripts/validate-manga-media.ts",
-    "deploy:vps": "bun scripts/deploy-vps.ts",
+    "content:new": "bun scripts/content.ts new",
     "prepare:search": "astro build && pagefind --site dist --output-path public/pagefind",
     "preview": "astro preview",
     "astro": "astro"
@@ -26,7 +23,8 @@
     "@astrojs/mdx": "^7.0.5",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.1.6"
+    "astro": "^7.1.6",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

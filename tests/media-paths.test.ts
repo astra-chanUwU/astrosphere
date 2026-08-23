@@ -14,8 +14,10 @@ test("maps both public namespaces through one root", () => {
 
 test("passes unrelated requests and rejects traversal or private operations", () => {
   expect(resolveMediaRequestPath("/favicon.svg", "/srv/astrosphere/media")).toBeUndefined();
-  expect(() => resolveMediaRequestPath("/manga/%2e%2e/secret.txt", "/srv/astrosphere/media")).toThrow("escapes MEDIA_ROOT");
-  expect(() => resolveMediaRequestPath("/media/images/%2e%2e/.astrosphere/log", "/srv/astrosphere/media")).toThrow("escapes MEDIA_ROOT");
+  expect(resolveMediaRequestPath("/manga/example", "/srv/astrosphere/media")).toBeUndefined();
+  expect(resolveMediaRequestPath("/manga/example/chapter-001", "/srv/astrosphere/media")).toBeUndefined();
+  expect(() => resolveMediaRequestPath("/manga/%2e%2e/secret.webp", "/srv/astrosphere/media")).toThrow("escapes MEDIA_ROOT");
+  expect(() => resolveMediaRequestPath("/media/images/%2e%2e/.astrosphere/log.webp", "/srv/astrosphere/media")).toThrow("escapes MEDIA_ROOT");
 });
 
 test("returns one MIME policy for all media", () => {

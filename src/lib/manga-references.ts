@@ -8,7 +8,7 @@ export type MangaReferenceIssue = {
 type MangaSeriesReference = { collection: "mangaSeries"; data: { slug: string } };
 type MangaChapterReference = {
   collection: "mangaChapters";
-  data: { slug: string; series: string; pagePath: string; pageCount: number };
+  data: { slug: string; series: string };
 };
 
 export const validateMangaReferences = ({

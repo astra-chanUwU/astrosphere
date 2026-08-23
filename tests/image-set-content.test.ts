@@ -32,6 +32,7 @@ test("keeps only the approved image sets in the first-class collection", async (
     "flou-darknessu",
     "flou-sona",
     "flou-stella-oc",
+    "maiqo-patreon-collection-2022-2025-11",
     "ndgd",
     "party-games-stuffy-bunny-bonus-art-and-fanart",
     "pixiv-ttp-77260223",

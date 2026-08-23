@@ -97,7 +97,7 @@ media:
     src: /media/images/party-games-stuffy-bunny-bonus-art-and-fanart/27_Ecfktb8U8AAFM0p.webp
     alt: "Party Games - Stuffy Bunny image 27 by Derpixon"
   - kind: image
-    src: /media/images/party-games-stuffy-bunny-bonus-art-and-fanart/28_EcIqP0MUMAMOfoJ.webp
+    src: /media/images/party-games-stuffy-bunny-bonus-art-and-fanart/28_EcIqP0MUMAMOfoW.webp
     alt: "Party Games - Stuffy Bunny image 28 by Derpixon"
   - kind: image
     src: /media/images/party-games-stuffy-bunny-bonus-art-and-fanart/29_EJg7FN7UYAAvi0s.webp

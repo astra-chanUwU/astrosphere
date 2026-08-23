@@ -1,5 +1,7 @@
 # Manga Sanitizer Design
 
+> Superseded by `docs/superpowers/specs/2026-08-23-unified-media-cli-design.md`. Retained as a historical record; do not use its commands or environment variables.
+
 ## Goal
 
 Provide a local Bun utility that converts one manga chapter, or every chapter inside a manga series, into sequential WebP pages.

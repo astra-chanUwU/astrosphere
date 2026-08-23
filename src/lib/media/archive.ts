@@ -1119,7 +1119,7 @@ export const validateArchiveEntryPath = (entryPath: string): string => {
     /[\0\r\n\\]/.test(entryPath) ||
     entryPath.startsWith("/") ||
     entryPath.startsWith("-") ||
-    /[*?\[\]]/.test(entryPath) ||
+    /[*?]/.test(entryPath) ||
     /^[A-Za-z]:/.test(entryPath)
   ) {
     return unsafeArchivePath();
@@ -1135,6 +1135,9 @@ export const validateArchiveEntryPath = (entryPath: string): string => {
   if (!isDirectory && normalized.length === 0) return unsafeArchivePath();
   return isDirectory && normalized.length > 0 ? `${normalized}/` : normalized;
 };
+
+export const escapeZipEntrySelector = (entryPath: string): string =>
+  entryPath.replaceAll("[", "[[]");
 
 export const listZipEntries = async (
   source: string,
@@ -1185,9 +1188,10 @@ export const readZipEntryHeader = async (
   spawn: ZipEntryHeaderSpawner = spawnZipEntryHeader,
   sourceDescriptor?: number,
 ): Promise<Uint8Array> => {
-  const selector =
+  const rawSelector =
     typeof entry === "string" ? entry : (entry.selector ?? entry.path);
-  validateArchiveEntryPath(selector);
+  validateArchiveEntryPath(rawSelector);
+  const selector = escapeZipEntrySelector(rawSelector);
   const argv = ["unzip", "-p", source, selector];
   const child = spawn(
     argv,

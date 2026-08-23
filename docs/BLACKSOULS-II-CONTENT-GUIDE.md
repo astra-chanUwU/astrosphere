@@ -70,7 +70,7 @@ Use real Markdown/HTML line breaks between figures. Never write literal `\\n` te
 
 ## Media handling
 
-Heavy binaries must stay outside the repository under `IMAGE_SET_MEDIA_ROOT` (locally `/Users/astrochan/Documents/Workstation/astrosphere-media/images`). Store sanitized local copies there, preferably as WebP, and reference them from content with root-relative URLs:
+Heavy binaries must stay outside the repository under `MEDIA_ROOT/images` (locally `/Users/astrochan/Documents/Workstation/astrosphere-media/images`). Store optimized local copies there, preferably as WebP, and reference them from content with root-relative URLs:
 
 ```md
 <figure>
@@ -126,9 +126,10 @@ Before handoff:
 - [ ] The final Gallery contains only images that are actually gallery material.
 - [ ] Image references are root-relative and use `/media/images/...`.
 - [ ] No heavy image binaries were added to the repository.
-- [ ] Every referenced image has a corresponding WebP in `IMAGE_SET_MEDIA_ROOT`.
+- [ ] Every referenced image has a corresponding WebP in `MEDIA_ROOT/images`.
 - [ ] Image-reference count equals unique-reference count unless intentional duplication is documented.
 - [ ] `bun run astro check` passes with zero errors, warnings, and hints.
+- [ ] `bun run media:validate` reports no errors.
 - [ ] The local page is opened beside the source page for a final visual comparison.
 
 Useful checks:
@@ -139,4 +140,3 @@ rg -n '^## |^### |^#### |^<figure>|/media/images/' src/content/artifacts/essays/
 ```
 
 The Cheshire Cat page is the reference implementation for this workflow: `/artifacts/black-souls-ii-cheshire-cat`.
-

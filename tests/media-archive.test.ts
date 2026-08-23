@@ -16,6 +16,7 @@ import { join } from "node:path";
 import {
   cleanupOwnedDirectory,
   createOwnedDirectory,
+  escapeZipEntrySelector,
   extractZipArchive,
   listZipEntries,
   publishStagedZipDirectory,
@@ -144,11 +145,20 @@ test("normalizes safe archive paths and rejects ambiguous separators", () => {
 });
 
 test("rejects unzip member selectors with pattern or option syntax", () => {
-  for (const unsafe of ["page*.jpg", "page?.jpg", "page[0].jpg", "-page.jpg"]) {
+  for (const unsafe of ["page*.jpg", "page?.jpg", "-page.jpg"]) {
     expect(() => validateArchiveEntryPath(unsafe)).toThrow(
       "unsafe archive path",
     );
   }
+});
+
+test("escapes square brackets so common release names are selected literally", () => {
+  expect(validateArchiveEntryPath("page [Digital] [1r0n].jpg")).toBe(
+    "page [Digital] [1r0n].jpg",
+  );
+  expect(escapeZipEntrySelector("page [Digital] [1r0n].jpg")).toBe(
+    "page [[]Digital] [[]1r0n].jpg",
+  );
 });
 
 test("rejects unsafe entries returned by unzip", async () => {

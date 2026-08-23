@@ -5,6 +5,8 @@ export type CommandResult = {
 };
 export type CommandOptions = {
   cwd?: string;
+  /** Bytes or text written to the child process standard input. */
+  stdin?: string | Uint8Array;
   /** Descriptors inherited by the child as /dev/fd/3, /dev/fd/4, ... */
   inheritedDescriptors?: number[];
   /** Capability-bound argv used by the real process runner. */
@@ -25,12 +27,18 @@ export const runCommand: CommandRunner = async (argv, options) => {
   const child = Bun.spawn(options?.executionArgv ?? argv, {
     cwd: options?.cwd,
     stdio: [
-      "ignore",
+      options?.stdin === undefined ? "ignore" : "pipe",
       options?.stdoutDescriptor ?? "pipe",
       "pipe",
       ...descriptors,
     ],
   });
+  if (options?.stdin !== undefined) {
+    const stdin = child.stdin;
+    if (!stdin) throw new Error("Child process stdin pipe is unavailable.");
+    stdin.write(options.stdin);
+    stdin.end();
+  }
   const [stdout, stderr, exitCode] = await Promise.all([
     options?.stdoutDescriptor === undefined
       ? new Response(child.stdout as ReadableStream<Uint8Array>).bytes()

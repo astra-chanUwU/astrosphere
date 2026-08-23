@@ -46,7 +46,7 @@ This sequence will start with a conversation between Lewis Carroll and Mr. Robin
 
 When you enter their home, you will be greeted by Alice, Lorina, and then Edith.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Liddell-estate-561x420.png" alt="The Liddell estate." loading="lazy" decoding="async" /><figcaption>The Liddell estate.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Liddell-estate-560x420.png" alt="The Liddell estate." loading="lazy" decoding="async" /><figcaption>The Liddell estate.</figcaption></figure>
 
 
 In the living room, Edith will be eating her toast, while Alice and Lorina be doing something together.
@@ -167,7 +167,6 @@ Edith is a small and fragile girl. She has long blonde hair and blue eyes. Her s
 Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
 
 Source: [FGGuides — Edith Liddell](https://fgguides.com/blacksouls/edith-liddell/).
-
 
 
 

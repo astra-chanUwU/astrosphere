@@ -1,5 +1,11 @@
 import { expect, test } from "bun:test";
-import { createMangaPageSrc, getMangaInstallmentLabel, sortMangaChapters } from "../src/lib/manga-reader";
+import {
+  createMangaPageSrc,
+  getMangaChapterAvailabilityLabel,
+  getMangaChapterPages,
+  getMangaInstallmentLabel,
+  sortMangaChapters,
+} from "../src/lib/manga-reader";
 
 const reader = await Bun.file(new URL("../src/components/MangaReader.astro", import.meta.url)).text();
 const chapterList = await Bun.file(new URL("../src/components/MangaChapterList.astro", import.meta.url)).text();
@@ -42,6 +48,18 @@ test("labels one-shot installments without a chapter number", () => {
   expect(getMangaInstallmentLabel("one-shot", 1)).toBe("One-shot");
 });
 
+test("unavailable chapters expose a clear label and no reader pages", () => {
+  expect(
+    getMangaChapterAvailabilityLabel({ availability: "unavailable" }),
+  ).toBe("Currently unavailable");
+  expect(getMangaChapterPages({ availability: "unavailable" })).toEqual([]);
+});
+
+test("available chapters expose their page count and reader pages", () => {
+  expect(getMangaChapterAvailabilityLabel({ pageCount: 3 })).toBe("3 pages");
+  expect(getMangaChapterPages({ pageCount: 3 })).toEqual([1, 2, 3]);
+});
+
 test("manga navigation uses the series format for installment labels", () => {
   expect(reader).toContain("getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title)");
   expect(chapterList).toContain("getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title)");
@@ -56,8 +74,12 @@ test("manga reader renders previous, series, and next controls at both ends", ()
 });
 
 test("manga reader passes root-relative chapter paths to page URL generation", () => {
-  expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath, page, chapter.data.pageExtension)");
-  expect(reader).not.toContain("PUBLIC_MANGA_ASSET_BASE_URL");
+  expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)");
+});
+
+test("manga reader and chapter list show unavailable chapters without page images", () => {
+  expect(reader).toContain("This chapter’s media is currently unavailable.");
+  expect(chapterList).toContain("getMangaChapterAvailabilityLabel(chapter.data)");
 });
 
 test("manga chapter controls retain visible space between links when they wrap", () => {

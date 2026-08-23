@@ -15,6 +15,15 @@ const routes = [
   { prefix: "/media/images/", namespace: "images" as const },
 ];
 
+const managedMediaExtensions = new Set([
+  ".avif",
+  ".gif",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+]);
+
 const relationEscapesRoot = (value: string): boolean =>
   value === ".." ||
   value.startsWith("../") ||
@@ -38,7 +47,8 @@ const relationIsInside = (root: string, candidate: string): boolean => {
 };
 
 export const isManagedMediaUrl = (source: string): boolean =>
-  routes.some(({ prefix }) => source.startsWith(prefix));
+  routes.some(({ prefix }) => source.startsWith(prefix)) &&
+  managedMediaExtensions.has(extname(source).toLowerCase());
 
 export const resolveMediaUrl = (source: string, root: string): ResolvedMediaPath => {
   const route = routes.find(({ prefix }) => source.startsWith(prefix));

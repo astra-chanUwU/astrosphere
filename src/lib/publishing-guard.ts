@@ -1,7 +1,5 @@
 import { access } from "node:fs/promises";
 import { resolve } from "node:path";
-import { resolveImageSetMediaFile } from "./image-set-media-root";
-import { resolveMangaMediaFile } from "./manga-media-root";
 
 export type PublishingIssue = {
   source: string;
@@ -23,10 +21,6 @@ export type PublishingUrlReference = {
 
 type PublishingAssetValidationOptions = {
   publicRoot?: string;
-  mangaRoot?: string;
-  validateManga?: boolean;
-  imageSetRoot?: string;
-  validateImageSets?: boolean;
   accessFile?: (path: string) => Promise<boolean>;
 };
 
@@ -42,15 +36,25 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 const isLocalSource = (value: unknown): value is string =>
   typeof value === "string" && value.startsWith("/");
 
-const entrySource = (entry: GuardableEntry) => `${entry.collection}:${entry.data.slug}`;
+const entrySource = (entry: GuardableEntry) =>
+  `${entry.collection}:${entry.data.slug}`;
 
-const addMediaReference = (references: PublishingAssetReference[], source: string, field: string, media: unknown) => {
+const addMediaReference = (
+  references: PublishingAssetReference[],
+  source: string,
+  field: string,
+  media: unknown,
+) => {
   if (!isRecord(media)) return;
-  if (isLocalSource(media.src)) references.push({ source, field: `${field}.src`, src: media.src });
-  if (isLocalSource(media.poster)) references.push({ source, field: `${field}.poster`, src: media.poster });
+  if (isLocalSource(media.src))
+    references.push({ source, field: `${field}.src`, src: media.src });
+  if (isLocalSource(media.poster))
+    references.push({ source, field: `${field}.poster`, src: media.poster });
 };
 
-export const collectPublishingAssetReferences = (entries: GuardableEntry[]): PublishingAssetReference[] => {
+export const collectPublishingAssetReferences = (
+  entries: GuardableEntry[],
+): PublishingAssetReference[] => {
   const references: PublishingAssetReference[] = [];
 
   for (const entry of entries) {
@@ -59,12 +63,21 @@ export const collectPublishingAssetReferences = (entries: GuardableEntry[]): Pub
     addMediaReference(references, source, "cover", entry.data.cover);
 
     if (Array.isArray(entry.data.media)) {
-      entry.data.media.forEach((media, index) => addMediaReference(references, source, `media[${index}]`, media));
+      entry.data.media.forEach((media, index) =>
+        addMediaReference(references, source, `media[${index}]`, media),
+      );
     }
     if (Array.isArray(entry.data.art)) {
-      entry.data.art.forEach((art, index) => addMediaReference(references, source, `art[${index}]`, art));
+      entry.data.art.forEach((art, index) =>
+        addMediaReference(references, source, `art[${index}]`, art),
+      );
     }
-    if (entry.collection === "mangaChapters" && typeof entry.data.pagePath === "string" && typeof entry.data.pageExtension === "string" && typeof entry.data.pageCount === "number") {
+    if (
+      entry.collection === "mangaChapters" &&
+      typeof entry.data.pagePath === "string" &&
+      typeof entry.data.pageExtension === "string" &&
+      typeof entry.data.pageCount === "number"
+    ) {
       for (let page = 1; page <= entry.data.pageCount; page += 1) {
         references.push({
           source,
@@ -74,7 +87,9 @@ export const collectPublishingAssetReferences = (entries: GuardableEntry[]): Pub
       }
     }
     if (entry.body) {
-      for (const match of entry.body.matchAll(/!\[[^\]]*\]\((\/[^\s)]+)(?:\s+[^)]*)?\)/g)) {
+      for (const match of entry.body.matchAll(
+        /!\[[^\]]*\]\((\/[^\s)]+)(?:\s+[^)]*)?\)/g,
+      )) {
         references.push({ source, field: "body image", src: match[1] });
       }
     }
@@ -87,75 +102,65 @@ export const validatePublishingAssetReferences = async (
   references: PublishingAssetReference[],
   options: PublishingAssetValidationOptions = {},
 ): Promise<PublishingIssue[]> => {
-  const publicRoot = resolve(options.publicRoot ?? resolve(process.cwd(), "public"));
-  const validateManga = options.validateManga ?? false;
-  const validateImageSets = options.validateImageSets ?? false;
-  const accessFile = options.accessFile ?? (async (path: string) => {
-    try {
-      await access(path);
-      return true;
-    } catch {
-      return false;
-    }
-  });
+  const publicRoot = resolve(
+    options.publicRoot ?? resolve(process.cwd(), "public"),
+  );
+  const accessFile =
+    options.accessFile ??
+    (async (path: string) => {
+      try {
+        await access(path);
+        return true;
+      } catch {
+        return false;
+      }
+    });
   const issues: PublishingIssue[] = [];
 
-  if (validateManga && !options.mangaRoot && references.some((reference) => reference.src.startsWith("/manga/"))) {
-    issues.push({
-      source: "configuration",
-      field: "MANGA_MEDIA_ROOT",
-      message: "set MANGA_MEDIA_ROOT to validate external manga files",
-    });
-  }
   for (const reference of references) {
     const isManga = reference.src.startsWith("/manga/");
     const isImageSet = reference.src.startsWith("/media/images/");
-    if (isManga && (!validateManga || !options.mangaRoot)) continue;
-    if (isImageSet && !validateImageSets) continue;
-    if (isImageSet && validateImageSets) {
-      const publicPath = resolve(publicRoot, `.${reference.src}`);
-      if (await accessFile(publicPath)) continue;
-      if (!options.imageSetRoot) {
-        if (!issues.some((issue) => issue.source === "configuration" && issue.field === "IMAGE_SET_MEDIA_ROOT")) {
-          issues.push({
-            source: "configuration",
-            field: "IMAGE_SET_MEDIA_ROOT",
-            message: "set IMAGE_SET_MEDIA_ROOT to validate external image-set files",
-          });
-        }
-        continue;
-      }
-    }
-
-    const path = isManga
-      ? resolveMangaMediaFile(reference.src, options.mangaRoot!)
-      : isImageSet
-        ? validateImageSets
-          ? resolveImageSetMediaFile(reference.src, options.imageSetRoot!)
-          : resolve(publicRoot, `.${reference.src}`)
-        : resolve(publicRoot, `.${reference.src}`);
+    if (isManga || isImageSet) continue;
+    const path = resolve(publicRoot, `.${reference.src}`);
 
     if (!(await accessFile(path))) {
-      issues.push({ source: reference.source, field: reference.field, message: `missing local file "${reference.src}"` });
+      issues.push({
+        source: reference.source,
+        field: reference.field,
+        message: `missing local file "${reference.src}"`,
+      });
     }
   }
   return issues;
 };
 
-export const collectPublishingUrlReferences = (body: string, source: string): PublishingUrlReference[] =>
-  [...body.matchAll(/(?<!!)\[[^\]]*\]\((https?:\/\/[^\s)]*)\)/g)].map((match) => ({
-    source,
-    field: "body link",
-    url: match[1],
-  }));
+export const collectPublishingUrlReferences = (
+  body: string,
+  source: string,
+): PublishingUrlReference[] =>
+  [...body.matchAll(/(?<!!)\[[^\]]*\]\((https?:\/\/[^\s)]*)\)/g)].map(
+    (match) => ({
+      source,
+      field: "body link",
+      url: match[1],
+    }),
+  );
 
-export const validatePublishingUrlReferences = (references: PublishingUrlReference[]): PublishingIssue[] =>
+export const validatePublishingUrlReferences = (
+  references: PublishingUrlReference[],
+): PublishingIssue[] =>
   references.flatMap((reference) => {
     try {
       new URL(reference.url);
       return [];
     } catch {
-      return [{ source: reference.source, field: reference.field, message: `invalid URL "${reference.url}"` }];
+      return [
+        {
+          source: reference.source,
+          field: reference.field,
+          message: `invalid URL "${reference.url}"`,
+        },
+      ];
     }
   });
 

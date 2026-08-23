@@ -214,13 +214,27 @@ const mangaChapterSchema = z.object({
   number: z.number().positive(),
   title: z.string().min(1),
   publishedAt: isoDateSchema.optional(),
-  pagePath: z.string().startsWith("/"),
+  availability: z.enum(["available", "unavailable"]).default("available"),
+  pagePath: z.string().startsWith("/").optional(),
   pageExtension: z.enum(["jpg", "jpeg", "png", "webp"]).default("jpg"),
-  pageCount: z.number().int().positive(),
-  pageWidth: z.number().int().positive(),
-  pageHeight: z.number().int().positive(),
-  readingDirection: z.enum(["rtl", "ltr"]).default("rtl"),
+  pageCount: z.number().int().positive().optional(),
+  pageWidth: z.number().int().positive().optional(),
+  pageHeight: z.number().int().positive().optional(),
+  readingDirection: z.enum(["rtl", "ltr"]).optional().default("rtl"),
   status: statusSchema,
+}).superRefine((chapter, context) => {
+  const readerFields = [
+    chapter.pagePath,
+    chapter.pageCount,
+    chapter.pageWidth,
+    chapter.pageHeight,
+  ];
+  if (chapter.availability === "available" && readerFields.some((value) => value === undefined)) {
+    context.addIssue({
+      code: "custom",
+      message: "Available manga chapters require complete reader metadata.",
+    });
+  }
 });
 
 const slugFromFrontmatter = ({ data, entry }: { data: Record<string, unknown>; entry: string }) => {

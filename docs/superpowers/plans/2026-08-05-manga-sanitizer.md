@@ -1,5 +1,7 @@
 # Manga Sanitizer Implementation Plan
 
+> Superseded by `docs/superpowers/specs/2026-08-23-unified-media-cli-design.md`. Retained as a historical record; do not use its commands or environment variables.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a safe local command that renames and converts manga chapter pages to sequential WebP files.
@@ -20,10 +22,12 @@
 ### Task 1: Deterministic page ordering
 
 **Files:**
+
 - Create: `src/lib/manga-sanitizer.ts`
 - Test: `tests/manga-sanitizer.test.ts`
 
 **Interfaces:**
+
 - Produces: `sortMangaSourceFiles(files)` and `createSanitizedPageName(index)`.
 
 - [ ] **Step 1: Write failing tests** for natural filename ordering, ignored non-image names, and zero-padded WebP output names.
@@ -34,10 +38,12 @@
 ### Task 2: Safe local sanitizer command
 
 **Files:**
+
 - Create: `scripts/sanitize-manga.ts`
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Consumes: `sortMangaSourceFiles(files)` and `createSanitizedPageName(index)`.
 - Produces: `bun run manga:sanitize <path> [--all] [--dry-run] [--quality 1-100]`.
 
@@ -50,6 +56,7 @@
 ### Task 3: Sanitize Murciélago
 
 **Files:**
+
 - Modify: `public/manga/murcielago/chapter-000/` through `chapter-004/`
 
 - [ ] **Step 1: Run the batch command in dry-run mode** and inspect page counts and mappings.

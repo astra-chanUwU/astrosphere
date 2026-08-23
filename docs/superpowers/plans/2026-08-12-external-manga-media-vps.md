@@ -1,5 +1,7 @@
 # External Manga Media and VPS Deployment Implementation Plan
 
+> Superseded by `docs/superpowers/specs/2026-08-23-unified-media-cli-design.md`. Retained as a historical record; do not use its commands or environment variables.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Remove manga binaries from the application repository and Git history while preserving manga URLs, adding an external local/VPS media workflow, and preparing Bun-built Astro releases served by Caddy.
@@ -60,12 +62,14 @@
 ### Task 1: Centralize Manga Asset URLs
 
 **Files:**
+
 - Create: `src/lib/manga-assets.ts`
 - Create: `tests/manga-assets.test.ts`
 - Modify: `src/lib/manga-reader.ts`
 - Modify: `tests/manga-reader.test.ts`
 
 **Interfaces:**
+
 - Produces: `resolveMangaAssetUrl(source: string, baseUrl?: string): string`
 - Produces: `createMangaPageSrc(pagePath: string, page: number, extension?: string, baseUrl?: string): string`
 
@@ -76,21 +80,33 @@ import { expect, test } from "bun:test";
 import { resolveMangaAssetUrl } from "../src/lib/manga-assets";
 
 test("keeps same-origin manga URLs by default", () => {
-  expect(resolveMangaAssetUrl("/manga/example/chapter-001/001.webp")).toBe("/manga/example/chapter-001/001.webp");
+  expect(resolveMangaAssetUrl("/manga/example/chapter-001/001.webp")).toBe(
+    "/manga/example/chapter-001/001.webp",
+  );
 });
 
 test("moves manga assets to a configured development origin", () => {
-  expect(resolveMangaAssetUrl("/manga/example/cover.webp", "http://localhost:4322/manga/"))
-    .toBe("http://localhost:4322/manga/example/cover.webp");
+  expect(
+    resolveMangaAssetUrl(
+      "/manga/example/cover.webp",
+      "http://localhost:4322/manga/",
+    ),
+  ).toBe("http://localhost:4322/manga/example/cover.webp");
 });
 
 test("preserves explicit HTTPS manga assets", () => {
-  expect(resolveMangaAssetUrl("https://media.example.test/manga/example/cover.webp", "/manga"))
-    .toBe("https://media.example.test/manga/example/cover.webp");
+  expect(
+    resolveMangaAssetUrl(
+      "https://media.example.test/manga/example/cover.webp",
+      "/manga",
+    ),
+  ).toBe("https://media.example.test/manga/example/cover.webp");
 });
 
 test("rejects unrelated root-relative paths", () => {
-  expect(() => resolveMangaAssetUrl("/media/example.webp", "/manga")).toThrow("Expected a /manga asset path");
+  expect(() => resolveMangaAssetUrl("/media/example.webp", "/manga")).toThrow(
+    "Expected a /manga asset path",
+  );
 });
 ```
 
@@ -107,13 +123,23 @@ const MANGA_PREFIX = "/manga";
 
 const normalizeBaseUrl = (baseUrl: string) => {
   const normalized = baseUrl.trim().replace(/\/+$/, "");
-  if (!normalized || (normalized !== MANGA_PREFIX && !normalized.startsWith("https://") && !normalized.startsWith("http://localhost:"))) {
-    throw new Error("Manga asset base URL must be /manga, HTTPS, or localhost HTTP.");
+  if (
+    !normalized ||
+    (normalized !== MANGA_PREFIX &&
+      !normalized.startsWith("https://") &&
+      !normalized.startsWith("http://localhost:"))
+  ) {
+    throw new Error(
+      "Manga asset base URL must be /manga, HTTPS, or localhost HTTP.",
+    );
   }
   return normalized;
 };
 
-export const resolveMangaAssetUrl = (source: string, baseUrl = MANGA_PREFIX) => {
+export const resolveMangaAssetUrl = (
+  source: string,
+  baseUrl = MANGA_PREFIX,
+) => {
   if (source.startsWith("https://")) return source;
   if (source !== MANGA_PREFIX && !source.startsWith(`${MANGA_PREFIX}/`)) {
     throw new Error(`Expected a /manga asset path, received "${source}".`);
@@ -127,8 +153,16 @@ export const resolveMangaAssetUrl = (source: string, baseUrl = MANGA_PREFIX) => 
 Change `createMangaPageSrc` to accept a final optional `baseUrl` and resolve the completed page path:
 
 ```ts
-export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg", baseUrl?: string) =>
-  resolveMangaAssetUrl(`${pagePath}/${String(page).padStart(3, "0")}.${extension}`, baseUrl);
+export const createMangaPageSrc = (
+  pagePath: string,
+  page: number,
+  extension = "jpg",
+  baseUrl?: string,
+) =>
+  resolveMangaAssetUrl(
+    `${pagePath}/${String(page).padStart(3, "0")}.${extension}`,
+    baseUrl,
+  );
 ```
 
 Add a reader test expecting `http://localhost:4322/manga/example/chapter-001/001.webp` when the base URL is supplied.
@@ -149,6 +183,7 @@ git commit -m "feat: centralize manga asset URLs"
 ### Task 2: Apply the Asset Boundary to Every Manga Image
 
 **Files:**
+
 - Modify: `src/components/MangaReader.astro`
 - Modify: `src/components/MangaArtGallery.astro`
 - Modify: `src/components/MangaSeriesCard.astro`
@@ -158,6 +193,7 @@ git commit -m "feat: centralize manga asset URLs"
 - Create: `tests/manga-asset-rendering.test.ts`
 
 **Interfaces:**
+
 - Consumes: `resolveMangaAssetUrl(source, import.meta.env.PUBLIC_MANGA_ASSET_BASE_URL)`
 - Consumes: `createMangaPageSrc(pagePath, page, extension, baseUrl)`
 
@@ -205,6 +241,7 @@ git commit -m "feat: resolve external manga media"
 ### Task 3: Separate Repository and Manga Filesystem Validation
 
 **Files:**
+
 - Create: `src/lib/manga-media-root.ts`
 - Create: `tests/manga-media-root.test.ts`
 - Modify: `src/lib/publishing-guard.ts`
@@ -214,6 +251,7 @@ git commit -m "feat: resolve external manga media"
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Produces: `requireMangaMediaRoot(value?: string): string`
 - Produces: `resolveMangaMediaFile(source: string, root: string): string`
 - Extends: `validatePublishingAssetReferences(references, options)` where options include `publicRoot`, `mangaRoot`, `validateManga`, and injectable `accessFile`.
@@ -283,12 +321,14 @@ git commit -m "feat: validate external manga media"
 ### Task 5: Add a Safe Local Bun Media Server
 
 **Files:**
+
 - Create: `src/lib/manga-media-server.ts`
 - Create: `scripts/serve-manga.ts`
 - Create: `tests/manga-media-server.test.ts`
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Produces: `resolveMangaMediaRequestPath(pathname: string, root: string): string | undefined`
 - Produces: `contentTypeForMangaFile(pathname: string): string`
 - Adds command: `bun run manga:serve`
@@ -331,6 +371,7 @@ git commit -m "feat: serve external manga media locally"
 ### Task 6: Add Bun VPS Deployment, Media Sync, and Caddy Configuration
 
 **Files:**
+
 - Create: `scripts/sync-manga.ts`
 - Create: `scripts/deploy-vps.ts`
 - Create: `ops/Caddyfile`
@@ -339,6 +380,7 @@ git commit -m "feat: serve external manga media locally"
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Adds command: `bun run manga:sync -- --dry-run`
 - Adds command: `bun run deploy:vps`
 - Requires sync env: `MANGA_MEDIA_ROOT`, `VPS_MEDIA_TARGET`
@@ -419,11 +461,13 @@ git commit -m "feat: add Bun VPS deployment workflow"
 ### Task 7: Copy and Verify the External Media Library
 
 **Files:**
+
 - External create: `/Users/astrochan/Documents/Workstation/astrosphere-media/manga/**`
 - Modify: `.gitignore`
 - Remove only after verification: `public/manga/**`
 
 **Interfaces:**
+
 - Provides local `MANGA_MEDIA_ROOT=/Users/astrochan/Documents/Workstation/astrosphere-media/manga`
 
 - [ ] **Step 1: Record the source inventory without modifying files**
@@ -484,6 +528,7 @@ git commit -m "chore: move manga media outside Git"
 ### Task 8: Full Verification Before History Rewrite
 
 **Files:**
+
 - Modify only if failures reveal defects in Task 1–7 files.
 
 - [ ] **Step 1: Run the complete test suite**
@@ -515,11 +560,13 @@ Use a specific commit message matching the defect; do not squash unrelated user 
 ### Task 9: Rewrite Git History in a Disposable Clone
 
 **Files/State:**
+
 - Create outside repository: timestamped Git bundle backup.
 - Create in a temporary directory: disposable mirror clone.
 - Rewrite: historical Git object IDs for `main` and reviewed tags.
 
 **Interfaces:**
+
 - Removes historical paths: `public/manga/**`
 - Also removes `dist/**`, `.astro/**`, and `public/pagefind/**` only if the pre-rewrite audit proves they were committed.
 

@@ -1,5 +1,7 @@
 # README documentation design
 
+> Superseded by `docs/superpowers/specs/2026-08-23-unified-media-cli-design.md`. Retained as a historical record; do not use its commands or environment variables.
+
 ## Goal
 
 Update `README.md` so it serves both software contributors and content editors. It should explain the repository's purpose, get a new contributor from checkout to a working local site, and point editors to the correct content and media workflows without duplicating the detailed VPS runbook.

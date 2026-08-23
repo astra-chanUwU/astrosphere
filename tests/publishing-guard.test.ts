@@ -1,20 +1,39 @@
 import { expect, test } from "bun:test";
 
-import { collectPublishingAssetReferences, collectPublishingUrlReferences, validatePublishingAssetReferences, validatePublishedTarget, validatePublishingUrlReferences } from "../src/lib/publishing-guard";
+import {
+  collectPublishingAssetReferences,
+  collectPublishingUrlReferences,
+  validatePublishingAssetReferences,
+  validatePublishedTarget,
+  validatePublishingUrlReferences,
+} from "../src/lib/publishing-guard";
 
-const contentLibrary = await Bun.file(new URL("../src/lib/content.ts", import.meta.url)).text();
-const homepage = await Bun.file(new URL("../src/pages/index.astro", import.meta.url)).text();
+const contentLibrary = await Bun.file(
+  new URL("../src/lib/content.ts", import.meta.url),
+).text();
+const homepage = await Bun.file(
+  new URL("../src/pages/index.astro", import.meta.url),
+).text();
 
 test("collects local frontmatter, markdown, and manga page assets", () => {
   const references = collectPublishingAssetReferences([
     {
       collection: "artifacts",
-      data: { slug: "signal", hero: { src: "/media/signal.jpg" }, media: [{ src: "/media/audio.ogg", poster: "/media/poster.jpg" }] },
+      data: {
+        slug: "signal",
+        hero: { src: "/media/signal.jpg" },
+        media: [{ src: "/media/audio.ogg", poster: "/media/poster.jpg" }],
+      },
       body: "![Map](/media/map.png)",
     },
     {
       collection: "mangaChapters",
-      data: { slug: "chapter-001", pagePath: "/manga/example/chapter-001", pageExtension: "webp", pageCount: 2 },
+      data: {
+        slug: "chapter-001",
+        pagePath: "/manga/example/chapter-001",
+        pageExtension: "webp",
+        pageCount: 2,
+      },
     },
   ]);
 
@@ -30,123 +49,95 @@ test("collects local frontmatter, markdown, and manga page assets", () => {
 
 test("reports a missing local publishing asset", async () => {
   const issues = await validatePublishingAssetReferences(
-    [{ source: "artifacts:signal", field: "hero.src", src: "/media/missing.jpg" }],
+    [
+      {
+        source: "artifacts:signal",
+        field: "hero.src",
+        src: "/media/missing.jpg",
+      },
+    ],
     {
       publicRoot: "/workspace/public",
       accessFile: async () => false,
     },
   );
 
-  expect(issues).toEqual([{
-    source: "artifacts:signal",
-    field: "hero.src",
-    message: 'missing local file "/media/missing.jpg"',
-  }]);
+  expect(issues).toEqual([
+    {
+      source: "artifacts:signal",
+      field: "hero.src",
+      message: 'missing local file "/media/missing.jpg"',
+    },
+  ]);
 });
 
 test("ordinary publishing validation skips external manga files", async () => {
   const issues = await validatePublishingAssetReferences(
     [
-      { source: "artifacts:signal", field: "hero.src", src: "/media/missing.jpg" },
-      { source: "mangaChapters:example", field: "pages[1]", src: "/manga/example/chapter-001/001.webp" },
+      {
+        source: "artifacts:signal",
+        field: "hero.src",
+        src: "/media/missing.jpg",
+      },
+      {
+        source: "mangaChapters:example",
+        field: "pages[1]",
+        src: "/manga/example/chapter-001/001.webp",
+      },
     ],
     {
       publicRoot: "/workspace/public",
-      validateManga: false,
       accessFile: async () => false,
     },
   );
 
-  expect(issues).toEqual([{
-    source: "artifacts:signal",
-    field: "hero.src",
-    message: 'missing local file "/media/missing.jpg"',
-  }]);
+  expect(issues).toEqual([
+    {
+      source: "artifacts:signal",
+      field: "hero.src",
+      message: 'missing local file "/media/missing.jpg"',
+    },
+  ]);
 });
 
 test("ordinary publishing validation skips external image-set files", async () => {
   const issues = await validatePublishingAssetReferences(
     [
-      { source: "artifacts:flou-sona", field: "hero.src", src: "/media/images/flou-sona/001.webp" },
-      { source: "artifacts:signal", field: "hero.src", src: "/media/missing.jpg" },
+      {
+        source: "artifacts:flou-sona",
+        field: "hero.src",
+        src: "/media/images/flou-sona/001.webp",
+      },
+      {
+        source: "artifacts:signal",
+        field: "hero.src",
+        src: "/media/missing.jpg",
+      },
     ],
     {
       publicRoot: "/workspace/public",
-      validateImageSets: false,
       accessFile: async () => false,
     },
   );
 
-  expect(issues).toEqual([{
-    source: "artifacts:signal",
-    field: "hero.src",
-    message: 'missing local file "/media/missing.jpg"',
-  }]);
-});
-
-test("explicit manga validation reports one missing-root configuration issue", async () => {
-  const issues = await validatePublishingAssetReferences(
-    [
-      { source: "mangaChapters:example", field: "pages[1]", src: "/manga/example/chapter-001/001.webp" },
-      { source: "mangaChapters:example", field: "pages[2]", src: "/manga/example/chapter-001/002.webp" },
-    ],
-    { publicRoot: "/workspace/public", validateManga: true },
-  );
-
-  expect(issues).toEqual([{
-    source: "configuration",
-    field: "MANGA_MEDIA_ROOT",
-    message: "set MANGA_MEDIA_ROOT to validate external manga files",
-  }]);
-});
-
-test("explicit manga validation checks the external media path", async () => {
-  const checkedPaths: string[] = [];
-  const issues = await validatePublishingAssetReferences(
-    [{ source: "mangaChapters:example", field: "pages[1]", src: "/manga/example/chapter-001/001.webp" }],
+  expect(issues).toEqual([
     {
-      publicRoot: "/workspace/public",
-      mangaRoot: "/srv/astrosphere/media/manga",
-      validateManga: true,
-      accessFile: async (path) => {
-        checkedPaths.push(path);
-        return false;
-      },
+      source: "artifacts:signal",
+      field: "hero.src",
+      message: 'missing local file "/media/missing.jpg"',
     },
-  );
-
-  expect(checkedPaths).toEqual(["/srv/astrosphere/media/manga/example/chapter-001/001.webp"]);
-  expect(issues).toEqual([{
-    source: "mangaChapters:example",
-    field: "pages[1]",
-    message: 'missing local file "/manga/example/chapter-001/001.webp"',
-  }]);
-});
-
-test("explicit image-set validation checks the external media path", async () => {
-  const checkedPaths: string[] = [];
-  const issues = await validatePublishingAssetReferences(
-    [{ source: "artifacts:flou-sona", field: "media[0].src", src: "/media/images/flou-sona/001.webp" }],
-    {
-      publicRoot: "/workspace/public",
-      imageSetRoot: "/srv/astrosphere/media/images",
-      validateImageSets: true,
-      accessFile: async (path) => {
-        checkedPaths.push(path);
-        return false;
-      },
-    },
-  );
-
-  expect(checkedPaths).toEqual([
-    "/workspace/public/media/images/flou-sona/001.webp",
-    "/srv/astrosphere/media/images/flou-sona/001.webp",
   ]);
-  expect(issues[0]?.message).toBe('missing local file "/media/images/flou-sona/001.webp"');
 });
 
 test("rejects a published item that targets a draft", () => {
-  expect(validatePublishedTarget({ source: "trails:orbit", field: "items[artifact]", target: "draft-note", targetStatus: "draft" })).toEqual({
+  expect(
+    validatePublishedTarget({
+      source: "trails:orbit",
+      field: "items[artifact]",
+      target: "draft-note",
+      targetStatus: "draft",
+    }),
+  ).toEqual({
     source: "trails:orbit",
     field: "items[artifact]",
     message: 'targets unpublished entry "draft-note"',
@@ -154,13 +145,17 @@ test("rejects a published item that targets a draft", () => {
 });
 
 test("reports malformed external markdown URLs", () => {
-  const issues = validatePublishingUrlReferences(collectPublishingUrlReferences("[bad](https://)" , "artifacts:signal"));
+  const issues = validatePublishingUrlReferences(
+    collectPublishingUrlReferences("[bad](https://)", "artifacts:signal"),
+  );
 
-  expect(issues).toEqual([{
-    source: "artifacts:signal",
-    field: "body link",
-    message: 'invalid URL "https://"',
-  }]);
+  expect(issues).toEqual([
+    {
+      source: "artifacts:signal",
+      field: "body link",
+      message: 'invalid URL "https://"',
+    },
+  ]);
 });
 
 test("runs the publishing guard during the production build", () => {
