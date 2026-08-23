@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { lstatSync, type Stats } from "node:fs";
+import type { Stats } from "node:fs";
 import {
   copyFile,
   lstat,
@@ -19,13 +19,17 @@ import {
 } from "node:path";
 import {
   cleanupOwnedDirectory,
-  createOwnedDirectory,
+  createOwnedDirectoryAt,
+  type DirectoryCapability,
   extractZipArchive,
   listZipEntries,
   type OwnedDirectory,
+  publishOwnedDirectory,
   publishStagedZipDirectory,
   readZipEntryHeader,
+  releaseDirectoryCapability,
   releaseOwnedDirectory,
+  retainDirectoryCapability,
 } from "./archive";
 import { MediaError } from "./errors";
 import {
@@ -87,6 +91,7 @@ export type OptimizeAdapters = {
   runner?: CommandRunner;
   which?: (name: string) => string | null;
   verifyOutput?: (path: string, runner?: CommandRunner) => Promise<void>;
+  beforePinnedPublish?: () => void;
 };
 
 export type PlanMediaOptimizationAdapters = {
@@ -426,13 +431,14 @@ const inspectConcreteSource = async (
   };
 };
 
-const createStagingDirectory = (destination: string): OwnedDirectory => {
-  const path = join(
-    dirname(destination),
+const createStagingDirectory = (
+  destination: string,
+  parent: DirectoryCapability,
+): OwnedDirectory =>
+  createOwnedDirectoryAt(
+    parent,
     `.${basename(destination)}.media-staging-${randomUUID()}`,
   );
-  return createOwnedDirectory(path);
-};
 
 const pathIdentity = (info: Stats): PathIdentity => ({
   device: info.dev,
@@ -443,27 +449,6 @@ const samePathIdentity = (
   info: Stats,
   identity: PathIdentity,
 ): boolean => info.dev === identity.device && info.ino === identity.inode;
-
-const assertDirectoryIdentity = (
-  path: string,
-  identity: PathIdentity,
-): void => {
-  try {
-    const info = lstatSync(path);
-    if (
-      !info.isSymbolicLink() &&
-      info.isDirectory() &&
-      samePathIdentity(info, identity)
-    ) {
-      return;
-    }
-  } catch {
-    // A missing or inaccessible path is also an identity change.
-  }
-  throw new Error(
-    `Optimization destination parent changed during execution: ${path}`,
-  );
-};
 
 const dryRunResult = (plan: OptimizationPlan): OptimizeResult => ({
   plan,
@@ -530,6 +515,7 @@ export const optimizeMedia = async (
   let staging: OwnedDirectory | undefined;
   let extraction: OwnedDirectory | undefined;
   let published: OwnedDirectory | undefined;
+  let destinationParentCapability: DirectoryCapability | undefined;
 
   try {
     let sourceInfo: Stats;
@@ -592,6 +578,15 @@ export const optimizeMedia = async (
       );
     }
     const parentIdentity = pathIdentity(parentInfo);
+    destinationParentCapability = retainDirectoryCapability(destinationParent);
+    if (
+      destinationParentCapability.device !== parentIdentity.device ||
+      destinationParentCapability.inode !== parentIdentity.inode
+    ) {
+      throw new Error(
+        `Optimization destination parent changed during execution: ${destinationParent}`,
+      );
+    }
     const destination = join(
       destinationParent,
       basename(requestedDestination),
@@ -621,12 +616,19 @@ export const optimizeMedia = async (
       },
     );
 
-    if (options.dryRun) return dryRunResult(plan);
+    if (options.dryRun) {
+      releaseDirectoryCapability(destinationParentCapability);
+      destinationParentCapability = undefined;
+      return dryRunResult(plan);
+    }
 
     const archiveSource = inspection.kind === "archive";
     requireOptimizationTools(plan, archiveSource, which);
 
-    staging = createStagingDirectory(destination);
+    staging = createStagingDirectory(
+      destination,
+      destinationParentCapability,
+    );
 
     if (archiveSource) {
       const extractionPath = join(
@@ -642,6 +644,7 @@ export const optimizeMedia = async (
           (owned) => {
             extraction = owned;
           },
+          destinationParentCapability,
         );
         if (!extraction) {
           throw new Error("Archive extraction ownership was not retained.");
@@ -714,15 +717,18 @@ export const optimizeMedia = async (
       }
     }
 
-    assertDirectoryIdentity(destinationParent, parentIdentity);
-    await publishStagedZipDirectory(staging.path, destination);
-    published = { ...staging, path: destination };
+    publishOwnedDirectory(staging, destination, {
+      beforePinnedPublish: adapters.beforePinnedPublish,
+    });
+    published = staging;
     staging = undefined;
 
     if (extraction) cleanupOwnedDirectory(extraction);
     extraction = undefined;
     releaseOwnedDirectory(published);
     published = undefined;
+    releaseDirectoryCapability(destinationParentCapability);
+    destinationParentCapability = undefined;
 
     return {
       plan,
@@ -743,6 +749,10 @@ export const optimizeMedia = async (
       } catch (cleanupError) {
         cleanupErrors.push(cleanupError);
       }
+    }
+    if (destinationParentCapability) {
+      releaseDirectoryCapability(destinationParentCapability);
+      destinationParentCapability = undefined;
     }
     const failure =
       cleanupErrors.length === 0

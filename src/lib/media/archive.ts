@@ -4,11 +4,9 @@ import {
   constants,
   fstatSync,
   lstatSync,
-  mkdirSync,
-  mkdtempSync,
   openSync,
+  realpathSync,
   rmSync,
-  rmdirSync,
 } from "node:fs";
 import { lstat, readdir, realpath } from "node:fs/promises";
 import {
@@ -42,14 +40,31 @@ export type ArchivePublisher = (
   destinationPath: string,
 ) => Promise<void>;
 
-export type OwnedDirectory = {
+export type DirectoryCapability = {
   path: string;
   descriptor: number;
   device: number;
   inode: number;
 };
 
+export type OwnedDirectory = {
+  path: string;
+  descriptor: number;
+  device: number;
+  inode: number;
+  name: string;
+  parent: DirectoryCapability;
+};
+
 export type ArchiveOwnershipReceiver = (owned: OwnedDirectory) => void;
+
+export type OwnedDirectoryCleanupOptions = {
+  afterOwnershipCheck?: (quarantinePath: string) => void;
+};
+
+export type OwnedDirectoryPublicationOptions = {
+  beforePinnedPublish?: () => void;
+};
 
 type ArchiveNativeFfiType =
   | "cstring"
@@ -160,6 +175,12 @@ const linuxRenameat2Syscall = (arch: NodeJS.Architecture): number | null => {
 
 type LinuxNoReplaceOperation = {
   publish: (stagingPath: Uint8Array, destinationPath: Uint8Array) => unknown;
+  publishRelative: (
+    stagingParentDescriptor: number,
+    stagingName: Uint8Array,
+    destinationParentDescriptor: number,
+    destinationName: Uint8Array,
+  ) => unknown;
   close: () => void;
 };
 
@@ -184,6 +205,19 @@ const openLinuxNoReplaceOperation = (
             stagingPath,
             -100,
             destinationPath,
+            1,
+          ),
+        publishRelative: (
+          stagingParentDescriptor,
+          stagingName,
+          destinationParentDescriptor,
+          destinationName,
+        ) =>
+          library.symbols.renameat2(
+            stagingParentDescriptor,
+            stagingName,
+            destinationParentDescriptor,
+            destinationName,
             1,
           ),
         close: () => library.close(),
@@ -211,6 +245,20 @@ const openLinuxNoReplaceOperation = (
               stagingPath,
               -100,
               destinationPath,
+              1,
+            ),
+          publishRelative: (
+            stagingParentDescriptor,
+            stagingName,
+            destinationParentDescriptor,
+            destinationName,
+          ) =>
+            library.symbols.syscall(
+              syscallNumber,
+              stagingParentDescriptor,
+              stagingName,
+              destinationParentDescriptor,
+              destinationName,
               1,
             ),
           close: () => library.close(),
@@ -319,15 +367,213 @@ export const publishStagedZipDirectory = async (
   publishStagedZipDirectorySync(stagingPath, destinationPath, options);
 };
 
-const retainOwnedDirectory = (path: string): OwnedDirectory => {
-  const descriptor = openSync(
-    path,
-    constants.O_RDONLY | constants.O_DIRECTORY | constants.O_NOFOLLOW,
+const directoryOpenFlags =
+  constants.O_RDONLY | constants.O_DIRECTORY | constants.O_NOFOLLOW;
+
+const publishRelativeNoReplaceSync = (
+  parentDescriptor: number,
+  stagingName: string,
+  destinationName: string,
+  destinationDisplay = destinationName,
+): void => {
+  const destination = destinationDisplay;
+  try {
+    if (process.platform === "darwin") {
+      const library = openArchiveNativeLibrary("/usr/lib/libSystem.B.dylib", {
+        renameatx_np: {
+          args: ["i32", "cstring", "i32", "cstring", "u32"],
+          returns: "i32",
+        },
+      });
+      try {
+        if (
+          !nativeCallSucceeded(
+            library.symbols.renameatx_np(
+              parentDescriptor,
+              posixPath(stagingName),
+              parentDescriptor,
+              posixPath(destinationName),
+              0x00000004,
+            ),
+          )
+        ) {
+          throw noReplacePublishError(destination);
+        }
+        return;
+      } finally {
+        library.close();
+      }
+    }
+
+    if (process.platform === "linux") {
+      const operation = openLinuxNoReplaceOperation(
+        process.arch,
+        openArchiveNativeLibrary,
+      );
+      try {
+        if (
+          !nativeCallSucceeded(
+            operation.publishRelative(
+              parentDescriptor,
+              posixPath(stagingName),
+              parentDescriptor,
+              posixPath(destinationName),
+            ),
+          )
+        ) {
+          throw noReplacePublishError(destination);
+        }
+        return;
+      } finally {
+        operation.close();
+      }
+    }
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("Unable to atomically publish ZIP extraction")
+    ) {
+      throw error;
+    }
+    throw new Error(
+      `Capability-bound no-replace directory publication is unavailable on ${process.platform}.`,
+    );
+  }
+
+  throw new Error(
+    `Capability-bound no-replace directory publication is unavailable on ${process.platform}.`,
   );
+};
+
+const openRelativeDirectorySync = (
+  parentDescriptor: number,
+  name: string,
+): number => {
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        openat: {
+          args: ["i32", "cstring", "i32"],
+          returns: "i32",
+        },
+      });
+      const descriptor = library.symbols.openat(
+        parentDescriptor,
+        posixPath(name),
+        directoryOpenFlags,
+      );
+      if (typeof descriptor === "number" && descriptor >= 0) return descriptor;
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound directory access is unavailable on ${process.platform}.`,
+  );
+};
+
+const removeRelativeDirectoryRecursiveSync = (
+  parentDescriptor: number,
+  name: string,
+): void => {
+  if (process.platform === "darwin") {
+    const library = openArchiveNativeLibrary("/usr/lib/libSystem.B.dylib", {
+      removefileat: {
+        args: ["i32", "cstring", "ptr", "u32"],
+        returns: "i32",
+      },
+    });
+    try {
+      if (
+        !nativeCallSucceeded(
+          library.symbols.removefileat(
+            parentDescriptor,
+            posixPath(name),
+            null,
+            1,
+          ),
+        )
+      ) {
+        throw new Error(`Unable to remove owned temporary directory: ${name}`);
+      }
+      return;
+    } finally {
+      library.close();
+    }
+  }
+
+  if (process.platform === "linux") {
+    rmSync(join(`/proc/self/fd/${parentDescriptor}`, name), {
+      recursive: true,
+      force: true,
+    });
+    return;
+  }
+
+  throw new Error(
+    `Capability-bound directory cleanup is unavailable on ${process.platform}.`,
+  );
+};
+
+const makeRelativeDirectorySync = (
+  parentDescriptor: number,
+  name: string,
+  mode: number,
+): void => {
+  const libraries =
+    process.platform === "darwin"
+      ? ["/usr/lib/libSystem.B.dylib"]
+      : process.platform === "linux"
+        ? linuxLibcNames(process.arch)
+        : [];
+  for (const libraryName of libraries) {
+    let library: ArchiveNativeLibrary | undefined;
+    try {
+      library = openArchiveNativeLibrary(libraryName, {
+        mkdirat: {
+          args: ["i32", "cstring", "u32"],
+          returns: "i32",
+        },
+      });
+      if (
+        nativeCallSucceeded(
+          library.symbols.mkdirat(
+            parentDescriptor,
+            posixPath(name),
+            mode,
+          ),
+        )
+      ) {
+        return;
+      }
+    } catch {
+      // Try the next compatible native library before failing closed.
+    } finally {
+      library?.close();
+    }
+  }
+  throw new Error(
+    `Capability-bound directory creation is unavailable on ${process.platform}.`,
+  );
+};
+
+export const retainDirectoryCapability = (
+  path: string,
+): DirectoryCapability => {
+  const descriptor = openSync(path, directoryOpenFlags);
   try {
     const info = fstatSync(descriptor);
     if (!info.isDirectory()) {
-      throw new Error(`Owned temporary path is not a directory: ${path}`);
+      throw new Error(`Retained path is not a directory: ${path}`);
     }
     return {
       path,
@@ -341,34 +587,113 @@ const retainOwnedDirectory = (path: string): OwnedDirectory => {
   }
 };
 
-export const createOwnedDirectory = (
-  path: string,
-  mode = 0o700,
-): OwnedDirectory => {
-  mkdirSync(path, { mode });
+export const releaseDirectoryCapability = (
+  capability: DirectoryCapability,
+): void => {
+  if (capability.descriptor < 0) return;
+  closeSync(capability.descriptor);
+  capability.descriptor = -1;
+};
+
+const cloneDirectoryCapability = (
+  capability: DirectoryCapability,
+): DirectoryCapability => {
+  const descriptor = openRelativeDirectorySync(capability.descriptor, ".");
   try {
-    return retainOwnedDirectory(path);
+    const info = fstatSync(descriptor);
+    return {
+      path: capability.path,
+      descriptor,
+      device: info.dev,
+      inode: info.ino,
+    };
   } catch (error) {
-    try {
-      rmdirSync(path);
-    } catch {
-      // The retained capability error is more actionable than best-effort cleanup.
-    }
+    closeSync(descriptor);
     throw error;
   }
 };
 
-const createOwnedTemporaryDirectory = (prefix: string): OwnedDirectory => {
-  const path = mkdtempSync(prefix);
+const retainOwnedDirectory = (
+  path: string,
+  retainedParent?: DirectoryCapability,
+): OwnedDirectory => {
+  const parent =
+    retainedParent ?? retainDirectoryCapability(realpathSync(dirname(path)));
+  const name = basename(path);
+  let descriptor = -1;
   try {
-    return retainOwnedDirectory(path);
-  } catch (error) {
-    try {
-      rmdirSync(path);
-    } catch {
-      // The retained capability error is more actionable than best-effort cleanup.
+    descriptor = openRelativeDirectorySync(parent.descriptor, name);
+    const info = fstatSync(descriptor);
+    if (!info.isDirectory()) {
+      throw new Error(`Owned temporary path is not a directory: ${path}`);
     }
+    return {
+      path: join(parent.path, name),
+      descriptor,
+      device: info.dev,
+      inode: info.ino,
+      name,
+      parent,
+    };
+  } catch (error) {
+    if (descriptor >= 0) closeSync(descriptor);
+    releaseDirectoryCapability(parent);
     throw error;
+  }
+};
+
+export const createOwnedDirectory = (
+  path: string,
+  mode = 0o700,
+): OwnedDirectory => {
+  const parent = retainDirectoryCapability(realpathSync(dirname(path)));
+  try {
+    return createOwnedDirectoryAt(parent, basename(path), mode);
+  } finally {
+    releaseDirectoryCapability(parent);
+  }
+};
+
+export const createOwnedDirectoryAt = (
+  parent: DirectoryCapability,
+  name: string,
+  mode = 0o700,
+): OwnedDirectory => {
+  if (name !== basename(name) || name === "." || name === "..") {
+    throw new Error(`Unsafe owned directory name: ${name}`);
+  }
+  const ownedParent = cloneDirectoryCapability(parent);
+  let created = false;
+  try {
+    makeRelativeDirectorySync(parent.descriptor, name, mode);
+    created = true;
+    return retainOwnedDirectory(join(ownedParent.path, name), ownedParent);
+  } catch (error) {
+    if (created) {
+      try {
+        removeRelativeDirectoryRecursiveSync(parent.descriptor, name);
+      } catch {
+        // The retained capability error is more actionable than cleanup failure.
+      }
+    }
+    releaseDirectoryCapability(ownedParent);
+    throw error;
+  }
+};
+
+const createOwnedTemporaryDirectory = (
+  prefix: string,
+  retainedParent?: DirectoryCapability,
+): OwnedDirectory => {
+  const parent =
+    retainedParent ?? retainDirectoryCapability(realpathSync(dirname(prefix)));
+  try {
+    return createOwnedDirectoryAt(
+      parent,
+      `${basename(prefix)}${randomUUID()}`,
+    );
+  } finally {
+    if (!retainedParent) releaseDirectoryCapability(parent);
   }
 };
 
@@ -376,57 +701,192 @@ export const releaseOwnedDirectory = (owned: OwnedDirectory): void => {
   if (owned.descriptor < 0) return;
   closeSync(owned.descriptor);
   owned.descriptor = -1;
-};
-
-const pathExistsSync = (path: string): boolean => {
-  try {
-    lstatSync(path);
-    return true;
-  } catch (error) {
-    if (hasErrorCode(error, "ENOENT")) return false;
-    throw error;
+  if (owned.parent.descriptor >= 0) {
+    closeSync(owned.parent.descriptor);
+    owned.parent.descriptor = -1;
   }
 };
 
-const ownedDirectoryMatchesPath = (
-  owned: OwnedDirectory,
-  path: string,
+const directoryCapabilityNamesPath = (
+  capability: DirectoryCapability,
 ): boolean => {
-  const retained = fstatSync(owned.descriptor);
-  const candidate = lstatSync(path);
-  return (
-    retained.isDirectory() &&
-    !candidate.isSymbolicLink() &&
-    candidate.isDirectory() &&
-    retained.dev === owned.device &&
-    retained.ino === owned.inode &&
-    candidate.dev === owned.device &&
-    candidate.ino === owned.inode
-  );
+  try {
+    const retained = fstatSync(capability.descriptor);
+    const candidate = lstatSync(capability.path);
+    return (
+      retained.isDirectory() &&
+      !candidate.isSymbolicLink() &&
+      candidate.isDirectory() &&
+      retained.dev === capability.device &&
+      retained.ino === capability.inode &&
+      candidate.dev === capability.device &&
+      candidate.ino === capability.inode
+    );
+  } catch {
+    return false;
+  }
 };
 
-export const cleanupOwnedDirectory = (owned: OwnedDirectory): void => {
-  if (owned.descriptor < 0) return;
-  const originalPath = owned.path;
-  const quarantinePath = join(
-    dirname(originalPath),
-    `.${basename(originalPath)}.cleanup-${randomUUID()}`,
+const ownedDirectoryMatchesRelativeName = (
+  owned: OwnedDirectory,
+  name: string,
+): boolean => {
+  let candidateDescriptor = -1;
+  try {
+    const retained = fstatSync(owned.descriptor);
+    candidateDescriptor = openRelativeDirectorySync(
+      owned.parent.descriptor,
+      name,
+    );
+    const candidate = fstatSync(candidateDescriptor);
+    return (
+      retained.isDirectory() &&
+      candidate.isDirectory() &&
+      retained.dev === owned.device &&
+      retained.ino === owned.inode &&
+      candidate.dev === owned.device &&
+      candidate.ino === owned.inode
+    );
+  } catch {
+    return false;
+  } finally {
+    if (candidateDescriptor >= 0) closeSync(candidateDescriptor);
+  }
+};
+
+const setOwnedDirectoryName = (owned: OwnedDirectory, name: string): void => {
+  owned.name = name;
+  owned.path = join(owned.parent.path, name);
+};
+
+const restoreRelativeName = (
+  owned: OwnedDirectory,
+  currentName: string,
+  originalName: string,
+): void => {
+  try {
+    publishRelativeNoReplaceSync(
+      owned.parent.descriptor,
+      currentName,
+      originalName,
+    );
+  } catch {
+    // Preserve the isolated entry if its original name was concurrently reused.
+  }
+  setOwnedDirectoryName(owned, originalName);
+};
+
+const isolateOwnedDirectory = (
+  owned: OwnedDirectory,
+  purpose: "cleanup" | "publish",
+): string => {
+  const originalName = owned.name;
+  const isolatedName = `.${originalName}.${purpose}-${randomUUID()}`;
+  publishRelativeNoReplaceSync(
+    owned.parent.descriptor,
+    originalName,
+    isolatedName,
   );
+  setOwnedDirectoryName(owned, isolatedName);
+
+  if (!ownedDirectoryMatchesRelativeName(owned, isolatedName)) {
+    restoreRelativeName(owned, isolatedName, originalName);
+    throw new Error(`Owned staging changed before ${purpose}: ${owned.path}`);
+  }
+  return isolatedName;
+};
+
+export const publishOwnedDirectory = (
+  owned: OwnedDirectory,
+  destinationPath: string,
+  options: OwnedDirectoryPublicationOptions = {},
+): void => {
+  const requestedDestination = resolve(destinationPath);
+  let destinationParent: string;
+  try {
+    destinationParent = realpathSync(dirname(requestedDestination));
+  } catch {
+    destinationParent = dirname(requestedDestination);
+  }
+  const destination = join(
+    owned.parent.path,
+    basename(requestedDestination),
+  );
+  if (
+    destinationParent !== owned.parent.path ||
+    basename(destination) === "" ||
+    basename(destination).includes(sep)
+  ) {
+    throw new Error(
+      `Owned publication destination is outside its retained parent: ${destination}`,
+    );
+  }
+
+  options.beforePinnedPublish?.();
+  if (!directoryCapabilityNamesPath(owned.parent)) {
+    throw new Error(
+      `Optimization destination parent changed during execution: ${owned.parent.path}`,
+    );
+  }
+
+  const isolatedName = isolateOwnedDirectory(owned, "publish");
+  const destinationName = basename(destination);
+  publishRelativeNoReplaceSync(
+    owned.parent.descriptor,
+    isolatedName,
+    destinationName,
+    destination,
+  );
+  setOwnedDirectoryName(owned, destinationName);
+
+  if (!directoryCapabilityNamesPath(owned.parent)) {
+    try {
+      cleanupOwnedDirectory(owned);
+    } catch {
+      // Retain the parent-identity failure as the primary transaction error.
+    }
+    throw new Error(
+      `Optimization destination parent changed during execution: ${owned.parent.path}`,
+    );
+  }
+};
+
+export const cleanupOwnedDirectory = (
+  owned: OwnedDirectory,
+  options: OwnedDirectoryCleanupOptions = {},
+): void => {
+  if (owned.descriptor < 0) return;
 
   try {
-    try {
-      publishStagedZipDirectorySync(originalPath, quarantinePath);
-    } catch (error) {
-      if (!pathExistsSync(originalPath)) return;
-      throw error;
+    if (process.platform !== "darwin" && process.platform !== "linux") {
+      throw new Error(
+        `Capability-bound directory cleanup is unavailable on ${process.platform}.`,
+      );
     }
+    if (!ownedDirectoryMatchesRelativeName(owned, owned.name)) {
+      return;
+    }
+    const quarantineName = isolateOwnedDirectory(owned, "cleanup");
+    const quarantinePath = owned.path;
 
-    if (!ownedDirectoryMatchesPath(owned, quarantinePath)) {
-      publishStagedZipDirectorySync(quarantinePath, originalPath);
+    options.afterOwnershipCheck?.(quarantinePath);
+
+    const sealedName = `.${quarantineName}.sealed-${randomUUID()}`;
+    publishRelativeNoReplaceSync(
+      owned.parent.descriptor,
+      quarantineName,
+      sealedName,
+    );
+    setOwnedDirectoryName(owned, sealedName);
+    if (!ownedDirectoryMatchesRelativeName(owned, sealedName)) {
+      restoreRelativeName(owned, sealedName, quarantineName);
       return;
     }
 
-    rmSync(quarantinePath, { recursive: true, force: true });
+    removeRelativeDirectoryRecursiveSync(
+      owned.parent.descriptor,
+      sealedName,
+    );
   } finally {
     releaseOwnedDirectory(owned);
   }
@@ -579,12 +1039,14 @@ export const extractZipArchive = async (
   runner: CommandRunner = runCommand,
   publish: ArchivePublisher = publishStagedZipDirectory,
   receiveOwnership?: ArchiveOwnershipReceiver,
+  retainedParent?: DirectoryCapability,
 ): Promise<ArchiveEntry[]> => {
   const entries = await listZipEntries(source, runner);
   const destinationPath = resolve(destination);
   await ensurePathIsAbsent(destinationPath);
   const staging = createOwnedTemporaryDirectory(
     join(dirname(destinationPath), `.${basename(destinationPath)}.extract-`),
+    retainedParent,
   );
 
   try {
@@ -597,8 +1059,18 @@ export const extractZipArchive = async (
       );
 
     await verifyExtractedTree(staging.path);
-    await publish(staging.path, destinationPath);
-    staging.path = destinationPath;
+    if (publish === publishStagedZipDirectory) {
+      publishOwnedDirectory(staging, destinationPath);
+    } else {
+      isolateOwnedDirectory(staging, "publish");
+      await publish(staging.path, destinationPath);
+      setOwnedDirectoryName(staging, basename(destinationPath));
+      if (!ownedDirectoryMatchesRelativeName(staging, staging.name)) {
+        throw new Error(
+          `Owned staging changed before publication: ${destinationPath}`,
+        );
+      }
+    }
     if (receiveOwnership) receiveOwnership(staging);
     else releaseOwnedDirectory(staging);
     return entries;

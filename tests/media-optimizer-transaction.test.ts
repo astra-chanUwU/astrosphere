@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { renameSync, symlinkSync } from "node:fs";
 import {
   mkdir,
   mkdtemp,
@@ -480,6 +481,45 @@ test("creates gallery parents and verifies every staged output", async () => {
   });
 });
 
+test("rejects a successfully verified replacement of optimizer staging", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destination = join(root, "output");
+    const heldStaging = join(root, "held-staging");
+    let staging = "";
+    await mkdir(source);
+    await Bun.write(join(source, "page.webp"), webp);
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        {
+          ...tools,
+          verifyOutput: async (output) => {
+            staging = dirname(output);
+            await rename(staging, heldStaging);
+            await mkdir(staging);
+            await writeFile(output, webp);
+            await writeFile(join(staging, "replacement.txt"), "preserve");
+          },
+        },
+      ),
+      "staging changed",
+    );
+    expect(await readFile(join(staging, "replacement.txt"), "utf8")).toBe(
+      "preserve",
+    );
+    expect(await Bun.file(join(heldStaging, "001.webp")).exists()).toBe(true);
+    expect(await Bun.file(destination).exists()).toBe(false);
+  });
+});
+
 test("no-replace publication preserves a destination created during execution", async () => {
   await withTemporaryRoot(async (root) => {
     const source = join(root, "source");
@@ -505,7 +545,7 @@ test("no-replace publication preserves a destination created during execution", 
           },
         },
       ),
-      "atomically publish",
+      destination,
     );
     expect(await readFile(marker, "utf8")).toBe("preserve");
     expect(await stagingNames(root)).toEqual([]);
@@ -550,6 +590,46 @@ test("revalidates the canonical destination parent before publication", async ()
     );
     expect(await readFile(marker, "utf8")).toBe("preserve");
     expect(await Bun.file(destination).exists()).toBe(false);
+  });
+});
+
+test("pins the destination parent at the exact publication boundary", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destinationParent = join(root, "target");
+    const heldParent = join(root, "held-target");
+    const destination = join(destinationParent, "output");
+    const input = join(source, "page.webp");
+    let boundaryReached = false;
+    await mkdir(source);
+    await mkdir(destinationParent);
+    await Bun.write(input, webp);
+    const before = await Bun.file(input).bytes();
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        {
+          ...tools,
+          beforePinnedPublish: () => {
+            boundaryReached = true;
+            renameSync(destinationParent, heldParent);
+            symlinkSync(source, destinationParent);
+          },
+        },
+      ),
+      "destination parent changed",
+    );
+    expect(boundaryReached).toBe(true);
+    expect(await Bun.file(input).bytes()).toEqual(before);
+    expect(await Bun.file(join(source, "output")).exists()).toBe(false);
+    expect(await readdir(heldParent)).toEqual([]);
   });
 });
 
