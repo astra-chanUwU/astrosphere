@@ -187,21 +187,24 @@ test("rejects symbolic links created during extraction and removes its destinati
   const root = await mkdtemp(join(tmpdir(), "media-archive-"));
   const destination = join(root, "extracted");
   const calls: string[][] = [];
+  let stagingDestination = "";
   try {
     await expectRejection(
       extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
         calls.push(argv);
         if (argv[1] === "-Z1") return commandResult("page.jpg\nescape\n");
-        await writeFile(join(destination, "page.jpg"), "image");
-        await symlink("../outside", join(destination, "escape"));
+        stagingDestination = argv[4];
+        await writeFile(join(stagingDestination, "page.jpg"), "image");
+        await symlink("../outside", join(stagingDestination, "escape"));
         return commandResult();
       }),
       "symbolic link",
     );
-    expect(calls).toEqual([
-      ["unzip", "-Z1", "/tmp/book.cbz"],
-      ["unzip", "-qq", "/tmp/book.cbz", "-d", destination],
-    ]);
+    expect(calls).toHaveLength(2);
+    expect(calls[0]).toEqual(["unzip", "-Z1", "/tmp/book.cbz"]);
+    expect(calls[1].slice(0, 4)).toEqual(["unzip", "-qq", "/tmp/book.cbz", "-d"]);
+    expect(stagingDestination).not.toBe(destination);
+    await expectRejection(lstat(stagingDestination));
     await expectRejection(lstat(destination));
   } finally {
     await rm(root, { recursive: true, force: true });
@@ -222,22 +225,69 @@ test("preserves a destination this extraction did not create", async () => {
   }
 });
 
-test("preserves a destination replaced before extraction failure cleanup", async () => {
+test("cleans only private staging when extraction failure leaves a destination replacement", async () => {
   const root = await mkdtemp(join(tmpdir(), "media-archive-"));
   const destination = join(root, "extracted");
   const marker = join(destination, "replacement.txt");
+  let stagingDestination = "";
   try {
     await expectRejection(
       extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
         if (argv[1] === "-Z1") return commandResult("page.jpg\n");
-        await rm(destination, { recursive: true, force: true });
+        stagingDestination = argv[4];
+        await writeFile(join(stagingDestination, "page.jpg"), "image");
         await mkdir(destination);
         await writeFile(marker, "replacement");
         return commandResult("", 1, "bad archive");
       }),
-      "Unable to extract ZIP archive",
     );
     expect(await readFile(marker, "utf8")).toBe("replacement");
+    expect(stagingDestination).not.toBe(destination);
+    await expectRejection(lstat(stagingDestination));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("publishes a verified private staging tree only after extraction succeeds", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const destination = join(root, "extracted");
+  let stagingDestination = "";
+  try {
+    const entries = await extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
+      if (argv[1] === "-Z1") return commandResult("page.jpg\n");
+      stagingDestination = argv[4];
+      await writeFile(join(stagingDestination, "page.jpg"), "image");
+      return commandResult();
+    });
+    expect(entries.map((entry) => entry.path)).toEqual(["page.jpg"]);
+    expect(stagingDestination).not.toBe(destination);
+    expect(await readFile(join(destination, "page.jpg"), "utf8")).toBe("image");
+    await expectRejection(lstat(stagingDestination));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("preserves a destination that appears before the final staging rename", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const destination = join(root, "extracted");
+  const marker = join(destination, "replacement.txt");
+  let stagingDestination = "";
+  try {
+    await expectRejection(
+      extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
+        if (argv[1] === "-Z1") return commandResult("page.jpg\n");
+        stagingDestination = argv[4];
+        await writeFile(join(stagingDestination, "page.jpg"), "image");
+        await mkdir(destination);
+        await writeFile(marker, "replacement");
+        return commandResult();
+      }),
+    );
+    expect(await readFile(marker, "utf8")).toBe("replacement");
+    expect(stagingDestination).not.toBe(destination);
+    await expectRejection(lstat(stagingDestination));
   } finally {
     await rm(root, { recursive: true, force: true });
   }

@@ -1,5 +1,5 @@
-import { lstat, mkdir, readdir, realpath, rm } from "node:fs/promises";
-import { isAbsolute, relative, resolve, sep } from "node:path";
+import { lstat, mkdtemp, readdir, realpath, rename, rm } from "node:fs/promises";
+import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { type CommandRunner, runCommand } from "./process";
 
 export type ArchiveEntry = {
@@ -28,6 +28,19 @@ const archiveCommandError = (operation: string, exitCode: number, stderr = ""): 
 const isPathInside = (root: string, candidate: string): boolean => {
   const pathFromRoot = relative(root, candidate);
   return pathFromRoot === "" || (!pathFromRoot.startsWith(`..${sep}`) && pathFromRoot !== ".." && !isAbsolute(pathFromRoot));
+};
+
+const hasErrorCode = (error: unknown, code: string): boolean =>
+  error instanceof Error && "code" in error && error.code === code;
+
+const ensurePathIsAbsent = async (path: string): Promise<void> => {
+  try {
+    await lstat(path);
+  } catch (error) {
+    if (hasErrorCode(error, "ENOENT")) return;
+    throw error;
+  }
+  throw new Error("ZIP extraction destination already exists");
 };
 
 export const validateArchiveEntryPath = (entryPath: string): string => {
@@ -157,33 +170,22 @@ export const extractZipArchive = async (
 ): Promise<ArchiveEntry[]> => {
   const entries = await listZipEntries(source, runner);
   const destinationPath = resolve(destination);
-  let ownedDestination: { device: number; inode: number } | undefined;
+  await ensurePathIsAbsent(destinationPath);
+  const stagingPath = await mkdtemp(join(dirname(destinationPath), `.${basename(destinationPath)}.extract-`));
 
   try {
-    await mkdir(destinationPath, { mode: 0o700 });
-    const destinationInfo = await lstat(destinationPath);
-    if (destinationInfo.isSymbolicLink() || !destinationInfo.isDirectory()) {
-      throw new Error("Unsafe ZIP extraction destination");
-    }
-    ownedDestination = { device: destinationInfo.dev, inode: destinationInfo.ino };
-
-    const result = await runner(["unzip", "-qq", source, "-d", destinationPath]);
+    const result = await runner(["unzip", "-qq", source, "-d", stagingPath]);
     if (result.exitCode !== 0) throw archiveCommandError("extract ZIP archive", result.exitCode, result.stderr);
 
-    await verifyExtractedTree(destinationPath);
+    await verifyExtractedTree(stagingPath);
+    await ensurePathIsAbsent(destinationPath);
+    await rename(stagingPath, destinationPath);
     return entries;
   } catch (error) {
-    if (ownedDestination !== undefined) {
-      try {
-        const destinationInfo = await lstat(destinationPath);
-        if (destinationInfo.dev === ownedDestination.device && destinationInfo.ino === ownedDestination.inode) {
-          await rm(destinationPath, { recursive: true, force: true });
-        }
-      } catch (cleanupError) {
-        if (!(cleanupError instanceof Error && "code" in cleanupError && cleanupError.code === "ENOENT")) {
-          throw new AggregateError([error, cleanupError], "ZIP extraction failed and its destination could not be removed");
-        }
-      }
+    try {
+      await rm(stagingPath, { recursive: true, force: true });
+    } catch (cleanupError) {
+      throw new AggregateError([error, cleanupError], "ZIP extraction failed and its staging directory could not be removed");
     }
     throw error;
   }
