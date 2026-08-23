@@ -22,8 +22,10 @@ export const requireMediaPort = (value = Bun.env.MEDIA_PORT): number => {
 
 export const requireMediaSyncTarget = (value = Bun.env.MEDIA_SYNC_TARGET): string => {
   const supplied = value?.trim();
-  if (!supplied || !/^[^@\s]+@[^:\s]+:\/[A-Za-z0-9._/-]*$/.test(supplied)) {
+  const target = supplied?.match(/^([^@\s]+@[^:\s]+:)(\/[A-Za-z0-9._/-]*)$/);
+  if (!target) {
     throw new MediaError("configuration", "MEDIA_SYNC_TARGET must use user@host:/absolute/path format.");
   }
-  return supplied.endsWith(":/") ? supplied : supplied.replace(/\/+$/, "");
+  const [, remote, remotePath] = target;
+  return `${remote}${remotePath.replace(/\/+$/, "") || "/"}`;
 };

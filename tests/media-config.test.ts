@@ -25,6 +25,13 @@ test("requires a restricted rsync-style synchronization target", () => {
   expect(() => requireMediaSyncTarget("example.test:relative")).toThrow("user@host:/absolute/path");
 });
 
+test("preserves an absolute remote root while removing repeated trailing slashes", () => {
+  expect(requireMediaSyncTarget("astro@example.test:/")).toBe("astro@example.test:/");
+  expect(requireMediaSyncTarget("astro@example.test://")).toBe("astro@example.test:/");
+  expect(requireMediaSyncTarget("astro@example.test:/srv/astrosphere/media///"))
+    .toBe("astro@example.test:/srv/astrosphere/media");
+});
+
 test("uses stable nonzero exit codes by failure category", () => {
   expect(exitCodeForMediaError(new MediaError("usage", "bad arguments"))).toBe(2);
   expect(exitCodeForMediaError(new MediaError("configuration", "bad root"))).toBe(3);
