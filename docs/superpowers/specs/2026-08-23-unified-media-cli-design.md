@@ -1,7 +1,7 @@
 # Unified Media CLI Design
 
 **Date:** 2026-08-23
-**Status:** Approved in conversation; awaiting written-spec review
+**Status:** Approved
 
 ## Purpose
 
@@ -76,6 +76,7 @@ The implementation removes the old infrastructure variables rather than supporti
 - `MANGA_MEDIA_ROOT`
 - `IMAGE_SET_MEDIA_ROOT`
 - `MANGA_MEDIA_PORT`
+- `PUBLIC_MANGA_ASSET_BASE_URL`
 - `MANGA_VALIDATE_EXTERNAL`
 - `IMAGE_SET_VALIDATE_EXTERNAL`
 - `VPS_MEDIA_TARGET`
