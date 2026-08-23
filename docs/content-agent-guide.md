@@ -2,6 +2,8 @@
 
 Use this guide when creating or editing site content. The site is a static, discovery-first mixed-media archive: publish durable pages, connect them deliberately, and keep the writing human.
 
+For exact add/remove/import commands and efficient task routing, read [Efficient agent workflows](./agent-workflows.md) first.
+
 ## Core rules
 
 - Use Markdown for normal writing. Use MDX only when the body genuinely needs an Astro component or structured interactive element.
@@ -71,8 +73,9 @@ Spheres are broad territories, not tags. Reuse an existing sphere when it fits; 
 
 ## Media rules
 
-- Store images at `public/media/images/<topic>/`, audio at `public/media/audio/<topic>/`, and video at `public/media/video/<topic>/`.
-- Reference local files with root-relative paths, for example `/media/images/shirow/artwork-01.webp`.
+- Store large galleries and managed artifact images at `MEDIA_ROOT/images/<topic>/`; `/media/images/*` is served from that external tree. Manga and doujinshi pages belong under `MEDIA_ROOT/manga/`.
+- Reference managed images with root-relative paths, for example `/media/images/shirow/artwork-01.webp`. Never copy them into `public/` to fix a local 404.
+- Small repository-owned audio/video may use the existing `public/media/audio/` and `public/media/video/` locations when appropriate; do not move heavy galleries there.
 - Use descriptive, lowercase hyphenated filenames. Preserve source format only when needed; WebP is preferred for ordinary web images.
 - Every image needs useful `alt`. Add `caption` when context matters and `credit` whenever it is known or supplied.
 - Do not use a hero merely because an image exists. Feature and gallery layouts benefit from intentional visual hierarchy.
@@ -92,6 +95,6 @@ Spheres are broad territories, not tags. Reuse an existing sphere when it fits; 
 3. Confirm every local media path exists exactly, including file extension and case.
 4. Confirm external URLs are HTTPS and explicitly supplied or verified by the task.
 5. Keep incomplete work as `draft`.
-6. Run `bun test`, `bunx astro check`, and `bun run build` before declaring the work finished.
+6. Run `bun run media:validate` when managed media is involved and `bun run astro check` for content. Run `bun test` and `bun run build` when code/schema behavior changed or a release was requested.
 
 For complete field definitions and examples, read [the content model](./content-model.md) and the schemas in `src/content.config.ts`.

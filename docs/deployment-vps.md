@@ -2,6 +2,8 @@
 
 AstroSphere targets a small Debian or Ubuntu VPS with Caddy serving a locally built static site and an external media library.
 
+For local import, removal, optimization, and validation recipes, see [the content and media operator guide](./operator-workflows.md).
+
 ## Server layout
 
 ```text

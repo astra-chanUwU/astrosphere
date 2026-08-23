@@ -1,5 +1,6 @@
 ## Development
 
+- For routine content and media work, follow `docs/agent-workflows.md` and use the shortest existing command. Do not create subagents, branches, implementation plans, or new infrastructure unless explicitly requested.
 - Work directly on the main branch unless explicitly told otherwise.
 - Do not run Git commands or otherwise modify Git state unless explicitly requested.
 - Manga creator frontmatter uses `{ name, slug }` entries for `authors` and `artists`; use the internal `/manga/creators/{slug}` pages and never paste Mangadex creator URLs into manga content.
@@ -12,6 +13,9 @@
 - Create content-only drafts with `bun run content:new <essay|doujinshi|image-set> <slug>`; the command must refuse existing destinations and must never copy binaries into the repository.
 - Free chapter storage without breaking published routes with `bun run media:remove manga <series> --chapter <number> --unavailable`; review the preview and type `yes` to remove the media while retaining a “Currently unavailable” entry.
 - Run `bun run media:validate` before synchronization. Review `bun run media:sync -- --dry-run --prune` before any confirmed prune.
+- `media:maintain` is unfinished and is not a supported public command. Do not invoke or document it as available.
+- Permanently delete a complete entry only when explicitly requested: resolve exact content and external-media targets, remove/update incoming references, never use broad globs or namespace roots, then require zero `media:validate` errors/orphans and a clean `astro check`.
+- For content-only changes, run focused validation once; do not repeatedly run the full test/build suite. Run the full suite when code/schema behavior changes or before an explicitly requested release.
 
 When starting the dev server, use background mode:
 

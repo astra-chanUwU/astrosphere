@@ -2,6 +2,8 @@
 
 This guide explains how to create or repair BLACKSOULS II character, area, ending, fairytale, and H-scene content from an external guide—especially FGGuides—without losing the source article’s structure.
 
+Agents should also follow [the efficient content/media workflow](./agent-workflows.md), especially its external-media and validation rules.
+
 The goal is a faithful local adaptation, not a summary or a redesigned essay. Preserve the source’s order, headings, wording, route conditions, screenshots, and image placement unless there is a specific editorial reason to change them.
 
 ## Source-first workflow
@@ -128,7 +130,7 @@ Before handoff:
 - [ ] No heavy image binaries were added to the repository.
 - [ ] Every referenced image has a corresponding WebP in `MEDIA_ROOT/images`.
 - [ ] Image-reference count equals unique-reference count unless intentional duplication is documented.
-- [ ] `bun run astro check` passes with zero errors, warnings, and hints.
+- [ ] `bun run astro check` exits successfully with zero errors.
 - [ ] `bun run media:validate` reports no errors.
 - [ ] The local page is opened beside the source page for a final visual comparison.
 

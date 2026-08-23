@@ -20,6 +20,8 @@ Astro serves external media through the same origin during development. Use `bun
 
 Manga metadata belongs in `src/content/manga`. Manga, doujinshi, and image-set binaries belong under `MEDIA_ROOT`; never add them beneath `public/`.
 
+For the complete human workflow, including manifests and permanent deletion, see [the content and media operator guide](docs/operator-workflows.md). Coding agents should use [the efficient agent workflows](docs/agent-workflows.md).
+
 Import one or more chapter-labelled CBZ/ZIP volumes, or pass a folder containing them. This creates optimized WebP chapters under `MEDIA_ROOT/manga` and published entries under `src/content/manga/chapters`:
 
 ```sh
@@ -59,6 +61,8 @@ bun run content:new essay <slug>
 bun run content:new doujinshi <slug>
 bun run content:new image-set <slug>
 ```
+
+`media:maintain` is not a supported public command yet. Use the explicit add, remove, optimize, validate, and sync workflows above.
 
 ## Checks
 

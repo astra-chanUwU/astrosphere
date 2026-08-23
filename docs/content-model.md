@@ -100,7 +100,7 @@ items:
 
 ## Media
 
-Store local files under `public/media/images`, `public/media/audio`, or `public/media/video`, and reference them with root-relative paths such as `/media/images/example.jpg`. Put captions, credits, dimensions, playback settings, and other metadata in the artifact frontmatter media object—not in page components.
+Store managed images and large galleries under `MEDIA_ROOT/images/<topic>/` and reference them with root-relative paths such as `/media/images/<topic>/example.webp`. Manga and doujinshi reader media belongs under `MEDIA_ROOT/manga/`. Astro serves both namespaces during development; never duplicate these files under `public/`. Small repository-owned audio or video may continue using the established `public/media/audio/` and `public/media/video/` locations. Put captions, credits, dimensions, playback settings, and other metadata in the artifact frontmatter media object—not in page components.
 
 The same `src` and `poster` fields accept HTTPS URLs. Moving media to object storage later only changes those values; it does not require a schema or relationship migration.
 
@@ -108,4 +108,4 @@ The same `src` and `poster` fields accept HTTPS URLs. Moving media to object sto
 
 Use `status: draft` for work in progress. Published helpers return only `status: published`; archived entries are also excluded by default.
 
-A future CMS can preserve this model by storing the same frontmatter fields and Markdown/MDX body, retaining every explicit slug. A future media service can retain the media object shape and substitute HTTPS object-storage URLs for local paths.
+A future CMS can preserve this model by storing the same frontmatter fields and Markdown/MDX body, retaining every explicit slug. A future media service can retain the media object shape and substitute HTTPS object-storage URLs for managed root-relative paths.
