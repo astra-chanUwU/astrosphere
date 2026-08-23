@@ -2,11 +2,13 @@ export type ChapterOrder = { data: { number: number } };
 export type MangaFormat = "manga" | "doujinshi" | "one-shot" | "artbook" | "web-comic";
 
 export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") => {
-  if (!pagePath.startsWith("/manga/")) {
+  const pathname = new URL(pagePath, "http://manga.local").pathname;
+
+  if (!pathname.startsWith("/manga/")) {
     throw new Error(`Expected a /manga page path, received "${pagePath}".`);
   }
 
-  return `${pagePath}/${String(page).padStart(3, "0")}.${extension}`;
+  return `${pathname}/${String(page).padStart(3, "0")}.${extension}`;
 };
 
 export const sortMangaChapters = <T extends ChapterOrder>(chapters: T[]) =>

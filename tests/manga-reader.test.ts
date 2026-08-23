@@ -18,6 +18,10 @@ test("rejects manga page paths outside the manga media root", () => {
   expect(() => createMangaPageSrc("/media/example/chapter-001", 1)).toThrow("Expected a /manga page path");
 });
 
+test("rejects manga page paths that escape the manga media root through dot segments", () => {
+  expect(() => createMangaPageSrc("/manga/../media/chapter-001", 1)).toThrow("Expected a /manga page path");
+});
+
 test("sorts manga chapters numerically", () => {
   expect(sortMangaChapters([{ data: { number: 10 } }, { data: { number: 1 } }]).map((chapter) => chapter.data.number)).toEqual([1, 10]);
 });
