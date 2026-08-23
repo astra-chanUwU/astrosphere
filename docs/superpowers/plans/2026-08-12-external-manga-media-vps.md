@@ -50,7 +50,6 @@
 - `src/pages/index.astro`: resolve homepage manga covers.
 - `src/lib/publishing-guard.ts`: route repository and external media references to separate roots.
 - `src/lib/content.ts`: choose normal versus explicit external-media validation.
-- `scripts/import-mangadex.ts`: write downloaded media beneath `MANGA_MEDIA_ROOT`.
 - `package.json`: add media serve, validation, sync, and VPS deployment commands.
 - `.gitignore`: ignore `public/manga/` and local media configuration.
 - `README.md`: point contributors to the external-media and VPS guide.
@@ -279,57 +278,6 @@ Expected: FAIL once with the `MANGA_MEDIA_ROOT` configuration message.
 ```bash
 git add src/lib/manga-media-root.ts src/lib/publishing-guard.ts src/lib/content.ts scripts/validate-manga-media.ts package.json tests/manga-media-root.test.ts tests/publishing-guard.test.ts
 git commit -m "feat: validate external manga media"
-```
-
-### Task 4: Redirect Manga Imports and Document Configuration
-
-**Files:**
-- Modify: `scripts/import-mangadex.ts`
-- Modify: `tests/manga-creators-frontmatter.test.ts`
-- Create: `.env.example`
-- Modify: `README.md`
-
-**Interfaces:**
-- Consumes: `requireMangaMediaRoot(Bun.env.MANGA_MEDIA_ROOT)`
-- Preserves: manga creator arrays containing `{ name, slug }`
-
-- [ ] **Step 1: Add importer destination regression assertions**
-
-Read the importer source and assert that it imports `requireMangaMediaRoot`, uses `Bun.env.MANGA_MEDIA_ROOT`, does not define `PUBLIC_DIR`, does not contain `public/manga`, and retains `{ name, slug }` creator generation.
-
-- [ ] **Step 2: Run the importer tests and confirm they fail**
-
-Run: `bun test tests/manga-creators-frontmatter.test.ts`
-
-Expected: FAIL on the old `public/manga` destination.
-
-- [ ] **Step 3: Change the importer destination**
-
-Resolve `MANGA_MEDIA_ROOT` before any network request and use it for series, cover, and chapter output paths. Keep metadata output under `src/content/manga` unchanged.
-
-- [ ] **Step 4: Add environment and contributor documentation**
-
-`.env.example` contains:
-
-```dotenv
-MANGA_MEDIA_ROOT=/absolute/path/to/astrosphere-media/manga
-PUBLIC_MANGA_ASSET_BASE_URL=http://localhost:4322/manga
-MANGA_MEDIA_PORT=4322
-```
-
-README links to `docs/deployment-vps.md` and states that manga binaries never belong under `public/manga`.
-
-- [ ] **Step 5: Run focused tests**
-
-Run: `bun test tests/manga-creators-frontmatter.test.ts tests/manga-media-root.test.ts`
-
-Expected: PASS.
-
-- [ ] **Step 6: Commit importer configuration**
-
-```bash
-git add scripts/import-mangadex.ts tests/manga-creators-frontmatter.test.ts .env.example README.md
-git commit -m "feat: import manga into external storage"
 ```
 
 ### Task 5: Add a Safe Local Bun Media Server
@@ -641,4 +589,3 @@ Expire old reflogs and run aggressive garbage collection only in the cleaned act
 - [ ] GitHub accepts routine clone/fetch/push operations for the rewritten repository.
 - [ ] No manga binary exists in current or historical Git objects.
 - [ ] At least two recoverable media copies and the pre-rewrite Git bundle remain available.
-

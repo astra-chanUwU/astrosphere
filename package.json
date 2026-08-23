@@ -9,7 +9,6 @@
     "dev": "bun run prepare:search && astro dev",
     "build": "astro build && pagefind --site dist",
     "manga:sanitize": "bun scripts/sanitize-manga.ts",
-    "manga:import": "bun scripts/import-mangadex.ts",
     "manga:serve": "bun scripts/serve-manga.ts",
     "manga:sync": "bun scripts/sync-manga.ts",
     "image-sets:sync": "bun scripts/sync-image-sets.ts",

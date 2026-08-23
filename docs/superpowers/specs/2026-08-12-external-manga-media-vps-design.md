@@ -94,9 +94,7 @@ Reader page URLs, series covers, series artwork, and homepage manga covers use t
 
 Manga frontmatter continues to store root-relative paths. `pagePath`, cover `src`, and artwork `src` retain their current values. The content schema remains host-independent and portable.
 
-### Import and sanitization tools
-
-The MangaDex importer writes new manga files beneath `MANGA_MEDIA_ROOT`. It fails before downloading when that variable is absent or invalid. It continues writing metadata into the repository and continues producing internal creator links through `{ name, slug }` frontmatter entries.
+### Sanitization tools
 
 The sanitizer continues accepting an explicit filesystem path. Documentation and examples point to the external media tree rather than `public/manga`.
 

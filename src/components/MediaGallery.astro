@@ -5,9 +5,11 @@ import MediaFrame from "./MediaFrame.astro";
 interface Props {
   media: Media[];
   title?: string;
+  priorityImageCount?: number;
+  linkImagesToFullSize?: boolean;
 }
 
-const { media, title = "Media" } = Astro.props;
+const { media, title = "Media", priorityImageCount = 0, linkImagesToFullSize = false } = Astro.props;
 const allImages = media.every((item) => item.kind === "image");
 ---
 
@@ -15,7 +17,7 @@ const allImages = media.every((item) => item.kind === "image");
   <section class:list={["gallery", { "gallery--images": allImages }]} aria-labelledby="media-gallery-heading">
     <h2 id="media-gallery-heading">{title}</h2>
     <div class="items">
-      {media.map((item) => <MediaFrame media={item} />)}
+      {media.map((item, index) => <MediaFrame media={item} priority={index < priorityImageCount} linkImageToFullSize={linkImagesToFullSize} />)}
     </div>
   </section>
 )}
@@ -28,4 +30,5 @@ const allImages = media.every((item) => item.kind === "image");
   .items :global(figure) { margin: 0; }
   .gallery--images .items :global(figure) { aspect-ratio: 4 / 3; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; }
   .gallery--images .items :global(.media-image) { height: 100%; min-height: 0; object-fit: contain; }
+  @media (max-width: 38rem) { .gallery--images .items { grid-template-columns: 1fr; } }
 </style>

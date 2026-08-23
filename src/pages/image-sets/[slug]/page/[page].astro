@@ -1,22 +1,30 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { render, type CollectionEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import ImageSetGallery from "../../components/ImageSetGallery.astro";
-import ImageSetMeta from "../../components/ImageSetMeta.astro";
-import MangaContentWarning from "../../components/MangaContentWarning.astro";
-import { getPublishedImageSets } from "../../lib/content";
-import type { SidebarModel } from "../../config/navigation";
+import Breadcrumbs from "../../../../components/Breadcrumbs.astro";
+import ImageSetGallery from "../../../../components/ImageSetGallery.astro";
+import ImageSetMeta from "../../../../components/ImageSetMeta.astro";
+import MangaContentWarning from "../../../../components/MangaContentWarning.astro";
+import type { SidebarModel } from "../../../../config/navigation";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getPublishedImageSets } from "../../../../lib/content";
+import { getImageSetGalleryPage } from "../../../../lib/image-set-gallery";
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const imageSets = await getPublishedImageSets();
-  return imageSets.map((imageSet) => ({ params: { slug: imageSet.data.slug }, props: { imageSet } }));
-}
+  return imageSets.flatMap((imageSet) => {
+    const media = [imageSet.data.hero, ...imageSet.data.media].filter(Boolean);
+    const { lastPage } = getImageSetGalleryPage(media, 1);
 
-interface Props { imageSet: CollectionEntry<"imageSets">; }
-const { imageSet } = Astro.props;
+    return Array.from({ length: lastPage }, (_, index) => index + 1)
+      .filter((currentPage) => currentPage > 1)
+      .map((currentPage) => ({ params: { slug: imageSet.data.slug, page: String(currentPage) }, props: { imageSet, currentPage } }));
+  });
+}) satisfies GetStaticPaths;
+
+interface Props { imageSet: CollectionEntry<"imageSets">; currentPage: number; }
+const { imageSet, currentPage } = Astro.props;
 const { Content } = await render(imageSet);
-const currentPage = 1;
 const sidebar: SidebarModel = {
   heading: "Image-set details",
   groups: [
@@ -26,14 +34,14 @@ const sidebar: SidebarModel = {
 };
 ---
 
-<BaseLayout title={imageSet.data.title} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "image-set" }, ...imageSet.data.tags.map((value) => ({ name: "tag", value }))]}>
+<BaseLayout title={`${imageSet.data.title} — page ${currentPage}`} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "image-set" }, ...imageSet.data.tags.map((value) => ({ name: "tag", value }))]}>
   <MangaContentWarning rating={imageSet.data.rating}><div class="page-shell">
-    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "The Shelf", href: "/shelf" }, { label: "Image sets", href: "/shelf/image-sets" }, { label: imageSet.data.title }]}/>
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "The Shelf", href: "/shelf" }, { label: "Image sets", href: "/shelf/image-sets" }, { label: imageSet.data.title, href: `/image-sets/${imageSet.data.slug}` }, { label: `Page ${currentPage}` }]}/>
     <header><p class="eyebrow">Image set</p><h1>{imageSet.data.title}</h1><p class="summary">{imageSet.data.summary}</p></header>
     <div class="meta">{imageSet.data.author && <span>By {imageSet.data.author}</span>}<span>{imageSet.data.media.length + (imageSet.data.hero ? 1 : 0)} images</span></div>
     <ImageSetMeta {imageSet} />
     <ImageSetGallery {imageSet} {currentPage} />
-    <article class="prose"><Content/></article>
+    <article class="prose"><Content /></article>
     {(imageSet.data.sourceUrl || imageSet.data.credits.length > 0) && <section class="links"><h2>Sources and credits</h2>{imageSet.data.sourceUrl && <a href={imageSet.data.sourceUrl}>View source material</a>}{imageSet.data.credits.map((credit) => <p>{credit}</p>)}</section>}
   </div></MangaContentWarning>
 </BaseLayout>

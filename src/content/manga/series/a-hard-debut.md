@@ -12,10 +12,10 @@ format: doujinshi
 origin: original
 tags: [big-penis, blowjob, full-color, futanari, large-tattoo, nakadashi, piercing, sole-female, tail, wolf-girl, english]
 authors:
-  - name: Fez_color
+  - name: Fez
     slug: fez-color
 artists:
-  - name: Fez_color
+  - name: Fez
     slug: fez-color
 cover:
   kind: image
@@ -31,4 +31,4 @@ art:
 featured: false
 ---
 
-*A Hard Debut* is a completed explicit English-language doujinshi by [Fez_color](https://x.com/Fez_color).
+*A Hard Debut* is a completed explicit English-language doujinshi by Fez.

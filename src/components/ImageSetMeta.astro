@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getImageSetArtists } from "../lib/image-set-creators";
+
+interface Props { imageSet: CollectionEntry<"imageSets">; }
+const { imageSet } = Astro.props;
+const artists = getImageSetArtists(imageSet.data.author, imageSet.data.credits);
+---
+
+<section class="meta" aria-label="Image-set information"><dl>{artists.length > 0 && <div><dt>Artists</dt><dd>{artists.map((artist) => <a href={`/tags/${artist.slug}`}>{artist.name}</a>)}</dd></div>}{imageSet.data.spheres.length > 0 && <div><dt>Spheres</dt><dd>{imageSet.data.spheres.map((sphere) => <a href={`/spheres/${sphere}`}>{sphere}</a>)}</dd></div>}{imageSet.data.tags.length > 0 && <div><dt>Tags</dt><dd>{imageSet.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</dd></div>}</dl></section>
+
+<style>
+  .meta { max-width: var(--reading-width); }
+  dl { border-block: 1px solid var(--color-border); display: grid; gap: var(--space-1); margin: var(--space-3) 0; padding: var(--space-2) 0; }
+  dl div { display: grid; gap: var(--space-1); grid-template-columns: 6rem 1fr; }
+  dt { color: var(--color-muted); font-size: var(--text-sm); }
+  dd { display: flex; flex-wrap: wrap; gap: .3rem .8rem; margin: 0; text-transform: capitalize; }
+</style>

@@ -1,10 +1,29 @@
 ---
 import type { ImageSetEntry } from "../lib/content";
+import { getImageSetGalleryPage, getImageSetGalleryPageHref } from "../lib/image-set-gallery";
+import ArchivePagination from "./ArchivePagination.astro";
 import MediaGallery from "./MediaGallery.astro";
 
-interface Props { imageSet: ImageSetEntry; }
-const { imageSet } = Astro.props;
-const media = [imageSet.data.hero, ...imageSet.data.media].filter((item): item is NonNullable<typeof item> => Boolean(item));
+interface Props { imageSet: ImageSetEntry; currentPage?: number; }
+const { imageSet, currentPage = 1 } = Astro.props;
+const allMedia = [imageSet.data.hero, ...imageSet.data.media].filter((item): item is NonNullable<typeof item> => Boolean(item));
+const { items: media, start, end, lastPage } = getImageSetGalleryPage(allMedia, currentPage);
+const basePath = getImageSetGalleryPageHref(imageSet.data.slug, 1);
+const summary = `Images ${start}\u2013${end} of ${allMedia.length}`;
 ---
 
-<MediaGallery {media} title="Image set gallery" />
+<section class="image-set-gallery" aria-labelledby="image-set-gallery-heading">
+  <header>
+    <h2 id="image-set-gallery-heading">Image set gallery</h2>
+    <ArchivePagination {basePath} {currentPage} {lastPage} {summary} />
+  </header>
+  <MediaGallery {media} priorityImageCount={2} linkImagesToFullSize />
+  <ArchivePagination {basePath} {currentPage} {lastPage} {summary} />
+</section>
+
+<style>
+  .image-set-gallery { margin-top: var(--section-space); }
+  header { display: grid; gap: var(--space-2); }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: 0; }
+  .image-set-gallery :global(.gallery) { margin-top: var(--space-3); }
+</style>

@@ -5,6 +5,7 @@ const indexRoute = await Bun.file(new URL("src/pages/image-sets/index.astro", ro
 const detailRoute = await Bun.file(new URL("src/pages/image-sets/[slug].astro", root)).text().catch(() => "");
 const card = await Bun.file(new URL("src/components/ImageSetCard.astro", root)).text().catch(() => "");
 const gallery = await Bun.file(new URL("src/components/ImageSetGallery.astro", root)).text().catch(() => "");
+const meta = await Bun.file(new URL("src/components/ImageSetMeta.astro", root)).text().catch(() => "");
 
 test("defines image-set detail routes from the canonical Shelf archive", () => {
   expect(indexRoute).toContain('Astro.redirect("/shelf/image-sets", 301)');
@@ -14,4 +15,11 @@ test("defines image-set detail routes from the canonical Shelf archive", () => {
   expect(detailRoute).toContain('href: "/shelf/image-sets"');
   expect(card).toContain("Image set");
   expect(gallery).toContain("MediaGallery");
+});
+
+test("renders image-set artists and tags as archive links", () => {
+  expect(detailRoute).toContain("ImageSetMeta");
+  expect(meta).toContain('href={`/tags/${artist.slug}`}');
+  expect(meta).toContain('href={`/tags/${tag}`}');
+  expect(meta).toContain('href={`/spheres/${sphere}`}');
 });

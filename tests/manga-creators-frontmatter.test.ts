@@ -13,20 +13,3 @@ test("stores every manga creator as an internal slug without Mangadex URLs", asy
     }
   }
 });
-
-test("the MangaDex importer requires external media storage before network access", () => {
-  const result = Bun.spawnSync([
-    "bun",
-    "scripts/import-mangadex.ts",
-    "https://mangadex.org/title/00000000-0000-0000-0000-000000000000/example",
-  ], {
-    cwd: new URL("../", import.meta.url).pathname,
-    env: { ...process.env, MANGA_MEDIA_ROOT: "", MANGADEX_API_URL: "http://127.0.0.1:1" },
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-
-  expect(result.exitCode).not.toBe(0);
-  expect(result.stderr.toString()).toContain("Set MANGA_MEDIA_ROOT");
-  expect(result.stderr.toString()).not.toContain("Cannot reach MangaDex");
-});

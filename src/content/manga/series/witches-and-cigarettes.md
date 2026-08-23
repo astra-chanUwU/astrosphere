@@ -19,11 +19,13 @@ artists:
     slug: shibata-kouhei
 cover:
   kind: image
-  src: /manga/witches-and-cigarettes/cover.jpg
+  src: /manga/witches-and-cigarettes/art/01.jpg
   alt: Cover art for Witches and Cigarettes
 art:
   - src: /manga/witches-and-cigarettes/art/01.jpg
     alt: Promotional artwork for Witches and Cigarettes featuring Shien smoking by a window
+  - src: /manga/witches-and-cigarettes/art/02.jpg
+    alt: Cover artwork for Witches and Cigarettes
 featured: false
 ---
 
