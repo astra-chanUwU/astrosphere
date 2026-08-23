@@ -1,8 +1,11 @@
 import { expect, test } from "bun:test";
-import { readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { planMediaResponse } from "../src/lib/media/server";
 
 const regularFile = (async () => ({ isFile: () => true })) as unknown as typeof import("node:fs/promises").stat;
+const canonicalPath = (async (path: string) => path) as unknown as typeof import("node:fs/promises").realpath;
 
 test("plans files for both managed namespaces", async () => {
   const imagePlan = await planMediaResponse({
@@ -10,12 +13,14 @@ test("plans files for both managed namespaces", async () => {
     pathname: "/media/images/example/loop.gif",
     root: "/srv/astrosphere/media",
     statFile: regularFile,
+    realpathFile: canonicalPath,
   });
   const mangaPlan = await planMediaResponse({
     method: "GET",
     pathname: "/manga/example/chapter-001/001.webp",
     root: "/srv/astrosphere/media",
     statFile: regularFile,
+    realpathFile: canonicalPath,
   });
 
   expect(imagePlan).toMatchObject({ kind: "file", status: 200, contentType: "image/gif" });
@@ -31,6 +36,24 @@ test("passes unrelated routes and handles media errors", async () => {
     .toMatchObject({ kind: "error", status: 400 });
   expect(await planMediaResponse({ method: "GET", pathname: "/manga/example/missing.webp", root: "/srv/astrosphere/media", statFile: async () => { throw new Error("missing"); } }))
     .toMatchObject({ kind: "error", status: 404 });
+});
+
+test("does not serve private operations through a manga symlink", async () => {
+  const root = await mkdtemp(join(tmpdir(), "astrosphere-media-"));
+  try {
+    await mkdir(join(root, "manga"));
+    await mkdir(join(root, ".astrosphere"));
+    await writeFile(join(root, ".astrosphere", "secret.webp"), "private");
+    await symlink("../.astrosphere", join(root, "manga", "private"));
+
+    expect(await planMediaResponse({
+      method: "GET",
+      pathname: "/manga/private/secret.webp",
+      root,
+    })).toMatchObject({ kind: "error", status: 404 });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test("Astro delegates managed media to the shared response planner", async () => {

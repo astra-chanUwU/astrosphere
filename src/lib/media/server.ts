@@ -1,4 +1,6 @@
-import { stat } from "node:fs/promises";
+import { realpath, stat } from "node:fs/promises";
+import { isAbsolute, relative, resolve, sep } from "node:path";
+import { getMediaLayout } from "./config";
 import { contentTypeForMediaFile, resolveMediaRequestPath } from "./paths";
 
 export type MediaResponsePlan =
@@ -6,11 +8,17 @@ export type MediaResponsePlan =
   | { kind: "error"; status: 400 | 404 | 405; message: string }
   | { kind: "file"; status: 200; filePath: string; contentType: string; headers: Record<string, string> };
 
+const isWithinDirectory = (root: string, candidate: string): boolean => {
+  const relation = relative(root, candidate);
+  return relation === "" || (!relation.startsWith(`..${sep}`) && relation !== ".." && !isAbsolute(relation));
+};
+
 export const planMediaResponse = async (options: {
   method: string;
   pathname: string;
   root: string;
   statFile?: typeof stat;
+  realpathFile?: typeof realpath;
 }): Promise<MediaResponsePlan> => {
   let resolved;
   try {
@@ -25,25 +33,37 @@ export const planMediaResponse = async (options: {
   }
 
   try {
-    if (!(await (options.statFile ?? stat)(resolved.filePath)).isFile()) {
+    const layout = getMediaLayout(options.root);
+    const realpathFile = options.realpathFile ?? realpath;
+    const canonicalRoot = await realpathFile(layout.root);
+    const canonicalFilePath = await realpathFile(resolved.filePath);
+    const canonicalNamespaceRoot = await realpathFile(layout[resolved.namespace]);
+    const canonicalOperationsRoot = await realpathFile(layout.operations)
+      .catch(() => resolve(canonicalRoot, ".astrosphere"));
+
+    if (!isWithinDirectory(canonicalNamespaceRoot, canonicalFilePath) || isWithinDirectory(canonicalOperationsRoot, canonicalFilePath)) {
       return { kind: "error", status: 404, message: "Media not found" };
     }
+
+    if (!(await (options.statFile ?? stat)(canonicalFilePath)).isFile()) {
+      return { kind: "error", status: 404, message: "Media not found" };
+    }
+
+    const contentType = contentTypeForMediaFile(canonicalFilePath);
+    return {
+      kind: "file",
+      status: 200,
+      filePath: canonicalFilePath,
+      contentType,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=60",
+        "Content-Type": contentType,
+      },
+    };
   } catch {
     return { kind: "error", status: 404, message: "Media not found" };
   }
-
-  const contentType = contentTypeForMediaFile(resolved.filePath);
-  return {
-    kind: "file",
-    status: 200,
-    filePath: resolved.filePath,
-    contentType,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Cache-Control": "public, max-age=60",
-      "Content-Type": contentType,
-    },
-  };
 };
 
 export const createBunMediaFetch = (root: string) => async (request: Request): Promise<Response> => {
