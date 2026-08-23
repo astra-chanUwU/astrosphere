@@ -4,7 +4,9 @@ import {
   mkdtemp,
   readFile,
   readdir,
+  rename,
   rm,
+  symlink,
   writeFile,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -221,6 +223,43 @@ test("cleans staging and leaves source untouched on conversion failure", async (
     expect(await Bun.file(destination).exists()).toBe(false);
     expect(await Bun.file(input).bytes()).toEqual(before);
     expect(await stagingNames(root)).toEqual([]);
+  });
+});
+
+test("preserves a replacement installed at optimizer staging before cleanup", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destination = join(root, "output");
+    const heldStaging = join(root, "held-staging");
+    let staging = "";
+    await mkdir(source);
+    await Bun.write(join(source, "1.jpg"), jpeg);
+    const runner: CommandRunner = async (argv) => {
+      const output = argv[argv.indexOf("-o") + 1]!;
+      staging = dirname(output);
+      await rename(staging, heldStaging);
+      await mkdir(staging);
+      await writeFile(join(staging, "replacement.txt"), "preserve");
+      return { exitCode: 1, stdout: new Uint8Array(), stderr: "failed" };
+    };
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        { ...tools, runner },
+      ),
+      "1.jpg",
+    );
+    expect(await readFile(join(staging, "replacement.txt"), "utf8")).toBe(
+      "preserve",
+    );
+    expect(await Bun.file(destination).exists()).toBe(false);
   });
 });
 
@@ -473,6 +512,47 @@ test("no-replace publication preserves a destination created during execution", 
   });
 });
 
+test("revalidates the canonical destination parent before publication", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const destinationParent = join(root, "target");
+    const heldParent = join(root, "held-target");
+    const destination = join(destinationParent, "output");
+    const marker = join(destinationParent, "replacement.txt");
+    await mkdir(source);
+    await mkdir(destinationParent);
+    await Bun.write(join(source, "page.webp"), webp);
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        {
+          ...tools,
+          verifyOutput: async (stagedOutput) => {
+            const stagingName = basename(dirname(stagedOutput));
+            await rename(destinationParent, heldParent);
+            await mkdir(destinationParent);
+            await symlink(
+              join(heldParent, stagingName),
+              join(destinationParent, stagingName),
+            );
+            await writeFile(marker, "preserve");
+          },
+        },
+      ),
+      "destination parent changed",
+    );
+    expect(await readFile(marker, "utf8")).toBe("preserve");
+    expect(await Bun.file(destination).exists()).toBe(false);
+  });
+});
+
 test("extracts archives into owned temporary data and removes it after success", async () => {
   await withTemporaryRoot(async (root) => {
     const source = join(root, "chapter.cbz");
@@ -564,5 +644,35 @@ test("refuses a destination inside a directory source without changing the tree"
     );
     expect(await Bun.file(input).bytes()).toEqual(before);
     expect(await readdir(source)).toEqual(["page.webp"]);
+  });
+});
+
+test("refuses a symlinked destination parent that resolves inside the source", async () => {
+  await withTemporaryRoot(async (root) => {
+    const source = join(root, "source");
+    const nestedParent = join(source, "nested");
+    const input = join(source, "page.webp");
+    const sourceAlias = join(root, "source-alias");
+    const destination = join(sourceAlias, "nested", "output");
+    await mkdir(nestedParent, { recursive: true });
+    await Bun.write(input, webp);
+    await symlink(source, sourceAlias);
+    const before = await Bun.file(input).bytes();
+
+    await expectOptimizationRejection(
+      optimizeMedia(
+        {
+          source,
+          destination,
+          profile: "reader",
+          quality: 85,
+          dryRun: false,
+        },
+        tools,
+      ),
+      "inside the source directory",
+    );
+    expect(await Bun.file(input).bytes()).toEqual(before);
+    expect(await readdir(nestedParent)).toEqual([]);
   });
 });

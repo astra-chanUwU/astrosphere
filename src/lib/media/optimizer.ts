@@ -1,6 +1,13 @@
 import { randomUUID } from "node:crypto";
-import type { Stats } from "node:fs";
-import { copyFile, lstat, mkdir, readdir, rm, stat } from "node:fs/promises";
+import { lstatSync, type Stats } from "node:fs";
+import {
+  copyFile,
+  lstat,
+  mkdir,
+  readdir,
+  realpath,
+  stat,
+} from "node:fs/promises";
 import {
   basename,
   dirname,
@@ -11,10 +18,14 @@ import {
   sep,
 } from "node:path";
 import {
+  cleanupOwnedDirectory,
+  createOwnedDirectory,
   extractZipArchive,
   listZipEntries,
+  type OwnedDirectory,
   publishStagedZipDirectory,
   readZipEntryHeader,
+  releaseOwnedDirectory,
 } from "./archive";
 import { MediaError } from "./errors";
 import {
@@ -289,11 +300,7 @@ type SourceInspection = {
   sources: OptimizationSource[];
 };
 
-type OwnedDirectory = {
-  path: string;
-  device: number;
-  inode: number;
-};
+type PathIdentity = { device: number; inode: number };
 
 const hasErrorCode = (error: unknown, code: string): boolean =>
   error instanceof Error && "code" in error && error.code === code;
@@ -419,46 +426,43 @@ const inspectConcreteSource = async (
   };
 };
 
-const captureOwnedDirectory = async (path: string): Promise<OwnedDirectory> => {
-  const info = await lstat(path);
-  if (info.isSymbolicLink() || !info.isDirectory()) {
-    throw new Error(`Owned temporary path is not a directory: ${path}`);
-  }
-  return { path, device: info.dev, inode: info.ino };
-};
-
-const createStagingDirectory = async (
-  destination: string,
-): Promise<OwnedDirectory> => {
+const createStagingDirectory = (destination: string): OwnedDirectory => {
   const path = join(
     dirname(destination),
     `.${basename(destination)}.media-staging-${randomUUID()}`,
   );
-  await mkdir(path, { mode: 0o700 });
-  return captureOwnedDirectory(path);
+  return createOwnedDirectory(path);
 };
 
-const removeOwnedDirectory = async (
-  owned: OwnedDirectory | undefined,
-): Promise<void> => {
-  if (!owned) return;
+const pathIdentity = (info: Stats): PathIdentity => ({
+  device: info.dev,
+  inode: info.ino,
+});
 
-  let info: Awaited<ReturnType<typeof lstat>>;
+const samePathIdentity = (
+  info: Stats,
+  identity: PathIdentity,
+): boolean => info.dev === identity.device && info.ino === identity.inode;
+
+const assertDirectoryIdentity = (
+  path: string,
+  identity: PathIdentity,
+): void => {
   try {
-    info = await lstat(owned.path);
-  } catch (error) {
-    if (hasErrorCode(error, "ENOENT")) return;
-    throw error;
+    const info = lstatSync(path);
+    if (
+      !info.isSymbolicLink() &&
+      info.isDirectory() &&
+      samePathIdentity(info, identity)
+    ) {
+      return;
+    }
+  } catch {
+    // A missing or inaccessible path is also an identity change.
   }
-  if (
-    info.isSymbolicLink() ||
-    !info.isDirectory() ||
-    info.dev !== owned.device ||
-    info.ino !== owned.inode
-  ) {
-    return;
-  }
-  await rm(owned.path, { recursive: true, force: true });
+  throw new Error(
+    `Optimization destination parent changed during execution: ${path}`,
+  );
 };
 
 const dryRunResult = (plan: OptimizationPlan): OptimizeResult => ({
@@ -517,9 +521,9 @@ export const optimizeMedia = async (
   options: OptimizeOptions,
   adapters: OptimizeAdapters = {},
 ): Promise<OptimizeResult> => {
-  const source = resolve(options.source);
-  const destination = resolve(options.destination);
-  const destinationParent = dirname(destination);
+  const requestedSource = resolve(options.source);
+  const requestedDestination = resolve(options.destination);
+  const requestedDestinationParent = dirname(requestedDestination);
   const runner = adapters.runner ?? runCommand;
   const which = adapters.which ?? Bun.which;
   const verifyOutput = adapters.verifyOutput ?? verifyWebp;
@@ -530,18 +534,46 @@ export const optimizeMedia = async (
   try {
     let sourceInfo: Stats;
     try {
-      sourceInfo = await lstat(source);
+      sourceInfo = await lstat(requestedSource);
     } catch (error) {
       if (hasErrorCode(error, "ENOENT")) {
-        throw new Error(`Optimization source does not exist: ${source}`);
+        throw new Error(
+          `Optimization source does not exist: ${requestedSource}`,
+        );
       }
       throw error;
     }
-
-    if (await pathExists(destination)) {
+    if (!sourceInfo.isDirectory() && !sourceInfo.isFile()) {
       throw new Error(
-        `Optimization destination already exists: ${destination}`,
+        `Optimization source is not a regular file or directory: ${requestedSource}`,
       );
+    }
+
+    if (await pathExists(requestedDestination)) {
+      throw new Error(
+        `Optimization destination already exists: ${requestedDestination}`,
+      );
+    }
+
+    const canonicalSource = await realpath(requestedSource);
+    const canonicalSourceInfo = await lstat(canonicalSource);
+    if (!samePathIdentity(canonicalSourceInfo, pathIdentity(sourceInfo))) {
+      throw new Error(
+        `Optimization source changed during validation: ${requestedSource}`,
+      );
+    }
+    sourceInfo = canonicalSourceInfo;
+
+    let destinationParent: string;
+    try {
+      destinationParent = await realpath(requestedDestinationParent);
+    } catch (error) {
+      if (hasErrorCode(error, "ENOENT")) {
+        throw new Error(
+          `Optimization destination parent does not exist: ${requestedDestinationParent}`,
+        );
+      }
+      throw error;
     }
     let parentInfo: Stats;
     try {
@@ -559,12 +591,26 @@ export const optimizeMedia = async (
         `Optimization destination parent is not a directory: ${destinationParent}`,
       );
     }
-    if (sourceInfo.isDirectory() && isPathInside(source, destination)) {
+    const parentIdentity = pathIdentity(parentInfo);
+    const destination = join(
+      destinationParent,
+      basename(requestedDestination),
+    );
+    if (await pathExists(destination)) {
+      throw new Error(
+        `Optimization destination already exists: ${requestedDestination}`,
+      );
+    }
+    if (
+      sourceInfo.isDirectory() &&
+      isPathInside(canonicalSource, destination)
+    ) {
       throw new Error(
         `Optimization destination cannot be inside the source directory: ${destination}`,
       );
     }
 
+    const source = requestedSource;
     const inspection = await inspectConcreteSource(source, sourceInfo, runner);
     let plan = await planMediaOptimization(
       { ...options, source, destination },
@@ -580,7 +626,7 @@ export const optimizeMedia = async (
     const archiveSource = inspection.kind === "archive";
     requireOptimizationTools(plan, archiveSource, which);
 
-    staging = await createStagingDirectory(destination);
+    staging = createStagingDirectory(destination);
 
     if (archiveSource) {
       const extractionPath = join(
@@ -588,8 +634,18 @@ export const optimizeMedia = async (
         `.${basename(destination)}.media-extraction-${randomUUID()}`,
       );
       try {
-        await extractZipArchive(source, extractionPath, runner);
-        extraction = await captureOwnedDirectory(extractionPath);
+        await extractZipArchive(
+          source,
+          extractionPath,
+          runner,
+          publishStagedZipDirectory,
+          (owned) => {
+            extraction = owned;
+          },
+        );
+        if (!extraction) {
+          throw new Error("Archive extraction ownership was not retained.");
+        }
         plan = await updateArchiveByteAccounting(plan, source, extractionPath);
       } catch (error) {
         throw new Error(
@@ -658,11 +714,15 @@ export const optimizeMedia = async (
       }
     }
 
+    assertDirectoryIdentity(destinationParent, parentIdentity);
     await publishStagedZipDirectory(staging.path, destination);
     published = { ...staging, path: destination };
+    staging = undefined;
 
-    await removeOwnedDirectory(extraction);
+    if (extraction) cleanupOwnedDirectory(extraction);
     extraction = undefined;
+    releaseOwnedDirectory(published);
+    published = undefined;
 
     return {
       plan,
@@ -677,8 +737,9 @@ export const optimizeMedia = async (
   } catch (error) {
     const cleanupErrors: unknown[] = [];
     for (const owned of [extraction, staging, published]) {
+      if (!owned) continue;
       try {
-        await removeOwnedDirectory(owned);
+        cleanupOwnedDirectory(owned);
       } catch (cleanupError) {
         cleanupErrors.push(cleanupError);
       }

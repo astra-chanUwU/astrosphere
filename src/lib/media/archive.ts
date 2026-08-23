@@ -1,4 +1,16 @@
-import { lstat, mkdtemp, readdir, realpath, rm } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import {
+  closeSync,
+  constants,
+  fstatSync,
+  lstatSync,
+  mkdirSync,
+  mkdtempSync,
+  openSync,
+  rmSync,
+  rmdirSync,
+} from "node:fs";
+import { lstat, readdir, realpath } from "node:fs/promises";
 import {
   basename,
   dirname,
@@ -29,6 +41,15 @@ export type ArchivePublisher = (
   stagingPath: string,
   destinationPath: string,
 ) => Promise<void>;
+
+export type OwnedDirectory = {
+  path: string;
+  descriptor: number;
+  device: number;
+  inode: number;
+};
+
+export type ArchiveOwnershipReceiver = (owned: OwnedDirectory) => void;
 
 type ArchiveNativeFfiType =
   | "cstring"
@@ -206,11 +227,11 @@ const openLinuxNoReplaceOperation = (
 const nativeCallSucceeded = (result: unknown): boolean =>
   result === 0 || result === 0n;
 
-export const publishStagedZipDirectory = async (
+const publishStagedZipDirectorySync = (
   stagingPath: string,
   destinationPath: string,
   options: ArchiveNativePublicationOptions = {},
-) => {
+): void => {
   const platform = options.platform ?? process.platform;
   const arch = options.arch ?? process.arch;
   const openLibrary = options.openLibrary ?? openArchiveNativeLibrary;
@@ -288,6 +309,127 @@ export const publishStagedZipDirectory = async (
   throw new Error(
     `Atomic no-replace ZIP publication is unavailable on ${platform}.`,
   );
+};
+
+export const publishStagedZipDirectory = async (
+  stagingPath: string,
+  destinationPath: string,
+  options: ArchiveNativePublicationOptions = {},
+): Promise<void> => {
+  publishStagedZipDirectorySync(stagingPath, destinationPath, options);
+};
+
+const retainOwnedDirectory = (path: string): OwnedDirectory => {
+  const descriptor = openSync(
+    path,
+    constants.O_RDONLY | constants.O_DIRECTORY | constants.O_NOFOLLOW,
+  );
+  try {
+    const info = fstatSync(descriptor);
+    if (!info.isDirectory()) {
+      throw new Error(`Owned temporary path is not a directory: ${path}`);
+    }
+    return {
+      path,
+      descriptor,
+      device: info.dev,
+      inode: info.ino,
+    };
+  } catch (error) {
+    closeSync(descriptor);
+    throw error;
+  }
+};
+
+export const createOwnedDirectory = (
+  path: string,
+  mode = 0o700,
+): OwnedDirectory => {
+  mkdirSync(path, { mode });
+  try {
+    return retainOwnedDirectory(path);
+  } catch (error) {
+    try {
+      rmdirSync(path);
+    } catch {
+      // The retained capability error is more actionable than best-effort cleanup.
+    }
+    throw error;
+  }
+};
+
+const createOwnedTemporaryDirectory = (prefix: string): OwnedDirectory => {
+  const path = mkdtempSync(prefix);
+  try {
+    return retainOwnedDirectory(path);
+  } catch (error) {
+    try {
+      rmdirSync(path);
+    } catch {
+      // The retained capability error is more actionable than best-effort cleanup.
+    }
+    throw error;
+  }
+};
+
+export const releaseOwnedDirectory = (owned: OwnedDirectory): void => {
+  if (owned.descriptor < 0) return;
+  closeSync(owned.descriptor);
+  owned.descriptor = -1;
+};
+
+const pathExistsSync = (path: string): boolean => {
+  try {
+    lstatSync(path);
+    return true;
+  } catch (error) {
+    if (hasErrorCode(error, "ENOENT")) return false;
+    throw error;
+  }
+};
+
+const ownedDirectoryMatchesPath = (
+  owned: OwnedDirectory,
+  path: string,
+): boolean => {
+  const retained = fstatSync(owned.descriptor);
+  const candidate = lstatSync(path);
+  return (
+    retained.isDirectory() &&
+    !candidate.isSymbolicLink() &&
+    candidate.isDirectory() &&
+    retained.dev === owned.device &&
+    retained.ino === owned.inode &&
+    candidate.dev === owned.device &&
+    candidate.ino === owned.inode
+  );
+};
+
+export const cleanupOwnedDirectory = (owned: OwnedDirectory): void => {
+  if (owned.descriptor < 0) return;
+  const originalPath = owned.path;
+  const quarantinePath = join(
+    dirname(originalPath),
+    `.${basename(originalPath)}.cleanup-${randomUUID()}`,
+  );
+
+  try {
+    try {
+      publishStagedZipDirectorySync(originalPath, quarantinePath);
+    } catch (error) {
+      if (!pathExistsSync(originalPath)) return;
+      throw error;
+    }
+
+    if (!ownedDirectoryMatchesPath(owned, quarantinePath)) {
+      publishStagedZipDirectorySync(quarantinePath, originalPath);
+      return;
+    }
+
+    rmSync(quarantinePath, { recursive: true, force: true });
+  } finally {
+    releaseOwnedDirectory(owned);
+  }
 };
 
 export const validateArchiveEntryPath = (entryPath: string): string => {
@@ -436,16 +578,17 @@ export const extractZipArchive = async (
   destination: string,
   runner: CommandRunner = runCommand,
   publish: ArchivePublisher = publishStagedZipDirectory,
+  receiveOwnership?: ArchiveOwnershipReceiver,
 ): Promise<ArchiveEntry[]> => {
   const entries = await listZipEntries(source, runner);
   const destinationPath = resolve(destination);
   await ensurePathIsAbsent(destinationPath);
-  const stagingPath = await mkdtemp(
+  const staging = createOwnedTemporaryDirectory(
     join(dirname(destinationPath), `.${basename(destinationPath)}.extract-`),
   );
 
   try {
-    const result = await runner(["unzip", "-qq", source, "-d", stagingPath]);
+    const result = await runner(["unzip", "-qq", source, "-d", staging.path]);
     if (result.exitCode !== 0)
       throw archiveCommandError(
         "extract ZIP archive",
@@ -453,12 +596,15 @@ export const extractZipArchive = async (
         result.stderr,
       );
 
-    await verifyExtractedTree(stagingPath);
-    await publish(stagingPath, destinationPath);
+    await verifyExtractedTree(staging.path);
+    await publish(staging.path, destinationPath);
+    staging.path = destinationPath;
+    if (receiveOwnership) receiveOwnership(staging);
+    else releaseOwnedDirectory(staging);
     return entries;
   } catch (error) {
     try {
-      await rm(stagingPath, { recursive: true, force: true });
+      cleanupOwnedDirectory(staging);
     } catch (cleanupError) {
       throw new AggregateError(
         [error, cleanupError],

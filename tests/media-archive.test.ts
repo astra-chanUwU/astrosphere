@@ -5,6 +5,7 @@ import {
   mkdtemp,
   readFile,
   readdir,
+  rename,
   rm,
   symlink,
   writeFile,
@@ -12,11 +13,13 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
+  cleanupOwnedDirectory,
   extractZipArchive,
   listZipEntries,
   publishStagedZipDirectory,
   readZipEntryHeader,
   validateArchiveEntryPath,
+  type OwnedDirectory,
 } from "../src/lib/media/archive";
 
 const commandResult = (stdout = "", exitCode = 0, stderr = "") => ({
@@ -339,6 +342,73 @@ test("cleans only private staging when extraction failure leaves a destination r
     expect(await readFile(marker, "utf8")).toBe("replacement");
     expect(stagingDestination).not.toBe(destination);
     await expectRejection(lstat(stagingDestination));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("preserves a replacement installed at extraction staging before cleanup", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const destination = join(root, "extracted");
+  const heldStaging = join(root, "held-extraction");
+  let stagingDestination = "";
+  try {
+    await expectRejection(
+      extractZipArchive("/tmp/book.cbz", destination, async (argv) => {
+        if (argv[1] === "-Z1") return commandResult("page.jpg\n");
+        stagingDestination = argv[4]!;
+        await writeFile(join(stagingDestination, "page.jpg"), "owned");
+        await rename(stagingDestination, heldStaging);
+        await mkdir(stagingDestination);
+        await writeFile(join(stagingDestination, "replacement.txt"), "preserve");
+        return commandResult("", 1, "bad archive");
+      }),
+      "bad archive",
+    );
+    expect(await readFile(join(stagingDestination, "replacement.txt"), "utf8"))
+      .toBe("preserve");
+    expect(await readFile(join(heldStaging, "page.jpg"), "utf8")).toBe(
+      "owned",
+    );
+    await expectRejection(lstat(destination));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("transfers the retained extraction capability instead of adopting a replacement", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-archive-"));
+  const destination = join(root, "extracted");
+  const heldExtraction = join(root, "held-extraction");
+  let owned: OwnedDirectory | undefined;
+  try {
+    await extractZipArchive(
+      "/tmp/book.cbz",
+      destination,
+      async (argv) => {
+        if (argv[1] === "-Z1") return commandResult("page.jpg\n");
+        await writeFile(join(argv[4]!, "page.jpg"), "owned");
+        return commandResult();
+      },
+      async (stagingPath, destinationPath) => {
+        await publishStagedZipDirectory(stagingPath, destinationPath);
+        await rename(destinationPath, heldExtraction);
+        await mkdir(destinationPath);
+        await writeFile(join(destinationPath, "replacement.txt"), "preserve");
+      },
+      (received) => {
+        owned = received;
+      },
+    );
+
+    expect(owned).toBeDefined();
+    cleanupOwnedDirectory(owned!);
+    expect(await readFile(join(destination, "replacement.txt"), "utf8")).toBe(
+      "preserve",
+    );
+    expect(await readFile(join(heldExtraction, "page.jpg"), "utf8")).toBe(
+      "owned",
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }
