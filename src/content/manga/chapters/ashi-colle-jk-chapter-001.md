@@ -4,7 +4,7 @@ series: ashi-colle-jk
 number: 1
 title: Anthology
 pagePath: /manga/ashi-colle-jk/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 133
 pageWidth: 1280
 pageHeight: 1810

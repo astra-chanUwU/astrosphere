@@ -9,7 +9,7 @@ spheres: [games]
 tags: [black-souls, black-souls-ii, characters, guide, nsfw]
 hero:
   kind: image
-  src: /media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-561x420.png
+  src: /media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-561x420.webp
   alt: "Doctor Blackwell in BLACKSOULS II."
   credit: "Source guide imagery; rights reserved. Used for identification and commentary."
 related: [black-souls-ii-characters, black-souls-ii]
@@ -95,52 +95,52 @@ If you take her mask off you will see how she has black hair of medium length an
 ## Gallery
 
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-561x420.png" alt="Meeting Doctor Blackwell in Lutwidge Town." loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-561x420.webp" alt="Meeting Doctor Blackwell in Lutwidge Town." loading="lazy" decoding="async" />
 <figcaption>Meeting Blackwell.</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-shop-561x420.png" alt="Blackwell’s medicine shop." loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-shop-561x420.webp" alt="Blackwell’s medicine shop." loading="lazy" decoding="async" />
 <figcaption>Blackwell’s shop.</figcaption>
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-2-561x420.png" alt="Meeting Blackwell, 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-2-561x420.webp" alt="Meeting Blackwell, 2" loading="lazy" decoding="async" />
 <figcaption>Meeting Blackwell, 2</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-3-561x420.png" alt="Meeting Blackwell, 3" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Meeting-Blackwell-3-561x420.webp" alt="Meeting Blackwell, 3" loading="lazy" decoding="async" />
 <figcaption>Meeting Blackwell, 3</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-561x420.png" alt="Blackwell in the cathedral" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-561x420.webp" alt="Blackwell in the cathedral" loading="lazy" decoding="async" />
 <figcaption>Blackwell in the cathedral</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-2-561x420.png" alt="Blackwell in the cathedral 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-2-561x420.webp" alt="Blackwell in the cathedral 2" loading="lazy" decoding="async" />
 <figcaption>Blackwell in the cathedral 2</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-3-561x420.png" alt="Blackwell in the cathedral 3" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-3-561x420.webp" alt="Blackwell in the cathedral 3" loading="lazy" decoding="async" />
 <figcaption>Blackwell in the cathedral 3</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-4-561x420.png" alt="Blackwell in the cathedral, 4" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwell-in-the-cathedral-4-561x420.webp" alt="Blackwell in the cathedral, 4" loading="lazy" decoding="async" />
 <figcaption>Blackwell in the cathedral, 4</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-561x420.png" alt="Blackwell's letter" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-561x420.webp" alt="Blackwell's letter" loading="lazy" decoding="async" />
 <figcaption>Blackwell's letter</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-265x198.png" alt="Blackwell's letter, 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-265x198.webp" alt="Blackwell's letter, 2" loading="lazy" decoding="async" />
 <figcaption>Blackwell's letter, 2</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-3-561x420.png" alt="Blackwell's letter, 3" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-3-561x420.webp" alt="Blackwell's letter, 3" loading="lazy" decoding="async" />
 <figcaption>Blackwell's letter, 3</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-4-561x420.png" alt="Blackwell's letter, 4" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-doctor-blackwell/Blackwells-letter-4-561x420.webp" alt="Blackwell's letter, 4" loading="lazy" decoding="async" />
 <figcaption>Blackwell's letter, 4</figcaption>
 </figure>
 

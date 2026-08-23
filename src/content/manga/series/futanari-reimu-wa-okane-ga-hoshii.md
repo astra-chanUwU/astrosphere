@@ -19,7 +19,7 @@ artists:
     slug: shian
 cover:
   kind: image
-  src: /manga/futanari-reimu-wa-okane-ga-hoshii/cover.jpg
+  src: /manga/futanari-reimu-wa-okane-ga-hoshii/cover.webp
   alt: Cover art for Futanari Reimu wa Okane ga Hoshii!!
 featured: false
 ---

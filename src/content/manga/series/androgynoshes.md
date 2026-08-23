@@ -19,7 +19,7 @@ artists:
     slug: hyouga
 cover:
   kind: image
-  src: /manga/androgynoshes/cover.jpg
+  src: /manga/androgynoshes/cover.webp
   alt: Cover art for ANDROGYNOSHES
 featured: false
 ---

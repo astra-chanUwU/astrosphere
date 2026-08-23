@@ -4,7 +4,7 @@ series: isekai-fuuzoku-gaiden-futanari-tenshi-san
 number: 1
 title: Doujinshi
 pagePath: /manga/isekai-fuuzoku-gaiden-futanari-tenshi-san/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 32
 pageWidth: 1280
 pageHeight: 1846

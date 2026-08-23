@@ -19,7 +19,7 @@ artists:
     slug: shijou-mako
 cover:
   kind: image
-  src: /manga/frill-no-shita-no-netsu/cover.jpg
+  src: /manga/frill-no-shita-no-netsu/cover.webp
   alt: Cover art for Frill no Shita no Netsu
 featured: false
 ---

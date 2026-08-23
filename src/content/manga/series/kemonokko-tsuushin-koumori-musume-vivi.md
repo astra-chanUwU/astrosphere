@@ -19,7 +19,7 @@ artists:
     slug: jun
 cover:
   kind: image
-  src: /manga/kemonokko-tsuushin-koumori-musume-vivi/cover.jpg
+  src: /manga/kemonokko-tsuushin-koumori-musume-vivi/cover.webp
   alt: Banner artwork for Kemonokko Tsuushin ~Koumori Musume Vivi~ by jun
 art: []
 featured: false

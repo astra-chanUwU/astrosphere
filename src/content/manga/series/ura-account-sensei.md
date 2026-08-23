@@ -19,7 +19,7 @@ artists:
     slug: tokiwa-midori
 cover:
   kind: image
-  src: /manga/ura-account-sensei/cover.jpg
+  src: /manga/ura-account-sensei/cover.webp
   alt: Cover art for Ura-account Sensei
 featured: false
 ---

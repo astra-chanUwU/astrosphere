@@ -46,17 +46,17 @@ Doll Alice is the current representation of Grand Guignol in this timeline. Wint
 
 Doll Alice will only talk if you finish Ending G, if you interact with her before getting Ending G while you have 0 SEN then it will just say “Liddell’s Doll” whenever you interact with it.
 
-<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-meeting.png" alt="Doll Alice meeting" loading="lazy" decoding="async" /><figcaption>Doll Alice in the library.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-meeting.webp" alt="Doll Alice meeting" loading="lazy" decoding="async" /><figcaption>Doll Alice in the library.</figcaption></figure>
 
 ### Meeting Doll Alice
 
 When you talk to Doll Alice for the first time she will recognize you immediately as her master. She will say that you’ve been registered as her master, and then she will go on to explain that she is model Alice 0-2D, so she will ask you to use her designated name, Doll.
 
-<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-recognizes-you-as-her-master.png" alt="Doll Alice recognizes you as her master" loading="lazy" decoding="async" /><figcaption>Doll Alice recognizes her master.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-recognizes-you-as-her-master.webp" alt="Doll Alice recognizes you as her master" loading="lazy" decoding="async" /><figcaption>Doll Alice recognizes her master.</figcaption></figure>
 
 Doll Alice will say that she can’t assist you in your daily life because she lacks physical autonomy. So she only exists, at least according to her, to be admired, to cultivate your better understanding of art, and to nurture your creativity. Doll Alice will also take this opportunity to tell you she has mock female genitalia.
 
-<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-dialogue-options.png" alt="Doll Alice dialogue options" loading="lazy" decoding="async" /><figcaption>Doll Alice’s dialogue options.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-dialogue-options.webp" alt="Doll Alice dialogue options" loading="lazy" decoding="async" /><figcaption>Doll Alice’s dialogue options.</figcaption></figure>
 
 <figure><img src="/media/images/black-souls-ii-grand-guignol/doll-alice-after-winterbell-dialogue-2.webp" alt="Doll Alice, After Winterbell dialogue, 2" loading="lazy" decoding="async" /><figcaption>Doll Alice, After Winterbell dialogue, 2</figcaption></figure>
 
@@ -68,7 +68,7 @@ You can talk to Doll Alice if you want to, and you should because she has import
 
 If you talk to Doll Alice she will ask you if you want to stop the gears. If you say “yes” then she will tell you to visit Winterbell because that’s where her master Alice 01, the one who created her, is waiting for you.
 
-<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-asks-you-about-the-gears.png" alt="Doll Alice asks you about the gears" loading="lazy" decoding="async" /><figcaption>Doll Alice asks about the gears.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-asks-you-about-the-gears.webp" alt="Doll Alice asks you about the gears" loading="lazy" decoding="async" /><figcaption>Doll Alice asks about the gears.</figcaption></figure>
 
 <figure><img src="/media/images/black-souls-ii-grand-guignol/doll-alice-thinks-you-look-delicious.webp" alt="Doll Alice thinks you look delicious" loading="lazy" decoding="async" /><figcaption>Doll Alice thinks you look delicious</figcaption></figure>
 
@@ -90,7 +90,7 @@ Doll Alice will make a brief pause and then address you by your name while also 
 
 After this dialogue is over you can talk some more to her and then she will go on to say how she can’t create anything without a blueprint, so she finds you, who can create things from scratch, “to be most admirable”.
 
-<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-finds-you-admirable.png" alt="Doll Alice finds you admirable" loading="lazy" decoding="async" /><figcaption>Doll Alice calls you admirable.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-grand-guignol/Doll-Alice-finds-you-admirable.webp" alt="Doll Alice finds you admirable" loading="lazy" decoding="async" /><figcaption>Doll Alice calls you admirable.</figcaption></figure>
 
 <figure><img src="/media/images/black-souls-ii-grand-guignol/mabel-leading-you-to-grand-guignol.webp" alt="Mabel leading you to Grand Guignol" loading="lazy" decoding="async" /><figcaption>Mabel leading you to Grand Guignol</figcaption></figure>
 

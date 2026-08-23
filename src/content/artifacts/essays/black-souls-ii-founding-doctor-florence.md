@@ -43,9 +43,9 @@ When you pass through the door in the Hidden Snow Garden, a cutscene will be ini
 
 It’s safe to assume that that person is you, Grimm. You will wake up in a hospital bed in the Crimean Nursing Graveyard once the cutscene ends.
 
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-560x420.png" alt="Florence in the opening cutscene." loading="lazy" decoding="async" /><figcaption>Florence in the opening cutscene.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-2-560x420.png" alt="Florence cutscene, 2" loading="lazy" decoding="async" /><figcaption>The doctors inspect the patient.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-3-560x420.png" alt="Florence cutscene, 3" loading="lazy" decoding="async" /><figcaption>The cutscene’s final moment.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-560x420.webp" alt="Florence in the opening cutscene." loading="lazy" decoding="async" /><figcaption>Florence in the opening cutscene.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-2-560x420.webp" alt="Florence cutscene, 2" loading="lazy" decoding="async" /><figcaption>The doctors inspect the patient.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-cutscene-3-560x420.webp" alt="Florence cutscene, 3" loading="lazy" decoding="async" /><figcaption>The cutscene’s final moment.</figcaption></figure>
 
 
 ### Fighting the Founding Doctor Florence
@@ -71,12 +71,12 @@ Defeating Florence won’t kill her instantly, you will get the chance to either
 
 Lingeriena doesn’t like Florence and if you spare her, Lingeriena will eventually come into Florence’s room and kill her – Lingeriena frequently calls Florence a “fake angel”.
 
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-encounter-560x420.png" alt="Encountering Florence." loading="lazy" decoding="async" /><figcaption>Encountering Florence.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-encounter-2-560x420.png" alt="Florence encounter, 2" loading="lazy" decoding="async" /><figcaption>Florence’s warning before the fight.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-560x420.png" alt="Fighting Florence." loading="lazy" decoding="async" /><figcaption>Fighting Florence.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-2-560x420.png" alt="Florence fight, 2" loading="lazy" decoding="async" /><figcaption>Heavenly Beast Florence.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-3-560x420.png" alt="Florence fight, 3" loading="lazy" decoding="async" /><figcaption>Florence’s domain.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-4-560x420.png" alt="Florence fight, 4" loading="lazy" decoding="async" /><figcaption>The end of the Florence fight.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-encounter-560x420.webp" alt="Encountering Florence." loading="lazy" decoding="async" /><figcaption>Encountering Florence.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-encounter-2-560x420.webp" alt="Florence encounter, 2" loading="lazy" decoding="async" /><figcaption>Florence’s warning before the fight.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-560x420.webp" alt="Fighting Florence." loading="lazy" decoding="async" /><figcaption>Fighting Florence.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-2-560x420.webp" alt="Florence fight, 2" loading="lazy" decoding="async" /><figcaption>Heavenly Beast Florence.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-3-560x420.webp" alt="Florence fight, 3" loading="lazy" decoding="async" /><figcaption>Florence’s domain.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-fight-4-560x420.webp" alt="Florence fight, 4" loading="lazy" decoding="async" /><figcaption>The end of the Florence fight.</figcaption></figure>
 
 
 ### Blackwell’s Letter
@@ -96,7 +96,7 @@ After that, she will rest for a bit and disappear.
 
 That’s how you rescue Florence, and have her help you fight Grand Guignol.
 
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Receiving-Blackwells-letter-560x420.png" alt="Florence receiving Blackwell’s letter." loading="lazy" decoding="async" /><figcaption>Florence receives Blackwell’s letter.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Receiving-Blackwells-letter-560x420.webp" alt="Florence receiving Blackwell’s letter." loading="lazy" decoding="async" /><figcaption>Florence receives Blackwell’s letter.</figcaption></figure>
 
 
 ### Florence’s Diary
@@ -119,7 +119,7 @@ The fourth day starts with Florence talking about how the immortalization of a p
 
 The last recorded day is short, it just says “Exiled together with the hospital. I’ve been released. Today, as always, I must save”.
 
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-lost-560x420.png" alt="Florence lost with the hospital." loading="lazy" decoding="async" /><figcaption>Florence’s diary and the hospital’s fate.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florence-lost-560x420.webp" alt="Florence lost with the hospital." loading="lazy" decoding="async" /><figcaption>Florence’s diary and the hospital’s fate.</figcaption></figure>
 
 
 ## Personality
@@ -136,7 +136,7 @@ The most noticeable thing about Florence is that she’s not completely human. S
 
 Florence’s body is well-built in the right places, and she’s very attractive. She doesn’t seem to be small, or short, and she always wears some kind of blue uniform with a medical cross on her sleeve.
 
-<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florences-determination.png" alt="Florence’s determination." loading="lazy" decoding="async" /><figcaption>Florence’s determination.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florences-determination.webp" alt="Florence’s determination." loading="lazy" decoding="async" /><figcaption>Florence’s determination.</figcaption></figure>
 
 Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
 

@@ -9,7 +9,7 @@ spheres: [games]
 tags: [black-souls, black-souls-ii, characters, guide, nsfw]
 hero:
   kind: image
-  src: /media/images/black-souls-ii-foolish-bird-dodo/Dodos-cute-face.jpg
+  src: /media/images/black-souls-ii-foolish-bird-dodo/Dodos-cute-face.webp
   alt: "Dodo’s cute face in BLACKSOULS II."
   credit: "Source guide imagery; rights reserved. Used for identification and commentary."
 related: [black-souls-ii-characters, black-souls-ii]
@@ -43,7 +43,7 @@ That’s most likely the first time you will see her in the game. She will be fr
 
 If you leave the area right after talking to her and come back, the animals will be gone and she’ll actually listen to what you’re saying.
 
-<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Smug-Dodo-747x420.png" alt="Smug Dodo at the Pond of Bloody Tears." loading="lazy" decoding="async" /><figcaption>Smug Dodo at the Pond of Bloody Tears.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Smug-Dodo-747x420.webp" alt="Smug Dodo at the Pond of Bloody Tears." loading="lazy" decoding="async" /><figcaption>Smug Dodo at the Pond of Bloody Tears.</figcaption></figure>
 
 
 ### Kill All Animals
@@ -66,7 +66,7 @@ Under certain conditions, if you come back to the area where Dodo is, the Fluffy
 
 After some time if you headpat him, he will get tired, and if you kill him Dodo will transform into her demonbeast form the next time you interact with her.
 
-<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Dodo-and-the-Fluffy-Beast-401x1536.png" alt="Dodo and the Fluffy Beast." loading="lazy" decoding="async" /><figcaption>Dodo and the Fluffy Beast.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Dodo-and-the-Fluffy-Beast-401x1536.webp" alt="Dodo and the Fluffy Beast." loading="lazy" decoding="async" /><figcaption>Dodo and the Fluffy Beast.</figcaption></figure>
 
 
 ### Relationship with Shisha
@@ -95,7 +95,7 @@ The Duchess will be quite mad when you meet her for the first time and you will 
 
 The Duchess will gladly accept Dodo, so she will kill her and eat her.
 
-<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Dodo-and-a-scary-girl-monster-630x420.jpg" alt="Dodo and a scary girl monster." loading="lazy" decoding="async" /><figcaption>Dodo’s dangerous encounter with the Duchess.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-foolish-bird-dodo/Dodo-and-a-scary-girl-monster-630x420.webp" alt="Dodo and a scary girl monster." loading="lazy" decoding="async" /><figcaption>Dodo’s dangerous encounter with the Duchess.</figcaption></figure>
 
 
 ### Covenant

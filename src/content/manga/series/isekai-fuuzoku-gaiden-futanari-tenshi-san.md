@@ -19,7 +19,7 @@ artists:
     slug: itoyoko
 cover:
   kind: image
-  src: /manga/isekai-fuuzoku-gaiden-futanari-tenshi-san/cover.jpg
+  src: /manga/isekai-fuuzoku-gaiden-futanari-tenshi-san/cover.webp
   alt: Cover art for Isekai Fuuzoku Gaiden Futanari Tenshi-san
 featured: false
 ---

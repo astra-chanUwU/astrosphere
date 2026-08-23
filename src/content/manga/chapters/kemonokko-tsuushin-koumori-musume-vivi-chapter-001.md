@@ -5,7 +5,7 @@ number: 1
 title: Kemonokko Tsuushin ~Koumori Musume Vivi~
 publishedAt: "2020-07-30"
 pagePath: /manga/kemonokko-tsuushin-koumori-musume-vivi/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 22
 pageWidth: 1280
 pageHeight: 1843

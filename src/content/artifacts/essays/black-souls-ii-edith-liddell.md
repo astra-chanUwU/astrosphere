@@ -46,17 +46,17 @@ This sequence will start with a conversation between Lewis Carroll and Mr. Robin
 
 When you enter their home, you will be greeted by Alice, Lorina, and then Edith.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Liddell-estate-560x420.png" alt="The Liddell estate." loading="lazy" decoding="async" /><figcaption>The Liddell estate.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Liddell-estate-560x420.webp" alt="The Liddell estate." loading="lazy" decoding="async" /><figcaption>The Liddell estate.</figcaption></figure>
 
 
 In the living room, Edith will be eating her toast, while Alice and Lorina be doing something together.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-eating-561x420.png" alt="Edith eating in the living room." loading="lazy" decoding="async" /><figcaption>Edith eating with Alice and Lorina.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-eating-561x420.webp" alt="Edith eating in the living room." loading="lazy" decoding="async" /><figcaption>Edith eating with Alice and Lorina.</figcaption></figure>
 
 
 When the second day comes, Edith will be with Lorina in the living room, where she’ll recite the lyrics of the Lion and the Unicorn nursery rhyme, and Lorina will recite the other part of it after Edith is done.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-late-561x420.png" alt="Edith arriving late in the visual novel." loading="lazy" decoding="async" /><figcaption>Edith is late.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-late-561x420.webp" alt="Edith arriving late in the visual novel." loading="lazy" decoding="async" /><figcaption>Edith is late.</figcaption></figure>
 
 
 Lorina will tell Edith to cut the cake with a knife and hand it around, but Edith is afraid of knives so she can’t do it.
@@ -67,7 +67,7 @@ When the night comes, and after you leave your room you will hear Edith coughing
 
 To find Edith’s medicine you need to go into the living room and inspect the room 4 times, and then you will find a bottle of medicine labeled “VENUS”. A very common mistake while bringing Edith her medicine is that you can get transferred automatically to another day if you interact with other stuff as well.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Ediths-medicine-561x420.png" alt="Edith’s medicine labeled VENUS." loading="lazy" decoding="async" /><figcaption>Edith’s medicine.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Ediths-medicine-561x420.webp" alt="Edith’s medicine labeled VENUS." loading="lazy" decoding="async" /><figcaption>Edith’s medicine.</figcaption></figure>
 
 
 So to bring Edith her medicine, when you hear her coughing check up on her, don’t click anything else and go straight to the living room, get the medicine, and then go into her room.
@@ -75,8 +75,8 @@ So to bring Edith her medicine, when you hear her coughing check up on her, don�
 
 She will thank you for bringing the medicine, she will apologize for having a weak body and causing trouble to him and her sisters. Then you can sleep together with her, and initiate a NSFW scene.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-thanks-you-561x420.png" alt="Edith thanking Carroll for the medicine." loading="lazy" decoding="async" /><figcaption>Edith thanks Carroll.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-aplogizes-561x420.png" alt="Edith apologizing for her weak body." loading="lazy" decoding="async" /><figcaption>Edith apologizes.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-thanks-you-561x420.webp" alt="Edith thanking Carroll for the medicine." loading="lazy" decoding="async" /><figcaption>Edith thanks Carroll.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-aplogizes-561x420.webp" alt="Edith apologizing for her weak body." loading="lazy" decoding="async" /><figcaption>Edith apologizes.</figcaption></figure>
 
 
 You will wake up in Edith’s room, and she won’t be able to get out of bed because of you.
@@ -84,17 +84,17 @@ You will wake up in Edith’s room, and she won’t be able to get out of bed be
 
 The next night you can come to Edith’s room again. She will be frightened because she thinks there is someone under her bed. Carroll will look under the bed and no one will be there, but once he looks back up Edith will be missing.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-scared-561x420.png" alt="Edith is frightened by something under her bed." loading="lazy" decoding="async" /><figcaption>Edith is scared.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-scared-561x420.webp" alt="Edith is frightened by something under her bed." loading="lazy" decoding="async" /><figcaption>Edith is scared.</figcaption></figure>
 
 
 If you survive all days, the three sisters will be waiting for you in the 1st floor corridor, because you’re leaving that day. While going through the door, you have the option to turn around, and if you do, you will realize they’re all just puppets.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/The-dolls-561x420.png" alt="The Liddell sisters revealed as dolls." loading="lazy" decoding="async" /><figcaption>The dolls at the end of the visual novel.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/The-dolls-561x420.webp" alt="The Liddell sisters revealed as dolls." loading="lazy" decoding="async" /><figcaption>The dolls at the end of the visual novel.</figcaption></figure>
 
 
 There’s a good chance you won’t be able to find the medicine in the living room. The next day when you wake up Edith will still be sleeping while other sisters will be already downstairs. Lorina will also confirm this and say how their tea party is postponed because of her.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-sleeping-561x420.png" alt="Edith sleeping while her sisters are downstairs." loading="lazy" decoding="async" /><figcaption>Edith remains asleep.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-is-sleeping-561x420.webp" alt="Edith sleeping while her sisters are downstairs." loading="lazy" decoding="async" /><figcaption>Edith remains asleep.</figcaption></figure>
 
 
 When the 4th day comes you can see Edith in the living room. Even though she still seems sick, she will greet you nicely. Carroll will ask Edith where is Lorina, and she will say how she went to wake Alice. Lorina will come down and say how there’s no Alice, Lorina will suspect you know something, and Carroll will respond how Alice moved to a faraway place.
@@ -105,7 +105,7 @@ Edith will try to calm Lorina down, but then Edith will start puking out a black
 
 The night will come and you can go to Edith’s room now, although it’s empty. On the bed there’s a bottle of drugs labeled with “VENOM”, so it’s likely Edith drank that instead of her medicine.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-dies-561x420.png" alt="Edith’s tragic transformation in the visual novel." loading="lazy" decoding="async" /><figcaption>Edith’s tragic fate.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Edith-dies-561x420.webp" alt="Edith’s tragic transformation in the visual novel." loading="lazy" decoding="async" /><figcaption>Edith’s tragic fate.</figcaption></figure>
 
 
 After these events took place, Edith suffered a tragic fate because of the Outer Ones playing with her. You can find her inside the Mental Ward – in the game she’s in a part that’s deep inside and it can be tricky to get to her.
@@ -113,7 +113,7 @@ After these events took place, Edith suffered a tragic fate because of the Outer
 
 Edith will be in the form of the Great Grey Eagle Edith, who’s a demonbeast you have to fight if you go through the fog.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Great-Grey-Eagle-Edith-dialogue-560x420.png" alt="Great Grey Eagle Edith dialogue." loading="lazy" decoding="async" /><figcaption>Great Grey Eagle Edith.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Great-Grey-Eagle-Edith-dialogue-560x420.webp" alt="Great Grey Eagle Edith dialogue." loading="lazy" decoding="async" /><figcaption>Great Grey Eagle Edith.</figcaption></figure>
 
 
 ### Lovecraft Cinema
@@ -148,7 +148,7 @@ Holmes admits to himself that he doesn’t hate all women, but just the “swarm
 
 This cuts to a moment where Holmes is telling Edith how he will one day take her outside, even though it will take time, Holmes asks her if she will wait until then. Edith promises while sobbing that she will wait no matter how long it takes.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Isolation-Rooms-Neighbor-560x420.png" alt="Isolation Room’s Neighbor, showing Edith and Holmes." loading="lazy" decoding="async" /><figcaption>Isolation Room’s Neighbor.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Isolation-Rooms-Neighbor-560x420.webp" alt="Isolation Room’s Neighbor, showing Edith and Holmes." loading="lazy" decoding="async" /><figcaption>Isolation Room’s Neighbor.</figcaption></figure>
 
 
 ## Personality
@@ -162,7 +162,7 @@ Edith is the youngest and the most fragile out of the three Liddell sisters. She
 
 Edith is a small and fragile girl. She has long blonde hair and blue eyes. Her skin is pale and, on her head, she has a flower headdress. Edith is dressed in modest-looking clothes that are light brown. Her face is expressive, and she usually appears to be shy and anxious.
 
-<figure><img src="/media/images/black-souls-ii-edith-liddell/Ediths-design-560x420.png" alt="Edith’s character design." loading="lazy" decoding="async" /><figcaption>Edith’s design.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-edith-liddell/Ediths-design-560x420.webp" alt="Edith’s character design." loading="lazy" decoding="async" /><figcaption>Edith’s design.</figcaption></figure>
 
 Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
 

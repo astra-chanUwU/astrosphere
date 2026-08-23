@@ -4,7 +4,7 @@ series: the-room-you-cant-leave-until-you-ejaculate
 number: 1
 title: Doujinshi
 pagePath: /manga/the-room-you-cant-leave-until-you-ejaculate/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 31
 pageWidth: 1280
 pageHeight: 1809

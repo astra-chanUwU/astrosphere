@@ -19,7 +19,7 @@ artists:
     slug: kataokasan
 cover:
   kind: image
-  src: /manga/futanari-texas-x-exusiai/cover.jpg
+  src: /manga/futanari-texas-x-exusiai/cover.webp
   alt: Cover art for Futanari Texas x Exusiai
 featured: false
 ---

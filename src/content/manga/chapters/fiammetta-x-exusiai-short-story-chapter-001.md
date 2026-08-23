@@ -4,7 +4,7 @@ series: fiammetta-x-exusiai-short-story
 number: 1
 title: Doujinshi
 pagePath: /manga/fiammetta-x-exusiai-short-story/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 15
 pageWidth: 1000
 pageHeight: 1430

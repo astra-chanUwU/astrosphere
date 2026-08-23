@@ -19,7 +19,7 @@ artists:
     slug: sakurayu-hal
 cover:
   kind: image
-  src: /manga/the-room-you-cant-leave-until-you-ejaculate/cover.jpg
+  src: /manga/the-room-you-cant-leave-until-you-ejaculate/cover.webp
   alt: Cover art for The Room You Can't Leave Until You Ejaculate
 featured: false
 ---

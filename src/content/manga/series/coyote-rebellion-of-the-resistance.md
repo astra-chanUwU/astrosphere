@@ -19,14 +19,14 @@ artists:
     slug: hirano-kouta
 cover:
   kind: image
-  src: /manga/coyote-rebellion-of-the-resistance/cover.jpg
+  src: /manga/coyote-rebellion-of-the-resistance/cover.webp
   alt: Cover art for Coyote - Rebellion of the Resistance - by Hirano Kouta
 art:
-  - src: /manga/coyote-rebellion-of-the-resistance/art/01.jpeg
+  - src: /manga/coyote-rebellion-of-the-resistance/art/01.webp
     alt: Artwork from Coyote - Rebellion of the Resistance -
-  - src: /manga/coyote-rebellion-of-the-resistance/art/02.jpeg
+  - src: /manga/coyote-rebellion-of-the-resistance/art/02.webp
     alt: Additional artwork from Coyote - Rebellion of the Resistance -
-  - src: /manga/coyote-rebellion-of-the-resistance/art/03.jpeg
+  - src: /manga/coyote-rebellion-of-the-resistance/art/03.webp
     alt: Additional artwork from Coyote - Rebellion of the Resistance -
 featured: false
 ---

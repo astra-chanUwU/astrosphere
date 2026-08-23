@@ -4,7 +4,7 @@ series: coyote-rebellion-of-the-resistance
 number: 2
 title: Chapter 2
 pagePath: /manga/coyote-rebellion-of-the-resistance/chapter-002
-pageExtension: jpg
+pageExtension: webp
 pageCount: 17
 pageWidth: 633
 pageHeight: 900

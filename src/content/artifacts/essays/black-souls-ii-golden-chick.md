@@ -46,14 +46,14 @@ Humpty Dumpty died while giving birth to the Golden Chick, who’s now resting i
 
 This Golden Chick is very cute and she will jump towards you, and then you will be forced to give her a name. And from then on, you can do whatever you want with her, she’s technically your daughter now, and she recognizes you as her father.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-birth.png" alt="Golden Chick birth" loading="lazy" decoding="async" /><figcaption>The Golden Chick is born.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-birth-2.png" alt="Golden Chick birth, 2" loading="lazy" decoding="async" /><figcaption>The broken shell and new chick.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-golden-chick/Giving-a-name-to-the-Golden-Chick.png" alt="Giving a name to the Golden Chick" loading="lazy" decoding="async" /><figcaption>Giving the Golden Chick a name.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-birth.webp" alt="Golden Chick birth" loading="lazy" decoding="async" /><figcaption>The Golden Chick is born.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-birth-2.webp" alt="Golden Chick birth, 2" loading="lazy" decoding="async" /><figcaption>The broken shell and new chick.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Giving-a-name-to-the-Golden-Chick.webp" alt="Giving a name to the Golden Chick" loading="lazy" decoding="async" /><figcaption>Giving the Golden Chick a name.</figcaption></figure>
 
 
 You will gently pat her head, and she will exclaim how she likes head pats while laughing softly.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-likes-headpats.png" alt="Golden Chick likes headpats" loading="lazy" decoding="async" /><figcaption>She likes head pats.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-likes-headpats.webp" alt="Golden Chick likes headpats" loading="lazy" decoding="async" /><figcaption>She likes head pats.</figcaption></figure>
 
 
 ### Talking to the Golden Chick
@@ -67,7 +67,7 @@ You can pat her head, kiss her, ask her for certain services, kill her, and send
 
 Sometimes when you want to talk to her she will sing.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-singing.png" alt="Golden Chick singing" loading="lazy" decoding="async" /><figcaption>The Golden Chick sings during an interaction.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-singing.webp" alt="Golden Chick singing" loading="lazy" decoding="async" /><figcaption>The Golden Chick sings during an interaction.</figcaption></figure>
 
 
 ### 0 SEN Scene
@@ -81,7 +81,7 @@ At the end of the scene, the Golden Chick expresses her wish to marry you, her f
 
 But right before the scene ends, she says “So don’t betray me this time, ok?”.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-0-SEN-secert-line.png" alt="Golden Chick’s secret 0-SEN line" loading="lazy" decoding="async" /><figcaption>The unusual 0-SEN line.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-0-SEN-secert-line.webp" alt="Golden Chick’s secret 0-SEN line" loading="lazy" decoding="async" /><figcaption>The unusual 0-SEN line.</figcaption></figure>
 
 
 It’s not clear what she means by that odd 0 SEN interaction, but it could be related to Rich Bird Goose from the first game, because you kill her in Hotel Poseidon, and there’s also the companion ending with her that ends miserably. Rich Bird Goose and the Golden Chick look awfully similar, despite having different fairytales.
@@ -95,7 +95,7 @@ When Jubjub’s Madness event happens, Jubjub will come to the Carroll River and
 
 For more details surrounding the interaction check out the post on Jubjub.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Jubjub-and-the-Golden-Chick-1.png" alt="Jubjub and the Golden Chick" loading="lazy" decoding="async" /><figcaption>Jubjub visits the Golden Chick.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Jubjub-and-the-Golden-Chick-1.webp" alt="Jubjub and the Golden Chick" loading="lazy" decoding="async" /><figcaption>Jubjub visits the Golden Chick.</figcaption></figure>
 
 
 ### Killing the Golden Chick
@@ -103,7 +103,7 @@ For more details surrounding the interaction check out the post on Jubjub.
 
 If you decide you want to kill the Golden Chick, you can do it easily since she can’t really fight at all. Killing her will give you the Goose That Laid Golden Eggs fairytale, along with all the souls you gave to Humpty Dumpty so he could give birth to her.
 
-<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-in-the-dungeon.png" alt="Golden Chick in the dungeon" loading="lazy" decoding="async" /><figcaption>The Golden Chick in the dungeon.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-golden-chick/Golden-Chick-in-the-dungeon.webp" alt="Golden Chick in the dungeon" loading="lazy" decoding="async" /><figcaption>The Golden Chick in the dungeon.</figcaption></figure>
 
 
 ### Node’s Candy

@@ -4,7 +4,7 @@ series: texas-x-exusiai-english
 number: 1
 title: Doujinshi
 pagePath: /manga/texas-x-exusiai-english/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 29
 pageWidth: 600
 pageHeight: 600

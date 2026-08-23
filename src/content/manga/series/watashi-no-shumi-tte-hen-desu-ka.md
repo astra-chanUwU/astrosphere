@@ -19,14 +19,14 @@ artists:
     slug: comaku
 cover:
   kind: image
-  src: /manga/watashi-no-shumi-tte-hen-desu-ka/cover.jpg
+  src: /manga/watashi-no-shumi-tte-hen-desu-ka/cover.webp
   alt: Cover art for Watashi no Shumi tte Hen desu ka?
 art:
-  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/1.jpg
+  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/1.webp
     alt: Artwork from Watashi no Shumi tte Hen desu ka?
-  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/2.jpg
+  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/2.webp
     alt: Artwork from Watashi no Shumi tte Hen desu ka?
-  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/3.jpg
+  - src: /manga/watashi-no-shumi-tte-hen-desu-ka/art/3.webp
     alt: Artwork from Watashi no Shumi tte Hen desu ka?
 featured: false
 ---

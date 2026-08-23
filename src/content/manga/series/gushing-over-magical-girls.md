@@ -19,32 +19,32 @@ artists:
     slug: ononaka-akihiro
 cover:
   kind: image
-  src: /manga/gushing-over-magical-girls/cover.jpg
+  src: /manga/gushing-over-magical-girls/cover.webp
   alt: Cover art for Gushing over Magical Girls by Ononaka Akihiro
 art:
-  - src: /manga/gushing-over-magical-girls/art/1.jpg
+  - src: /manga/gushing-over-magical-girls/art/1.webp
     alt: Artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/2.jpg
+  - src: /manga/gushing-over-magical-girls/art/2.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/3.jpg
+  - src: /manga/gushing-over-magical-girls/art/3.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/4.jpg
+  - src: /manga/gushing-over-magical-girls/art/4.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/5.jpg
+  - src: /manga/gushing-over-magical-girls/art/5.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/6.jpg
+  - src: /manga/gushing-over-magical-girls/art/6.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/7.jpg
+  - src: /manga/gushing-over-magical-girls/art/7.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/8.jpg
+  - src: /manga/gushing-over-magical-girls/art/8.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/9.jpg
+  - src: /manga/gushing-over-magical-girls/art/9.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/10.jpg
+  - src: /manga/gushing-over-magical-girls/art/10.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/11.jpg
+  - src: /manga/gushing-over-magical-girls/art/11.webp
     alt: Additional artwork from Gushing over Magical Girls
-  - src: /manga/gushing-over-magical-girls/art/12.jpg
+  - src: /manga/gushing-over-magical-girls/art/12.webp
     alt: Additional artwork from Gushing over Magical Girls
 featured: false
 ---

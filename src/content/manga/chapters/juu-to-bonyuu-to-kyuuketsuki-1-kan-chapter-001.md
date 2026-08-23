@@ -4,7 +4,7 @@ series: juu-to-bonyuu-to-kyuuketsuki-1-kan
 number: 1
 title: Doujinshi
 pagePath: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 34
 pageWidth: 1280
 pageHeight: 1810

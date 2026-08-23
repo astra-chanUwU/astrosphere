@@ -19,10 +19,10 @@ artists:
     slug: umour
 cover:
   kind: image
-  src: /manga/boku-no-sensei-wa-ero-haishinsha/cover.jpg
+  src: /manga/boku-no-sensei-wa-ero-haishinsha/cover.webp
   alt: Cover art for My Teacher Is the Girl Behind the Slutty Lewd Streamer by Umour
 art:
-  - src: /manga/boku-no-sensei-wa-ero-haishinsha/art/1.jpg
+  - src: /manga/boku-no-sensei-wa-ero-haishinsha/art/1.webp
     alt: Artwork from My Teacher Is the Girl Behind the Slutty Lewd Streamer
 featured: false
 ---

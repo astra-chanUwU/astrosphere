@@ -19,12 +19,12 @@ artists:
     slug: tokiwa-midori
 cover:
   kind: image
-  src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/cover.jpg
+  src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/cover.webp
   alt: Cover art for Juu to Bonyuu to Kyuuketsuki 1-Kan
 art:
-  - src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/art/1.jpg
+  - src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/art/1.webp
     alt: Artwork from Juu to Bonyuu to Kyuuketsuki 1-Kan
-  - src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/art/2.jpg
+  - src: /manga/juu-to-bonyuu-to-kyuuketsuki-1-kan/art/2.webp
     alt: Artwork from Juu to Bonyuu to Kyuuketsuki 1-Kan
 featured: false
 ---

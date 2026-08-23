@@ -4,7 +4,7 @@ series: hatsujou-kiken-chitai
 number: 1
 title: Doujinshi
 pagePath: /manga/hatsujou-kiken-chitai/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 24
 pageWidth: 1280
 pageHeight: 1807

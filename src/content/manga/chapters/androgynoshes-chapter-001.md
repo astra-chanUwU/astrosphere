@@ -4,7 +4,7 @@ series: androgynoshes
 number: 1
 title: Doujinshi
 pagePath: /manga/androgynoshes/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 18
 pageWidth: 1280
 pageHeight: 1826

@@ -19,7 +19,7 @@ artists:
     slug: hyouga
 cover:
   kind: image
-  src: /manga/milk-uri-no-shoujo/cover.jpg
+  src: /manga/milk-uri-no-shoujo/cover.webp
   alt: Cover art for Milk Uri no Shoujo
 featured: false
 ---

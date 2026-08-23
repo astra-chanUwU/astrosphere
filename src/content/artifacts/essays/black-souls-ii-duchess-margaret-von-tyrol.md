@@ -9,7 +9,7 @@ spheres: [games]
 tags: [black-souls, black-souls-ii, characters, guide, nsfw]
 hero:
   kind: image
-  src: /media/images/black-souls-ii-duchess-margaret-von-tyrol/Margarets-frenzy-560x420.png
+  src: /media/images/black-souls-ii-duchess-margaret-von-tyrol/Margarets-frenzy-560x420.webp
   alt: "Duchess Margaret von Tyrol in BLACKSOULS II."
   credit: "Source guide imagery; rights reserved. Used for identification and commentary."
 related: [black-souls-ii-characters, black-souls-ii]
@@ -46,8 +46,8 @@ The Duchess won’t acknowledge your presence right away, she’s in the middle 
 
 The player will automatically approach her, but she will instead go on rambling about how the now-cooked pig is not peppery enough.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margaret-dialogue-options-560x420.png" alt="Margaret dialogue options" loading="lazy" decoding="async" /><figcaption>Margaret’s first dialogue options.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margaret-dialogue-options-2-560x420.png" alt="Margaret dialogue options, 2" loading="lazy" decoding="async" /><figcaption>More choices at the Dinner Party.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margaret-dialogue-options-560x420.webp" alt="Margaret dialogue options" loading="lazy" decoding="async" /><figcaption>Margaret’s first dialogue options.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margaret-dialogue-options-2-560x420.webp" alt="Margaret dialogue options, 2" loading="lazy" decoding="async" /><figcaption>More choices at the Dinner Party.</figcaption></figure>
 
 
 The Cook will then apologize, as it seems like they ran out of pepper. The Duchess will tell him to get some more pepper from the Infinite Food, and then he will fly away.
@@ -70,8 +70,8 @@ When you’re calming down the Duchess, one of the options you can get after giv
 
 And then, the screen will go black and Dodo will disappear. That will calm the Duchess though.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Giving-Dodo-560x420.png" alt="Giving Dodo to the Duchess" loading="lazy" decoding="async" /><figcaption>Giving Dodo to the Duchess.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Delicious-legs-560x420.png" alt="The Duchess admiring Dodo’s legs" loading="lazy" decoding="async" /><figcaption>The Duchess’s “delicious-looking legs” remark.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Giving-Dodo-560x420.webp" alt="Giving Dodo to the Duchess" loading="lazy" decoding="async" /><figcaption>Giving Dodo to the Duchess.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Delicious-legs-560x420.webp" alt="The Duchess admiring Dodo’s legs" loading="lazy" decoding="async" /><figcaption>The Duchess’s “delicious-looking legs” remark.</figcaption></figure>
 
 
 ### Duchess and Alice
@@ -88,7 +88,7 @@ When you ask her how to get there exactly, she will go back and give you the Tra
 
 She will instruct you further to go to the Abandoned Station, and that trains for Queensland pass through it. She will tell you to show the ticket to the conductor, who’s Hein from the first game.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margarets-advice-560x420.png" alt="Margaret’s advice about reaching Queensland" loading="lazy" decoding="async" /><figcaption>Margaret’s directions toward Queensland.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Margarets-advice-560x420.webp" alt="Margaret’s advice about reaching Queensland" loading="lazy" decoding="async" /><figcaption>Margaret’s directions toward Queensland.</figcaption></figure>
 
 
 ### Croquet Grounds
@@ -123,13 +123,13 @@ The Duchess will ask where are the oysters and Wolris will say how all the oyste
 
 The Duchess will end the conversation with few other morals, and then laughingly she will go back to her home.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-560x420.png" alt="Wolris and the Duchess" loading="lazy" decoding="async" /><figcaption>The Duchess visits Wolris.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-2-560x420.png" alt="Wolris and the Duchess, 2" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 2.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-3-560x420.png" alt="Wolris and the Duchess, 3" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 3.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-4-560x420.png" alt="Wolris and the Duchess, 4" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 4.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-5-560x420.png" alt="Wolris and the Duchess, 5" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 5.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-6-560x420.png" alt="Wolris and the Duchess, 6" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 6.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-7-560x420.png" alt="Wolris and the Duchess, 7" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 7.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-560x420.webp" alt="Wolris and the Duchess" loading="lazy" decoding="async" /><figcaption>The Duchess visits Wolris.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-2-560x420.webp" alt="Wolris and the Duchess, 2" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 2.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-3-560x420.webp" alt="Wolris and the Duchess, 3" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 3.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-4-560x420.webp" alt="Wolris and the Duchess, 4" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 4.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-5-560x420.webp" alt="Wolris and the Duchess, 5" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 5.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-6-560x420.webp" alt="Wolris and the Duchess, 6" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 6.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Wolris-and-the-Duchess-7-560x420.webp" alt="Wolris and the Duchess, 7" loading="lazy" decoding="async" /><figcaption>Wolris and the Duchess, 7.</figcaption></figure>
 
 
 ### The Picture
@@ -140,9 +140,9 @@ While exploring the Duchess’ Mansion you may notice a small painting attached 
 
 If you are at 0 SEN, the picture will be significantly altered.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-2-560x420.png" alt="The Picture, 2" loading="lazy" decoding="async" /><figcaption>The Picture, 2.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-560x420.png" alt="The Picture" loading="lazy" decoding="async" /><figcaption>The picture in the Duchess’s Mansion.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-3-560x420.png" alt="The Picture, 3" loading="lazy" decoding="async" /><figcaption>The altered picture at 0 SEN.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-2-560x420.webp" alt="The Picture, 2" loading="lazy" decoding="async" /><figcaption>The Picture, 2.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-560x420.webp" alt="The Picture" loading="lazy" decoding="async" /><figcaption>The picture in the Duchess’s Mansion.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/The-Picture-3-560x420.webp" alt="The Picture, 3" loading="lazy" decoding="async" /><figcaption>The altered picture at 0 SEN.</figcaption></figure>
 
 
 ### Duchess’ Cat
@@ -156,7 +156,7 @@ This is confirmed by the picture you can see in one of the rooms in the Duchess�
 
 If you have the Cheshire Cat Ring on you equipped, the Duchess will notice and mention how it smells like her cat. She’s confused because she thinks her cat died, so she will give you an Ore Slab because it reminded her of the good old times.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Duchess-and-her-cat-560x420.png" alt="The Duchess and her cat" loading="lazy" decoding="async" /><figcaption>The Duchess and her former cat.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Duchess-and-her-cat-560x420.webp" alt="The Duchess and her cat" loading="lazy" decoding="async" /><figcaption>The Duchess and her former cat.</figcaption></figure>
 
 
 ### Covenant
@@ -167,8 +167,8 @@ The Duchess is one of the characters in the game you can form a covenant with. T
 
 At one point of talking to her, she will even tell you you can address her with an “affectionate, yet admiring nickname Rette”. Which I assume is derived from her name, Margaret.
 
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-560x420.png" alt="Covenant with Margaret" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant.</figcaption></figure>
-<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-2-561x420.png" alt="Covenant with Margaret, 2" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant, later progression.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-560x420.webp" alt="Covenant with Margaret" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant.</figcaption></figure>
+<figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-2-561x420.webp" alt="Covenant with Margaret, 2" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant, later progression.</figcaption></figure>
 
 Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
 

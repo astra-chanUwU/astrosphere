@@ -19,20 +19,20 @@ artists:
     slug: tomato-soup
 cover:
   kind: image
-  src: /manga/tenmaku-no-jaadugar/conver.jpg
+  src: /manga/tenmaku-no-jaadugar/conver.webp
   alt: Cover art for A Witch's Life in Mongol by Tomato Soup
 art:
-  - src: /manga/tenmaku-no-jaadugar/art/01.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/01.webp
     alt: Artwork from A Witch's Life in Mongol
-  - src: /manga/tenmaku-no-jaadugar/art/02.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/02.webp
     alt: Additional artwork from A Witch's Life in Mongol
-  - src: /manga/tenmaku-no-jaadugar/art/03.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/03.webp
     alt: Additional artwork from A Witch's Life in Mongol
-  - src: /manga/tenmaku-no-jaadugar/art/04.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/04.webp
     alt: Additional artwork from A Witch's Life in Mongol
-  - src: /manga/tenmaku-no-jaadugar/art/05.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/05.webp
     alt: Additional artwork from A Witch's Life in Mongol
-  - src: /manga/tenmaku-no-jaadugar/art/06.jpg
+  - src: /manga/tenmaku-no-jaadugar/art/06.webp
     alt: Additional artwork from A Witch's Life in Mongol
 featured: false
 ---

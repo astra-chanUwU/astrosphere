@@ -5,7 +5,7 @@ number: 4
 title: Volume 4
 publishedAt: "2017-01-01"
 pagePath: /manga/blame/volume-04
-pageExtension: jpg
+pageExtension: webp
 pageCount: 363
 pageWidth: 2143
 pageHeight: 3056

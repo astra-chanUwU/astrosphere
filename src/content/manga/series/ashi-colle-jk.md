@@ -39,7 +39,7 @@ artists:
     slug: yuzugin
 cover:
   kind: image
-  src: /manga/ashi-colle-jk/chapter-001/001.jpg
+  src: /manga/ashi-colle-jk/chapter-001/001.webp
   alt: Cover art for Ashi Colle JK
   width: 1280
   height: 1810

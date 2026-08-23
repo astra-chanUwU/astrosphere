@@ -19,7 +19,7 @@ artists:
     slug: kataokasan
 cover:
   kind: image
-  src: /manga/texas-x-exusiai-english/cover.jpg
+  src: /manga/texas-x-exusiai-english/cover.webp
   alt: Cover art for Texas×Exusiai - English
 featured: false
 ---

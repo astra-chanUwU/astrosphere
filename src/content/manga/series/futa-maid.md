@@ -19,7 +19,7 @@ artists:
     slug: ikeshita-maue
 cover:
   kind: image
-  src: /manga/futa-maid/cover.jpg
+  src: /manga/futa-maid/cover.webp
   alt: Cover art for Futa Maid
 featured: false
 ---

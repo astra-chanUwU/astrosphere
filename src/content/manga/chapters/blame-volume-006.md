@@ -5,7 +5,7 @@ number: 6
 title: Volume 6
 publishedAt: "2017-01-01"
 pagePath: /manga/blame/volume-06
-pageExtension: jpg
+pageExtension: webp
 pageCount: 314
 pageWidth: 2143
 pageHeight: 3056

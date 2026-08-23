@@ -19,14 +19,14 @@ artists:
     slug: creampan
 cover:
   kind: image
-  src: /manga/daisuki-yuri/cover.jpg
+  src: /manga/daisuki-yuri/cover.webp
   alt: Cover art for I Love Yuri! by creampan
 art:
-  - src: /manga/daisuki-yuri/art/1.jpg
+  - src: /manga/daisuki-yuri/art/1.webp
     alt: Artwork from I Love Yuri!
-  - src: /manga/daisuki-yuri/art/2.jpg
+  - src: /manga/daisuki-yuri/art/2.webp
     alt: Artwork from I Love Yuri!
-  - src: /manga/daisuki-yuri/art/3.jpg
+  - src: /manga/daisuki-yuri/art/3.webp
     alt: Artwork from I Love Yuri!
 featured: false
 ---

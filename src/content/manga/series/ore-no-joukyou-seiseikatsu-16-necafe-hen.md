@@ -19,7 +19,7 @@ artists:
     slug: unknown
 cover:
   kind: image
-  src: /manga/ore-no-joukyou-seiseikatsu-16-necafe-hen/cover.jpg
+  src: /manga/ore-no-joukyou-seiseikatsu-16-necafe-hen/cover.webp
   alt: Cover art for Ore no Joukyou Seiseikatsu 16 NeCafe Hen
 featured: false
 ---

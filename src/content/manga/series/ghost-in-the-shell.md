@@ -19,7 +19,7 @@ artists:
     slug: shirow-masamune
 cover:
   kind: image
-  src: /manga/ghost-in-the-shell/cover.jpg
+  src: /manga/ghost-in-the-shell/cover.webp
   alt: Cover art for The Ghost in the Shell by Shirow Masamune
 featured: false
 ---

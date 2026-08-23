@@ -19,7 +19,7 @@ artists:
     slug: kataokasan
 cover:
   kind: image
-  src: /manga/futa-sora-x-exusiai-doujinshi/cover.jpg
+  src: /manga/futa-sora-x-exusiai-doujinshi/cover.webp
   alt: Cover art for Futa Sora x Exusiai Doujinshi
 featured: false
 ---

@@ -5,7 +5,7 @@ number: 2
 title: Volume 2
 publishedAt: "2016-01-01"
 pagePath: /manga/blame/volume-02
-pageExtension: jpg
+pageExtension: webp
 pageCount: 364
 pageWidth: 2143
 pageHeight: 3056

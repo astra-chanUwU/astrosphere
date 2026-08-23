@@ -155,12 +155,12 @@ There aren’t many other wolf-like humanoid characters like him in the game, so
 ## Gallery
 
 <figure>
-<img src="/media/images/black-souls-ii-detective-holmes/Holmes-in-Lutwidge-Town-2-560x420.png" alt="Holmes in Lutwidge Town, 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-detective-holmes/Holmes-in-Lutwidge-Town-2-560x420.webp" alt="Holmes in Lutwidge Town, 2" loading="lazy" decoding="async" />
 <figcaption>Holmes in Lutwidge Town, 2</figcaption>
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-detective-holmes/Isolation-Rooms-Neighbor-560x420.png" alt="Isolation Room’s Neighbor, showing Holmes and Edith Liddell." loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-detective-holmes/Isolation-Rooms-Neighbor-560x420.webp" alt="Isolation Room’s Neighbor, showing Holmes and Edith Liddell." loading="lazy" decoding="async" />
 <figcaption>Isolation Room’s Neighbor</figcaption>
 </figure>
 

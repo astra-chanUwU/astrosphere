@@ -19,7 +19,7 @@ artists:
     slug: kataokasan
 cover:
   kind: image
-  src: /manga/fiammetta-x-exusiai-short-story/cover.jpg
+  src: /manga/fiammetta-x-exusiai-short-story/cover.webp
   alt: Cover art for Fiammetta x Exusiai Short Story
 featured: false
 ---

@@ -22,11 +22,11 @@ cover:
   src: /manga/tonari-no-ochinpo-onee-san/cover.webp
   alt: Cover art for Tonari no Ochinpo Onee-san
 art:
-  - src: /manga/tonari-no-ochinpo-onee-san/art/1.jpg
+  - src: /manga/tonari-no-ochinpo-onee-san/art/1.webp
     alt: Artwork from Tonari no Ochinpo Onee-san
-  - src: /manga/tonari-no-ochinpo-onee-san/art/2.jpg
+  - src: /manga/tonari-no-ochinpo-onee-san/art/2.webp
     alt: Artwork from Tonari no Ochinpo Onee-san
-  - src: /manga/tonari-no-ochinpo-onee-san/art/3.jpg
+  - src: /manga/tonari-no-ochinpo-onee-san/art/3.webp
     alt: Artwork from Tonari no Ochinpo Onee-san
 featured: false
 ---

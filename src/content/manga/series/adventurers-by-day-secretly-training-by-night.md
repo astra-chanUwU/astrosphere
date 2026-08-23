@@ -19,7 +19,7 @@ artists:
     slug: yukataro
 cover:
   kind: image
-  src: /manga/adventurers-by-day-secretly-training-by-night/cover.jpg
+  src: /manga/adventurers-by-day-secretly-training-by-night/cover.webp
   alt: Cover art for Adventurers by Day, Secretly Training by Night
 featured: false
 ---

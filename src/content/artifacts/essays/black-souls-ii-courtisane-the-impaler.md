@@ -58,19 +58,19 @@ Toro’s teaser presents Courtisane as a new *Dead Red Hood* character with a pr
 ## Gallery
 
 <figure>
-<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-2-561x420.png" alt="Courtisane's appearance, 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-2-561x420.webp" alt="Courtisane's appearance, 2" loading="lazy" decoding="async" />
 <figcaption>Courtisane's appearance, 2</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-3-561x420.png" alt="Courtisane's appearance, 3" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-3-561x420.webp" alt="Courtisane's appearance, 3" loading="lazy" decoding="async" />
 <figcaption>Courtisane's appearance, 3</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-4-561x420.png" alt="Courtisane's appearance, 4" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-4-561x420.webp" alt="Courtisane's appearance, 4" loading="lazy" decoding="async" />
 <figcaption>Courtisane's appearance, 4</figcaption>
 </figure>
 <figure>
-<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-5-561x420.png" alt="Courtisane's appearance, 5" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-courtisane-the-impaler/Courtisanes-appearance-5-561x420.webp" alt="Courtisane's appearance, 5" loading="lazy" decoding="async" />
 <figcaption>Courtisane's appearance, 5</figcaption>
 </figure>
 

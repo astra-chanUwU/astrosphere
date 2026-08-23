@@ -44,12 +44,12 @@ Sho will be very happy to see you because it means that now she can multiply. Sh
 You can do plenty of things to her, and even form a covenant. Multiplying will initiate an NSFW scene where she’ll also drain all of your health.
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Sho-dialogue-2-561x420.png" alt="Sho dialogue, 2" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Sho-dialogue-2-561x420.webp" alt="Sho dialogue, 2" loading="lazy" decoding="async" />
 <figcaption>Sho’s first dialogue in the Mountains of Madness.</figcaption>
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Multiply-with-Sho-561x420.png" alt="Multiply with Sho" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Multiply-with-Sho-561x420.webp" alt="Multiply with Sho" loading="lazy" decoding="async" />
 <figcaption>Multiplying with Sho.</figcaption>
 </figure>
 
@@ -66,7 +66,7 @@ If you leave her there without bringing her back to her senses, she will wander 
 Sho wanted to be friends with Gerda, but Gerda was so scared of Sho that she cried, and then Sho melted her because she was annoying. She didn’t even shoot her gun.
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Spaced-out-Gerda-560x420.png" alt="Spaced out Gerda before meeting Sho" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Spaced-out-Gerda-560x420.webp" alt="Spaced out Gerda before meeting Sho" loading="lazy" decoding="async" />
 <figcaption>Gerda before she wanders toward Sho.</figcaption>
 </figure>
 
@@ -123,12 +123,12 @@ Sho isn’t human and she doesn’t look like one either, if you disregard her h
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Covenant-with-Sho.png" alt="Covenant with Sho" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Covenant-with-Sho.webp" alt="Covenant with Sho" loading="lazy" decoding="async" />
 <figcaption>Covenant with Sho.</figcaption>
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Sho-melts-you-560x420.png" alt="Sho melts you" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Sho-melts-you-560x420.webp" alt="Sho melts you" loading="lazy" decoding="async" />
 <figcaption>Sho’s melting scene.</figcaption>
 </figure>
 <figure>
@@ -145,7 +145,7 @@ Sho isn’t human and she doesn’t look like one either, if you disregard her h
 </figure>
 
 <figure>
-<img src="/media/images/black-souls-ii-dissolution-queen-sho/Shos-jealousy-560x420.png" alt="Sho’s jealousy" loading="lazy" decoding="async" />
+<img src="/media/images/black-souls-ii-dissolution-queen-sho/Shos-jealousy-560x420.webp" alt="Sho’s jealousy" loading="lazy" decoding="async" />
 <figcaption>Sho’s jealousy.</figcaption>
 </figure>
 

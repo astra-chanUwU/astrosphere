@@ -4,7 +4,7 @@ series: futanari-texas-x-exusiai
 number: 1
 title: Doujinshi
 pagePath: /manga/futanari-texas-x-exusiai/chapter-001
-pageExtension: jpg
+pageExtension: webp
 pageCount: 34
 pageWidth: 1000
 pageHeight: 1413

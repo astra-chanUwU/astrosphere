@@ -19,7 +19,7 @@ artists:
     slug: aomushi
 cover:
   kind: image
-  src: /manga/hatsujou-kiken-chitai/cover.jpg
+  src: /manga/hatsujou-kiken-chitai/cover.webp
   alt: Cover art for Hatsujou Kiken Chitai
 featured: false
 ---
