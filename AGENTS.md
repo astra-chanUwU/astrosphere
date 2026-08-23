@@ -1,3 +1,11 @@
+## Efficiency policy
+
+- Read and follow `docs/agent-efficiency-policy.md` before choosing a workflow.
+- Use one agent and direct execution for routine and bounded work. Never recommend subagent-driven development; use subagents only after the user explicitly requests delegation and is warned about its usage cost.
+- Do not create specs, plans, ledgers, review packages, branches, or worktrees for routine content/media/documentation tasks.
+- Run focused verification while working and broad verification at most once when justified. Never repeat a passing check against unchanged files.
+- When the user reports low remaining usage, immediately drop optional research, delegation, independent reviews, and broad test loops; finish through the shortest safe path.
+
 ## Development
 
 - For routine content and media work, follow `docs/agent-workflows.md` and use the shortest existing command. Do not create subagents, branches, implementation plans, or new infrastructure unless explicitly requested.
