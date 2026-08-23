@@ -2,6 +2,10 @@ export type ChapterOrder = { data: { number: number } };
 export type MangaFormat = "manga" | "doujinshi" | "one-shot" | "artbook" | "web-comic";
 
 export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") => {
+  if (!pagePath.startsWith("/manga/")) {
+    throw new Error(`Expected a /manga page path, received "${pagePath}".`);
+  }
+
   const pathname = new URL(pagePath, "http://manga.local").pathname;
 
   if (!pathname.startsWith("/manga/")) {
