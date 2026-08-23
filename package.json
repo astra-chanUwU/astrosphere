@@ -8,6 +8,10 @@
   "scripts": {
     "dev": "bun run prepare:search && astro dev",
     "build": "astro build && pagefind --site dist",
+    "media:serve": "bun scripts/media.ts serve",
+    "media:optimize": "bun scripts/media.ts optimize",
+    "media:validate": "bun scripts/media.ts validate",
+    "media:sync": "bun scripts/media.ts sync",
     "manga:sanitize": "bun scripts/sanitize-manga.ts",
     "manga:serve": "bun scripts/serve-manga.ts",
     "manga:sync": "bun scripts/sync-manga.ts",
