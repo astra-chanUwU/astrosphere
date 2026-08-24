@@ -23,6 +23,7 @@
 - Create content-only drafts with `bun run content:new <essay|doujinshi|image-set> <slug>`; the command must refuse existing destinations and must never copy binaries into the repository.
 - Free chapter storage without breaking published routes with `bun run media:remove manga <series> --chapter <number> --unavailable`; review the preview and type `yes` to remove the media while retaining a “Currently unavailable” entry.
 - Run `bun run media:validate` before synchronization. Review `bun run media:sync -- --dry-run --prune` before any confirmed prune.
+- For splitting managed manga volumes into chapter-level reader entries, follow the “Split managed manga volumes into reader chapters” workflow in `docs/agent-workflows.md` together with `docs/manga-chapter-splitting.md`.
 - `media:maintain` is unfinished and is not a supported public command. Do not invoke or document it as available.
 - Permanently delete a complete entry only when explicitly requested: resolve exact content and external-media targets, remove/update incoming references, never use broad globs or namespace roots, then require zero `media:validate` errors/orphans and a clean `astro check`.
 - For content-only changes, run focused validation once; do not repeatedly run the full test/build suite. Run the full suite when code/schema behavior changes or before an explicitly requested release.

@@ -180,6 +180,20 @@ Agent checklist:
 
 The transaction replaces the website's managed directory only after every output has been prepared and verified. It does not change original CBZ/ZIP downloads. Do not bypass a refusal, manually delete a staging directory while the command is running, synchronize media, deploy, commit, or push unless the user separately requests it.
 
+## Split managed manga volumes into reader chapters
+
+Use this workflow when a managed manga series is stored as whole-volume page sets but the reader should expose individual chapters.
+
+- Confirm the target series and exact managed media root. Keep the work scoped to that manga; do not modify the optimizer or other series.
+- Research the volume-to-chapter mapping from an authoritative source, but use local contents pages and chapter title pages to determine image offsets. Do not divide page counts evenly.
+- Build a boundary table for every volume. The first chapter includes front matter before the first printed chapter, and the final chapter includes trailing bonus or special pages unless the source clearly identifies a separate entry.
+- Rebuild into a temporary directory outside the managed namespace. Copy and locally renumber pages, preserving original bytes and reader orientation. Verify every copied page with SHA-256 checksums before switching directories.
+- Update content entries and canonical routes together. If existing chapter entries occupy temporary route numbers, move those media directories to their real chapter numbers before installing rebuilt chapters; avoid collisions with a temporary holding name.
+- Move old volume directories to an exact, series-specific rollback backup. Do not delete them until the rebuilt set passes validation.
+- Run `bun run media:validate` and `bun run astro check`. Confirm zero validation errors and that the target series has no missing or orphaned pages; distinguish pre-existing unrelated repository warnings from issues introduced by the split.
+
+For reference, Witch Hat Atelier volume 1 mapped to chapters 1–5 with local starts at pages `1, 67, 105, 137, 173` in a 211-page set. The same evidence-first boundary method was used for all fourteen volumes. Useful research starting points are the [publisher's series page](https://kodansha.us/series/witch-hat-atelier/) and the [chapter list](https://en.wikipedia.org/wiki/List_of_Witch_Hat_Atelier_chapters).
+
 ## Publish media to the VPS
 
 ```sh
