@@ -1,8 +1,8 @@
 ---
 slug: feticolle-vol-05-chapter-001
-series: feticolle-vol-05
-number: 1
-title: FetiColle Vol. 05
+series: feticolle-vol-1
+number: 5
+title: FetiColle Vol. 5
 pagePath: /manga/feticolle-vol-05/chapter-001
 pageExtension: webp
 pageCount: 26

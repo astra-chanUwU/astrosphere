@@ -10,7 +10,7 @@ description: "In a world where everyone takes wonders like magic spells and drag
 rating: safe
 format: manga
 origin: original
-tags: [award-winning, adventure, magic, drama, school-life, fantasy, slice-of-life, seinen]
+tags: [award-winning, adventure, comedy, drama, fantasy, magic, witches, coming-of-age, friendship, female-protagonist, dragons, school-life, seinen]
 authors:
   - name: Shirahama Kamome
     slug: shirahama-kamome

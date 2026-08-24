@@ -1,7 +1,7 @@
 ---
 slug: omankoformers-spotlight-shockwave
-title: Omankoformers Spotlight Shockwave
-originalTitle: Omankoformers Spotlight Shockwave
+title: Omankoformers
+originalTitle: Omankoformers
 aliases: []
 visibility: published
 status: completed
@@ -24,6 +24,13 @@ cover:
   width: 1280
   height: 1807
 featured: false
+art:
+  - src: /manga/omankoformers-spotlight-shockwave/cover.webp
+    alt: Cover art for Omankoformers
+  - src: /manga/omankoformers-spotlight-soundwave/cover.webp
+    alt: Cover art for Omankoformers Spotlight Soundwave
+  - src: /manga/omankoformers-all-hail-megadick/cover.webp
+    alt: "Cover art for Omankoformers: All Hail Megadick"
 ---
 
-*Omankoformers Spotlight Shockwave* is a completed explicit English-translated Transformers doujinshi by Koshiitai.
+*Omankoformers* is a collection of completed explicit English-translated Transformers doujinshi by Koshiitai.

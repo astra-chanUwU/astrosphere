@@ -1,8 +1,8 @@
 ---
 slug: feticolle-vol-06-zenpen-chapter-001
-series: feticolle-vol-06-zenpen
-number: 1
-title: FetiColle Vol. 06 Zenpen
+series: feticolle-vol-1
+number: 6
+title: FetiColle Vol. 6 Zenpen
 pagePath: /manga/feticolle-vol-06-zenpen/chapter-001
 pageExtension: webp
 pageCount: 27

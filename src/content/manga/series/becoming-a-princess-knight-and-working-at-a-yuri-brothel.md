@@ -10,7 +10,7 @@ description: "Talk about your extreme career changes! Naruse Soushi, a single, m
 rating: explicit
 format: manga
 origin: original
-tags: [adult, fantasy, gender-bender, isekai, seinen, yuri, english, translated]
+tags: [adult, fantasy, gender-bender, body-swap, reincarnation, isekai, yuri, girls-love, sex-work, prostitution, comedy, erotica, sexual-content, seinen, english, translated]
 authors:
   - name: Hinaki
     slug: hinaki
@@ -21,6 +21,17 @@ cover:
   kind: image
   src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/cover.webp
   alt: Cover art for Becoming a Princess Knight and Working at a Yuri Brothel
+art:
+  - src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/art/01.webp
+    alt: Full-color banner artwork from Chapter 1 of Becoming a Princess Knight and Working at a Yuri Brothel
+  - src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/art/02.webp
+    alt: Full-color opening artwork from Chapter 8
+  - src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/art/03.webp
+    alt: Full-color opening artwork from Chapter 15
+  - src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/art/04.webp
+    alt: Full-color opening artwork from Chapter 23
+  - src: /manga/becoming-a-princess-knight-and-working-at-a-yuri-brothel/art/05.webp
+    alt: Full-color opening artwork from Chapter 30
 featured: false
 ---
 

@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-3-ijimeru-fujimura-san-miyasaka-hospital-the-bully-fujimura-san-chapter-001
-series: miyasaka-byouin-3-ijimeru-fujimura-san-miyasaka-hospital-the-bully-fujimura-san
-number: 1
+series: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san
+number: 3
 title: "Miyasaka Byouin 3 - Ijimeru Fujimura-san | Miyasaka Hospital - The Bully Fujimura-san"
 pagePath: /manga/miyasaka-byouin-3-ijimeru-fujimura-san-miyasaka-hospital-the-bully-fujimura-san/chapter-001
 pageExtension: webp

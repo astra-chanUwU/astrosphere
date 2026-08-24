@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-2-iyashi-no-morie-san-miyasaka-hospital-the-healing-morie-san-chapter-001
-series: miyasaka-byouin-2-iyashi-no-morie-san-miyasaka-hospital-the-healing-morie-san
-number: 1
+series: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san
+number: 2
 title: Miyasaka Byouin 2 - Iyashi no Morie-san | Miyasaka Hospital - The Healing Morie-san
 pagePath: /manga/miyasaka-byouin-2-iyashi-no-morie-san-miyasaka-hospital-the-healing-morie-san/chapter-001
 pageExtension: webp

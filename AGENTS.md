@@ -24,6 +24,7 @@
 - Free chapter storage without breaking published routes with `bun run media:remove manga <series> --chapter <number> --unavailable`; review the preview and type `yes` to remove the media while retaining a “Currently unavailable” entry.
 - Run `bun run media:validate` before synchronization. Review `bun run media:sync -- --dry-run --prune` before any confirmed prune.
 - For splitting managed manga volumes into chapter-level reader entries, follow the “Split managed manga volumes into reader chapters” workflow in `docs/agent-workflows.md` together with `docs/manga-chapter-splitting.md`.
+- For grouping related one-shot doujinshi into a canonical multi-chapter series, follow `docs/doujinshi-grouping-guide.md`. Preserve individual chapter titles and media paths, and do not leave generic `Doujinshi` chapter labels after metadata review.
 - `media:maintain` is unfinished and is not a supported public command. Do not invoke or document it as available.
 - Permanently delete a complete entry only when explicitly requested: resolve exact content and external-media targets, remove/update incoming references, never use broad globs or namespace roots, then require zero `media:validate` errors/orphans and a clean `astro check`.
 - For content-only changes, run focused validation once; do not repeatedly run the full test/build suite. Run the full suite when code/schema behavior changes or before an explicitly requested release.

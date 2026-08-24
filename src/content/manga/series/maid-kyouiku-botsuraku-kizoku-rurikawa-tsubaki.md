@@ -1,7 +1,7 @@
 ---
 slug: maid-kyouiku-botsuraku-kizoku-rurikawa-tsubaki
-title: Maid Kyouiku. -Botsuraku Kizoku Rurikawa Tsubaki-
-originalTitle: Maid Kyouiku. -Botsuraku Kizoku Rurikawa Tsubaki-
+title: Maid Education
+originalTitle: Maid Kyouiku
 aliases: []
 visibility: published
 status: completed
@@ -24,6 +24,27 @@ cover:
   width: 1280
   height: 1807
 featured: false
+art:
+  - src: /manga/maid-kyouiku-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: "Cover art for Maid Education"
+  - src: /manga/maid-kyouiku-botsuraku-kizoku-rurikawa-tsubaki-maid-education-fallen-aristocrat-rurikawa-tusbaki/cover.webp
+    alt: "Cover art for Maid Education: Fallen Aristocrat Rurikawa Tsubaki"
+  - src: /manga/maid-kyouiku-2-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 2
+  - src: /manga/maid-kyouiku-3-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 3
+  - src: /manga/maid-kyouiku-4-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 4
+  - src: /manga/maid-kyouiku-5-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 5
+  - src: /manga/maid-kyouiku-6-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 6
+  - src: /manga/maid-kyouiku-7-botsuraku-kizoku-rurikawa-tsubaki-maid-education-7-fallen-aristocrat-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 7
+  - src: /manga/maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 8
+  - src: /manga/maid-kyouiku-9-botsuraku-kizoku-rurikawa-tsubaki/cover.webp
+    alt: Cover art for Maid Education 9
 ---
 
-*Maid Kyouiku. -Botsuraku Kizoku Rurikawa Tsubaki-* is a completed explicit English-translated doujinshi by Kyockcho of Kyockchokyock.
+*Maid Education* is a collection of completed explicit English-translated doujinshi by Kyockcho of Kyockchokyock.

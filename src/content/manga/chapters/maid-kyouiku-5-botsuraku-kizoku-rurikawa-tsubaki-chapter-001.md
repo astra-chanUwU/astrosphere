@@ -1,7 +1,7 @@
 ---
 slug: maid-kyouiku-5-botsuraku-kizoku-rurikawa-tsubaki-chapter-001
-series: maid-kyouiku-5-botsuraku-kizoku-rurikawa-tsubaki
-number: 1
+series: maid-kyouiku-botsuraku-kizoku-rurikawa-tsubaki
+number: 6
 title: Maid Kyouiku. 5 -Botsuraku Kizoku Rurikawa Tsubaki-
 pagePath: /manga/maid-kyouiku-5-botsuraku-kizoku-rurikawa-tsubaki/chapter-001
 pageExtension: webp

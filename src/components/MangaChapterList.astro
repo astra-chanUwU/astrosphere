@@ -4,8 +4,7 @@ import { getMangaChapterAvailabilityLabel, getMangaInstallmentLabel } from "../l
 interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; }
 const { series, chapters } = Astro.props;
 const collectionLabel = series.data.format === "doujinshi" ? "Doujinshi" : series.data.format === "one-shot" ? "One-shots" : "Chapters";
-const chapterName = (chapter: MangaChapterEntry): string =>
-  series.data.format === "doujinshi" ? series.data.title : chapter.data.title;
+const chapterName = (chapter: MangaChapterEntry): string => chapter.data.title;
 ---
 
 <section aria-labelledby="chapters-heading"><h2 id="chapters-heading">{collectionLabel}</h2>{chapters.length ? <ol>{chapters.map((chapter) => <li><a href={`/manga/${series.data.slug}/${chapter.data.slug}`}>{getMangaInstallmentLabel(series.data.format, chapter.data.number, series.data.format === "doujinshi" ? undefined : chapter.data.title)}{chapter.data.title !== `Chapter ${chapter.data.number}` && !chapter.data.title.startsWith("Volume ") || series.data.format === "doujinshi" ? ` — ${chapterName(chapter)}` : ""}</a><span>{getMangaChapterAvailabilityLabel(chapter.data)}</span></li>)}</ol> : <p>No published installments yet.</p>}</section>

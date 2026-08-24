@@ -1,8 +1,8 @@
 ---
 slug: feticolle-vol-04-chapter-001
-series: feticolle-vol-04
-number: 1
-title: FetiColle VOL.04
+series: feticolle-vol-1
+number: 4
+title: FetiColle Vol. 4
 pagePath: /manga/feticolle-vol-04/chapter-001
 pageExtension: webp
 pageCount: 43

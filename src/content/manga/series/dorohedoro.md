@@ -10,7 +10,7 @@ description: "This is the story of Kaiman, a guy who does not remember who he wa
 rating: explicit
 format: manga
 origin: original
-tags: [suggestive, gore, sci-fi, action, demons, psychological, comedy, zombies, post-apocalyptic, magic, philosophical, drama, horror, fantasy, mystery, seinen]
+tags: [action, adventure, comedy, fantasy, horror, mystery, magic, ensemble-cast, anti-hero, amnesia, seinen, dystopian, body-horror, gore, surreal-comedy, mature]
 authors:
   - name: Hayashida Q
     slug: hayashida-q

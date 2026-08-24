@@ -9,7 +9,7 @@ description: "Killy is a man of few words. He wanders, seemingly endlessly, thro
 rating: explicit
 format: manga
 origin: original
-tags: [gore, thriller, sci-fi, action, psychological, survival, adventure, post-apocalyptic, drama, horror, mystery, seinen]
+tags: [gore, thriller, sci-fi, cyberpunk, dystopian, action, psychological, survival, adventure, post-apocalyptic, post-human, robots, cyborgs, artificial-intelligence, megastructure, body-horror, dark-ambience, mystery, seinen]
 authors:
   - name: Nihei Tsutomu
     slug: nihei-tsutomu

@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-shuu-hakaba-kara-yurikago-made-miyasaka-hospital-final-from-the-grave-to-the-cradle-chapter-001
-series: miyasaka-byouin-shuu-hakaba-kara-yurikago-made-miyasaka-hospital-final-from-the-grave-to-the-cradle
-number: 1
+series: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san
+number: 6
 title: "Miyasaka Byouin Shuu Hakaba kara Yurikago made | Miyasaka Hospital FINAL: From the Grave to the Cradle"
 pagePath: /manga/miyasaka-byouin-shuu-hakaba-kara-yurikago-made-miyasaka-hospital-final-from-the-grave-to-the-cradle/chapter-001
 pageExtension: webp

@@ -1,7 +1,7 @@
 ---
 slug: jingai-onee-san-kenzoku-kun-kenzoku-soudatsu-chapter-001
-series: jingai-onee-san-kenzoku-kun-kenzoku-soudatsu
-number: 1
+series: jingai-onee-san-kenzoku-kun-boyish-succubus
+number: 2
 title: Kenzoku Soudatsu
 pagePath: /manga/jingai-onee-san-kenzoku-kun-kenzoku-soudatsu/chapter-001
 pageExtension: webp

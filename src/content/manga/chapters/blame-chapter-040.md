@@ -1,0 +1,16 @@
+---
+slug: blame-chapter-040
+series: blame
+number: 40
+title: LOG 38 — The Warehouse
+publishedAt: "2016-01-01"
+pagePath: /manga/blame/chapter-040
+pageExtension: webp
+pageCount: 33
+pageWidth: 2142
+pageHeight: 3056
+readingDirection: rtl
+status: published
+---
+
+*BLAME!* — LOG 38 — The Warehouse.

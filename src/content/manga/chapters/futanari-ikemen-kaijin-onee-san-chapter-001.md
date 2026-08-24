@@ -1,8 +1,8 @@
 ---
 slug: futanari-ikemen-kaijin-onee-san-chapter-001
-series: futanari-ikemen-kaijin-onee-san
-number: 1
-title: Doujinshi
+series: futanari-mahou-shoujo
+number: 2
+title: Futanari Ikemen Kaijin Onee-san Chinpo VS Menkui Henachoko Mahou Shoujo-chan
 pagePath: /manga/futanari-ikemen-kaijin-onee-san/chapter-001
 pageExtension: webp
 pageCount: 34

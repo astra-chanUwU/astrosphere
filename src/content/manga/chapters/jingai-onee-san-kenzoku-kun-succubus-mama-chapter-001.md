@@ -1,7 +1,7 @@
 ---
 slug: jingai-onee-san-kenzoku-kun-succubus-mama-chapter-001
-series: jingai-onee-san-kenzoku-kun-succubus-mama
-number: 1
+series: jingai-onee-san-kenzoku-kun-boyish-succubus
+number: 4
 title: Succubus Mama
 pagePath: /manga/jingai-onee-san-kenzoku-kun-succubus-mama/chapter-001
 pageExtension: webp

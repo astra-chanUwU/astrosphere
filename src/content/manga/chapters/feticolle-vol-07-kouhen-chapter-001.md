@@ -1,8 +1,8 @@
 ---
 slug: feticolle-vol-07-kouhen-chapter-001
-series: feticolle-vol-07-kouhen
-number: 1
-title: FetiColle Vol. 07 Kouhen
+series: feticolle-vol-1
+number: 7
+title: FetiColle Vol. 7 Kouhen
 pagePath: /manga/feticolle-vol-07-kouhen/chapter-001
 pageExtension: webp
 pageCount: 30

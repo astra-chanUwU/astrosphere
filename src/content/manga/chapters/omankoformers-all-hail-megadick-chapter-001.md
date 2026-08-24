@@ -1,7 +1,7 @@
 ---
 slug: omankoformers-all-hail-megadick-chapter-001
-series: omankoformers-all-hail-megadick
-number: 1
+series: omankoformers-spotlight-shockwave
+number: 3
 title: "Omankoformers: All Hail Megadick"
 pagePath: /manga/omankoformers-all-hail-megadick/chapter-001
 pageExtension: webp

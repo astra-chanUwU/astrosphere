@@ -1,8 +1,8 @@
 ---
 slug: handsome-futanari-insta-corrupts-with-her-big-dick-chapter-001
-series: handsome-futanari-insta-corrupts-with-her-big-dick
-number: 1
-title: Doujinshi
+series: futanari-mahou-shoujo
+number: 5
+title: Handsome Futanari Insta-corrupts With Her Big Dick
 pagePath: /manga/handsome-futanari-insta-corrupts-with-her-big-dick/chapter-001
 pageExtension: webp
 pageCount: 28

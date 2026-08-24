@@ -2,7 +2,7 @@
 slug: futanari-mahou-shoujo-chapter-001
 series: futanari-mahou-shoujo
 number: 1
-title: Doujinshi
+title: "Futanari Mahou Shoujo ~Teki ni Chinchin Haya sareta node Sex shite mo Ii yo ne?~"
 pagePath: /manga/futanari-mahou-shoujo/chapter-001
 pageExtension: webp
 pageCount: 33

@@ -1,16 +1,16 @@
 ---
 slug: murcielago
 title: Murciélago
-originalTitle: Murciélago
-aliases: [Murcielago]
+originalTitle: Murushierago
+aliases: [Murcielago, MURCIÉLAGO]
 visibility: published
 status: ongoing
 publicationYear: 2013
-description: "A mature ongoing manga by Yoshimura Kana, presented here with clear warnings for erotic content, gore, and sexual violence."
+description: "Kuroko Koumori is a government-sanctioned mass murderer assigned to eliminate dangerous criminals, while her monitor Hinako keeps her on a tenuous leash. Yoshimurakana's mature violence-focused action manga mixes crime investigations, dark comedy, erotic content, and graphic gore."
 rating: explicit
 format: manga
 origin: original
-tags: [erotica, gore, sexual-violence]
+tags: [action, crime, thriller, mystery, psychological, horror, dark-comedy, seinen, female-protagonist, anti-hero, police, violence, mature, erotica, gore, sexual-violence]
 authors:
   - name: Yoshimura Kana
     slug: yoshimura-kana
@@ -83,4 +83,4 @@ art:
 featured: false
 ---
 
-*Murciélago* is an ongoing manga by Yoshimura Kana. This archive entry is intended for mature readers and includes erotic content, gore, and sexual violence.
+*Murciélago* is an ongoing manga by Yoshimurakana. The story follows Kuroko Koumori, a state-sanctioned killer, and her monitor Hinako as they investigate violent criminals. This archive entry is intended for mature readers and includes erotic content, graphic gore, and sexual violence.

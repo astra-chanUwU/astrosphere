@@ -1,0 +1,17 @@
+---
+slug: murcielago-chapter-106
+series: murcielago
+number: 106
+title: "Chapter 106"
+volume: 16
+publishedAt: "2026-01-01"
+pagePath: /manga/murcielago/chapter-106
+pageExtension: webp
+pageCount: 24
+pageWidth: 900
+pageHeight: 1350
+readingDirection: rtl
+status: published
+---
+
+Chapter 106 of Murciélago, collected in volume 16.

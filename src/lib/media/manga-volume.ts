@@ -120,10 +120,10 @@ export const resolveMangaVolumeSources = async (
 const chapterIdentity = (
   path: string,
 ): { number: number; pathSegment: string; sortKey: [number, number] } | null => {
-  const match = basename(path).match(/ - c(\d+)(?:#(\d+))? \(v\d+\) - p\d+/i);
+  const match = basename(path).match(/ - c(\d+)(?:([#x])(\d+))? \(v\d+\) - p\d+/i);
   if (!match) return null;
   const base = Number(match[1]);
-  const bonusText = match[2];
+  const bonusText = match[3];
   const bonus = bonusText === undefined ? 0 : Number(bonusText);
   const number = bonusText === undefined ? base : Number(`${base}.${bonusText}`);
   return {

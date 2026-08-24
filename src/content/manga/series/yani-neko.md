@@ -10,7 +10,7 @@ description: "Welcome to Yani's apartment. Please don't mind the smell. Yani is 
 rating: suggestive
 format: manga
 origin: original
-tags: [suggestive, psychological, animals, comedy, slice-of-life, seinen]
+tags: [catgirl, monster-girl, kemonomimi, smoking, cigarettes, addiction, comedy, slice-of-life, female-protagonist, seinen, original]
 authors:
   - name: Nyan Nyan Factory
     slug: nyan-nyan-factory

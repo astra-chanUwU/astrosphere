@@ -1,8 +1,8 @@
 ---
 slug: omankoformers-spotlight-soundwave-chapter-001
-series: omankoformers-spotlight-soundwave
-number: 1
-title: Doujinshi
+series: omankoformers-spotlight-shockwave
+number: 2
+title: Omankoformers Spotlight Soundwave
 pagePath: /manga/omankoformers-spotlight-soundwave/chapter-001
 pageExtension: webp
 pageCount: 19

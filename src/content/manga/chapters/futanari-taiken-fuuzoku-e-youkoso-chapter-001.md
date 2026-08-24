@@ -1,8 +1,8 @@
 ---
 slug: futanari-taiken-fuuzoku-e-youkoso-chapter-001
-series: futanari-taiken-fuuzoku-e-youkoso
-number: 1
-title: Doujinshi
+series: futanari-mahou-shoujo
+number: 4
+title: Futanari Taiken Fuuzoku e Youkoso~
 pagePath: /manga/futanari-taiken-fuuzoku-e-youkoso/chapter-001
 pageExtension: webp
 pageCount: 42
