@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [kantai-collection, hamakaze, teitoku, big-breasts, blowjob, gloves, inverted-nipples, kissing, lingerie, military, paizuri, pantyhose, schoolgirl-uniform, sole-female, sole-male, stockings, swimsuit, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Ulrich
+    slug: ulrich
 cover:
   kind: image
   src: /manga/feticolle-vol-04/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: sukeban-kuro-gyaru-elf-o-futanari-chinpo-de-wakara-setai-making-the-delinquent-gyaru-elf-submit-with-my-futanari-dick
-title: Sukeban kuro gyaru elf o futanari chinpo de wakara setai | Making The Delinquent Gyaru Elf Submit With My Futanari Dick
-originalTitle: Sukeban kuro gyaru elf o futanari chinpo de wakara setai | Making The Delinquent Gyaru Elf Submit With My Futanari Dick
+title: Making The Delinquent Gyaru Elf Submit With My Futanari Dick
+originalTitle: Sukeban kuro gyaru elf o futanari chinpo de wakara setai
 aliases: []
 visibility: published
 status: completed

@@ -2,7 +2,7 @@
 slug: yokkyuu-analyze-chapter-001
 series: yokkyuu-analyze
 number: 1
-title: Doujinshi
+title: Yokkyuu Analyze
 pagePath: /manga/yokkyuu-analyze/chapter-001
 pageExtension: webp
 pageCount: 35

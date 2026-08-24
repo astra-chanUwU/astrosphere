@@ -2,7 +2,7 @@
 slug: kitsune-miko-fox-shrine-maiden-chapter-001
 series: kitsune-miko-fox-shrine-maiden
 number: 1
-title: Doujinshi
+title: Kitsune Miko | Fox Shrine Maiden
 pagePath: /manga/kitsune-miko-fox-shrine-maiden/chapter-001
 pageExtension: webp
 pageCount: 28

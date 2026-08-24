@@ -1,7 +1,7 @@
 ---
 slug: ishuzoku-reviewers
-title: Ishuzoku Reviewers
-originalTitle: "異種族レビュアーズ"
+title: Interspecies Reviewers
+originalTitle: Ishuzoku Reviewers
 aliases: [Interspecies Reviewers, Ishuzoku Rebyuāzu]
 visibility: published
 status: ongoing

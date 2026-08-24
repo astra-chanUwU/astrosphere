@@ -1,7 +1,7 @@
 ---
 slug: hartmann2-5-ame-no-hi-no-xxx-xxx-on-a-rainy-day
-title: Hartmann2.5 Ame no Hi no XXX | XXX on a Rainy Day
-originalTitle: Hartmann2.5 Ame no Hi no XXX | XXX on a Rainy Day
+title: XXX on a Rainy Day
+originalTitle: Hartmann2.5 Ame no Hi no XXX
 aliases: []
 visibility: published
 status: completed

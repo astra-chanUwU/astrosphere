@@ -6,9 +6,9 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga by Moritaka Takashi.
+description: An explicit English-translated doujinshi by Moritaka Takashi.
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-breasts, dog-girl, double-penetration, ear-fuck, garter-belt, group, harem, maid, mmf-threesome, monster-girl, sole-female, stockings, x-ray, english, translated]
 authors:
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Dog Eared Maid Mating Season* is a completed explicit English-translated manga by Moritaka Takashi.
+*Dog Eared Maid Mating Season* is a completed explicit English-translated doujinshi by Moritaka Takashi.

@@ -1,7 +1,7 @@
 ---
 slug: unresolved-archive-24
-title: 妖狐触手本まとめ＋ふた○り漫画 | Fox Spirit Tentacle Book Collection + Futanari Manga
-originalTitle: 妖狐触手本まとめ＋ふた○り漫画 | Fox Spirit Tentacle Book Collection + Futanari Manga
+title: Fox Spirit Tentacle Book Collection + Futanari Manga
+originalTitle: Youko Shokushu-bon Matome + Futa○ri Manga
 aliases: []
 visibility: published
 status: completed

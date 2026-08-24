@@ -1,7 +1,7 @@
 ---
 slug: chichi-hyouka-o-hajimemashou-its-time-for-our-breast-evaluation
-title: Chichi Hyouka o Hajimemashou Its Time for Our Breast Evaluation
-originalTitle: Chichi Hyouka o Hajimemashou Its Time for Our Breast Evaluation
+title: "Let's Begin the Breast Evaluation!"
+originalTitle: Chichi Hyouka o Hajimemashou
 aliases: []
 visibility: published
 status: completed

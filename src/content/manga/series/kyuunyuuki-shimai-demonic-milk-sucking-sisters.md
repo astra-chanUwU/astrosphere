@@ -1,7 +1,7 @@
 ---
 slug: kyuunyuuki-shimai-demonic-milk-sucking-sisters
-title: Kyuunyuuki Shimai Demonic Milk sucking Sisters
-originalTitle: Kyuunyuuki Shimai Demonic Milk sucking Sisters
+title: Demonic Milk-Sucking Sisters
+originalTitle: Kyuunyuuki Shimai
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, ahegao, anal, anal-intercourse, big-breasts, big-penis, bukkake, collar, dickgirl-on-female, double-penetration, drugs, futanari, group, kissing, lactation, long-tongue, monster-girl, nakadashi, ponytail, squirting, stomach-deformation, tentacles, ttf-threesome, x-ray, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Softcurl
+    slug: softcurl
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Sekka Mushi
+    slug: sekka-mushi
 cover:
   kind: image
   src: /manga/kyuunyuuki-shimai-demonic-milk-sucking-sisters/cover.webp

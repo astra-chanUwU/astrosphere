@@ -1,6 +1,6 @@
 ---
 slug: yuri-no-hajimari-wa-dorei-kara
-title: Yuri no Hajimari wa Dorei Kara
+title: My Yuri Started with Slavery
 originalTitle: Yuri no Hajimari wa Dorei Kara
 visibility: published
 status: ongoing

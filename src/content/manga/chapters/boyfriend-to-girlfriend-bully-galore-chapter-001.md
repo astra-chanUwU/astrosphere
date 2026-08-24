@@ -2,7 +2,7 @@
 slug: boyfriend-to-girlfriend-bully-galore-chapter-001
 series: boyfriend-to-girlfriend-bully-galore
 number: 1
-title: Doujinshi
+title: Boyfriend to Girlfriend Bully Galore!
 pagePath: /manga/boyfriend-to-girlfriend-bully-galore/chapter-001
 pageExtension: webp
 pageCount: 28

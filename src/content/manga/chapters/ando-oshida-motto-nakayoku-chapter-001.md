@@ -2,7 +2,7 @@
 slug: ando-oshida-motto-nakayoku-chapter-001
 series: ando-oshida-motto-nakayoku
 number: 1
-title: Doujinshi
+title: ANDO/OSHIDA, motto Nakayoku!
 pagePath: /manga/ando-oshida-motto-nakayoku/chapter-001
 pageExtension: webp
 pageCount: 34

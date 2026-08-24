@@ -1,7 +1,7 @@
 ---
 slug: skeb-clients-oc
 title: Skeb Client's OC
-originalTitle: Skeb 依頼者OC
+originalTitle: Skeb Iraisha OC
 aliases: [Skeb Clients OC]
 visibility: published
 status: completed

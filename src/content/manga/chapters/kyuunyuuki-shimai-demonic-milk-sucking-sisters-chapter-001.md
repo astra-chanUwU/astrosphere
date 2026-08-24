@@ -2,7 +2,7 @@
 slug: kyuunyuuki-shimai-demonic-milk-sucking-sisters-chapter-001
 series: kyuunyuuki-shimai-demonic-milk-sucking-sisters
 number: 1
-title: Doujinshi
+title: "Kyuunyuuki Shimai | Demonic Milk-sucking Sisters"
 pagePath: /manga/kyuunyuuki-shimai-demonic-milk-sucking-sisters/chapter-001
 pageExtension: webp
 pageCount: 28

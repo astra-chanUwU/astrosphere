@@ -1,7 +1,7 @@
 ---
 slug: maid-to-kouhai-dochira-ga-okonomi-maid-vs-kouhai-which-do-you-prefer
-title: Maid to Kouhai Dochira ga Okonomi MAID vs KOUHAI Which Do You Prefer
-originalTitle: Maid to Kouhai Dochira ga Okonomi MAID vs KOUHAI Which Do You Prefer
+title: "MAID vs KOUHAI: Which Do You Prefer?"
+originalTitle: Maid to Kouhai Dochira ga Okonomi
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [fate-grand-order, artoria-pendragon-rider-alter, gudao, shielder, bikini, ffm-threesome, group, maid, sole-male, stockings, swimsuit, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Loflat
+    slug: loflat
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Prime
+    slug: prime
 cover:
   kind: image
   src: /manga/maid-to-kouhai-dochira-ga-okonomi-maid-vs-kouhai-which-do-you-prefer/cover.webp

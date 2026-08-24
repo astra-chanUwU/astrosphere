@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, big-breasts, kemonomimi, sole-female, sole-male, uncensored, english]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kouki Kuu
+    slug: kouki-kuu
 cover:
   kind: image
   src: /manga/palling-around-with-tama-my-favorite-fuckpet/cover.webp

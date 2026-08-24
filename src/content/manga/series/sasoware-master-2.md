@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [fate-grand-order, carmilla, gudao, mash, mysterious-heroine-x, shielder, suzuka-gozen, big-breasts, ffm-threesome, fox-girl, glasses, group, kemonomimi, kissing, multiple-paizuri, paizuri, ponytail, sole-male, sweating, swimsuit, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Wakusei Nostalgia
+    slug: wakusei-nostalgia
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Tokiwa Midori
+    slug: tokiwa-midori
 cover:
   kind: image
   src: /manga/sasoware-master-2/cover.webp

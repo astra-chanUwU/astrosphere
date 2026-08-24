@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [anal, anal-intercourse, blowjob, crossdressing, males-only, mesuiki, shotacon, tanlines, tomgirl, yaoi, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Yuruyakatou
+    slug: yuruyakatou
 artists:
   - name: Unknown
     slug: unknown

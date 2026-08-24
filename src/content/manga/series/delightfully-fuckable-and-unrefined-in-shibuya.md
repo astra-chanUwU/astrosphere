@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, ahegao, anal, big-breasts, blowjob, cheating, condom, dark-skin, double-penetration, double-vaginal, futanari, glasses, gokkun, group, gyaru, hotpants, impregnation, male-on-dickgirl, milf, multi-work-series, nakadashi, paizuri, pregnant, triple-anal, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Eroquis
+    slug: eroquis
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Butcha-U
+    slug: butcha-u
 cover:
   kind: image
   src: /manga/delightfully-fuckable-and-unrefined-in-shibuya/cover.webp

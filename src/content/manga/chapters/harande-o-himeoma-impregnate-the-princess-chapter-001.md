@@ -2,7 +2,7 @@
 slug: harande-o-himeoma-impregnate-the-princess-chapter-001
 series: harande-o-himeoma-impregnate-the-princess
 number: 1
-title: Doujinshi
+title: "Harande! O Himeoma | Impregnate the Princess!"
 pagePath: /manga/harande-o-himeoma-impregnate-the-princess/chapter-001
 pageExtension: webp
 pageCount: 18

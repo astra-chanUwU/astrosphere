@@ -1,7 +1,7 @@
 ---
 slug: mahou-shoujo-ni-akogarete-sao-yuu-gushing-over-magical-girls-with-dicks
-title: "Mahou Shoujo ni Akogarete | Sao Yuu / Gushing Over Magical Girls With Dicks"
-originalTitle: "Mahou Shoujo ni Akogarete | Sao Yuu / Gushing Over Magical Girls With Dicks"
+title: Gushing Over Magical Girls With Dicks
+originalTitle: "Mahou Shoujo ni Akogarete | Sao Yuu"
 aliases: []
 visibility: published
 status: completed

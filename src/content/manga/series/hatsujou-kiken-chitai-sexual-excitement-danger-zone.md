@@ -1,7 +1,7 @@
 ---
 slug: hatsujou-kiken-chitai-sexual-excitement-danger-zone
-title: Hatsujou Kiken Chitai Sexual Excitement Danger Zone
-originalTitle: Hatsujou Kiken Chitai Sexual Excitement Danger Zone
+title: Sexual Excitement Danger Zone
+originalTitle: Hatsujou Kiken Chitai
 aliases: []
 visibility: published
 status: completed

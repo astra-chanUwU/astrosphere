@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san
-title: Miyasaka Byouin Yasashii Seseragi san Miyasaka Hospital The Kind Seseragi san
-originalTitle: Miyasaka Byouin Yasashii Seseragi san Miyasaka Hospital The Kind Seseragi san
+title: "Miyasaka Hospital: The Kind Seseragi-san"
+originalTitle: Miyasaka Byouin Yasashii Seseragi-san
 aliases: []
 visibility: published
 status: completed
@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, mosaic-censorship, nurse, sole-female, sole-male, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Onsoku Ubaguruma
+    slug: onsoku-ubaguruma
 artists:
   - name: Unknown
     slug: unknown

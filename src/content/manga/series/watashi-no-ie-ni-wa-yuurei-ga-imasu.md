@@ -1,6 +1,6 @@
 ---
 slug: watashi-no-ie-ni-wa-yuurei-ga-imasu
-title: Watashi no Ie ni wa Yuurei ga Imasu.
+title: There Is a Ghost in My House.
 originalTitle: Watashi no Ie ni wa Yuurei ga Imasu.
 aliases: []
 visibility: published

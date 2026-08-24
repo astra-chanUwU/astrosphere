@@ -1,7 +1,7 @@
 ---
 slug: ghost-in-the-shell
 title: The Ghost in the Shell
-originalTitle: "Koukaku Kidoutai: The Ghost in the Shell"
+originalTitle: Koukaku Kidoutai
 aliases: [Ghost in the Shell]
 visibility: published
 status: completed

@@ -1,6 +1,6 @@
 ---
 slug: nishizumi-dono-ni-haete-shimatte-mo-aishite-orimasu
-title: Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!
+title: "I Still Love Nishizumi-dono Even Though She Grew a Dick!"
 originalTitle: Nishizumi-dono ni Haete Shimatte mo Aishite Orimasu!
 aliases: []
 visibility: published

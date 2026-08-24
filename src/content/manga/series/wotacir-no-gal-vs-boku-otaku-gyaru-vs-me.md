@@ -1,7 +1,7 @@
 ---
 slug: wotacir-no-gal-vs-boku-otaku-gyaru-vs-me
-title: WotaCir no Gal VS Boku | Otaku Gyaru VS. Me
-originalTitle: WotaCir no Gal VS Boku | Otaku Gyaru VS. Me
+title: Otaku Gyaru VS. Me
+originalTitle: WotaCir no Gal VS Boku
 aliases: []
 visibility: published
 status: completed

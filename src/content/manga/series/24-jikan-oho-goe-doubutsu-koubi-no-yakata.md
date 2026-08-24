@@ -1,6 +1,6 @@
 ---
 slug: 24-jikan-oho-goe-doubutsu-koubi-no-yakata
-title: "24-Jikan Oho-goe Doubutsu Koubi no Yakata ~Futanari Ojou-sama ga Bakunyuu Maid ni Chinpo Kanri Sareru Hanashi~"
+title: "The House of 24-Hour Moaning Animalistic Mating"
 originalTitle: "24-Jikan Oho-goe Doubutsu Koubi no Yakata ~Futanari Ojou-sama ga Bakunyuu Maid ni Chinpo Kanri Sareru Hanashi~"
 aliases: ["The House of 24 Hour Moaning Inducing Animalistic Mating"]
 visibility: published

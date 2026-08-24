@@ -1,7 +1,7 @@
 ---
 slug: texas-uke-ft-pen-kyuu
 title: Texas Receiving ft. Penguin Logistics
-originalTitle: テキサス受 ftペン急
+originalTitle: Texas Uke ft Pen Kyuu
 aliases:
   - Texas Uke ft Pen Kyuu
 visibility: published

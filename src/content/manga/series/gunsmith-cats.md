@@ -1,7 +1,7 @@
 ---
 slug: gunsmith-cats
 title: Gunsmith Cats
-originalTitle: "ガンスミス キャッツ"
+originalTitle: Gansumisu Kyattsu
 aliases: [Gun Smith Cats]
 visibility: published
 status: completed

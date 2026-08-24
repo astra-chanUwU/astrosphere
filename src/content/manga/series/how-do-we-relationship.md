@@ -1,7 +1,7 @@
 ---
 slug: how-do-we-relationship
 title: How Do We Relationship?
-originalTitle: "付き合ってあげてもいいかな"
+originalTitle: Tsukiatte Agetemo Ii Kana
 aliases: [Tsukiatte Agetemo Ii Kana, So, Do You Want to Go Out, Or?]
 visibility: published
 status: completed

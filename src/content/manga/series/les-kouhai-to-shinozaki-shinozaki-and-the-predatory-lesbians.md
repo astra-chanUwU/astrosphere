@@ -1,7 +1,7 @@
 ---
 slug: les-kouhai-to-shinozaki-shinozaki-and-the-predatory-lesbians
-title: Les Kouhai to Shinozaki | Shinozaki and the Predatory Lesbians
-originalTitle: Les Kouhai to Shinozaki | Shinozaki and the Predatory Lesbians
+title: Shinozaki and the Predatory Lesbians
+originalTitle: Les Kouhai to Shinozaki
 aliases: []
 visibility: published
 status: completed
@@ -12,8 +12,8 @@ format: doujinshi
 origin: original
 tags: [blackmail, blindfold, bondage, chikan, clit-stimulation, crotch-tattoo, females-only, femdom, fff-threesome, fingering, freckles, gag, glasses, group, mesuiki, multiple-orgasms, nipple-stimulation, petplay, rape, schoolgirl-uniform, sex-toys, thick-eyebrows, twintails, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Shine Nabyss
+    slug: shine-nabyss
 artists:
   - name: Shine Nabyss
     slug: shine-nabyss

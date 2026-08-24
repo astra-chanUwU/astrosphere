@@ -1,7 +1,7 @@
 ---
 slug: futa-zukin-chan-little-futa-riding-hood
-title: Futa Zukin chan Little Futa Riding Hood
-originalTitle: Futa Zukin chan Little Futa Riding Hood
+title: Little Futa Riding Hood
+originalTitle: Futa Zukin-chan
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [little-red-riding-hood, big-breasts, big-penis, bikini, full-color, futanari, group, kemonomimi, monster-girl, mosaic-censorship, sole-female, stockings, swimsuit, tail, ttf-threesome, witch, wolf-girl, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Landolt Tamaki
+    slug: landolt-tamaki
 cover:
   kind: image
   src: /manga/futa-zukin-chan-little-futa-riding-hood/cover.webp

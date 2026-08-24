@@ -1,6 +1,6 @@
 ---
 slug: sousou-meikan-futanari-maidsan-wa-seiyoku-ga-tsuyoi
-title: Sousou meikan Futanari Maidsan wa Seiyoku ga Tsuyoi
+title: Futanari Maid-san Has a Strong Sex Drive
 originalTitle: Sousou meikan Futanari Maidsan wa Seiyoku ga Tsuyoi
 aliases: []
 visibility: published
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, ahegao, anal, anal-intercourse, big-ass, big-breasts, bisexual, blowjob, collar, deepthroat, dickgirl-on-dickgirl, double-penetration, full-packaged-futanari, futanari, garter-belt, glasses, gloves, group, harness, incest, leash, maid, male-on-dickgirl, mosaic-censorship, nakadashi, rimjob, rough-translation, sex-toys, shimaidon, sole-male, stockings, ttm-threesome, urethra-insertion, wooden-horse, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Uba Yoshiyuki
+    slug: uba-yoshiyuki
 cover:
   kind: image
   src: /manga/sousou-meikan-futanari-maidsan-wa-seiyoku-ga-tsuyoi/cover.webp

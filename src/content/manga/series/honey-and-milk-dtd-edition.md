@@ -6,10 +6,10 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English manga based on Darkstalkers featuring Morrigan Aensland and Q-Bee.
+description: An explicit English doujinshi based on Darkstalkers featuring Morrigan Aensland and Q-Bee.
 rating: explicit
 origin: fanwork
-format: manga
+format: doujinshi
 tags: [darkstalkers, morrigan-aensland, q-bee, anal, facesitting, futanari, rape, uncensored, yuri, english]
 authors:
   - name: Unknown
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Honey and milk DtD edition* is a completed explicit English Darkstalkers manga.
+*Honey and milk DtD edition* is a completed explicit English Darkstalkers doujinshi.

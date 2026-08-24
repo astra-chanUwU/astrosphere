@@ -1,7 +1,7 @@
 ---
 slug: tenryuuwa-shuusekichino-nan-nano-sa-i-told-you-supply-depot-this-tenryuu-belongs-to-you
-title: Tenryuuwa Shuusekichino Nan nano sa!! | I Told You Supply Depot, This Tenryuu Belongs to You!!
-originalTitle: Tenryuuwa Shuusekichino Nan nano sa!! | I Told You Supply Depot, This Tenryuu Belongs to You!!
+title: I Told You Supply Depot, This Tenryuu Belongs to You!!
+originalTitle: Tenryuuwa Shuusekichino Nan nano sa!!
 aliases: []
 visibility: published
 status: completed

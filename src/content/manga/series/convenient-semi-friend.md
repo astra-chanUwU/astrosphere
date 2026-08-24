@@ -1,7 +1,7 @@
 ---
 slug: convenient-semi-friend
 title: Convenient Semi-Friend
-originalTitle: "好都合セミフレンド"
+originalTitle: Koutsugou Semi-Furendo
 aliases: [Koutsugou Semi-Friend]
 visibility: published
 status: ongoing

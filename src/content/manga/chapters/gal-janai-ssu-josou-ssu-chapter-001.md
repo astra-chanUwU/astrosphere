@@ -2,7 +2,7 @@
 slug: gal-janai-ssu-josou-ssu-chapter-001
 series: gal-janai-ssu-josou-ssu
 number: 1
-title: Doujinshi
+title: Gal Janai ssu, Josou ssu!
 pagePath: /manga/gal-janai-ssu-josou-ssu/chapter-001
 pageExtension: webp
 pageCount: 27

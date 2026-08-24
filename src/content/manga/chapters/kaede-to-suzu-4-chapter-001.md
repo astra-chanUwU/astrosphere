@@ -2,7 +2,7 @@
 slug: kaede-to-suzu-4-chapter-001
 series: kaede-to-suzu-4
 number: 1
-title: Doujinshi
+title: Kaede to Suzu 4
 pagePath: /manga/kaede-to-suzu-4/chapter-001
 pageExtension: webp
 pageCount: 27

@@ -1,14 +1,14 @@
 ---
 slug: kurumi-joucho-walnut-emotion
-title: Kurumi Joucho | Walnut Emotion
-originalTitle: Kurumi Joucho | Walnut Emotion
+title: Walnut Emotion
+originalTitle: Kurumi Joucho
 aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga by Tokiwa Midori.
+description: An explicit English-translated doujinshi by Tokiwa Midori.
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-breasts, dark-skin, defloration, schoolgirl-uniform, sole-female, sole-male, uncensored, english, translated]
 authors:
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Kurumi Joucho | Walnut Emotion* is a completed explicit English-translated manga by Tokiwa Midori.
+*Kurumi Joucho | Walnut Emotion* is a completed explicit English-translated doujinshi by Tokiwa Midori.

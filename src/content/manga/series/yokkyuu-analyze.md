@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [princess-connect, kasumi-kirihara, anal, anal-intercourse, apparel-bukkake, big-penis, blowjob, catgirl, dog-girl, focus-anal, gloves, handjob, kemonomimi, smell, sole-female, sole-male, stockings, tail, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: K2 Manhole
+    slug: k2-manhole
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: P Senpuki
+    slug: p-senpuki
 cover:
   kind: image
   src: /manga/yokkyuu-analyze/cover.webp

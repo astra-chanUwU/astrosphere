@@ -3,7 +3,7 @@ slug: tongari-boushi-no-atelier-chapter-090
 series: tongari-boushi-no-atelier
 number: 90
 title: Chapter 90
-pagePath: /manga/tongari-boushi-no-atelier/chapter-023
+pagePath: /manga/tongari-boushi-no-atelier/chapter-090
 pageExtension: webp
 pageCount: 28
 pageWidth: 960

@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [rosario-vampire, kurumu-kurono, moka-akashiya, tsukune-aono, anal, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Countack
+    slug: countack
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kojiki Ohji
+    slug: kojiki-ohji
 cover:
   kind: image
   src: /manga/kapucchu/cover.webp

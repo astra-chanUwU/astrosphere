@@ -1,6 +1,6 @@
 ---
 slug: futanari-akuma-san-to-hiruyasumi
-title: Futanari Akuma-san to Hiruyasumi ~Appli de Shoukan Shitara Oishiku Itadakare chaimashita~ + Happy Halloween
+title: "Futanari Devil-san and Afternoon Break ~If I Summoned Her with an App, She Deliciously Ate Me~ + Happy Halloween"
 originalTitle: Futanari Akuma-san to Hiruyasumi ~Appli de Shoukan Shitara Oishiku Itadakare chaimashita~ + Happy Halloween
 aliases: ["Futanari Akuma-san to Hiruyasumi + Happy Halloween"]
 visibility: published

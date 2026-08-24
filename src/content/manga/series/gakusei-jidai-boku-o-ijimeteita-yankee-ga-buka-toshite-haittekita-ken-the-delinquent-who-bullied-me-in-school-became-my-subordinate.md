@@ -1,7 +1,7 @@
 ---
 slug: gakusei-jidai-boku-o-ijimeteita-yankee-ga-buka-toshite-haittekita-ken-the-delinquent-who-bullied-me-in-school-became-my-subordinate
-title: Gakusei Jidai Boku o Ijimeteita Yankee ga Buka toshite Haittekita Ken The Delinquent Who Bullied Me in School Became My Subordinate
-originalTitle: Gakusei Jidai Boku o Ijimeteita Yankee ga Buka toshite Haittekita Ken The Delinquent Who Bullied Me in School Became My Subordinate
+title: The Delinquent Who Bullied Me in School Became My Subordinate
+originalTitle: Gakusei Jidai Boku o Ijimeteita Yankee ga Buka toshite Haittekita Ken
 aliases: []
 visibility: published
 status: completed

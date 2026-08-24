@@ -1,7 +1,7 @@
 ---
 slug: maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki
-title: Maid Kyouiku. 8 Botsuraku Kizoku Rurikawa Tsubaki Maid Education 8 Fallen Aristocrat Rurikawa Tsubaki
-originalTitle: Maid Kyouiku. 8 Botsuraku Kizoku Rurikawa Tsubaki Maid Education 8 Fallen Aristocrat Rurikawa Tsubaki
+title: Maid Education 8 Fallen Aristocrat Rurikawa Tsubaki
+originalTitle: Maid Kyouiku. 8 Botsuraku Kizoku Rurikawa Tsubaki
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [big-breasts, gloves, maid, multi-work-series, sole-male, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Kyockchokyock
+    slug: kyockchokyock
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kyockcho
+    slug: kyockcho
 cover:
   kind: image
   src: /manga/maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: orin-to-okuu-no-seikan-oil-massage-taikenki-a-story-about-orin-and-okuus-sensual-oil-massage-experience
-title: Orin To Okuu no Seikan Oil Massage Taikenki A Story about Orin and Okuus Sensual Oil Massage Experience
-originalTitle: Orin To Okuu no Seikan Oil Massage Taikenki A Story about Orin and Okuus Sensual Oil Massage Experience
+title: A Story About Orin and Okuu's Sensual Oil Massage Experience
+originalTitle: Orin to Okuu no Seikan Oil Massage Taikenki
 aliases: []
 visibility: published
 status: completed

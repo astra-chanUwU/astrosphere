@@ -1,7 +1,7 @@
 ---
 slug: ando-oshida-motto-nakayoku
-title: ANDO OSHIDA motto Nakayoku!
-originalTitle: ANDO OSHIDA motto Nakayoku!
+title: "Ando and Oshida, Get Along Better!"
+originalTitle: "Andō Oshida motto Nakayoku!"
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [girls-und-panzer, rena-andou, ruka-oshida, big-breasts, dark-skin, females-only, fingering, kissing, squirting, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Sonotaozey
+    slug: sonotaozey
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Yukataro
+    slug: yukataro
 cover:
   kind: image
   src: /manga/ando-oshida-motto-nakayoku/cover.webp

@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [bisexual, ffm-threesome, fingering, full-censorship, group, maid, sole-male, stockings, twins, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kyockcho
+    slug: kyockcho
 cover:
   kind: image
   src: /manga/kaede-to-suzu-6-kaede/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: futanari-akuma-to-moumoku-tenshi-futanari-devil-and-the-blind-angel
-title: Futanari Akuma to Moumoku Tenshi Futanari Devil and the Blind Angel
-originalTitle: Futanari Akuma to Moumoku Tenshi Futanari Devil and the Blind Angel
+title: Futanari Devil and the Blind Angel
+originalTitle: Futanari Akuma to Moumoku Tenshi
 aliases: []
 visibility: published
 status: completed

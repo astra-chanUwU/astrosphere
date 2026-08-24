@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [honkai-star-rail, firefly, stelle, cunnilingus, females-only, rough-translation, smell, stockings, tribadism, yuri, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kukoi
+    slug: kukoi
 cover:
   kind: image
   src: /manga/scent-of-firefly/cover.webp

@@ -6,10 +6,10 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga illustrated by Gar.
+description: An explicit English-translated doujinshi illustrated by Gar.
 rating: explicit
 origin: original
-format: manga
+format: doujinshi
 tags: [gyaru, kemonomimi, ponytail, rough-translation, schoolgirl-uniform, english, translated]
 authors:
   - name: Unknown
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Kurau Girl* is a completed explicit English-translated manga illustrated by Gar.
+*Kurau Girl* is a completed explicit English-translated doujinshi illustrated by Gar.

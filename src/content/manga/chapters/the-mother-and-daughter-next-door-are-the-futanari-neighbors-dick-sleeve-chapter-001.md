@@ -2,7 +2,7 @@
 slug: the-mother-and-daughter-next-door-are-the-futanari-neighbors-dick-sleeve-chapter-001
 series: the-mother-and-daughter-next-door-are-the-futanari-neighbors-dick-sleeve
 number: 1
-title: Doujinshi
+title: The Mother and Daughter Next Door Are The Futanari Neighbor's Dick Sleeve
 pagePath: /manga/the-mother-and-daughter-next-door-are-the-futanari-neighbors-dick-sleeve/chapter-001
 pageExtension: webp
 pageCount: 41

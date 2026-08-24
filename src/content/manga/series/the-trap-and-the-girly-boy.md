@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, anal-intercourse, crossdressing, josou-seme, kemonomimi, males-only, mesuiki, shotacon, stockings, tomgirl, yaoi, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Magifuro Konnyaku
+    slug: magifuro-konnyaku
 cover:
   kind: image
   src: /manga/the-trap-and-the-girly-boy/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: maid-kyouiku-7-botsuraku-kizoku-rurikawa-tsubaki-maid-education-7-fallen-aristocrat-rurikawa-tsubaki
-title: Maid Kyouiku. 7 -Botsuraku Kizoku Rurikawa Tsubaki- | Maid Education 7 -Fallen Aristocrat Rurikawa Tsubaki-
-originalTitle: Maid Kyouiku. 7 -Botsuraku Kizoku Rurikawa Tsubaki- | Maid Education 7 -Fallen Aristocrat Rurikawa Tsubaki-
+title: Maid Education 7 -Fallen Aristocrat Rurikawa Tsubaki-
+originalTitle: Maid Kyouiku. 7 -Botsuraku Kizoku Rurikawa Tsubaki-
 aliases: []
 visibility: published
 status: completed

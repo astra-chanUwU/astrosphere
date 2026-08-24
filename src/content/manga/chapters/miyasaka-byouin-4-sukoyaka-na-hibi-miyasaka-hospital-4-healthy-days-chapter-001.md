@@ -2,7 +2,7 @@
 slug: miyasaka-byouin-4-sukoyaka-na-hibi-miyasaka-hospital-4-healthy-days-chapter-001
 series: miyasaka-byouin-4-sukoyaka-na-hibi-miyasaka-hospital-4-healthy-days
 number: 1
-title: Doujinshi
+title: "Miyasaka Byouin 4 Sukoyaka na Hibi | Miyasaka Hospital 4 Healthy Days"
 pagePath: /manga/miyasaka-byouin-4-sukoyaka-na-hibi-miyasaka-hospital-4-healthy-days/chapter-001
 pageExtension: webp
 pageCount: 35

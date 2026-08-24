@@ -2,7 +2,7 @@
 slug: manatsu-no-teimou-chapter-001
 series: manatsu-no-teimou
 number: 1
-title: Doujinshi
+title: Manatsu no Teimou
 pagePath: /manga/manatsu-no-teimou/chapter-001
 pageExtension: webp
 pageCount: 34

@@ -12,4 +12,4 @@ readingDirection: rtl
 status: published
 ---
 
-The complete manga.
+The complete doujinshi.

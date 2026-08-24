@@ -1,7 +1,7 @@
 ---
 slug: gushing-over-magical-girls
 title: Gushing over Magical Girls
-originalTitle: "Mahou Shoujo ni Akogarete"
+originalTitle: Mahou Shoujo ni Akogarete
 aliases: [Gushing over Magical Girls]
 visibility: published
 status: ongoing

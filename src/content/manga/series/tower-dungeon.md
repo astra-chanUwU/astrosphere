@@ -1,7 +1,7 @@
 ---
 slug: tower-dungeon
 title: Tower Dungeon
-originalTitle: Tower Dungeon
+originalTitle: Tawā Danjon
 visibility: published
 status: ongoing
 publicationYear: 2023

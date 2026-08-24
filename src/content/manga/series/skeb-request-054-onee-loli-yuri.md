@@ -1,7 +1,7 @@
 ---
 slug: skeb-request-054-onee-loli-yuri
 title: "Skeb Request 054: Onee-Loli Yuri"
-originalTitle: Skeb納品絵054 オリジナルキャラクター・おねえロリ百合3P／R18
+originalTitle: "Skeb Nōhin-e 054 Orijinaru Kyarakutā - Onee-Loli Yuri 3P / R18"
 aliases:
   - Onee-Loli Yuri
 visibility: published

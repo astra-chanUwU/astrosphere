@@ -1,7 +1,7 @@
 ---
 slug: tokimeki-chinchin-binbin-go-her-throbbing-hard-cock-goes
-title: Tokimeki Chinchin Binbin Go!!! | Her Throbbing Hard Cock Goes!!!
-originalTitle: Tokimeki Chinchin Binbin Go!!! | Her Throbbing Hard Cock Goes!!!
+title: Her Throbbing Hard Cock Goes!!!
+originalTitle: Tokimeki Chinchin Binbin Go!!!
 aliases: []
 visibility: published
 status: completed

@@ -1,7 +1,7 @@
 ---
 slug: berserk
 title: Berserk
-originalTitle: "ベルセルク"
+originalTitle: Beruseruku
 aliases: [Berserk]
 visibility: published
 status: ongoing

@@ -1,6 +1,6 @@
 ---
 slug: hatsujou-kiken-chitai-2
-title: Hatsujou Kiken Chitai 2
+title: Sexual Excitement Danger Zone 2
 originalTitle: Hatsujou Kiken Chitai 2
 aliases: ["Sexual Excitement Danger Zone 2"]
 visibility: published
@@ -12,6 +12,8 @@ format: doujinshi
 origin: fanwork
 tags: [hololive, himemori-luna, oozora-subaru, condom, futanari, sole-dickgirl, sole-female, unusual-pupils, vtuber, yakitate-jamaica, english, translated]
 authors:
+  - name: Yakitate Jamaica
+    slug: yakitate-jamaica
   - name: Unknown
     slug: unknown
 artists:

@@ -1,6 +1,6 @@
 ---
 slug: asshorufo-kun-3-koukan-shop-hen
-title: ASShorufo-kun 3 Koukan Shop Hen
+title: "ASShorufo-kun 3: Exchange Shop Edition"
 originalTitle: ASShorufo-kun 3 Koukan Shop Hen
 aliases: []
 visibility: published

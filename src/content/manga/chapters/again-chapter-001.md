@@ -2,7 +2,7 @@
 slug: again-chapter-001
 series: again
 number: 1
-title: Doujinshi
+title: "Again #2 Flashback Memories"
 pagePath: /manga/again/chapter-001
 pageExtension: webp
 pageCount: 76

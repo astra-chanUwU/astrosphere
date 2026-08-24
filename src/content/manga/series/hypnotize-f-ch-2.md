@@ -6,10 +6,10 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga by Sella and Sera.
+description: An explicit English-translated doujinshi by Sella and Sera.
 rating: explicit
 origin: original
-format: manga
+format: doujinshi
 tags: [anal, anal-intercourse, beauty-mark, big-ass, big-breasts, big-penis, bondage, chastity-belt, dickgirl-on-dickgirl, dickgirl-on-female, double-penetration, full-packaged-futanari, futanari, futanarization, group, mind-control, paizuri, rape, schoolgirl-uniform, squirting, teacher, ttf-threesome, english, translated]
 authors:
   - name: Unknown
@@ -28,4 +28,4 @@ cover:
 featured: false
 ---
 
-*Hypnotize F Ch. 2* is a completed explicit English-translated manga by Sella and Sera.
+*Hypnotize F Ch. 2* is a completed explicit English-translated doujinshi by Sella and Sera.

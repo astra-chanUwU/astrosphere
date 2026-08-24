@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [touhou-project, reisen-udongein-inaba, tewi-inaba, ahegao, big-breasts, big-penis, bunny-girl, ffm-threesome, group, kemonomimi, lolicon, muscle, sole-male, tail, unusual-pupils, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Hiroya
+    slug: hiroya
 cover:
   kind: image
   src: /manga/hatsujou-usagi/cover.webp

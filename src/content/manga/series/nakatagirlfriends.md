@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [anal, defloration, demon-girl, dick-growth, dickgirl-on-dickgirl, double-penetration, futanari, group, horns, lolicon, manga, nakadashi, pixie-cut, ponytail, rape, schoolgirl-uniform, small-breasts, sole-female, ttf-threesome, uncensored, unusual-pupils, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Aomushi
+    slug: aomushi
 cover:
   kind: image
   src: /manga/nakatagirlfriends/cover.webp

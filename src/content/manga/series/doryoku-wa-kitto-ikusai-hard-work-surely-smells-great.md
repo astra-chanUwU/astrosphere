@@ -1,7 +1,7 @@
 ---
 slug: doryoku-wa-kitto-ikusai-hard-work-surely-smells-great
-title: Doryoku wa Kitto īkusai | Hard Work Surely Smells Great
-originalTitle: Doryoku wa Kitto īkusai | Hard Work Surely Smells Great
+title: Hard Work Surely Smells Great
+originalTitle: Doryoku wa Kitto īkusai
 aliases: []
 visibility: published
 status: completed

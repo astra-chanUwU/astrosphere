@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [arcana-heart, heart-aino, saki-tsuzura, cervix-penetration, dick-growth, futanari, sole-dickgirl, sole-female, stockings, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Genocidou
+    slug: genocidou
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Moritaka Takashi
+    slug: moritaka-takashi
 cover:
   kind: image
   src: /manga/arcana-juice-final/cover.webp

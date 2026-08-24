@@ -1,6 +1,6 @@
 ---
 slug: kemonokko-tsuushin-koumori-musume-vivi
-title: Kemonokko Tsuushin ~Koumori Musume Vivi~
+title: "Beastgirl News ~Bat Girl Vivi~"
 originalTitle: Kemonokko Tsuushin ~Koumori Musume Vivi~
 aliases: []
 visibility: published

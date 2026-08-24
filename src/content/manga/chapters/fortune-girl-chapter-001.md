@@ -2,7 +2,7 @@
 slug: fortune-girl-chapter-001
 series: fortune-girl
 number: 1
-title: Manga
+title: Fortune Girl
 pagePath: /manga/fortune-girl/chapter-001
 pageExtension: webp
 pageCount: 36
@@ -12,4 +12,4 @@ readingDirection: rtl
 status: published
 ---
 
-The complete manga of *Fortune Girl*.
+The complete doujinshi of *Fortune Girl*.

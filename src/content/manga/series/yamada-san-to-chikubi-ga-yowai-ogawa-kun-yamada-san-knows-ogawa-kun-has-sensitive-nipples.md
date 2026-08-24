@@ -1,7 +1,7 @@
 ---
 slug: yamada-san-to-chikubi-ga-yowai-ogawa-kun-yamada-san-knows-ogawa-kun-has-sensitive-nipples
-title: Yamada-san to Chikubi ga Yowai Ogawa-kun | Yamada-san Knows Ogawa-kun Has Sensitive Nipples
-originalTitle: Yamada-san to Chikubi ga Yowai Ogawa-kun | Yamada-san Knows Ogawa-kun Has Sensitive Nipples
+title: Yamada-san Knows Ogawa-kun Has Sensitive Nipples
+originalTitle: Yamada-san to Chikubi ga Yowai Ogawa-kun
 aliases: []
 visibility: published
 status: completed

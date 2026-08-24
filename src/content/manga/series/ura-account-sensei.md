@@ -6,9 +6,9 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2022
-description: "An explicit English-translated manga by tokiwa midori about a teacher and her secret account."
+description: "An explicit English-translated doujinshi by tokiwa midori about a teacher and her secret account."
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-breasts, full-color, paizuri, sole-female, sole-male, teacher, english, translated]
 authors:
@@ -24,4 +24,4 @@ cover:
 featured: false
 ---
 
-*Ura-account Sensei* is a completed explicit English-translated manga by tokiwa midori.
+*Ura-account Sensei* is a completed explicit English-translated doujinshi by tokiwa midori.

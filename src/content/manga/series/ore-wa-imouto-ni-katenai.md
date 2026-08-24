@@ -1,6 +1,6 @@
 ---
 slug: ore-wa-imouto-ni-katenai
-title: Ore wa Imouto ni Katenai....
+title: I Can't Beat My Little Sister
 originalTitle: Ore wa Imouto ni Katenai....
 aliases: []
 visibility: published

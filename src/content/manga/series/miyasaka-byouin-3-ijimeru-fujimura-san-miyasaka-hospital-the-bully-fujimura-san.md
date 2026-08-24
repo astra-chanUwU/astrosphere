@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-3-ijimeru-fujimura-san-miyasaka-hospital-the-bully-fujimura-san
-title: Miyasaka Byouin 3 Ijimeru Fujimura san Miyasaka Hospital The Bully Fujimura san
-originalTitle: Miyasaka Byouin 3 Ijimeru Fujimura san Miyasaka Hospital The Bully Fujimura san
+title: "Miyasaka Hospital 3: The Bully Fujimura-san"
+originalTitle: Miyasaka Byouin 3 Ijimeru Fujimura-san
 aliases: []
 visibility: published
 status: completed

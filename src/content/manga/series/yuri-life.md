@@ -1,7 +1,7 @@
 ---
 slug: yuri-life
 title: Yuri Life
-originalTitle: "ゆりぐらし"
+originalTitle: Yuri Gurashi
 aliases: [Yurigurashi]
 visibility: published
 status: completed

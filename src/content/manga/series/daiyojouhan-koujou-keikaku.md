@@ -1,10 +1,10 @@
 ---
 slug: daiyojouhan-koujou-keikaku
 title: The Legend of the Great Four-and-a-Half Tatami Room
-originalTitle: 大四畳半向上計画
+originalTitle: Daiyojouhan Koujou Keikaku
 aliases:
   - Daiyojouhan Koujou Keikaku
-  - The Regend of the Great Four-and-a-Half Tatami Room
+  - The Legend of the Great Four-and-a-Half Tatami Room
 visibility: published
 status: completed
 publicationYear: 2016

@@ -1,7 +1,7 @@
 ---
 slug: penance-and-the-doctor
 title: Penance and the Doctor
-originalTitle: ペナンスさんとドクター 全6ページ
+originalTitle: Penansu-san to Dokutaa Zen 6 Peeji
 aliases: []
 visibility: published
 status: completed

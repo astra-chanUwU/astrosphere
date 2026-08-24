@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [god-eater, alisa-ilinichina-amiella, len, big-breasts, blindfold, bondage, collar, gag, group, mind-control, mosaic-censorship, multi-work-series, pantyhose, rape, sole-female, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Lithium
+    slug: lithium
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Uchiga
+    slug: uchiga
 cover:
   kind: image
   src: /manga/again/cover.webp

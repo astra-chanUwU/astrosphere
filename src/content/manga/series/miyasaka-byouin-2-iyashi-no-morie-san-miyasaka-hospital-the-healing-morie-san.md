@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-2-iyashi-no-morie-san-miyasaka-hospital-the-healing-morie-san
-title: Miyasaka Byouin 2 - Iyashi no Morie-san | Miyasaka Hospital - The Healing Morie-san
-originalTitle: Miyasaka Byouin 2 - Iyashi no Morie-san | Miyasaka Hospital - The Healing Morie-san
+title: Miyasaka Hospital - The Healing Morie-san
+originalTitle: Miyasaka Byouin 2 - Iyashi no Morie-san
 aliases: []
 visibility: published
 status: completed

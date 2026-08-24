@@ -1,7 +1,7 @@
 ---
 slug: semelparous
 title: semelparous
-originalTitle: "セメルパルス"
+originalTitle: Semeruparusu
 aliases: [Semelparous]
 visibility: published
 status: ongoing

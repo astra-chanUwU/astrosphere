@@ -2,7 +2,7 @@
 slug: sousou-meikan-futanari-maidsan-wa-seiyoku-ga-tsuyoi-chapter-001
 series: sousou-meikan-futanari-maidsan-wa-seiyoku-ga-tsuyoi
 number: 1
-title: Doujinshi
+title: Sousou meikan Futanari Maidsan wa Seiyoku ga Tsuyoi
 pagePath: /manga/sousou-meikan-futanari-maidsan-wa-seiyoku-ga-tsuyoi/chapter-001
 pageExtension: webp
 pageCount: 80

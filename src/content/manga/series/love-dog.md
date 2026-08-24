@@ -6,10 +6,10 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English manga illustrated by Red-Rum.
+description: An explicit English doujinshi illustrated by Red-Rum.
 rating: explicit
 origin: original
-format: manga
+format: doujinshi
 tags: [tankoubon, english]
 authors:
   - name: Unknown
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Love Dog* is a completed explicit English manga illustrated by Red-Rum.
+*Love Dog* is a completed explicit English doujinshi illustrated by Red-Rum.

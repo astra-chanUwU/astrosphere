@@ -10,13 +10,15 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [love-live, maki-nishikino, rin-hoshizora, catgirl, drugs, females-only, kemonomimi, sex-toys, yuri, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Itsuki Kuro
+    slug: itsuki-kuro
+  - name: Ryuuga Ookami
+    slug: ryuuga-ookami
 cover:
   kind: image
   src: /manga/dokodemo-issho/cover.webp

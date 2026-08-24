@@ -2,7 +2,7 @@
 slug: saya-nee-is-calling-me-chapter-001
 series: saya-nee-is-calling-me
 number: 1
-title: Doujinshi
+title: Saya-nee is Calling Me
 pagePath: /manga/saya-nee-is-calling-me/chapter-001
 pageExtension: webp
 pageCount: 41

@@ -1,7 +1,7 @@
 ---
 slug: wotacir-no-gal-to-boku-wotacir-no-gal-and-i
-title: WotaCir no Gal to Boku | WotaCir no Gal and I
-originalTitle: WotaCir no Gal to Boku | WotaCir no Gal and I
+title: WotaCir no Gal and I
+originalTitle: WotaCir no Gal to Boku
 aliases: []
 visibility: published
 status: completed

@@ -1,7 +1,7 @@
 ---
 slug: inga-ouhou-the-wages-of-sin
-title: Inga Ouhou | The Wages of Sin
-originalTitle: Inga Ouhou | The Wages of Sin
+title: The Wages of Sin
+originalTitle: Inga Ouhou
 aliases: []
 visibility: published
 status: completed

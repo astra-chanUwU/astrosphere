@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [touhou-project, marisa-kirisame, reimu-hakurei, bikini, blowjob, dickgirl-on-dickgirl, dickgirls-only, frottage, futanari, miko, nakadashi, stockings, swimsuit, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Shian
+    slug: shian
 cover:
   kind: image
   src: /manga/futanari-reimu-to-futanari-marisa-ga-micro-bikini-de-ichaicha-suru-hon/cover.webp

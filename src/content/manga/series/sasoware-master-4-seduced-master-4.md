@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [fate-grand-order, gudao, murasaki-shikibu, big-breasts, blowjob, glasses, hairy, sole-female, sole-male, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Tokiwa Midori
+    slug: tokiwa-midori
 cover:
   kind: image
   src: /manga/sasoware-master-4-seduced-master-4/cover.webp

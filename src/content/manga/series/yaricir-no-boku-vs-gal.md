@@ -1,7 +1,7 @@
 ---
 slug: yaricir-no-boku-vs-gal
-title: YariCir no Boku VS Gal | Club Slut Me VS. Gyaru
-originalTitle: YariCir no Boku VS Gal | Club Slut Me VS. Gyaru
+title: Club Slut Me VS. Gyaru
+originalTitle: YariCir no Boku VS Gal
 aliases: []
 visibility: published
 status: completed

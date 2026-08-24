@@ -1643,25 +1643,6 @@ entries:
     chapters:
       - { number: 1, title: Doujinshi, pages: all, body: "Draft import. Verify metadata before publishing." }
   - type: doujinshi
-    archive: "Sakuyasan.zip"
-    mode: create
-    series:
-      slug: sakuyasan
-      title: "Sakuyasan"
-      originalTitle: "Sakuyasan"
-      aliases: []
-      status: completed
-      publicationYear: 2026
-      description: "Draft entry imported from the supplied archive; creator, date, fandom, and tags require manual review."
-      rating: explicit
-      origin: original
-      tags: []
-      authors: [{ name: Unknown, slug: unknown }]
-      artists: [{ name: Unknown, slug: unknown }]
-      featured: false
-    chapters:
-      - { number: 1, title: Doujinshi, pages: all, body: "Draft import. Verify metadata before publishing." }
-  - type: doujinshi
     archive: "HOLD UP!.zip"
     mode: create
     series:
@@ -2390,25 +2371,6 @@ entries:
       slug: chinchin-o-fumu-hanashi-a-story-about-stepping-on-a-penis
       title: "Chinchin o Fumu Hanashi. A Story About Stepping on a Penis."
       originalTitle: "Chinchin o Fumu Hanashi. A Story About Stepping on a Penis."
-      aliases: []
-      status: completed
-      publicationYear: 2026
-      description: "Draft entry imported from the supplied archive; creator, date, fandom, and tags require manual review."
-      rating: explicit
-      origin: original
-      tags: []
-      authors: [{ name: Unknown, slug: unknown }]
-      artists: [{ name: Unknown, slug: unknown }]
-      featured: false
-    chapters:
-      - { number: 1, title: Doujinshi, pages: all, body: "Draft import. Verify metadata before publishing." }
-  - type: doujinshi
-    archive: "Zu-senpai to Ogino _ Ogino and the Predatory Lesbians.zip"
-    mode: create
-    series:
-      slug: zu-senpai-to-ogino-ogino-and-the-predatory-lesbians
-      title: "Zu senpai to Ogino Ogino and the Predatory Lesbians"
-      originalTitle: "Zu senpai to Ogino Ogino and the Predatory Lesbians"
       aliases: []
       status: completed
       publicationYear: 2026

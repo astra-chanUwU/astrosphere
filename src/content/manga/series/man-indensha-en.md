@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [ahegao, big-ass, big-breasts, big-penis, blowjob, chikan, exhibitionism, fingering, freckles, hairy, humiliation, inverted-nipples, kissing, masturbation, nakadashi, nipple-stimulation, rough-translation, scanmark, schoolgirl-uniform, sole-male, squirting, stockings, unusual-pupils, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Blue Soda
+    slug: blue-soda
 artists:
   - name: Unknown
     slug: unknown

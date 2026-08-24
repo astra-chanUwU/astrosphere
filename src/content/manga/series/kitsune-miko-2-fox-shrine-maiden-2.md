@@ -1,7 +1,7 @@
 ---
 slug: kitsune-miko-2-fox-shrine-maiden-2
-title: Kitsune Miko 2 Fox Shrine Maiden 2
-originalTitle: Kitsune Miko 2 Fox Shrine Maiden 2
+title: Fox Shrine Maiden 2
+originalTitle: Kitsune Miko 2
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [touhou-project, ran-yakumo, reimu-hakurei, blowjob, fox-girl, futanari, kemonomimi, multi-work-series, nakadashi, sole-dickgirl, sole-female, tail, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Kongarin
+    slug: kongarin
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Mizuga
+    slug: mizuga
 cover:
   kind: image
   src: /manga/kitsune-miko-2-fox-shrine-maiden-2/cover.webp

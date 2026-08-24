@@ -1,7 +1,7 @@
 ---
 slug: wotasa-no-gyaru-vs-jirai-otoko-otaku-gyaru-vs-toxic-boy
-title: Wotasa no Gyaru VS Jirai Otoko | Otaku Gyaru VS Toxic Boy
-originalTitle: Wotasa no Gyaru VS Jirai Otoko | Otaku Gyaru VS Toxic Boy
+title: Otaku Gyaru VS Toxic Boy
+originalTitle: Wotasa no Gyaru VS Jirai Otoko
 aliases: []
 visibility: published
 status: completed

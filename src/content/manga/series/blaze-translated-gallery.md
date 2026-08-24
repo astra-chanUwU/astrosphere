@@ -1,7 +1,7 @@
 ---
 slug: blaze-translated-gallery
 title: Blaze Translated Gallery
-originalTitle: ブレイズ
+originalTitle: Bureizu
 aliases: []
 visibility: published
 status: completed

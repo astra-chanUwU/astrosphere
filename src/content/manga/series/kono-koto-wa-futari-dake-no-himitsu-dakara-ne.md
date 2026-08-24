@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [manaria-friends, anne, grea, females-only, horns, lizard-girl, monster-girl, schoolgirl-uniform, tail, tribadism, wings, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Middly
+    slug: middly
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Midorinocha
+    slug: midorinocha
 cover:
   kind: image
   src: /manga/kono-koto-wa-futari-dake-no-himitsu-dakara-ne/cover.webp

@@ -10,7 +10,7 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [arknights, feater, eye-covering-bang, english, translated]
 authors:
   - name: Unknown
     slug: unknown

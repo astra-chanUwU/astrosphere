@@ -2,7 +2,7 @@
 slug: arcana-juice-final-chapter-001
 series: arcana-juice-final
 number: 1
-title: Doujinshi
+title: ARCANA JUICE FINAL
 pagePath: /manga/arcana-juice-final/chapter-001
 pageExtension: webp
 pageCount: 26

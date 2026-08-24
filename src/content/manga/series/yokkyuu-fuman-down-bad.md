@@ -1,7 +1,7 @@
 ---
 slug: yokkyuu-fuman-down-bad
-title: Yokkyuu Fuman | Down Bad
-originalTitle: Yokkyuu Fuman | Down Bad
+title: Down Bad
+originalTitle: Yokkyuu Fuman
 aliases: []
 visibility: published
 status: completed

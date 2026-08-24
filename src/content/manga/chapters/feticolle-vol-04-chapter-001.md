@@ -2,7 +2,7 @@
 slug: feticolle-vol-04-chapter-001
 series: feticolle-vol-04
 number: 1
-title: Doujinshi
+title: FetiColle VOL.04
 pagePath: /manga/feticolle-vol-04/chapter-001
 pageExtension: webp
 pageCount: 43

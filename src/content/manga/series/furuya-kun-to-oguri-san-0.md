@@ -6,9 +6,9 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga by Aomushi with rough translation.
+description: An explicit English-translated doujinshi by Aomushi with rough translation.
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-clit, clit-growth, forbidden-content, rough-translation, tomboy, uncensored, english, translated]
 authors:
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Furuya Kun to Oguri San 0* is a completed explicit English-translated manga by Aomushi.
+*Furuya Kun to Oguri San 0* is a completed explicit English-translated doujinshi by Aomushi.

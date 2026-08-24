@@ -6,9 +6,9 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga illustrated by Tokiwa Midori.
+description: An explicit English-translated doujinshi illustrated by Tokiwa Midori.
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-breasts, blowjob, ffm-threesome, glasses, group, hairy, harem, kissing, multiple-paizuri, nakadashi, sole-male, sweating, english, translated]
 authors:
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Pla・Pura PR 01-03* is a completed explicit English-translated manga illustrated by Tokiwa Midori.
+*Pla・Pura PR 01-03* is a completed explicit English-translated doujinshi illustrated by Tokiwa Midori.

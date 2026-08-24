@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [big-ass, big-breasts, blowjob, cousin, glasses, incest, kissing, nakadashi, nipple-stimulation, paizuri, rough-translation, shotacon, sole-female, sole-male, sweating, swimsuit, tall-girl, twintails, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Tokiwa Midori
+    slug: tokiwa-midori
 cover:
   kind: image
   src: /manga/saya-nee-is-calling-me/cover.webp

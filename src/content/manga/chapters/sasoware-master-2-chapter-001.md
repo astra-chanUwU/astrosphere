@@ -2,7 +2,7 @@
 slug: sasoware-master-2-chapter-001
 series: sasoware-master-2
 number: 1
-title: Doujinshi
+title: Sasoware Master 2
 pagePath: /manga/sasoware-master-2/chapter-001
 pageExtension: webp
 pageCount: 27

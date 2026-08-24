@@ -2,7 +2,7 @@
 slug: himitsuna-futari-our-secrets-chapter-001
 series: himitsuna-futari-our-secrets
 number: 1
-title: Doujinshi
+title: "Himitsuna Futari | Our Secrets"
 pagePath: /manga/himitsuna-futari-our-secrets/chapter-001
 pageExtension: webp
 pageCount: 85

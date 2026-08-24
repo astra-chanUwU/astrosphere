@@ -12,4 +12,4 @@ readingDirection: rtl
 status: published
 ---
 
-Honey and milk DtD edition.
+The complete doujinshi of *Honey and milk DtD edition*.

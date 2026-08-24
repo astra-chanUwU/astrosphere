@@ -2,7 +2,7 @@
 slug: 2d-comic-magazine-akuochi-shoujo-ni-akogarete-vol-1-chapter-001
 series: 2d-comic-magazine-akuochi-shoujo-ni-akogarete-vol-1
 number: 1
-title: Doujinshi
+title: 2D Comic Magazine Akuochi Shoujo ni Akogarete! Vol. 1
 pagePath: /manga/2d-comic-magazine-akuochi-shoujo-ni-akogarete-vol-1/chapter-001
 pageExtension: webp
 pageCount: 70

@@ -1,7 +1,7 @@
 ---
 slug: monster-wrestling-interspecies-combat-girls
-title: Monster Wrestling - Interspecies Combat Girls
-originalTitle: Monster Wrestling - Interspecies Combat Girls
+title: "Monster Wrestling: Interspecies Combat Girls"
+originalTitle: "Monresu: Ishu Kakutou Monster Musume"
 aliases: []
 visibility: published
 status: completed

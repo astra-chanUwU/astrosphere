@@ -3,7 +3,7 @@ slug: tongari-boushi-no-atelier-chapter-095
 series: tongari-boushi-no-atelier
 number: 95
 title: Chapter 95
-pagePath: /manga/tongari-boushi-no-atelier/chapter-028
+pagePath: /manga/tongari-boushi-no-atelier/chapter-095
 pageExtension: webp
 pageCount: 12
 pageWidth: 960

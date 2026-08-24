@@ -1,7 +1,7 @@
 ---
 slug: iori-kun-to-otsukiai-love-blooms-at-the-ass-wall
-title: Iori-kun to Otsukiai ♥ | LOVE BLOOMS at the ASS WALL ♥
-originalTitle: Iori-kun to Otsukiai ♥ | LOVE BLOOMS at the ASS WALL ♥
+title: LOVE BLOOMS at the ASS WALL ♥
+originalTitle: Iori-kun to Otsukiai ♥
 aliases: []
 visibility: published
 status: completed

@@ -1,7 +1,7 @@
 ---
 slug: tenmaku-no-jaadugar
 title: A Witch's Life in Mongol
-originalTitle: "Tenmaku no Jaadugar"
+originalTitle: Tenmaku no Jaadugar
 aliases: [Tenmaku no Jaadugar]
 visibility: published
 status: ongoing

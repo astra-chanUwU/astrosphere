@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [anal, anal-intercourse, big-breasts, big-penis, defloration, eye-covering-bang, focus-anal, futanari, gyaru, hairy, handjob, masturbation, onahole, ponytail, schoolgirl-uniform, sole-dickgirl, sole-female, strap-on, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Red-Rum
+    slug: red-rum
 cover:
   kind: image
   src: /manga/himitsuna-futari-our-secrets/cover.webp

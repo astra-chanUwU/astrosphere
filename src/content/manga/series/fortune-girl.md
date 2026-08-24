@@ -6,9 +6,9 @@ aliases: []
 visibility: published
 status: completed
 publicationYear: 2024
-description: "A completed explicit English-translated original manga by Mira from the PeachPulsar group centered on yuri and tribadism."
+description: "A completed explicit English-translated original doujinshi by Mira from the PeachPulsar group centered on yuri and tribadism."
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [females-only, peachpulsar, tribadism, yuri, english, translated]
 authors:
@@ -24,4 +24,4 @@ cover:
 featured: false
 ---
 
-*Fortune Girl* is a completed explicit English-translated original manga illustrated by Mira from the PeachPulsar group.
+*Fortune Girl* is a completed explicit English-translated original doujinshi illustrated by Mira from the PeachPulsar group.

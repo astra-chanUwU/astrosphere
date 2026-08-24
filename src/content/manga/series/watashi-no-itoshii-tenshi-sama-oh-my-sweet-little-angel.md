@@ -1,7 +1,7 @@
 ---
 slug: watashi-no-itoshii-tenshi-sama-oh-my-sweet-little-angel
-title: Watashi no Itoshii Tenshi sama Oh My Sweet Little Angel
-originalTitle: Watashi no Itoshii Tenshi sama Oh My Sweet Little Angel
+title: Oh My Sweet Little Angel
+originalTitle: Watashi no Itoshii Tenshi-sama
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, anal-intercourse, angel, big-breasts, bondage, crossdressing, dickgirl-on-male, femdom, halo, nakadashi, nipple-stimulation, nun, rape, rimjob, shemale, shotacon, sole-dickgirl, stockings, tomgirl, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Shiroo
+    slug: shiroo
 cover:
   kind: image
   src: /manga/watashi-no-itoshii-tenshi-sama-oh-my-sweet-little-angel/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-shuu-hakaba-kara-yurikago-made-miyasaka-hospital-final-from-the-grave-to-the-cradle
-title: Miyasaka Byouin Shuu Hakaba kara Yurikago made Miyasaka Hospital FINAL From the Grave to the Cradle
-originalTitle: Miyasaka Byouin Shuu Hakaba kara Yurikago made Miyasaka Hospital FINAL From the Grave to the Cradle
+title: "Miyasaka Hospital FINAL: From the Grave to the Cradle"
+originalTitle: Miyasaka Byouin Shuu Hakaba kara Yurikago made
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, anal-intercourse, big-breasts, big-penis, blowjob, bondage, enema, fishnets, fisting, focus-anal, garter-belt, glasses, gloves, group, hairy, harem, lab-coat, lingerie, multi-work-series, nurse, pantyhose, piercing, sex-toys, stockings, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Onsoku Ubaguruma
+    slug: onsoku-ubaguruma
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Uba Yoshiyuki
+    slug: uba-yoshiyuki
 cover:
   kind: image
   src: /manga/miyasaka-byouin-shuu-hakaba-kara-yurikago-made-miyasaka-hospital-final-from-the-grave-to-the-cradle/cover.webp

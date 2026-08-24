@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [fate-grand-order, gudao, musashi-miyamoto, nitocris, saint-martha, scathach, anal, armpit-sex, big-breasts, blowjob, dark-skin, hairy, kissing, paizuri, ponytail, sole-male, stockings, titfuck, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Tokiwa Midori
+    slug: tokiwa-midori
 cover:
   kind: image
   src: /manga/sasoware-master-seduced-master/cover.webp

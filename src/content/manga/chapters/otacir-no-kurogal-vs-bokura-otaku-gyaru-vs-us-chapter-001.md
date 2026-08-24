@@ -2,7 +2,7 @@
 slug: otacir-no-kurogal-vs-bokura-otaku-gyaru-vs-us-chapter-001
 series: otacir-no-kurogal-vs-bokura-otaku-gyaru-vs-us
 number: 1
-title: Doujinshi
+title: "OtaCir no KuroGal VS Bokura | Otaku Gyaru VS Us"
 pagePath: /manga/otacir-no-kurogal-vs-bokura-otaku-gyaru-vs-us/chapter-001
 pageExtension: webp
 pageCount: 37

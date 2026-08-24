@@ -1,6 +1,6 @@
 ---
 slug: bousou-otome-side-kuro
-title: Bousou Otome side Kuro
+title: "Rampaging Maiden: Kuro Side"
 originalTitle: Bousou Otome side Kuro
 aliases: []
 visibility: published

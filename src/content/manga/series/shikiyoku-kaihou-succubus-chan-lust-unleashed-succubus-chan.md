@@ -1,7 +1,7 @@
 ---
 slug: shikiyoku-kaihou-succubus-chan-lust-unleashed-succubus-chan
-title: Shikiyoku Kaihou Succubus chan Lust Unleashed Succubus chan
-originalTitle: Shikiyoku Kaihou Succubus chan Lust Unleashed Succubus chan
+title: Lust Unleashed Succubus-chan
+originalTitle: Shikiyoku Kaihou Succubus-chan
 aliases: []
 visibility: published
 status: completed

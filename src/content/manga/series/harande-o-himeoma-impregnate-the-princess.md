@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [big-breasts, dog-girl, double-anal, double-penetration, harem, kemonomimi, mmf-threesome, nakadashi, paizuri, x-ray, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Moritaka Takashi
+    slug: moritaka-takashi
 cover:
   kind: image
   src: /manga/harande-o-himeoma-impregnate-the-princess/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: nande-onna-nanka-ni-torarenakya-ikenai-no-why-do-i-have-to-lose-her-to-another-woman
-title: Nande Onna nanka ni Torarenakya Ikenai no? | Why Do I Have To Lose Her To Another Woman?
-originalTitle: Nande Onna nanka ni Torarenakya Ikenai no? | Why Do I Have To Lose Her To Another Woman?
+title: Why Do I Have To Lose Her To Another Woman?
+originalTitle: Nande Onna nanka ni Torarenakya Ikenai no?
 aliases: []
 visibility: published
 status: completed

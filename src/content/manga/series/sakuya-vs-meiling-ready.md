@@ -1,7 +1,7 @@
 ---
 slug: sakuya-vs-meiling-ready
-title: Sakuya-san vs Meiling-san
-originalTitle: "咲夜さんVS美鈴さん"
+title: Sakuya-san vs. Meiling-san
+originalTitle: Sakuya-san VS Meirin-san
 aliases: ["Sakuya-san vs Meiling-san (Touhou Project)"]
 visibility: published
 status: completed
@@ -12,6 +12,8 @@ format: doujinshi
 origin: fanwork
 tags: [touhou-project, sakuya-izayoi, hong-meiling, 110-groove, big-breasts, blowjob, dickgirl-on-female, futanari, maid, nakadashi, paizuri, penis-enlargement, spanking, english, translated]
 authors:
+  - name: 110-Groove
+    slug: 110-groove
   - name: Unknown
     slug: unknown
 artists:

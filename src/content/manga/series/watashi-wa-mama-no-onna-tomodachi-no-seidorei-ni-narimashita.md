@@ -1,6 +1,6 @@
 ---
 slug: watashi-wa-mama-no-onna-tomodachi-no-seidorei-ni-narimashita
-title: Watashi wa Mama no Onna Tomodachi no Seidorei ni Narimashita!
+title: I Became My Mom's Female Friend's Sex Slave!
 originalTitle: Watashi wa Mama no Onna Tomodachi no Seidorei ni Narimashita!
 aliases: []
 visibility: published

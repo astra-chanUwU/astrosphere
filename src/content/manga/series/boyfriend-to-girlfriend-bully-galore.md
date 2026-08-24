@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, blowjob, cheerleader, femdom, futanari, gender-change, nakadashi, ponytail, schoolgirl-uniform, uncensored, english]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Moon Night Kitten
+    slug: moon-night-kitten
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kouki Kuu
+    slug: kouki-kuu
 cover:
   kind: image
   src: /manga/boyfriend-to-girlfriend-bully-galore/cover.webp

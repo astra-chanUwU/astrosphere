@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [fate-grand-order, circe, gudao, katsushika-hokusai, musashi-miyamoto, mysterious-heroine-x, saint-martha, ahegao, big-breasts, bikini, elf, hairy, incomplete, kissing, multi-work-series, muscle, sole-male, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Tokiwa Midori
+    slug: tokiwa-midori
 cover:
   kind: image
   src: /manga/sasoware-master-3/cover.webp

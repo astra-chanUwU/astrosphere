@@ -2,7 +2,7 @@
 slug: hishokusha-feater-chapter-001
 series: hishokusha-feater
 number: 1
-title: Doujinshi
+title: Hishokusha FEater
 pagePath: /manga/hishokusha-feater/chapter-001
 pageExtension: webp
 pageCount: 29

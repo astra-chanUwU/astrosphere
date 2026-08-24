@@ -2,7 +2,7 @@
 slug: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san-chapter-001
 series: miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san
 number: 1
-title: Doujinshi
+title: "Miyasaka Byouin - Yasashii Seseragi-san | Miyasaka Hospital - The Kind Seseragi-san"
 pagePath: /manga/miyasaka-byouin-yasashii-seseragi-san-miyasaka-hospital-the-kind-seseragi-san/chapter-001
 pageExtension: webp
 pageCount: 27

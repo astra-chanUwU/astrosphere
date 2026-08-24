@@ -1,7 +1,7 @@
 ---
 slug: i-cant-believe-i-slept-with-you
 title: I Can't Believe I Slept With You!
-originalTitle: "一度だけでも、後悔してます。"
+originalTitle: "Ichido Dake Demo, Koukai Shitemasu."
 aliases: [Even If It Was Just Once, I Regret It]
 visibility: published
 status: completed

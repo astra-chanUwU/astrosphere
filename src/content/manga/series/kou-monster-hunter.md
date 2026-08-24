@@ -1,7 +1,7 @@
 ---
 slug: kou-monster-hunter
 title: KOU
-originalTitle: "紅 (モンスターハンター)"
+originalTitle: Kurenai (Monster Hunter)
 aliases: ["KOU (Monster Hunter)"]
 visibility: published
 status: completed

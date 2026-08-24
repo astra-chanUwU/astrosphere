@@ -1,7 +1,7 @@
 ---
 slug: lycoris-recoil
 title: Lycoris Recoil
-originalTitle: "リコリス・リコイル"
+originalTitle: Rikorisu Rikoiru
 aliases: [LycoReco, Rikorisu Rikoiru]
 visibility: published
 status: ongoing

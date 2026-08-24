@@ -2,7 +2,7 @@
 slug: man-indensha-en-chapter-001
 series: man-indensha-en
 number: 1
-title: Doujinshi
+title: Man × Indensha EN
 pagePath: /manga/man-indensha-en/chapter-001
 pageExtension: webp
 pageCount: 43

@@ -1,7 +1,7 @@
 ---
 slug: futanari-batoru-sanbanshoubu-futanari-battle-best-of-three
-title: Futanari Batoru Sanbanshoubu | Futanari Battle - Best of Three
-originalTitle: Futanari Batoru Sanbanshoubu | Futanari Battle - Best of Three
+title: Futanari Battle - Best of Three
+originalTitle: Futanari Batoru Sanbanshoubu
 aliases: []
 visibility: published
 status: completed

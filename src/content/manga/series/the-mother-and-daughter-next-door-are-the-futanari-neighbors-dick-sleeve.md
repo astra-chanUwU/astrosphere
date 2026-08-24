@@ -10,7 +10,7 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [big-breasts, big-penis, dickgirl-on-female, full-packaged-futanari, futanari, masturbation, milf, multi-work-series, rough-translation, sole-dickgirl, stockings, voyeurism, english, translated]
 authors:
   - name: Unknown
     slug: unknown

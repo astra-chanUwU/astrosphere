@@ -1,7 +1,7 @@
 ---
 slug: miyabi-na-senpai-1-3
-title: Miyabi na Senpai 1 3 English]
-originalTitle: Miyabi na Senpai 1 3 English]
+title: Miyabi-senpai 1–3
+originalTitle: Miyabi na Senpai 1–3
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [forbidden-content, uncensored, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kyockcho
+    slug: kyockcho
 cover:
   kind: image
   src: /manga/miyabi-na-senpai-1-3/cover.webp

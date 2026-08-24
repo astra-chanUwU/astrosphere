@@ -2,7 +2,7 @@
 slug: sasoware-master-seduced-master-chapter-001
 series: sasoware-master-seduced-master
 number: 1
-title: Doujinshi
+title: Sasoware Master | Seduced Master
 pagePath: /manga/sasoware-master-seduced-master/chapter-001
 pageExtension: webp
 pageCount: 28

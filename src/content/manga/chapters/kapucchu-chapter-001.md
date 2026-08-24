@@ -2,7 +2,7 @@
 slug: kapucchu-chapter-001
 series: kapucchu
 number: 1
-title: Doujinshi
+title: Kapucchu.
 pagePath: /manga/kapucchu/chapter-001
 pageExtension: webp
 pageCount: 27

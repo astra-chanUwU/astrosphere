@@ -1,6 +1,6 @@
 ---
 slug: an-angel
-title: Hayasugi! Futanari Kanojo
+title: "Too Fast! Futanari Girlfriend"
 originalTitle: Hayasugi! Futanari Kanojo
 aliases: [An Angel]
 visibility: published

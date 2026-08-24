@@ -1,6 +1,6 @@
 ---
 slug: ai-to-bouryoku-to-skin-shin-teikoku-hen
-title: Ai to Bouryoku to Skin ~Shin Teikoku Hen~ - LOVE, VIOLENCE AND SKIN.
+title: "LOVE, VIOLENCE AND SKIN."
 originalTitle: Ai to Bouryoku to Skin ~Shin Teikoku Hen~
 aliases: ["LOVE, VIOLENCE AND SKIN."]
 visibility: published

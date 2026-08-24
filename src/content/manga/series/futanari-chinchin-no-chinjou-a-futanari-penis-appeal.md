@@ -1,7 +1,7 @@
 ---
 slug: futanari-chinchin-no-chinjou-a-futanari-penis-appeal
-title: Futanari Chinchin no Chinjou | A Futanari Penis' Appeal
-originalTitle: Futanari Chinchin no Chinjou | A Futanari Penis' Appeal
+title: "A Futanari Penis' Appeal"
+originalTitle: Futanari Chinchin no Chinjou
 aliases: []
 visibility: published
 status: completed

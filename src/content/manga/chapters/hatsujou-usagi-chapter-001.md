@@ -2,7 +2,7 @@
 slug: hatsujou-usagi-chapter-001
 series: hatsujou-usagi
 number: 1
-title: Doujinshi
+title: Hatsujou Usagi
 pagePath: /manga/hatsujou-usagi/chapter-001
 pageExtension: webp
 pageCount: 24

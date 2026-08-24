@@ -2,7 +2,7 @@
 slug: futa-zukin-chan-little-futa-riding-hood-chapter-001
 series: futa-zukin-chan-little-futa-riding-hood
 number: 1
-title: Doujinshi
+title: "Futa Zukin-chan | Little Futa Riding Hood"
 pagePath: /manga/futa-zukin-chan-little-futa-riding-hood/chapter-001
 pageExtension: webp
 pageCount: 20

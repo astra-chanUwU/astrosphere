@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [touhou-project, keine-kamishirasawa, anal, big-breasts, double-penetration, exhibitionism, fisting, group, masturbation, pantyhose, sole-female, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Onsoku Ubaguruma
+    slug: onsoku-ubaguruma
 artists:
   - name: Unknown
     slug: unknown

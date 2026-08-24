@@ -2,7 +2,7 @@
 slug: dokodemo-issho-chapter-001
 series: dokodemo-issho
 number: 1
-title: Doujinshi
+title: Dokodemo Issho
 pagePath: /manga/dokodemo-issho/chapter-001
 pageExtension: webp
 pageCount: 40

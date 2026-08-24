@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [psycho-pass, akane-tsunemori, shion-karanomori, yayoi-kunizuka, big-breasts, defloration, drugs, femdom, full-color, futanari, group, lingerie, maid, stockings, yuri, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Moon Night Kitten
+    slug: moon-night-kitten
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kouki Kuu
+    slug: kouki-kuu
 cover:
   kind: image
   src: /manga/emotionally-caer/cover.webp

@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-4-sukoyaka-na-hibi-miyasaka-hospital-4-healthy-days
-title: Miyasaka Byouin 4 Sukoyaka na Hibi Miyasaka Hospital 4 Healthy Days
-originalTitle: Miyasaka Byouin 4 Sukoyaka na Hibi Miyasaka Hospital 4 Healthy Days
+title: "Miyasaka Hospital 4: Healthy Days"
+originalTitle: Miyasaka Byouin 4 Sukoyaka na Hibi
 aliases: []
 visibility: published
 status: completed
@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, blindfold, bondage, garter-belt, group, harem, mosaic-censorship, multi-work-series, nurse, piercing, stockings, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Onsoku Ubaguruma
+    slug: onsoku-ubaguruma
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Uba Yoshiyuki
+    slug: uba-yoshiyuki
 cover:
   kind: image
   src: /manga/miyasaka-byouin-4-sukoyaka-na-hibi-miyasaka-hospital-4-healthy-days/cover.webp

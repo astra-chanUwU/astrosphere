@@ -2,7 +2,7 @@
 slug: arcana-juice-chapter-001
 series: arcana-juice
 number: 1
-title: Doujinshi
+title: ARCANA JUICE
 pagePath: /manga/arcana-juice/chapter-001
 pageExtension: webp
 pageCount: 18

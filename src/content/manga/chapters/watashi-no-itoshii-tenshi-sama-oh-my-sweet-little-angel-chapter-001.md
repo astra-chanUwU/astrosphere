@@ -2,7 +2,7 @@
 slug: watashi-no-itoshii-tenshi-sama-oh-my-sweet-little-angel-chapter-001
 series: watashi-no-itoshii-tenshi-sama-oh-my-sweet-little-angel
 number: 1
-title: Doujinshi
+title: "Watashi no Itoshii Tenshi-sama | Oh, My Sweet Little Angel"
 pagePath: /manga/watashi-no-itoshii-tenshi-sama-oh-my-sweet-little-angel/chapter-001
 pageExtension: webp
 pageCount: 36

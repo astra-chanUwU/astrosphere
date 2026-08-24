@@ -1,6 +1,6 @@
 ---
 slug: rosaria-x-barbara-no-himitsu-no-yoru
-title: Rosaria x Barbara no Himitsu no Yoru
+title: Rosaria x Barbara's Secret Night
 originalTitle: Rosaria x Barbara no Himitsu no Yoru
 aliases: []
 visibility: published

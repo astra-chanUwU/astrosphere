@@ -1,6 +1,6 @@
 ---
 slug: hagure-idol-jigokuhen
-title: Hagure Idol Jigokuhen
+title: "Booty Royale: Never Go Down Without a Fight!"
 originalTitle: Hagure Idol Jigokuhen
 aliases: [Booty Royale - Never Go Down Without a Fight!]
 visibility: published

@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [big-breasts, females-only, ff-threesome, multi-work-series, yuri, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Konparu
+    slug: konparu
 cover:
   kind: image
   src: /manga/your-sister-chapter-13/cover.webp

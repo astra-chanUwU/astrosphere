@@ -2,7 +2,7 @@
 slug: feticolle-vol-03-chapter-001
 series: feticolle-vol-03
 number: 1
-title: Doujinshi
+title: FetiColle VOL.03
 pagePath: /manga/feticolle-vol-03/chapter-001
 pageExtension: webp
 pageCount: 26

@@ -1,6 +1,6 @@
 ---
 slug: dungeon-meshi
-title: Dungeon Meshi
+title: Delicious in Dungeon
 originalTitle: Dungeon Meshi
 aliases: [Delicious in Dungeon]
 visibility: published

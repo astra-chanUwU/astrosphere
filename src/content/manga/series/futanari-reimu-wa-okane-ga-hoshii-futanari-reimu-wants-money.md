@@ -1,7 +1,7 @@
 ---
 slug: futanari-reimu-wa-okane-ga-hoshii-futanari-reimu-wants-money
-title: Futanari Reimu wa Okane ga Hoshii!! Futanari Reimu wants Money!!
-originalTitle: Futanari Reimu wa Okane ga Hoshii!! Futanari Reimu wants Money!!
+title: Futanari Reimu Wants Money!!
+originalTitle: Futanari Reimu wa Okane ga Hoshii!!
 aliases: []
 visibility: published
 status: completed

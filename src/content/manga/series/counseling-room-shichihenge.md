@@ -1,6 +1,6 @@
 ---
 slug: counseling-room-shichihenge
-title: Counseling Room Shichihenge!!
+title: "Counseling Room: Seven Transformations!!"
 originalTitle: Counseling Room Shichihenge!!
 aliases: []
 visibility: published

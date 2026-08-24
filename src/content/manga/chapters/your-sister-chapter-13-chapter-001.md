@@ -2,7 +2,7 @@
 slug: your-sister-chapter-13-chapter-001
 series: your-sister-chapter-13
 number: 1
-title: Doujinshi
+title: YOUR SISTER - CHAPTER 13
 pagePath: /manga/your-sister-chapter-13/chapter-001
 pageExtension: webp
 pageCount: 22

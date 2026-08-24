@@ -1,6 +1,6 @@
 ---
 slug: isekai-fuuzoku-gaiden-futanari-tenshi-san
-title: Isekai Fuuzoku Gaiden Futanari Tenshi-san
+title: "Isekai Brothel Side Story: Futanari Angel"
 originalTitle: Isekai Fuuzoku Gaiden Futanari Tenshi-san
 aliases: []
 visibility: published

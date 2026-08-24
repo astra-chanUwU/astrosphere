@@ -1,7 +1,7 @@
 ---
 slug: kinbaku-soshite-seifuku-bondage-and-also-uniforms
-title: Kinbaku Soshite Seifuku Bondage and also Uniforms
-originalTitle: Kinbaku Soshite Seifuku Bondage and also Uniforms
+title: Bondage and Also Uniforms
+originalTitle: Kinbaku Soshite Seifuku
 aliases: []
 visibility: published
 status: completed

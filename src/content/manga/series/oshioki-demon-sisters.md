@@ -1,6 +1,6 @@
 ---
 slug: oshioki-demon-sisters
-title: Oshioki! Demon Sisters
+title: Punishment! Demon Sisters
 originalTitle: Oshioki! Demon Sisters
 aliases: []
 visibility: published

@@ -1,6 +1,6 @@
 ---
 slug: tongari-boushi-no-atelier
-title: Tongari Boushi no Atelier
+title: Witch Hat Atelier
 originalTitle: Tongari Boushi no Atelier
 aliases: [Witch Hat Atelier]
 visibility: published

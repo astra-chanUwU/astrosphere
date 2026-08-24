@@ -1,7 +1,7 @@
 ---
 slug: hatsumono-jealousy-jealousys-first-fruits
-title: Hatsumono Jealousy | Jealousy's First-Fruits
-originalTitle: Hatsumono Jealousy | Jealousy's First-Fruits
+title: "Jealousy's First-Fruits"
+originalTitle: Hatsumono Jealousy
 aliases: []
 visibility: published
 status: completed

@@ -1,14 +1,14 @@
 ---
 slug: kaede-to-suzu-3-kaede-and-suzu-3
-title: Kaede to Suzu 3 | Kaede and Suzu 3
-originalTitle: Kaede to Suzu 3 | Kaede and Suzu 3
+title: Kaede and Suzu 3
+originalTitle: Kaede to Suzu 3
 aliases: []
 visibility: published
 status: completed
 publicationYear: 2026
-description: An explicit English-translated manga by Kyockcho of Group.
+description: An explicit English-translated doujinshi by Kyockcho of Group.
 rating: explicit
-format: manga
+format: doujinshi
 origin: original
 tags: [big-breasts, bisexual, bondage, ffm-threesome, fingering, group, incest, leg-lock, multi-work-series, sister, sole-male, squirting, stockings, tickling, twins, x-ray, english, translated]
 authors:
@@ -26,4 +26,4 @@ cover:
 featured: false
 ---
 
-*Kaede to Suzu 3 | Kaede and Suzu 3* is a completed explicit English-translated manga by Kyockcho of Group.
+*Kaede to Suzu 3 | Kaede and Suzu 3* is a completed explicit English-translated doujinshi by Kyockcho of Group.

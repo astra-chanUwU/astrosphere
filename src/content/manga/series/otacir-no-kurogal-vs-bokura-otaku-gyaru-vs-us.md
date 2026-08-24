@@ -1,7 +1,7 @@
 ---
 slug: otacir-no-kurogal-vs-bokura-otaku-gyaru-vs-us
-title: OtaCir no KuroGal VS Bokura Otaku Gyaru VS Us
-originalTitle: OtaCir no KuroGal VS Bokura Otaku Gyaru VS Us
+title: Otaku Gyaru VS Us
+originalTitle: OtaCir no KuroGal VS Bokura
 aliases: []
 visibility: published
 status: completed
@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, anal, anal-intercourse, big-breasts, big-penis, blowjob, crossdressing, dickgirl-on-male, femdom, filming, focus-anal, footjob, futanari, group, gyaru, mtf-threesome, multi-work-series, piercing, ponytail, shemale, sole-dickgirl, sole-female, sole-male, stockings, tanlines, tomgirl, uncensored, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Hibon
+    slug: hibon
 artists:
   - name: Unknown
     slug: unknown

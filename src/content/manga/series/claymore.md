@@ -1,7 +1,7 @@
 ---
 slug: claymore
 title: Claymore
-originalTitle: "クレイモア"
+originalTitle: Kureimoa
 aliases: [Claymore]
 visibility: published
 status: completed

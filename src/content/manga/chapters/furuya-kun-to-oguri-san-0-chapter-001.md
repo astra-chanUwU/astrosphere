@@ -12,4 +12,4 @@ readingDirection: rtl
 status: published
 ---
 
-The complete 20-page manga.
+The complete 20-page doujinshi.

@@ -1,7 +1,7 @@
 ---
 slug: keine-sensei-wa-sei-kyouzai-keine-sensei-is-a-good-sex-reference
-title: Keine Sensei wa Sei Kyouzai | Keine-sensei is a Good Sex Reference
-originalTitle: Keine Sensei wa Sei Kyouzai | Keine-sensei is a Good Sex Reference
+title: Keine-sensei is a Good Sex Reference
+originalTitle: Keine Sensei wa Sei Kyouzai
 aliases: []
 visibility: published
 status: completed

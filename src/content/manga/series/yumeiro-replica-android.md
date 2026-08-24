@@ -1,6 +1,6 @@
 ---
 slug: yumeiro-replica-android
-title: Yumeiro no Replica Android to Haitoku no Chigiri
+title: Dream-Colored Replica Android and the Pact of Immorality
 originalTitle: Yumeiro no Replica Android to Haitoku no Chigiri
 aliases: []
 visibility: published

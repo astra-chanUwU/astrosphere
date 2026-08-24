@@ -2,7 +2,7 @@
 slug: maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki-chapter-001
 series: maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki
 number: 1
-title: Doujinshi
+title: "Maid Kyouiku. 8 -Botsuraku Kizoku Rurikawa Tsubaki- | Maid Education 8 - Fallen Aristocrat Rurikawa Tsubaki"
 pagePath: /manga/maid-kyouiku-8-botsuraku-kizoku-rurikawa-tsubaki-maid-education-8-fallen-aristocrat-rurikawa-tsubaki/chapter-001
 pageExtension: webp
 pageCount: 31

@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [original, big-areolae, cunnilingus, females-only, foot-licking, hairy, rough-translation, school-swimsuit, tribadism, yuri, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Mokuyama Hito
+    slug: mokuyama-hito
 cover:
   kind: image
   src: /manga/manatsu-no-teimou/cover.webp

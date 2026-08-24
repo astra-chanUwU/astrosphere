@@ -1,7 +1,7 @@
 ---
 slug: yu-chan-wa-pantsu-o-shishu-shitai-yu-chan-wants-to-protect-her-panties-at-all-costs
-title: Yu-chan wa Pantsu o Shishu shitai! | Yu-chan Wants to Protect Her Panties at All Costs!
-originalTitle: Yu-chan wa Pantsu o Shishu shitai! | Yu-chan Wants to Protect Her Panties at All Costs!
+title: Yu-chan Wants to Protect Her Panties at All Costs!
+originalTitle: Yu-chan wa Pantsu o Shishu shitai!
 aliases: []
 visibility: published
 status: completed

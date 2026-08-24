@@ -1,6 +1,6 @@
 ---
 slug: yagokoro-shinryoshitsu-funouhen
-title: Yagokoro Shinryoshitsu Funouhen
+title: "Yagokoro Clinic: Impotence Edition"
 originalTitle: Yagokoro Shinryoshitsu Funouhen
 aliases: []
 visibility: published

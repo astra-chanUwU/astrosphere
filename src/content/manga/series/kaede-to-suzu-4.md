@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [ffm-threesome, group, incest, layer-cake, sex-toys, shimaidon, sister, stockings, twins, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Kyockcho
+    slug: kyockcho
 cover:
   kind: image
   src: /manga/kaede-to-suzu-4/cover.webp

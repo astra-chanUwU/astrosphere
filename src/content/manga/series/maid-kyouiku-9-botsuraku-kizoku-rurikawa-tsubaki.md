@@ -1,6 +1,6 @@
 ---
 slug: maid-kyouiku-9-botsuraku-kizoku-rurikawa-tsubaki
-title: Maid Kyouiku. 9 -Botsuraku Kizoku Rurikawa Tsubaki-
+title: "Maid Education 9: Fallen Aristocrat Rurikawa Tsubaki"
 originalTitle: Maid Kyouiku. 9 -Botsuraku Kizoku Rurikawa Tsubaki-
 aliases: []
 visibility: published

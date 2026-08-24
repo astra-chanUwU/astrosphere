@@ -1,7 +1,7 @@
 ---
 slug: miyasaka-byouin-5-semerareru-no-wa-suki-desu-ka-miyasaka-hospital-5-do-you-like-being-blamed
-title: Miyasaka Byouin 5 Semerareru no wa Suki desu ka Miyasaka Hospital 5 Do you like being blamed
-originalTitle: Miyasaka Byouin 5 Semerareru no wa Suki desu ka Miyasaka Hospital 5 Do you like being blamed
+title: "Miyasaka Hospital 5: Do You Like Being Blamed?"
+originalTitle: Miyasaka Byouin 5 Semerareru no wa Suki desu ka
 aliases: []
 visibility: published
 status: completed
@@ -10,10 +10,10 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [ahegao, anal, anal-intercourse, big-breasts, blackmail, domination-loss, femdom, ffm-threesome, garter-belt, glasses, gloves, group, harem, lab-coat, mind-break, mosaic-censorship, multi-work-series, nurse, pegging, rape, sole-male, stockings, strap-on, english, translated]
 authors:
-  - name: Unknown
-    slug: unknown
+  - name: Onsoku Ubaguruma
+    slug: onsoku-ubaguruma
 artists:
   - name: Unknown
     slug: unknown

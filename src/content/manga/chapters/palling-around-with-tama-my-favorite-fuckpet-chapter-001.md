@@ -2,7 +2,7 @@
 slug: palling-around-with-tama-my-favorite-fuckpet-chapter-001
 series: palling-around-with-tama-my-favorite-fuckpet
 number: 1
-title: Doujinshi
+title: Palling Around With Tama! My Favorite Fuckpet
 pagePath: /manga/palling-around-with-tama-my-favorite-fuckpet/chapter-001
 pageExtension: webp
 pageCount: 34

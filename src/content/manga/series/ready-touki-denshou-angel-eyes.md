@@ -1,7 +1,7 @@
 ---
 slug: ready-touki-denshou-angel-eyes
 title: READY
-originalTitle: "READY (闘姫伝承 ANGEL EYES)"
+originalTitle: READY (Touki Denshou ANGEL EYES)
 aliases: ["READY (Touki Denshou Angel Eyes)"]
 visibility: published
 status: completed

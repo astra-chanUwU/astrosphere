@@ -1,6 +1,6 @@
 ---
 slug: rst-04-dungeon-ni-deai-o-motomeru-no-wa-machigatteiru-darou-ka
-title: RST 04 ~ Dungeon ni Deai o Motomeru no wa Machigatteiru Darou ka ~
+title: "RST 04 ~ Is It Wrong to Try to Pick Up Girls in a Dungeon? ~"
 originalTitle: RST 04 ~ Dungeon ni Deai o Motomeru no wa Machigatteiru Darou ka ~
 aliases: []
 visibility: published

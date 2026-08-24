@@ -2,7 +2,7 @@
 slug: nakatagirlfriends-chapter-001
 series: nakatagirlfriends
 number: 1
-title: Doujinshi
+title: Nakatagirlfriends
 pagePath: /manga/nakatagirlfriends/chapter-001
 pageExtension: webp
 pageCount: 17

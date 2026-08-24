@@ -2,7 +2,7 @@
 slug: delightfully-fuckable-and-unrefined-in-shibuya-chapter-001
 series: delightfully-fuckable-and-unrefined-in-shibuya
 number: 1
-title: Doujinshi
+title: DELIGHTFULLY FUCKABLE AND UNREFINED in SHIBUYA
 pagePath: /manga/delightfully-fuckable-and-unrefined-in-shibuya/chapter-001
 pageExtension: webp
 pageCount: 58

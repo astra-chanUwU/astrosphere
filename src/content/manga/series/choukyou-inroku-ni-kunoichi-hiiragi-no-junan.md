@@ -1,6 +1,6 @@
 ---
 slug: choukyou-inroku-ni-kunoichi-hiiragi-no-junan
-title: Choukyou Inroku Ni ~Kunoichi Hiiragi no Junan~
+title: "Lewd Training Record 2 ~The Suffering of Kunoichi Hiiragi~"
 originalTitle: Choukyou Inroku Ni ~Kunoichi Hiiragi no Junan~
 aliases: []
 visibility: published

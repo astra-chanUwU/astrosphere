@@ -3,7 +3,7 @@ slug: tongari-boushi-no-atelier-chapter-086
 series: tongari-boushi-no-atelier
 number: 86
 title: Chapter 86
-pagePath: /manga/tongari-boushi-no-atelier/chapter-019
+pagePath: /manga/tongari-boushi-no-atelier/chapter-086
 pageExtension: webp
 pageCount: 30
 pageWidth: 960

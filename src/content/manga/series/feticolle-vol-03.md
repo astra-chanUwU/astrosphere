@@ -10,13 +10,13 @@ description: Draft entry imported from the supplied archive; creator, date, fand
 rating: explicit
 format: doujinshi
 origin: original
-tags: []
+tags: [kantai-collection, kashima, teitoku, anal, armpit-licking, double-penetration, hairy, multi-work-series, sex-toys, sole-female, sole-male, sweating, swimsuit, twintails, x-ray, english, translated]
 authors:
   - name: Unknown
     slug: unknown
 artists:
-  - name: Unknown
-    slug: unknown
+  - name: Ulrich
+    slug: ulrich
 cover:
   kind: image
   src: /manga/feticolle-vol-03/cover.webp
