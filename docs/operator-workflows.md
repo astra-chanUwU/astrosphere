@@ -172,6 +172,14 @@ bun run media:optimize <source> --output <destination> --profile <reader|gallery
 
 JPEG and PNG become WebP; animated GIF becomes animated WebP. Existing WebP is copied without recompression.
 
+For oversized managed manga, doujinshi, or image-set WebP files, use the tested web-reader profile. It caps portrait pages at 2400px wide and landscape pages at 4000px, skips smaller and animated WebP files, prepares and verifies the complete replacement, then asks once before changing the managed directory:
+
+```sh
+bun run media:optimize <managed-directory> --profile <reader|gallery> --web-reader --in-place
+```
+
+`media:validate` groups oversized files by directory and prints the exact command to run. New manga-volume and batch imports apply the same resize limits automatically at WebP quality 90 unless `--quality` is supplied.
+
 Use the smallest relevant checks while working, then the complete publication checks once:
 
 ```sh

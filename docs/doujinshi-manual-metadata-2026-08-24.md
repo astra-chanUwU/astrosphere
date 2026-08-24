@@ -1,0 +1,215 @@
+# Doujinshi metadata requiring manual review
+
+Generated 2026-08-24 from /Volumes/TOSHIBA HDD/doujinshi.
+
+These archives were not safely matched to a complete existing metadata record. All are imported as draft entries with provisional filename-derived metadata. Verify title, original title, creator(s), year, fandom/origin, tags, and whether the entry should remain a doujinshi or become an image set.
+
+The following two archives are also held out of this first import because the current importer blocks while reading their large ZIP members; they require separate manual extraction/import handling:
+
+- [Pixiv] Ikeshita Maue (9413849)-1280x.zip
+- (Gunreibu Shuho & Houraigekisen Yo-i! Goudou Enshuu 3Senme) [Ikechika (Ikeshita Maue)] Musashi x Nagato Anthology  Beast Emotion  Ch. 1 (Kantai Collection -KanColle-) [English] [MegaFagget] [Decensored][+no pubes version]-1280x.zip
+
+- Omankoformers_ Spotlight Soundwave.zip
+- G.zip
+- Kaede to Suzu 5 _ Kaede_.zip
+- An Angel.zip
+- DEAD END EATER.zip
+- Brainrot Girlfriend.zip
+- Darjeelingsamas Drink Bar.zip
+- Furuya-Kun to Oguri-San 0.zip
+- Keine Sensei wa Sei Kyouzai _ Keine-sensei is a Good Sex Reference.zip
+- Maid Kyouiku. -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- Maid Kyouiku. 5 -Botsuraku Kizoku Rurikawa Tsubaki.zip
+- Maid Kyouiku. 4 -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- Kurumi Joucho _ Walnut Emotion.zip
+- Kaede to Suzu 3 _ Kaede and Suzu 3.zip
+- `Mahou Shoujo ni Akogarete Sao Yuu _ Gushing Over Magical Girls With Dicks.zip
+- Miyasaka Byouin 2 - Iyashi no Morie-san _ Miyasaka Hospital - The Healing Morie-san.zip
+- The Fall of the Elves_ Imprinting Lewd Marks on Elves and Turning Them into Lesbians.zip
+- Futanari Chinchin no Chinjou _ A Futanari Penis Appeal.zip
+- RST 04 ~ Dungeon ni Deai o Motomeru no wa Machigatteiru Darou ka ~.zip
+- Sao.zip
+- Ore no Joukyou Seiseikatsu 16 _NeCafe Hen_.zip
+- Omankoformers_ Spotlight Shockwave.zip
+- Wotasa no Gyaru VS Jirai Otoko _ Otaku Gyaru VS Toxic Boy.zip
+- 妖狐触手本まとめ＋ふた○り漫画.zip
+- Maid Kyouiku. 6 -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- Tokimeki Chinchin Binbin Go!!! _ Her Throbbing Hard Cock Goes!!!.zip
+- Maid Kyouiku. 7 -Botsuraku Kizoku Rurikawa Tsubaki- _ Maid Education 7 -Fallen Aristocrat Rurikawa Tsubaki-.zip
+- Collection 29 Doujinshi.zip
+- Maid Kyouiku. 9 -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- The Mother and Daughter Next Door Are The Futanari Neighbors Dick Sleeve 2.zip
+- Anal Houshikan Akebono Saikyouiku Tokumu.zip
+- Hartmann2.5 Ame no Hi no XXX _ XXX on a Rainy Day.zip
+- Les Kouhai to Shinozaki _ Shinozaki and the Predatory Lesbians.zip
+- Watashi wa Mama no Onna Tomodachi no Seidorei ni Narimashita!.zip
+- Kyockchokyock] Subjected TOHSAKA Sisters -Episode Rin-.zip
+- FetiColle VOL. 02.zip
+- Yu-chan wa Pantsu o Shishu shitai! _ Yu-chan Wants to Protect Her Panties at All Costs!.zip
+- SOFS.zip
+- FetiColle Vol. 1.zip
+- SPg.zip
+- PLAYTHING 2.0.zip
+- Twintails! Tights! Tsundere!.zip
+- Gakusei Jidai_ Boku o Ijimeteita Yankee ga Buka toshite Haittekita Ken _ The Delinquent Who Bullied Me in School Became My Subordinate.zip
+- FetiColle Vol. 06 Zenpen.zip
+- My Sister Brought a Girl Over to Sleep With Me.zip
+- Iori-kun to Otsukiai ♥ _ LOVE BLOOMS at the ASS WALL ♥.zip
+- No. 9.zip
+- WotaCir no Gal to Boku _ WotaCir no Gal and I.zip
+- Shikiyoku Kaihou Succubus-chan _ Lust-Unleashed Succubus-chan.zip
+- Rosaria x Barbara no Himitsu no Yoru.zip
+- BishoBishoFormers.zip
+- F-43.zip
+- YariCir no Boku VS Gal.zip
+- Maid Kyouiku. 3 -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- Choukyou Inroku Ni ~Kunoichi Hiiragi no Junan~.zip
+- Maid Kyouiku. 2 -Botsuraku Kizoku Rurikawa Tsubaki-.zip
+- Donna Onegai mo Kiichau Hito to Tsukiattara Nou ga Hakaisareta Hanashi 2 _ The Story of How My Mind Was Broken After Dating Someone Who Grants Any Request 2.zip
+- Watashi no Ie ni wa Yuurei ga Imasu..zip
+- Maid Kyouiku. -Botsuraku Kizoku Rurikawa Tsubaki- _ Maid Education_ Fallen Aristocrat Rurikawa Tusbaki.zip
+- Elf.zip
+- WotaCir no Gal VS Boku _ Otaku Gyaru VS. Me.zip
+- Ore wa Imouto ni Katenai.....zip
+- Nande Onna nanka ni Torarenakya Ikenai no_ _ Why Do I Have To Lose Her To Another Woman_.zip
+- Pla・Pura PR 01-03.zip
+- Kiss You Baby!!.zip
+- Bousou Otome side Kuro.zip
+- Futanari Batoru Sanbanshoubu _ Futanari Battle - Best of Three.zip
+- Yokkyuu Fuman _ Down Bad.zip
+- Sasori Sasoware.zip
+- Oshioki! Demon Sisters.zip
+- Ubel Eats.zip
+- MACOHOLIC.zip
+- Hatsujou Kiken Chitai _ Sexual Excitement Danger Zone.zip
+- Exusiais Birthday Party.zip
+- Hypnotize F Ch. 1.zip
+- Ore ni Dake Chou VIP Taiou Shite Kureru Seikan Esute no Onee-san _ The Sensual Massage Lady Who Gives Only Me Super VIP Treatment.zip
+- FetiColle Vol. 05.zip
+- ArianaAriana~ the pages are filled with Alices ass.zip
+- Dia Vengence 1.zip
+- Marine Senchou wa Hi Goui no Ue De Wakarasaretai.zip
+- Miyasaka Byouin 3 - Ijimeru Fujimura-san _ Miyasaka Hospital - The Bully Fujimura-san.zip
+- Omankoformers_ All Hail Megadick.zip
+- Sukeban kuro gyaru elf o futanari chinpo de wakara setai _ Making The Delinquent Gyaru Elf Submit With My Futanari Dick.zip
+- Doryoku wa Kitto īkusai _ Hard Work Surely Smells Great.zip
+- Hatsumono Jealousy _ Jealousys First-Fruits.zip
+- Yamada-san to Chikubi ga Yowai Ogawa-kun _ Yamada-san Knows Ogawa-kun Has Sensitive Nipples.zip
+- Futa SoraxExusiai Doujinshi.zip
+- Sleepless Night.zip
+- One Room_ One Moment.zip
+- Honey and milk DtD edition.zip
+- Miss Enslaved Reseacher Witch.zip
+- Sakuyasan.zip
+- HOLD UP!.zip
+- Hypnotize F Ch. 2.zip
+- Orin To Okuu no Seikan Oil Massage Taikenki _ A Story about Orin and Okuus Sensual Oil Massage Experience.zip
+- Archi_Gager3.zip
+- FUTACOLO CO.zip
+- 3_4.5_5.zip
+- Youkai Rape! Hakurei no Gokuaku Miko _ Youkai Rape! Henious Miko of Hakurei.zip
+- When you take a life of abstinence to the extreme... you end up growing a dick!!.zip
+- Kurau Girl.zip
+- That Prim and Proper Maid Exterior Is Hiding Something Big....zip
+- Nurse de Oshigoto.zip
+- ARCANA JUICE 6.zip
+- Inga Ouhou _ The Wages of Sin.zip
+- Futanari Akuma to Moumoku Tenshi _ Futanari Devil and the Blind Angel.zip
+- Watashi no Shumi tte Hen desu ka_ _ Is My Hobby Weird_.zip
+- ASShorufo-kun 3 Koukan Shop Hen.zip
+- Love Dog.zip
+- Futanari Onee-chan Gone Wild.zip
+- Youko Ayako.zip
+- Kabeshiri Beit-kun Hajimete no Taiken Nyuu Kabe _ First Time Trial Entry as an Ass Wall Part-timer.zip
+- A Book about Race Queens Enterprise and Baltimore being Lewd.zip
+- Chichi Hyouka o Hajimemashou _ Its Time for Our Breast Evaluation.zip
+- Yuri NTR _ Lesbian NTR 01-03.zip
+- ARCANA JUICE 5.zip
+- ARCANA JUICE 4.zip
+- Dog-Eared Maid_ Mating Season.zip
+- Kinbaku_ Soshite Seifuku _ Bondage_ and also Uniforms.zip
+- Tenryuuwa Shuusekichino Nan nano sa!! _ I Told You Supply Depot_ This Tenryuu Belongs to You!!.zip
+- BOCCHI IN THE CLOSET.zip
+- MeiSaku Choukyou Nikki.zip
+- Futanari Reimu wa Okane ga Hoshii!! _ Futanari Reimu wants Money!!.zip
+- Chaldea Hypnotic Servant Enslavement Simulator.zip
+- Yagokoro Shinryoshitsu Funouhen.zip
+- Maso Uwaki ~ Trans Joushi no Buzuma Iki.zip
+- Meguriai Tokyo ~Les Fuuzoku e Iku.~ _ Tokyo Encounter_ Visiting a Lesbian Brothel.zip
+- OYOME SAMBA.zip
+- I wanted to grope some tits so I turned him into a girl lol.zip
+- Futanari Musume ha dokidoki shiteru.zip
+- FutaAna - A Certain Futanari Nuns Anal Masturbation Records.zip
+- Futanari chan no Kodawari.zip
+- Shojo de dōtei de mi seitsū no futanari dākuerufu-chan ga rezuhāremu ni tatakikoma reru ohanashi.zip
+- Chinchin o Fumu Hanashi. _ A Story About Stepping on a Penis..zip
+- Mine.zip
+- Zu-senpai to Ogino _ Ogino and the Predatory Lesbians.zip
+- Shidoukan Sisters.zip
+- FetiColle Vol. 07 Kouhen.zip
+- ARCANA JUICE 3.zip
+- Mash no Hatsujouki to Shitsukekata.zip
+- ARCANA JUICE 2.zip
+- YOUR SISTER - CHAPTER 13.zip
+- Yokkyuu Analyze.zip
+- 2D Comic Magazine Akuochi Shoujo ni Akogarete! Vol. 1.zip
+- The Trap and the Girly Boy.zip
+- Sasoware Master 2.zip
+- The Mother and Daughter Next Door Are The Futanari Neighbors Dick Sleeve.zip
+- Miyabi na Senpai 1-3 English].zip
+- Miyasaka Byouin Shuu Hakaba kara Yurikago made _ Miyasaka Hospital FINAL_ From the Grave to the Cradle.zip
+- Maid to Kouhai Dochira ga Okonomi_ _ MAID vs KOUHAI_ Which Do You Prefer_.zip
+- Miyasaka Byouin 4 Sukoyaka na Hibi _ Miyasaka Hospital 4 Healthy Days.zip
+- Seiyoku Tsuyo Tsuyo Rikujoubu ni Shiboritorareru Hanashi _ Milked Dry By The Super Horny Girl From The Track And Field Club.zip
+- Again_.zip
+- Ellen Joe.zip
+- ANDO_OSHIDA_motto Nakayoku!.zip
+- [Pixiv] Ikeshita Maue (9413849)-1280x.zip
+- ARCANA JUICE FINAL.zip
+- ARCANA JUICE.zip
+- Boyfriend to Girlfriend Bully Galore!.zip
+- DELIGHTFULLY FUCKABLE AND UNREFINED in SHIBUYA.zip
+- Flirty Lovey-Dovey Sex with Shunguang-chan.zip
+- Dokodemo Issho.zip
+- EMOTIONALLY-CAER.zip
+- Gal Janai ssu_ Josou ssu!.zip
+- Fate_Lewd Summoning EXTRA.zip
+- Futa Zukin-chan _ Little Futa Riding Hood.zip
+- FetiColle VOL.03.zip
+- FetiColle VOL.04.zip
+- Futanari Reimu to Futanari Marisa ga Micro Bikini de Ichaicha Suru Hon.zip
+- Futanari-chan Sugu Iku _ Futanari-chan Coming Soon.zip
+- Harande! O Himeoma _ Impregnate the Princess!.zip
+- Hatsujou Usagi.zip
+- Himitsuna Futari _ Our Secrets.zip
+- Hishokusha FEater.zip
+- Kaede to Suzu 4.zip
+- Kaede to Suzu 6 _ Kaede_.zip
+- Kapucchu..zip
+- Kazamori Hakase no Chotto Ecchi na Kenkyuu - Kouhen.zip
+- Kitsune Miko _ Fox Shrine Maiden.zip
+- Kitsune Miko 2 _ Fox Shrine Maiden 2.zip
+- Kono Koto wa Futari dake no Himitsu dakara ne.zip
+- Kyuunyuuki Shimai _ Demonic Milk-sucking Sisters.zip
+- Maid Kyouiku. 8 -Botsuraku Kizoku Rurikawa Tsubaki- _ Maid Education 8 - Fallen Aristocrat Rurikawa Tsubaki.zip
+- Dosukebe sōsa-kan no nuki-uchi kensa ♥ _ A Naughty Investigator’s Surprise Inspection! ♥.zip
+- Majo wa Deshi ni Maketa. + Oshioki saretai _ The witch that lost to her disciple + I want to get punished.zip
+- Man × Indensha EN.zip
+- Manatsu no Teimou.zip
+- Maso Uwaki ~Futanari Joushi no Buzama Iki~.zip
+- Miyasaka Byouin - Yasashii Seseragi-san _ Miyasaka Hospital - The Kind Seseragi-san.zip
+- Miyasaka Byouin 5 - _Semerareru no wa Suki desu ka__ _ Miyasaka Hospital 5 - _Do you like being blamed__.zip
+- Musume ga Futanari Zetsurin nanode Mamatomo ni Seishori o Tetsudatte Morau _ My Daughter Is An Insatiable Dickchick_ So I Asked My Fellow Mother Friends For Some _Help_.zip
+- Nakatagirlfriends.zip
+- OtaCir no KuroGal VS Bokura _ Otaku Gyaru VS Us.zip
+- Palling Around With Tama! My Favorite Fuckpet.zip
+- Sasoware Master _ Seduced Master.zip
+- Sasoware Master 3.zip
+- Sasoware Master 4 _ Seduced Master 4.zip
+- Saya-nee is Calling Me.zip
+- Scent of Firefly.zip
+- Sensei no Houkago Kurorekishi.zip
+- Sousou meikan Futanari Maidsan wa Seiyoku ga Tsuyoi.zip
+- Watashi no Itoshii Tenshi-sama _ Oh_ My Sweet Little Angel.zip
+- Yuri Girls Project.zip
+- (Gunreibu Shuho & Houraigekisen Yo-i! Goudou Enshuu 3Senme) [Ikechika (Ikeshita Maue)] Musashi x Nagato Anthology  Beast Emotion  Ch. 1 (Kantai Collection -KanColle-) [English] [MegaFagget] [Decensored][+no pubes version]-1280x.zip

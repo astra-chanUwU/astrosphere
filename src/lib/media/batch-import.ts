@@ -209,6 +209,7 @@ const stageDoujinshi = async (
       profile: "reader",
       quality,
       dryRun: false,
+      webReader: true,
     });
     optimization.push(optimized);
     const firstPath = join(destination, "001.webp");
@@ -274,6 +275,7 @@ const stageImageSet = async (
     profile: "gallery",
     quality,
     dryRun: false,
+    webReader: true,
   });
   const images: RenderedImage[] = [];
   for (const item of optimized.plan.items) {

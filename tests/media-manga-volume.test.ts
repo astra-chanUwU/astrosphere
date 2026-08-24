@@ -119,6 +119,7 @@ test("imports every discovered chapter while preserving the source", async () =>
   await writeFile(source, "original archive");
 
   const optimize = async (options: OptimizeOptions): Promise<OptimizeResult> => {
+    expect(options.webReader).toBe(true);
     await mkdir(options.destination);
     const sources = (await readdir(options.source)).sort();
     for (let index = 0; index < sources.length; index += 1) {
@@ -209,6 +210,7 @@ test("imports every archive discovered in a supplied folder", async () => {
   await writeFile(join(sourceRoot, "volume-1.cbz"), "one");
 
   const optimize = async (options: OptimizeOptions): Promise<OptimizeResult> => {
+    expect(options.webReader).toBe(true);
     await mkdir(options.destination);
     await writeFile(join(options.destination, "001.webp"), "webp");
     return {

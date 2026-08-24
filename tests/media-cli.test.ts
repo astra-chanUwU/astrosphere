@@ -80,7 +80,7 @@ test("parses the shared command vocabulary", () => {
     "media:remove manga <series> --chapter <number> --unavailable",
   );
   expect(optimizeHelp).toContain(
-    "media:optimize <source> --output <destination> --profile <reader|gallery>",
+    "media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery>",
   );
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
@@ -236,7 +236,7 @@ test("parses a manga volume import", () => {
     kind: "manga-volume",
     sources: [resolve("book.cbz")],
     series: "does-it-count-if-you-lose-your-virginity-to-an-android",
-    quality: 85,
+    quality: 90,
     status: "published",
   });
 });
@@ -255,7 +255,7 @@ test("parses multiple volume sources and an explicit draft import", () => {
     kind: "manga-volume",
     sources: [resolve("volume-1.cbz"), resolve("volume-2.zip")],
     series: "android-series",
-    quality: 85,
+    quality: 90,
     status: "draft",
   });
 });
@@ -273,7 +273,7 @@ test("parses a batch import with a required manifest and dry run", () => {
     kind: "batch",
     source: resolve("batch 1 doujinshi"),
     manifest: resolve("batch.yaml"),
-    quality: 85,
+    quality: 90,
     dryRun: true,
     status: "published",
   });
@@ -383,6 +383,46 @@ test("parses optional optimization quality and dry-run", () => {
     quality: 90,
     dryRun: true,
   });
+});
+
+test("parses the web-reader in-place mode with its tested quality default", () => {
+  expect(
+    parseOptimizeArgs([
+      "managed/chapter-011",
+      "--profile",
+      "reader",
+      "--web-reader",
+      "--in-place",
+    ]),
+  ).toEqual({
+    source: resolve("managed/chapter-011"),
+    destination: undefined,
+    profile: "reader",
+    quality: 90,
+    dryRun: false,
+    webReader: true,
+    inPlace: true,
+  });
+
+  expect(() =>
+    parseOptimizeArgs([
+      "managed/chapter-011",
+      "--output",
+      "optimized",
+      "--profile",
+      "reader",
+      "--web-reader",
+      "--in-place",
+    ]),
+  ).toThrow("--output cannot be combined with --in-place");
+  expect(() =>
+    parseOptimizeArgs([
+      "managed/chapter-011",
+      "--profile",
+      "reader",
+      "--in-place",
+    ]),
+  ).toThrow("--in-place requires --web-reader");
 });
 
 test("rejects missing, duplicate, unknown, and stray optimization arguments", () => {

@@ -1,0 +1,20 @@
+version: 1
+defaults:
+  ignoreEntries:
+    - .DS_Store
+    - ReadMe.txt
+    - final.jpg
+entries:
+  - type: image-set
+    archive: "Collection 29 Doujinshi.zip"
+    mode: create
+    imageSet:
+      slug: collection-29-doujinshi
+      title: "Collection 29 Doujinshi"
+      summary: "A 597-image explicit English-translated compilation spanning multiple anime and manga series."
+      publishedAt: "2026-08-24"
+      rating: explicit
+      tags: [dagashi-kashi, dungeon-ni-deai-o-motomeru-no-wa-machigatteiru-darou-ka, fate-grand-order, kanojo-okarishimasu, kimetsu-no-yaiba, kono-subarashii-sekai-ni-syukufuku-o, my-hero-academia, naruto, sono-bisque-doll-wa-koi-o-suru, aqua, bell-cranel, chizuru-ichinose, darkness, hestia, himiko-toga, hotaru-shidare, itsuka-kendou, izuku-midoriya, kanao-tsuyuri, kazuma-satou, kazuya-kinoshita, kokonotsu-shikada, kyoka-jiro, marin-kitagawa, mashirao-ojiro, mei-hatsume, midnight, minamoto-no-raikou, mitsuri-kanroji, momo-yaoyorozu, muzan-kibutsuji, naruto-uzumaki, nejire-hado, ochako-uraraka, sakata-kintoki, sakura-haruno, saya-endou, shinobu-kochou, shuten-douji, wakana-gojou, yuyu-haya, ahegao, anal, anal-intercourse, big-ass, big-breasts, big-penis, bikini, blowjob, compilation, dog-girl, double-penetration, ffm-threesome, full-color, gloves, group, hairy, hidden-sex, impregnation, inverted-nipples, kemonomimi, kissing, mind-control, moral-degeneration, oni, paizuri, pantyhose, possession, prostitution, rape, sex-toys, shimapan, sleeping, sole-female, sole-male, stockings, tail, twins, english, translated]
+      spheres: [anime]
+      featured: false
+      notes: "Source metadata credits artists Abi Kamesennin, Akaiguppy, Kaguyuzu, Ma-kurou, Piro, Pochi., R-One, Sahara Wataru, Tokiwa Midori, and Yahiro Pochi; groups/authors Aokihoshi, Bear Hand, Eromazun, Ichigo Pants, Karakishi Youhei-dan, Pirokobo, Pochi-goya., Popochichi, and Slime Eer."

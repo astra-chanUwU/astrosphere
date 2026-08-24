@@ -1,0 +1,19 @@
+version: 1
+defaults:
+  ignoreEntries:
+    - .DS_Store
+entries:
+  - type: image-set
+    archive: "ARMORED CORE VI FIRES OF RUBICON OFFICIAL ART WORKS [Digital]-1280x.zip"
+    mode: create
+    imageSet:
+      slug: armored-core-vi-fires-of-rubicon-official-art-works
+      title: "ARMORED CORE VI FIRES OF RUBICON OFFICIAL ART WORKS"
+      summary: "A 391-image digital scan of the official art book for FromSoftware's ARMORED CORE VI FIRES OF RUBICON, collecting Rubicon 3 environment art, Armored Core mechanical designs, transformation studies, emblems, and guest illustration material."
+      publishedAt: 2024-08-23
+      rating: safe
+      tags: [fromsoftware, kadokawa, armored-core, armored-core-vi-fires-of-rubicon, mecha, robots, science-fiction, concept-art, mechanical-design, environment-art, artbook, official-art, japanese, imageset]
+      spheres: [art, games]
+      featured: false
+      author: FromSoftware
+      notes: "Official art book edited by Famitsu Book Editing Department; issued by KADOKAWA Game Linkage and published by KADOKAWA on 2024-08-23 (ISBN 9784047336810). Associated ARMORED CORE VI art/design credits include Shoji Kawamori, Kazutaka Miyatake, Takayuki Yanase, Ikuto Yamashita, Jason Kwak, Daisuke Satake, Hiroshi Nakamura, Kota Tonaki, Koichiro Harada, Tomona Hara, Steven Wen, Takafumi Umebachi, Akira Takimoto, Tetsu Takahashi, Kazuma Miura, Saori Mizuno, Naomasa Gyobuzawa, Reika Sugaya, Takahiro Tanaka, Daisuke Furuzono, Yuhei Yamazaki, and Ryusuke Nagano. The official book listing does not map individual artists to specific pages."

@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { MediaError } from "./errors";
-import type { OptimizeOptions, OptimizerProfile } from "./optimizer";
+import type { OptimizerProfile } from "./optimizer";
 import type { MaintainArgs } from "./maintenance-types";
 
 export type MediaCommand =
@@ -15,7 +15,7 @@ export const mediaHelp = `Usage:
   bun run media:serve
   bun run media:add manga-volume <source...> --series <slug> [--quality <1..100>] [--draft]
   bun run media:remove manga <series> --chapter <number> --unavailable
-  bun run media:optimize <source> --output <destination> --profile <reader|gallery> [options]
+  bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
   bun run media:validate
   bun run media:sync [--dry-run] [--prune]`;
 
@@ -29,10 +29,12 @@ Options:
   -h, --help         Show this help`;
 
 export const optimizeHelp = `Usage:
-  bun run media:optimize <source> --output <destination> --profile <reader|gallery> [options]
+  bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
 
 Options:
   --quality <1..100>  WebP quality (default: 85)
+  --web-reader         Resize stills to 2400px portrait / 4000px landscape (default quality: 90)
+  --in-place           Replace verified managed WebP files after confirmation
   --dry-run           Show the plan without writing output
   -h, --help          Show this help`;
 
@@ -224,12 +226,24 @@ const requireUniqueOptimizeOption = (
   seen.add(option);
 };
 
-export const parseOptimizeArgs = (argv: string[]): OptimizeOptions => {
+export type OptimizeCommandOptions = {
+  source: string;
+  destination?: string;
+  profile: OptimizerProfile;
+  quality: number;
+  dryRun: boolean;
+  webReader?: true;
+  inPlace?: true;
+};
+
+export const parseOptimizeArgs = (argv: string[]): OptimizeCommandOptions => {
   let source: string | undefined;
   let destination: string | undefined;
   let profile: OptimizerProfile | undefined;
-  let quality = 85;
+  let quality: number | undefined;
   let dryRun = false;
+  let webReader = false;
+  let inPlace = false;
   let positionalOnly = false;
   const seen = new Set<string>();
 
@@ -298,16 +312,40 @@ export const parseOptimizeArgs = (argv: string[]): OptimizeOptions => {
         requireUniqueOptimizeOption(seen, argument);
         dryRun = true;
         break;
+      case "--web-reader":
+        requireUniqueOptimizeOption(seen, argument);
+        webReader = true;
+        break;
+      case "--in-place":
+        requireUniqueOptimizeOption(seen, argument);
+        inPlace = true;
+        break;
       default:
         throw new MediaError("usage", `Unknown optimize option: ${argument}`);
     }
   }
 
   if (!source) throw new MediaError("usage", "source is required");
-  if (!destination) throw new MediaError("usage", "--output is required");
   if (!profile) throw new MediaError("usage", "--profile is required");
+  if (inPlace && destination) {
+    throw new MediaError("usage", "--output cannot be combined with --in-place");
+  }
+  if (inPlace && !webReader) {
+    throw new MediaError("usage", "--in-place requires --web-reader");
+  }
+  if (!destination && !inPlace) {
+    throw new MediaError("usage", "--output is required unless --in-place is used");
+  }
 
-  return { source, destination, profile, quality, dryRun };
+  return {
+    source,
+    destination,
+    profile,
+    quality: quality ?? (webReader ? 90 : 85),
+    dryRun,
+    ...(webReader ? { webReader: true as const } : {}),
+    ...(inPlace ? { inPlace: true as const } : {}),
+  };
 };
 
 export const parseValidateArgs = (argv: string[]): Record<string, never> => {
@@ -344,7 +382,7 @@ const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const parseAddBatchArgs = (args: string[]): AddBatchArgs => {
   const sources: string[] = [];
   let manifest: string | undefined;
-  let quality = 85;
+  let quality = 90;
   let dryRun = false;
   let status: "draft" | "published" = "published";
   const seen = new Set<string>();
@@ -414,7 +452,7 @@ export const parseAddArgs = (argv: string[]): AddArgs => {
 
   const sources: string[] = [];
   let series: string | undefined;
-  let quality = 85;
+  let quality = 90;
   let status: "draft" | "published" = "published";
   const seen = new Set<string>();
 

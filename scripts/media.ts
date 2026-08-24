@@ -21,7 +21,11 @@ import {
   MediaError,
 } from "../src/lib/media/errors";
 import { loadMediaContentEntries } from "../src/lib/media/content-source";
-import { optimizeMedia } from "../src/lib/media/optimizer";
+import {
+  optimizeMedia,
+  optimizeMediaInPlace,
+  type OptimizeResult,
+} from "../src/lib/media/optimizer";
 import { importMangaVolumes } from "../src/lib/media/manga-volume";
 import {
   formatBatchImportResult,
@@ -70,18 +74,51 @@ const optimize = async (args: string[]): Promise<void> => {
     return;
   }
   const options = parseOptimizeArgs(args);
-  const result = await optimizeMedia(options);
+  const showPreparedReplacement = async (
+    result: OptimizeResult,
+  ): Promise<boolean> => {
+    console.log("Web-reader replacement prepared and verified:");
+    console.log(`  Resized: ${result.resized ?? 0}`);
+    console.log(`  Original bytes: ${result.originalBytes}`);
+    console.log(`  Optimized bytes: ${result.optimizedBytes}`);
+    console.log(`  Saved bytes: ${result.savedBytes}`);
+    return confirmPrune("Type yes to replace the managed files:");
+  };
+  const result = options.inPlace
+    ? await optimizeMediaInPlace({
+        source: options.source,
+        profile: options.profile,
+        quality: options.quality,
+        dryRun: options.dryRun,
+        webReader: true,
+        confirm: showPreparedReplacement,
+      })
+    : await optimizeMedia({
+        source: options.source,
+        destination: options.destination!,
+        profile: options.profile,
+        quality: options.quality,
+        dryRun: options.dryRun,
+        webReader: options.webReader,
+      });
   if (options.dryRun) {
     console.log("Media optimization dry run:");
     for (const item of result.plan.items) {
-      console.log(`  ${item.sourceRelativePath} -> ${item.outputRelativePath}`);
+      const resize = item.resizeWidth ? ` [resize to ${item.resizeWidth}px]` : "";
+      console.log(`  ${item.sourceRelativePath} -> ${item.outputRelativePath}${resize}`);
     }
+    return;
+  }
+
+  if (options.inPlace && "applied" in result && !result.applied) {
+    console.log("Media optimization cancelled; managed files were not changed.");
     return;
   }
 
   console.log("Media optimization complete:");
   console.log(`  Converted: ${result.converted}`);
   console.log(`  Copied: ${result.copied}`);
+  console.log(`  Resized: ${result.resized ?? 0}`);
   console.log(`  Ignored: ${result.ignored}`);
   console.log(`  Failed: ${result.failed}`);
   console.log(`  Original bytes: ${result.originalBytes}`);

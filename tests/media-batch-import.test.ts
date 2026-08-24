@@ -16,6 +16,7 @@ import {
 } from "../src/lib/media/batch-import";
 
 const fakeOptimize = async (options: OptimizeOptions): Promise<OptimizeResult> => {
+  expect(options.webReader).toBe(true);
   await mkdir(options.destination, { recursive: true });
   const sources = (await readdir(options.source))
     .map((name) => join(options.source, name))

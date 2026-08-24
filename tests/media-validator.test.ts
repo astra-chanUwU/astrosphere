@@ -76,6 +76,7 @@ test("preserves custom reference inspection when an unsupplied snapshot walk omi
     files: 0,
     errors: [],
     orphans: [],
+    oversized: [],
   });
 });
 
@@ -207,6 +208,7 @@ test("validates a supplied library snapshot without walking or inspecting files"
         bytes: 6,
       },
     ],
+    oversized: [],
   });
 });
 
@@ -245,11 +247,98 @@ test("formats errors before orphan warnings with a stable summary", () => {
         bytes: 12,
       },
     ],
+    oversized: [],
   });
 
   expect(output).toBe(
     "ERROR [missing] /manga/book/001.webp (chapter.md pages[1]): Missing media file\n" +
       "WARNING [orphan] /media/images/unused.webp (12 bytes)\n" +
-      "References: 1 | Files: 1 | Errors: 1 | Orphans: 1",
+      "References: 1 | Files: 1 | Errors: 1 | Orphans: 1 | Oversized: 0",
+  );
+});
+
+test("groups oversized still images into actionable reader and gallery warnings", async () => {
+  const report = await validateMedia({
+    root: "/media",
+    references: [],
+    snapshot: {
+      root: "/media",
+      files: [
+        {
+          filePath: "/media/manga/book/chapter-001/001.webp",
+          publicPath: "/manga/book/chapter-001/001.webp",
+          relativePath: "manga/book/chapter-001/001.webp",
+          bytes: 2_000_000,
+          mtimeMs: 1,
+          format: "webp",
+          device: 1,
+          inode: 1,
+          width: 3450,
+          height: 4913,
+          animated: false,
+        },
+        {
+          filePath: "/media/manga/book/chapter-001/002.webp",
+          publicPath: "/manga/book/chapter-001/002.webp",
+          relativePath: "manga/book/chapter-001/002.webp",
+          bytes: 8_000_000,
+          mtimeMs: 1,
+          format: "webp",
+          device: 1,
+          inode: 2,
+          width: 6900,
+          height: 4913,
+          animated: false,
+        },
+        {
+          filePath: "/media/images/set/cover.webp",
+          publicPath: "/media/images/set/cover.webp",
+          relativePath: "images/set/cover.webp",
+          bytes: 1_000_000,
+          mtimeMs: 1,
+          format: "webp",
+          device: 1,
+          inode: 3,
+          width: 3000,
+          height: 4000,
+          animated: false,
+        },
+        {
+          filePath: "/media/images/set/animated.webp",
+          publicPath: "/media/images/set/animated.webp",
+          relativePath: "images/set/animated.webp",
+          bytes: 9_000_000,
+          mtimeMs: 1,
+          format: "webp",
+          device: 1,
+          inode: 4,
+          width: 5000,
+          height: 5000,
+          animated: true,
+        },
+      ],
+    },
+  });
+
+  expect(report.oversized).toEqual([
+    {
+      directory: "/media/images/set",
+      profile: "gallery",
+      files: 1,
+      bytes: 1_000_000,
+      maxWidth: 3000,
+      maxHeight: 4000,
+    },
+    {
+      directory: "/media/manga/book/chapter-001",
+      profile: "reader",
+      files: 2,
+      bytes: 10_000_000,
+      maxWidth: 6900,
+      maxHeight: 4913,
+    },
+  ]);
+  expect(formatMediaValidationReport(report)).toContain(
+    'bun run media:optimize "/media/manga/book/chapter-001" --profile reader --web-reader --in-place',
   );
 });

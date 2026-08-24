@@ -17,10 +17,12 @@ test("keeps only the approved image sets in the first-class collection", async (
     slugs.push(source.match(/^slug:\s*(.+)$/m)?.[1]?.trim());
   }
   expect(slugs.sort()).toEqual([
+    "armored-core-vi-fires-of-rubicon-official-art-works",
     "cafin-maid-tali",
     "cafin-nasus-and-tali",
     "cafin-taliyah-friday",
     "caschlecook",
+    "collection-29-doujinshi",
     "derpixon-fandel-tales-the-cursed-prince",
     "derpixon-fandeltales-the-first-party",
     "derpixon-mystery-bang-scooby-doo",
@@ -32,6 +34,8 @@ test("keeps only the approved image sets in the first-class collection", async (
     "flou-darknessu",
     "flou-sona",
     "flou-stella-oc",
+    "ikeshita-maue-9413849",
+    "machikado-mazoku-anthology-comic",
     "maiqo-patreon-collection-2022-2025-11",
     "ndgd",
     "party-games-stuffy-bunny-bonus-art-and-fanart",
@@ -39,5 +43,7 @@ test("keeps only the approved image sets in the first-class collection", async (
     "team-dead-deer-once-in-hell",
     "the-cummoner",
     "twistedgrim-animated",
+    "victoriamoe-nylons-stockings-tights",
+    "yidhari-just-an-interview-right",
   ]);
 });

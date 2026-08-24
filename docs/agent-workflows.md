@@ -49,6 +49,8 @@ Do not turn a simple writing task into a component or schema change.
 
 ## Add chapters to an existing manga or doujinshi
 
+For an already-managed oversized volume that must be divided into story chapters, follow [Splitting a large manga volume into chapters](./manga-chapter-splitting.md). Do not use equal page ranges or infer boundaries from printed page numbers alone.
+
 Confirm the series exists:
 
 ```sh
@@ -95,6 +97,18 @@ bun run astro check
 ```
 
 Do not pre-create a `mode: create` destination with `content:new`. Do not weaken collision, page-range, archive-safety, or replacement checks.
+
+### Manual metadata correction for imported entries
+
+When a user supplies authoritative metadata for an imported manga or doujinshi:
+
+1. Update the series frontmatter with the supplied title, format, origin, tags, authors, and artists. Map source Groups to `authors`; map source Artists to `artists`.
+2. Update the corresponding chapter frontmatter `title` from the generic `Doujinshi` placeholder to the entry’s actual title, quoting YAML titles that contain `:` or other YAML-sensitive punctuation.
+3. Replace the chapter body placeholder with a short entry-specific description or page-count sentence; do not leave `Draft import. Verify metadata before publishing.` in a reviewed entry.
+4. Keep the chapter’s existing page count and media paths unless the user explicitly requests a media replacement.
+5. Run `bun run astro check` once after the batch of metadata corrections.
+
+This chapter-title update is required for every metadata correction, including batch corrections, so published entries do not display “Doujinshi — Doujinshi.”
 
 ## Remove content
 

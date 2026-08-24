@@ -305,6 +305,7 @@ export const importMangaVolume = async (
         profile: "reader",
         quality: options.quality,
         dryRun: false,
+        webReader: true,
       });
       const size = await dimensions(join(optimizedDirectory, "001.webp"));
       drafts.push({

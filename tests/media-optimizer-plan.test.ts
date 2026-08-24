@@ -18,6 +18,9 @@ type Source = {
   path: string;
   format: "jpeg" | "png" | "gif" | "webp" | "avif" | "unknown";
   bytes: number;
+  width?: number;
+  height?: number;
+  animated?: boolean;
 };
 
 const planner = (sources: Source[]) => ({
@@ -60,6 +63,25 @@ test("naturally orders one reader directory and emits padded WebP names", async 
   ]);
   expect(plan.ignored).toEqual([".DS_Store"]);
   expect(plan.originalBytes).toBe(30);
+});
+
+test("web-reader optimization resizes only oversized still pages with orientation-aware limits", async () => {
+  const plan = await planMediaOptimization(
+    { ...options, quality: 90, webReader: true },
+    planner([
+      { path: "001.webp", format: "webp", bytes: 10, width: 3450, height: 4913 },
+      { path: "002.webp", format: "webp", bytes: 20, width: 6900, height: 4913 },
+      { path: "003.webp", format: "webp", bytes: 30, width: 2000, height: 2800 },
+      { path: "004.webp", format: "webp", bytes: 40, width: 6900, height: 4913, animated: true },
+    ]),
+  );
+
+  expect(plan.items.map(({ action, resizeWidth }) => ({ action, resizeWidth }))).toEqual([
+    { action: "resize", resizeWidth: 2400 },
+    { action: "resize", resizeWidth: 4000 },
+    { action: "copy", resizeWidth: undefined },
+    { action: "copy", resizeWidth: undefined },
+  ]);
 });
 
 test("strips one common wrapper before finding the reader directory", async () => {

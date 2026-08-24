@@ -7,7 +7,7 @@ import {
   writeSync,
   type Stats,
 } from "node:fs";
-import { lstat, readdir, realpath, stat } from "node:fs/promises";
+import { lstat, readdir, realpath, rename, rm, stat } from "node:fs/promises";
 import {
   basename,
   dirname,
@@ -17,6 +17,7 @@ import {
   resolve,
   sep,
 } from "node:path";
+import sharp from "sharp";
 import {
   cleanupOwnedDirectory,
   createOwnedDirectoryAt,
@@ -54,6 +55,9 @@ export type OptimizationSource = {
   path: string;
   format: ImageFormat;
   bytes: number;
+  width?: number;
+  height?: number;
+  animated?: boolean;
   device?: number;
   inode?: number;
 };
@@ -63,7 +67,8 @@ export type OptimizationItem = {
   sourceRelativePath: string;
   outputRelativePath: string;
   format: Exclude<ImageFormat, "avif" | "unknown">;
-  action: "convert" | "copy";
+  action: "convert" | "copy" | "resize";
+  resizeWidth?: number;
   bytes: number;
 };
 
@@ -83,18 +88,23 @@ export type OptimizeOptions = {
   profile: OptimizerProfile;
   quality: number;
   dryRun: boolean;
+  webReader?: boolean;
 };
 
 export type OptimizeResult = {
   plan: OptimizationPlan;
   converted: number;
   copied: number;
+  resized?: number;
   ignored: number;
   failed: number;
   originalBytes: number;
   optimizedBytes: number;
   savedBytes: number;
 };
+
+export const webReaderPortraitWidth = 2400;
+export const webReaderLandscapeWidth = 4000;
 
 export type OptimizeAdapters = {
   runner?: CommandRunner;
@@ -186,6 +196,23 @@ const outputPathForGallerySource = (sourceRelativePath: string): string => {
   const extension = name.lastIndexOf(".");
   const basename = extension > 0 ? name.slice(0, extension) : name;
   return `${parent ? `${parent}/` : ""}${basename}.webp`;
+};
+
+const webReaderResizeWidth = (
+  source: OptimizationSource,
+): number | undefined => {
+  if (
+    source.animated ||
+    source.width === undefined ||
+    source.height === undefined
+  ) {
+    return undefined;
+  }
+  const limit =
+    source.width > source.height
+      ? webReaderLandscapeWidth
+      : webReaderPortraitWidth;
+  return source.width > limit ? limit : undefined;
 };
 
 const readerRelativePaths = (sources: AcceptedSource[]): string[] => {
@@ -302,8 +329,11 @@ export const planMediaOptimization = async (
     })),
     ({ outputPath }) => outputPath,
   );
-  const items = ordered.map(
-    ({ source, outputPath }, index): OptimizationItem => ({
+  const items = ordered.map(({ source, outputPath }, index): OptimizationItem => {
+    const resizeWidth = options.webReader
+      ? webReaderResizeWidth(source.source)
+      : undefined;
+    return {
       sourcePath: source.sourcePath,
       sourceRelativePath: outputPath,
       outputRelativePath:
@@ -311,10 +341,15 @@ export const planMediaOptimization = async (
           ? createReaderOutputName(index + 1)
           : outputPathForGallerySource(outputPath),
       format: source.format,
-      action: source.format === "webp" ? "copy" : "convert",
+      action: resizeWidth
+        ? "resize"
+        : source.format === "webp"
+          ? "copy"
+          : "convert",
+      ...(resizeWidth ? { resizeWidth } : {}),
       bytes: source.source.bytes,
-    }),
-  );
+    };
+  });
 
   const collisions = new Map<string, OptimizationItem>();
   for (const item of items) {
@@ -397,8 +432,23 @@ const isZipArchive = async (
   );
 };
 
+const inspectImageMetadata = async (
+  path: string,
+): Promise<Pick<OptimizationSource, "width" | "height" | "animated">> => {
+  const metadata = await sharp(path).metadata();
+  if (!metadata.width || !metadata.height) {
+    throw new Error(`Unable to read image dimensions: ${path}`);
+  }
+  return {
+    width: metadata.width,
+    height: metadata.height,
+    animated: (metadata.pages ?? 1) > 1,
+  };
+};
+
 const inspectDirectory = async (
   source: string,
+  inspectDimensions: boolean,
 ): Promise<OptimizationSource[]> => {
   const sources: OptimizationSource[] = [];
 
@@ -417,12 +467,16 @@ const inspectDirectory = async (
 
       const info = await stat(path);
       const sourceRelativePath = relative(source, path);
+      const format = isIgnoredMediaJunk(sourceRelativePath)
+        ? "unknown"
+        : await detectImageFormat(path);
       sources.push({
         path,
-        format: isIgnoredMediaJunk(sourceRelativePath)
-          ? "unknown"
-          : await detectImageFormat(path),
+        format,
         bytes: info.size,
+        ...(inspectDimensions && format !== "unknown" && format !== "avif"
+          ? await inspectImageMetadata(path)
+          : {}),
         device: info.dev,
         inode: info.ino,
       });
@@ -465,9 +519,13 @@ const inspectConcreteSource = async (
   sourceInfo: Stats,
   runner: CommandRunner,
   sourceDescriptor?: number,
+  inspectDimensions = false,
 ): Promise<SourceInspection> => {
   if (sourceInfo.isDirectory()) {
-    return { kind: "directory", sources: await inspectDirectory(source) };
+    return {
+      kind: "directory",
+      sources: await inspectDirectory(source, inspectDimensions),
+    };
   }
   if (!sourceInfo.isFile()) {
     throw new Error(
@@ -481,16 +539,20 @@ const inspectConcreteSource = async (
     };
   }
 
+  const format =
+    sourceDescriptor === undefined
+      ? await detectImageFormat(source)
+      : detectImageFormatFromBytes(descriptorHeader(sourceDescriptor));
   return {
     kind: "file",
     sources: [
       {
         path: basename(source),
-        format:
-          sourceDescriptor === undefined
-            ? await detectImageFormat(source)
-            : detectImageFormatFromBytes(descriptorHeader(sourceDescriptor)),
+        format,
         bytes: sourceInfo.size,
+        ...(inspectDimensions && format !== "unknown" && format !== "avif"
+          ? await inspectImageMetadata(source)
+          : {}),
         device: sourceInfo.dev,
         inode: sourceInfo.ino,
       },
@@ -533,11 +595,19 @@ const requireOptimizationTools = (
 ): void => {
   if (archiveSource) requireTool("unzip", which);
   if (
-    plan.items.some((item) => item.format === "jpeg" || item.format === "png")
+    plan.items.some(
+      (item) =>
+        item.action === "convert" &&
+        (item.format === "jpeg" || item.format === "png"),
+    )
   ) {
     requireTool("cwebp", which);
   }
-  if (plan.items.some((item) => item.format === "gif")) {
+  if (
+    plan.items.some(
+      (item) => item.action === "convert" && item.format === "gif",
+    )
+  ) {
     requireTool("gif2webp", which);
   }
   requireTool("webpinfo", which);
@@ -640,6 +710,58 @@ const copyRetainedFile = (
     }
     position += count;
   }
+};
+
+const readRetainedBytes = (source: RetainedArchiveFile): Uint8Array => {
+  const size = fstatSync(source.descriptor).size;
+  const bytes = new Uint8Array(size);
+  let position = 0;
+  while (position < size) {
+    const count = readSync(
+      source.descriptor,
+      bytes,
+      position,
+      size - position,
+      position,
+    );
+    if (count === 0) throw new Error("Media input ended before its recorded size.");
+    position += count;
+  }
+  return bytes;
+};
+
+const writeRetainedBytes = (
+  destination: RetainedOutputFile,
+  bytes: Uint8Array,
+): void => {
+  let position = 0;
+  while (position < bytes.byteLength) {
+    position += writeSync(
+      destination.descriptor,
+      bytes,
+      position,
+      bytes.byteLength - position,
+      position,
+    );
+  }
+};
+
+const resizeRetainedImage = async (
+  source: RetainedArchiveFile,
+  destination: RetainedOutputFile,
+  width: number,
+  quality: number,
+): Promise<void> => {
+  const resized = await sharp(readRetainedBytes(source))
+    .resize({
+      width,
+      kernel: sharp.kernel.lanczos3,
+      withoutEnlargement: true,
+      fastShrinkOnLoad: false,
+    })
+    .webp({ quality, effort: 6, smartSubsample: true })
+    .toBuffer();
+  writeRetainedBytes(destination, resized);
 };
 
 export const optimizeMedia = async (
@@ -759,7 +881,13 @@ export const optimizeMedia = async (
       sourceInfo,
       runner,
       retainedSource?.descriptor,
+      options.webReader === true,
     );
+    if (options.webReader && inspection.kind === "archive") {
+      throw new Error(
+        "Web-reader resizing requires an extracted image file or directory; extract the archive first.",
+      );
+    }
     let plan = await planMediaOptimization(
       { ...options, source, destination },
       {
@@ -877,6 +1005,7 @@ export const optimizeMedia = async (
 
     let converted = 0;
     let copied = 0;
+    let resized = 0;
     for (const output of stagedOutputs) {
       try {
         if (output.item.action === "copy") {
@@ -890,6 +1019,20 @@ export const optimizeMedia = async (
 
         if (!output.retainedInput) {
           throw new Error("Media input was not retained.");
+        }
+
+        if (output.item.action === "resize") {
+          if (!output.item.resizeWidth) {
+            throw new Error("Resize width was not planned.");
+          }
+          await resizeRetainedImage(
+            output.retainedInput,
+            output.outputFile,
+            output.item.resizeWidth,
+            plan.quality,
+          );
+          resized += 1;
+          continue;
         }
 
         const command = createImageCommand({
@@ -976,6 +1119,7 @@ export const optimizeMedia = async (
       plan,
       converted,
       copied,
+      resized,
       ignored: plan.ignored.length,
       failed: 0,
       originalBytes: plan.originalBytes,
@@ -1013,5 +1157,85 @@ export const optimizeMedia = async (
           );
     if (failure instanceof MediaError) throw failure;
     throw new MediaError("optimization", errorMessage(failure));
+  }
+};
+
+export type OptimizeInPlaceOptions = Omit<OptimizeOptions, "destination"> & {
+  webReader: true;
+  confirm: (result: OptimizeResult) => Promise<boolean>;
+};
+
+export type OptimizeInPlaceResult = OptimizeResult & { applied: boolean };
+
+export const optimizeMediaInPlace = async (
+  options: OptimizeInPlaceOptions,
+): Promise<OptimizeInPlaceResult> => {
+  const source = resolve(options.source);
+  const sourceInfo = await lstat(source).catch((error) => {
+    if (hasErrorCode(error, "ENOENT")) {
+      throw new MediaError("optimization", `Optimization source does not exist: ${source}`);
+    }
+    throw error;
+  });
+  if (!sourceInfo.isDirectory() || sourceInfo.isSymbolicLink()) {
+    throw new MediaError(
+      "optimization",
+      "In-place web-reader optimization requires a real directory.",
+    );
+  }
+
+  const parent = dirname(source);
+  const token = randomUUID();
+  const destination = join(parent, `.${basename(source)}.web-reader-${token}`);
+  const previous = join(parent, `.${basename(source)}.web-reader-previous-${token}`);
+  let prepared = false;
+  let movedSource = false;
+
+  try {
+    const result = await optimizeMedia({ ...options, source, destination });
+    if (options.dryRun) return { ...result, applied: false };
+    prepared = true;
+
+    const incompatible = result.plan.items.find(
+      (item) =>
+        item.format !== "webp" ||
+        normalizeMediaSeparators(item.sourceRelativePath) !==
+          normalizeMediaSeparators(item.outputRelativePath),
+    );
+    if (incompatible) {
+      throw new Error(
+        `In-place optimization requires filename-preserving WebP inputs; ${incompatible.sourceRelativePath} would become ${incompatible.outputRelativePath}.`,
+      );
+    }
+
+    if (!(await options.confirm(result))) {
+      await rm(destination, { recursive: true, force: true });
+      prepared = false;
+      return { ...result, applied: false };
+    }
+
+    await rename(source, previous);
+    movedSource = true;
+    try {
+      await rename(destination, source);
+      prepared = false;
+    } catch (error) {
+      await rename(previous, source);
+      movedSource = false;
+      throw error;
+    }
+    await rm(previous, { recursive: true, force: true });
+    movedSource = false;
+    return { ...result, applied: true };
+  } catch (error) {
+    if (prepared) await rm(destination, { recursive: true, force: true });
+    if (movedSource) {
+      const sourceExists = await pathExists(source);
+      if (!sourceExists && (await pathExists(previous))) {
+        await rename(previous, source);
+      }
+    }
+    if (error instanceof MediaError) throw error;
+    throw new MediaError("optimization", errorMessage(error));
   }
 };

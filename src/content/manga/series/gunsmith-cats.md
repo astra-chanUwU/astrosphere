@@ -1,16 +1,16 @@
 ---
 slug: gunsmith-cats
 title: Gunsmith Cats
-originalTitle: Gunsmith Cats
-aliases: []
+originalTitle: "ガンスミス キャッツ"
+aliases: [Gun Smith Cats]
 visibility: published
 status: completed
 publicationYear: 1991
-description: "Girls, guns, and grenades. Rally Vincent and Minnie May run a Chicago gun shop by day and work as bounty hunters by night, bringing together expert marksmanship, explosives, car chases, and plenty of mayhem."
+description: "In 1990s Chicago, bounty hunters Rally Vincent and Minnie-May Hopkins run a gun shop while chasing dangerous cases across the city and its freeways. Expert marksmanship, explosives, fast cars, corrupt criminals, and explosive shootouts drive this classic crime-action manga."
 rating: suggestive
 format: manga
 origin: original
-tags: [action, comedy, drama, erotica, seinen, thriller]
+tags: [action, adventure, crime, comedy, thriller, drama, bounty-hunters, girls-with-guns, guns, firearms, police, cars, chicago, seinen]
 authors:
   - name: Sonoda Kenichi
     slug: sonoda-kenichi
@@ -49,7 +49,7 @@ art:
   - src: /manga/gunsmith-cats/art/1.webp
     alt: Gunsmith Cats artwork 1
 featured: false
-updatedAt: "2026-08-11"
+updatedAt: "2026-08-24"
 ---
 
 Gunsmith Cats is an action-adventure manga by Sonoda Kenichi, set in Chicago and centered on bounty hunters Rally Vincent and Minnie May.

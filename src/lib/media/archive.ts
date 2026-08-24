@@ -1598,15 +1598,26 @@ export const listZipEntries = async (
   });
 };
 
-const spawnZipEntryHeader: ZipEntryHeaderSpawner = (argv, options) =>
-  Bun.spawn(options?.executionArgv ?? argv, {
-    stdio: [
-      "ignore",
-      "pipe",
-      "ignore",
-      ...(options?.inheritedDescriptors ?? []),
+const spawnZipEntryHeader: ZipEntryHeaderSpawner = (argv, options) => {
+  const executionArgv = options?.executionArgv ?? argv;
+  return Bun.spawn(
+    [
+      "sh",
+      "-c",
+      '"$@" | head -c 32',
+      "zip-entry-header",
+      ...executionArgv,
     ],
-  }) as ZipEntryHeaderProcess;
+    {
+      stdio: [
+        "ignore",
+        "pipe",
+        "ignore",
+        ...(options?.inheritedDescriptors ?? []),
+      ],
+    },
+  ) as ZipEntryHeaderProcess;
+};
 
 export const readZipEntryHeader = async (
   source: string,
