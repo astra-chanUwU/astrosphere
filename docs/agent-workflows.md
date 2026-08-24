@@ -150,6 +150,36 @@ bun run media:optimize <source> --output <destination> --profile <reader|gallery
 
 Use `reader` for ordered pages and `gallery` for filename-preserving galleries. Do not recompress an already managed WebP library without an explicit request.
 
+### Resize oversized managed media for the web reader
+
+Use this only when the user explicitly authorizes changing the managed files in `MEDIA_ROOT`. The web-reader mode preserves filenames and nested paths, resizes portrait pages wider than 2400px and landscape pages wider than 4000px with Lanczos resampling, and encodes resized pages as WebP at quality 90 by default. Smaller pages and animated WebP files are copied unchanged.
+
+For one chapter or another single ordered reader directory, use `reader`:
+
+```sh
+bun run media:optimize "$MEDIA_ROOT/manga/<series>/<chapter>" --profile reader --web-reader --in-place --dry-run
+bun run media:optimize "$MEDIA_ROOT/manga/<series>/<chapter>" --profile reader --web-reader --in-place
+```
+
+For an entire manga/doujinshi with several chapter directories, or for an image set whose nested paths and filenames must remain unchanged, use `gallery`:
+
+```sh
+bun run media:optimize "$MEDIA_ROOT/manga/<series>" --profile gallery --web-reader --in-place --dry-run
+bun run media:optimize "$MEDIA_ROOT/manga/<series>" --profile gallery --web-reader --in-place
+```
+
+`gallery` is required for a whole series because it preserves every chapter path; it does not change how the images are displayed on the website.
+
+Agent checklist:
+
+1. Resolve and inspect the exact target. Never aim at `MEDIA_ROOT`, `MEDIA_ROOT/manga`, or `MEDIA_ROOT/images` as a whole.
+2. Check available disk space. In-place mode first builds and verifies a sibling replacement, so the volume must temporarily fit the optimized copy as well as the source.
+3. Run the dry-run and report the planned, resized, and unchanged counts. Stop on unsupported files or an unexpected target.
+4. Run the same command without `--dry-run`. Read the prepared size summary and type `yes` only when it matches the authorized target.
+5. Run `bun run media:validate`. Finish only with zero errors and zero orphans, and confirm the target no longer appears in oversized warnings.
+
+The transaction replaces the website's managed directory only after every output has been prepared and verified. It does not change original CBZ/ZIP downloads. Do not bypass a refusal, manually delete a staging directory while the command is running, synchronize media, deploy, commit, or push unless the user separately requests it.
+
 ## Publish media to the VPS
 
 ```sh

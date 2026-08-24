@@ -178,7 +178,31 @@ For oversized managed manga, doujinshi, or image-set WebP files, use the tested 
 bun run media:optimize <managed-directory> --profile <reader|gallery> --web-reader --in-place
 ```
 
-`media:validate` groups oversized files by directory and prints the exact command to run. New manga-volume and batch imports apply the same resize limits automatically at WebP quality 90 unless `--quality` is supplied.
+Always preview first. For a single manga chapter, use `reader`:
+
+```sh
+bun run media:optimize "$MEDIA_ROOT/manga/<series>/<chapter>" --profile reader --web-reader --in-place --dry-run
+bun run media:optimize "$MEDIA_ROOT/manga/<series>/<chapter>" --profile reader --web-reader --in-place
+```
+
+For a complete manga or doujinshi containing several chapter folders, use `gallery` so every existing path and filename is preserved:
+
+```sh
+bun run media:optimize "$MEDIA_ROOT/manga/<series>" --profile gallery --web-reader --in-place --dry-run
+bun run media:optimize "$MEDIA_ROOT/manga/<series>" --profile gallery --web-reader --in-place
+```
+
+For an image set, use the same whole-directory pattern under `MEDIA_ROOT/images/<slug>` with `--profile gallery`. The profile name controls output naming; it does not change the site's reader or gallery layout.
+
+Before the real run, make sure the disk has room for a temporary optimized copy of the target. The command leaves the current directory active while it builds and verifies that copy. It then shows the original size, optimized size, and savings and waits for `yes`. If preparation, verification, or replacement fails, the existing managed directory is retained. Original torrent downloads and CBZ/ZIP archives elsewhere are not changed.
+
+After replacement, check the complete library:
+
+```sh
+bun run media:validate
+```
+
+The result must have zero errors and zero orphans. Any remaining oversized warning includes an exact command for the affected directory. New manga-volume, doujinshi, and image-set imports already apply these web-reader limits at WebP quality 90 unless `--quality` is supplied, so this in-place workflow is mainly for older managed media.
 
 Use the smallest relevant checks while working, then the complete publication checks once:
 
