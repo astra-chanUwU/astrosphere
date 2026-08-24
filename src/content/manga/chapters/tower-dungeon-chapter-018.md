@@ -2,7 +2,7 @@
 slug: tower-dungeon-chapter-018
 series: tower-dungeon
 number: 18
-title: Chapter 18
+title: The Sovereign's Sin and Aridellia the Necromancer
 publishedAt: "2025-01-01"
 pagePath: /manga/tower-dungeon/chapter-018
 pageExtension: webp

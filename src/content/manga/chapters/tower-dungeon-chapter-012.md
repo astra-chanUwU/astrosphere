@@ -2,7 +2,7 @@
 slug: tower-dungeon-chapter-012
 series: tower-dungeon
 number: 12
-title: Chapter 12
+title: The Vow of the Royal Family Bearing Gargantuan Shadows
 publishedAt: "2024-01-01"
 pagePath: /manga/tower-dungeon/chapter-012
 pageExtension: webp

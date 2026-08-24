@@ -10,7 +10,7 @@ description: "Hiiragi Utena adores magical girls and dreams of becoming one. Whe
 rating: explicit
 format: manga
 origin: original
-tags: [action, demons, comedy, superhero, magical-girls, magic, girls-love, fantasy, erotica, sexual-violence]
+tags: [action, comedy, girls-love, magical-girls, ecchi, sadomasochism, evil-mascot, erotica, sexual-violence]
 authors:
   - name: Ononaka Akihiro
     slug: ononaka-akihiro

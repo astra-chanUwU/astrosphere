@@ -2,7 +2,7 @@
 slug: tower-dungeon-chapter-015
 series: tower-dungeon
 number: 15
-title: Chapter 15
+title: Burnt-Out Magic and the Vow to Protect
 publishedAt: "2025-01-01"
 pagePath: /manga/tower-dungeon/chapter-015
 pageExtension: webp

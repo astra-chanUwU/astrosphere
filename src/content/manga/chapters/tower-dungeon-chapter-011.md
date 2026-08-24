@@ -2,7 +2,7 @@
 slug: tower-dungeon-chapter-011
 series: tower-dungeon
 number: 11
-title: Chapter 11
+title: The Dragon Tower and the Anti-Nausea Medicine Alliance
 publishedAt: "2024-01-01"
 pagePath: /manga/tower-dungeon/chapter-011
 pageExtension: webp

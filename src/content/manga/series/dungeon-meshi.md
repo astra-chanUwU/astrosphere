@@ -10,7 +10,7 @@ description: "After his sister is devoured by a dragon and losing all their supp
 rating: safe
 format: manga
 origin: original
-tags: [award-winning, monsters, action, comedy, adventure, magic, drama, fantasy, monster-girls, cooking, seinen]
+tags: [action, adventure, comedy, fantasy, food]
 authors:
   - name: Kui Ryouko
     slug: kui-ryouko
