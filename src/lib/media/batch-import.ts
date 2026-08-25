@@ -34,6 +34,14 @@ import {
 import { parseWebpInfoDimensions } from "./manga-volume";
 import { optimizeMedia, type OptimizeOptions, type OptimizeResult } from "./optimizer";
 import { runCommand } from "./process";
+import {
+  generateDoujinshiThumbnails,
+  type DoujinshiThumbnailItem,
+} from "./doujinshi-thumbnails";
+import {
+  createDoujinshiThumbnailSrc,
+  createMangaPageSrc,
+} from "../manga-reader";
 
 export type BatchImportOptions = Omit<BatchPlanOptions, "manifest"> & {
   manifest: string;
@@ -70,6 +78,7 @@ type BatchImportAdapters = {
     destination: string,
   ) => Promise<void>;
   optimize?: (options: OptimizeOptions) => Promise<OptimizeResult>;
+  generateThumbnails?: typeof generateDoujinshiThumbnails;
   dimensions?: (path: string) => Promise<{ width: number; height: number }>;
   afterActivation?: (entry: PlannedBatchEntry) => void | Promise<void>;
 };
@@ -190,6 +199,7 @@ const stageDoujinshi = async (
   if (entry.manifest.type !== "doujinshi") throw new Error("Expected doujinshi entry");
   const extract = adapters.extractEntry ?? extractZipEntry;
   const optimize = adapters.optimize ?? optimizeMedia;
+  const generateThumbnails = adapters.generateThumbnails ?? generateDoujinshiThumbnails;
   const dimensions = adapters.dimensions ?? readWebpDimensions;
   const extractedRoot = join(stageRoot, "extracted");
   const readyMedia = join(stageRoot, "ready");
@@ -212,6 +222,32 @@ const stageDoujinshi = async (
       webReader: true,
     });
     optimization.push(optimized);
+    const pagePath = `/manga/${entry.slug}/${segment}`;
+    const thumbnailItems: DoujinshiThumbnailItem[] = optimized.plan.items.map((_, index) => {
+      const page = index + 1;
+      const sourcePublicPath = createMangaPageSrc(pagePath, page, "webp");
+      const destinationPublicPath = createDoujinshiThumbnailSrc(pagePath, page);
+      return {
+        series: entry.slug,
+        chapter: `${entry.slug}-${segment}`,
+        page,
+        sourcePublicPath,
+        destinationPublicPath,
+        sourcePath: join(destination, `${String(page).padStart(3, "0")}.webp`),
+        destinationPath: join(destination, "thumbnails", `${String(page).padStart(3, "0")}.webp`),
+      };
+    });
+    const thumbnailResult = await generateThumbnails({
+      items: thumbnailItems,
+      dryRun: false,
+      force: true,
+    });
+    if (thumbnailResult.failed.length > 0) {
+      const first = thumbnailResult.failed[0]!;
+      throw new Error(
+        `Thumbnail generation failed for ${first.item.sourcePublicPath}: ${first.message} (${thumbnailResult.failed.length} failed)`,
+      );
+    }
     const firstPath = join(destination, "001.webp");
     const size = await dimensions(firstPath);
     firstPage ??= {

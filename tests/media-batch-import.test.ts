@@ -10,6 +10,10 @@ import {
 import { basename, join } from "node:path";
 import { tmpdir } from "node:os";
 import type { OptimizeOptions, OptimizeResult } from "../src/lib/media/optimizer";
+import type {
+  DoujinshiThumbnailOptions,
+  DoujinshiThumbnailResult,
+} from "../src/lib/media/doujinshi-thumbnails";
 import {
   formatBatchImportResult,
   importMediaBatch,
@@ -51,6 +55,25 @@ const fakeOptimize = async (options: OptimizeOptions): Promise<OptimizeResult> =
     originalBytes: items.length,
     optimizedBytes: items.length,
     savedBytes: 0,
+  };
+};
+
+const fakeGenerateThumbnails = async (
+  options: DoujinshiThumbnailOptions,
+): Promise<DoujinshiThumbnailResult> => {
+  for (const item of options.items) {
+    await mkdir(join(item.destinationPath, ".."), { recursive: true });
+    await writeFile(item.destinationPath, `thumbnail-${item.page}`);
+  }
+  return {
+    plan: options.items.map((item) => ({
+      ...item,
+      action: "generate" as const,
+      reason: "force" as const,
+    })),
+    generated: options.items.length,
+    skipped: 0,
+    failed: [],
   };
 };
 
@@ -111,6 +134,7 @@ entries:
       await writeFile(destination, entry.path);
     },
     optimize: fakeOptimize,
+    generateThumbnails: fakeGenerateThumbnails,
     dimensions: async () => ({ width: 1200, height: 1700 }),
   };
   try {
@@ -130,6 +154,11 @@ entries:
     expect(result.created).toBe(2);
     expect(result.failed).toHaveLength(0);
     expect((await readdir(join(mediaRoot, "manga/example/chapter-001"))).sort()).toEqual([
+      "001.webp",
+      "002.webp",
+      "thumbnails",
+    ]);
+    expect((await readdir(join(mediaRoot, "manga/example/chapter-001/thumbnails"))).sort()).toEqual([
       "001.webp",
       "002.webp",
     ]);
@@ -185,6 +214,7 @@ entries:
         inspectEntry: async () => "jpeg",
         extractEntry: async (_archive, entry, destination) => writeFile(destination, entry.path),
         optimize: fakeOptimize,
+        generateThumbnails: fakeGenerateThumbnails,
         dimensions: async () => ({ width: 900, height: 1200 }),
         afterActivation: () => {
           throw new Error("forced activation failure");
@@ -198,6 +228,70 @@ entries:
       .toBe(oldChapter);
     expect(await readFile(join(projectRoot, "src/content/manga/series/existing.md"), "utf8"))
       .toBe("series-preserved");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("does not activate a doujinshi when staged thumbnail generation fails", async () => {
+  const root = await mkdtemp(join(tmpdir(), "batch-thumbnail-failure-"));
+  const source = join(root, "source");
+  const projectRoot = join(root, "project");
+  const mediaRoot = join(root, "media");
+  const manifest = join(root, "batch.yaml");
+  await mkdir(source);
+  await mkdir(projectRoot);
+  await mkdir(mediaRoot);
+  await writeFile(join(source, "Book.zip"), "original-book");
+  await writeFile(manifest, `
+version: 1
+defaults: { ignoreEntries: [] }
+entries:
+  - type: doujinshi
+    archive: Book.zip
+    mode: create
+    series:
+      slug: failed-book
+      title: Failed Book
+      originalTitle: Failed Book
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: Example description.
+      rating: explicit
+      origin: original
+      tags: [english]
+      authors: [{ name: Example, slug: example }]
+      artists: [{ name: Example, slug: example }]
+      featured: false
+    chapters: [{ number: 1, title: Doujinshi, pages: all }]
+`);
+  try {
+    const result = await importMediaBatch(
+      { source, manifest, quality: 85, dryRun: false, status: "published", projectRoot, mediaRoot },
+      {
+        listEntries: async () => [{ path: "1.jpg", isDirectory: false }],
+        inspectEntry: async () => "jpeg",
+        extractEntry: async (_archive, entry, destination) => writeFile(destination, entry.path),
+        optimize: fakeOptimize,
+        dimensions: async () => ({ width: 900, height: 1200 }),
+        generateThumbnails: async (options) => ({
+          plan: options.items.map((item) => ({
+            ...item,
+            action: "generate" as const,
+            reason: "force" as const,
+          })),
+          generated: 0,
+          skipped: 0,
+          failed: [{ item: options.items[0]!, message: "forced thumbnail failure" }],
+        }),
+      },
+    );
+
+    expect(result.failed[0]?.message).toContain("forced thumbnail failure");
+    expect(await Bun.file(join(mediaRoot, "manga/failed-book/chapter-001/001.webp")).exists()).toBe(false);
+    expect(await Bun.file(join(projectRoot, "src/content/manga/series/failed-book.md")).exists()).toBe(false);
+    expect(await readFile(join(source, "Book.zip"), "utf8")).toBe("original-book");
   } finally {
     await rm(root, { recursive: true, force: true });
   }
