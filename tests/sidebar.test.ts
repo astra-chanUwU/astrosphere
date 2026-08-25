@@ -12,9 +12,9 @@ const dock = await Bun.file(new URL("../src/components/ReaderDock.astro", import
 
 test("navigation defines stable global destinations and contextual archive defaults", () => {
   expect(navigation).toContain('label: "Explore"');
-  expect(navigation).toContain('{ href: "/shelf", label: "Shelf" }');
-  expect(navigation).toContain('{ href: "/shelf", label: "The Shelf", current: true }');
-  expect(navigation).toContain('{ href: "/shelf/image-sets", label: "Image sets" }');
+  expect(navigation).toContain('{ href: "/manga", label: "Manga" }');
+  expect(navigation).toContain('{ href: "/doujinshi", label: "Doujinshi" }');
+  expect(navigation).toContain('{ href: "/image-sets", label: "Image sets" }');
   expect(navigation).toContain('label: "Watchlist"');
   expect(navigation).toContain("export const resolveSidebar");
   expect(navigation).toContain('heading: "Explore the archive"');
@@ -52,6 +52,6 @@ test("detail routes supply their own archive context", () => {
   expect(artifactPage).toContain('heading: "Artifact details"');
   expect(trailPage).toContain('heading: "Trail contents"');
   expect(mangaPage).toContain('heading: "Manga library"');
-  expect(readerPage).toContain('{ href: "/shelf/manga", label: "All manga" }');
+  expect(readerPage).toContain('{ href: "/manga", label: "All manga" }');
   expect(readerPage).toContain("heading: series.data.title");
 });

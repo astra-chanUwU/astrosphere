@@ -26,7 +26,7 @@ for (const chapter of chapters) {
     <section aria-labelledby="manga-heading">
       <div class="section-heading">
         <div><p class="eyebrow">Sequential work</p><h2 id="manga-heading">Manga</h2></div>
-        <a href="/shelf/manga">Browse all manga →</a>
+        <a href="/manga">Browse all manga →</a>
       </div>
       {selections.manga.length
         ? selections.manga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)
@@ -36,7 +36,7 @@ for (const chapter of chapters) {
     <section aria-labelledby="doujinshi-heading">
       <div class="section-heading">
         <div><p class="eyebrow">Short books and fanworks</p><h2 id="doujinshi-heading">Doujinshi</h2></div>
-        <a href="/shelf/doujinshi">Browse all doujinshi →</a>
+        <a href="/doujinshi">Browse all doujinshi →</a>
       </div>
       {selections.doujinshi.length
         ? selections.doujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)
@@ -46,7 +46,7 @@ for (const chapter of chapters) {
     <section aria-labelledby="image-sets-heading">
       <div class="section-heading">
         <div><p class="eyebrow">Collected images and studies</p><h2 id="image-sets-heading">Image sets</h2></div>
-        <a href="/shelf/image-sets">Browse all image sets →</a>
+        <a href="/image-sets">Browse all image sets →</a>
       </div>
       {selections.imageSets.length
         ? selections.imageSets.map((imageSet) => <ImageSetCard {imageSet} />)

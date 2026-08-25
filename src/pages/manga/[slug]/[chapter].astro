@@ -29,7 +29,7 @@ const continuationItems = [
 const sidebar: SidebarModel = {
   heading: series.data.title,
   groups: [
-    { items: [{ href: "/shelf/manga", label: "All manga" }, { href: `/manga/${series.data.slug}`, label: "Series details" }] },
+    { items: [{ href: "/manga", label: "All manga" }, { href: `/manga/${series.data.slug}`, label: "Series details" }] },
     { label: "Chapters", items: chapters.map((entry) => ({ href: `/manga/${series.data.slug}/${entry.data.slug}`, label: `Chapter ${entry.data.number}`, current: entry.data.slug === chapter.data.slug })) },
     ...(continuationItems.length ? [{ label: "Continue reading", items: continuationItems }] : []),
   ],

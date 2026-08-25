@@ -27,9 +27,9 @@ test("renders the curated Shelf through its configured selections and category c
   expect(shelf.source).toContain("selections.imageSets.map");
   expect(shelf.source).toContain("<MangaSeriesCard");
   expect(shelf.source).toContain("<ImageSetCard");
-  expect(shelf.source).toContain('href="/shelf/manga"');
-  expect(shelf.source).toContain('href="/shelf/doujinshi"');
-  expect(shelf.source).toContain('href="/shelf/image-sets"');
+  expect(shelf.source).toContain('href="/manga"');
+  expect(shelf.source).toContain('href="/doujinshi"');
+  expect(shelf.source).toContain('href="/image-sets"');
 });
 
 test("builds every category root as its clean first page", () => {

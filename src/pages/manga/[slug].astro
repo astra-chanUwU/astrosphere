@@ -18,7 +18,7 @@ const chapters = await getMangaChaptersForSeries(series.data.slug);
 const sidebar: SidebarModel = {
   heading: "Manga library",
   groups: [
-    { items: [{ href: "/shelf/manga", label: "All manga" }] },
+    { items: [{ href: "/manga", label: "All manga" }] },
     { label: "Chapters", items: chapters.map((entry) => ({ href: `/manga/${series.data.slug}/${entry.data.slug}`, label: `Chapter ${entry.data.number}` })) },
   ],
 };

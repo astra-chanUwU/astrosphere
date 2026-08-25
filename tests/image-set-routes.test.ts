@@ -7,12 +7,11 @@ const card = await Bun.file(new URL("src/components/ImageSetCard.astro", root)).
 const gallery = await Bun.file(new URL("src/components/ImageSetGallery.astro", root)).text().catch(() => "");
 const meta = await Bun.file(new URL("src/components/ImageSetMeta.astro", root)).text().catch(() => "");
 
-test("defines image-set detail routes from the canonical Shelf archive", () => {
-  expect(indexRoute).toContain('Astro.redirect("/shelf/image-sets", 301)');
+test("defines image-set detail routes from the canonical Image sets archive", () => {
+  expect(indexRoute).toContain('<BaseLayout title="Image sets"');
   expect(detailRoute).toContain("getStaticPaths");
   expect(detailRoute).toContain("getPublishedImageSets");
-  expect(detailRoute).toContain('href: "/shelf"');
-  expect(detailRoute).toContain('href: "/shelf/image-sets"');
+  expect(detailRoute).toContain('href: "/image-sets"');
   expect(card).toContain("Image set");
   expect(gallery).toContain("MediaGallery");
 });

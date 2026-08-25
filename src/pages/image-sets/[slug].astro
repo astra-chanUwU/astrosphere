@@ -20,7 +20,7 @@ const currentPage = 1;
 const sidebar: SidebarModel = {
   heading: "Image-set details",
   groups: [
-    { items: [{ href: "/shelf", label: "The Shelf" }, { href: "/shelf/image-sets", label: "All image sets" }] },
+    { items: [{ href: "/image-sets", label: "Image sets" }] },
     { label: "Tags", items: imageSet.data.tags.map((tag) => ({ href: `/tags/${tag}`, label: `#${tag}` })) },
   ],
 };
@@ -28,7 +28,7 @@ const sidebar: SidebarModel = {
 
 <BaseLayout title={imageSet.data.title} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "image-set" }, ...imageSet.data.tags.map((value) => ({ name: "tag", value }))]}>
   <MangaContentWarning rating={imageSet.data.rating}><div class="page-shell">
-    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "The Shelf", href: "/shelf" }, { label: "Image sets", href: "/shelf/image-sets" }, { label: imageSet.data.title }]}/>
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Image sets", href: "/image-sets" }, { label: imageSet.data.title }]}/>
     <header><p class="eyebrow">Image set</p><h1>{imageSet.data.title}</h1><p class="summary">{imageSet.data.summary}</p></header>
     <div class="meta">{imageSet.data.author && <span>By {imageSet.data.author}</span>}<span>{imageSet.data.media.length + (imageSet.data.hero ? 1 : 0)} images</span></div>
     <ImageSetMeta {imageSet} />

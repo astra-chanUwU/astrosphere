@@ -18,7 +18,9 @@ export interface SidebarModel {
 
 export const primaryNavigation: NavItem[] = [
   { href: "/spheres", label: "Explore" },
-  { href: "/shelf", label: "Shelf" },
+  { href: "/manga", label: "Manga" },
+  { href: "/doujinshi", label: "Doujinshi" },
+  { href: "/image-sets", label: "Image sets" },
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
 ];
@@ -42,13 +44,13 @@ const archiveSidebar = (pathname: string): SidebarModel => ({
   heading: "Explore the archive",
   groups: [
     { items: withCurrent(archiveItems, pathname) },
-    { label: "Elsewhere", items: [{ href: "/shelf", label: "Shelf" }, { href: "/search", label: "Search" }] },
+    { label: "Elsewhere", items: [{ href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image sets" }, { href: "/search", label: "Search" }] },
   ],
 });
 
 const homeSidebar: SidebarModel = {
   heading: "Start exploring",
-  groups: [{ items: [...archiveItems, { href: "/shelf", label: "Shelf" }] }],
+  groups: [{ items: [...archiveItems, { href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image sets" }] }],
 };
 
 const studioSidebar: SidebarModel = {
@@ -61,10 +63,10 @@ const aboutSidebar: SidebarModel = {
   groups: [{ items: [{ href: "/about", label: "About" }, { href: "/now", label: "Now" }, { href: "/colophon", label: "Colophon" }, { href: "/rss.xml", label: "RSS" }] }],
 };
 
-const mangaSidebar: SidebarModel = {
-  heading: "Manga library",
-  groups: [{ items: [{ href: "/shelf", label: "The Shelf", current: true }, { href: "/shelf/image-sets", label: "Image sets" }, { href: "/search", label: "Search the archive" }] }],
-};
+const librarySidebar = (pathname: string): SidebarModel => ({
+  heading: "Reading archive",
+  groups: [{ items: withCurrent([{ href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image sets" }, { href: "/search", label: "Search the archive" }], pathname) }],
+});
 
 const recoverySidebar: SidebarModel = {
   heading: "Find your way",
@@ -74,7 +76,7 @@ const recoverySidebar: SidebarModel = {
 export const resolveSidebar = (pathname: string): SidebarModel => {
   if (pathname === "/") return homeSidebar;
   if (["/spheres", "/artifacts", "/trails", "/signals"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
-  if (pathname === "/shelf" || pathname.startsWith("/shelf/")) return mangaSidebar;
+  if (["/manga", "/doujinshi", "/image-sets", "/shelf"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`) || pathname.startsWith(`${path}/`))) return librarySidebar(pathname);
   if (["/work", "/contact", "/support"].includes(pathname)) return withCurrentGroups(studioSidebar, pathname);
   if (["/about", "/now", "/colophon"].includes(pathname)) return withCurrentGroups(aboutSidebar, pathname);
   return recoverySidebar;

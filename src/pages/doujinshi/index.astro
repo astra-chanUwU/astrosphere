@@ -5,17 +5,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPublishedMangaChapters } from "../../lib/content";
 import { getShelfArchive } from "../../lib/shelf";
 
-const [entries, chapters] = await Promise.all([getShelfArchive("manga"), getPublishedMangaChapters()]);
+const [entries, chapters] = await Promise.all([getShelfArchive("doujinshi"), getPublishedMangaChapters()]);
 const chapterCountBySeriesSlug = new Map<string, number>();
 for (const chapter of chapters) chapterCountBySeriesSlug.set(chapter.data.series, (chapterCountBySeriesSlug.get(chapter.data.series) ?? 0) + 1);
 const currentPage = 1;
 const lastPage = Math.ceil(entries.length / SHELF_PAGE_SIZE);
 ---
 
-<BaseLayout title="Manga" description="The manga archive.">
+<BaseLayout title="Doujinshi" description="The doujinshi archive.">
   <div class="page-shell">
-    <header><p class="eyebrow">Sequential work</p><h1>Manga</h1><p>Published manga in the archive.</p></header>
-    <ShelfArchive category="manga" entries={entries.slice(0, SHELF_PAGE_SIZE)} {currentPage} {lastPage} {chapterCountBySeriesSlug} basePath="/manga" />
+    <header><p class="eyebrow">Short books and fanworks</p><h1>Doujinshi</h1><p>Published doujinshi in the archive.</p></header>
+    <ShelfArchive category="doujinshi" entries={entries.slice(0, SHELF_PAGE_SIZE)} {currentPage} {lastPage} {chapterCountBySeriesSlug} basePath="/doujinshi" />
   </div>
 </BaseLayout>
 

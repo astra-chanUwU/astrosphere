@@ -11,15 +11,15 @@ interface Props {
   currentPage: number;
   lastPage: number;
   chapterCountBySeriesSlug: Map<string, number>;
+  basePath?: string;
 }
 
-const { category, entries, currentPage, lastPage, chapterCountBySeriesSlug } = Astro.props;
+const { category, entries, currentPage, lastPage, chapterCountBySeriesSlug, basePath = `/shelf/${category}` } = Astro.props;
 const heading = category === "image-sets" ? "Image sets" : category === "doujinshi" ? "Doujinshi" : "Manga";
 const entryLabel = category === "image-sets" ? "image set" : category === "doujinshi" ? "doujinshi" : "title";
 const emptyMessage = category === "image-sets" ? "No image sets are published yet." : category === "doujinshi" ? "No doujinshi is published yet." : "No manga is published yet.";
 const mangaEntries = entries as MangaSeriesEntry[];
 const imageSetEntries = entries as ImageSetEntry[];
-const basePath = `/shelf/${category}`;
 ---
 
 <section class="shelf-archive" aria-labelledby="shelf-archive-heading">
