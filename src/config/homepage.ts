@@ -6,6 +6,11 @@ export type HomepageSelectionInput = {
 export type HomepageSelectionConfig = HomepageSelectionInput & {
   visualArtifactSlugs: string[];
   mangaSlugs: string[];
+  shelfMangaSlugs: string[];
+  shelfDoujinshiSlugs: string[];
+  shelfImageSetSlugs: string[];
+  artifactSlugs: string[];
+  trailSlugs: string[];
 };
 
 export const homepageConfig: HomepageSelectionConfig = {
@@ -27,6 +32,20 @@ export const homepageConfig: HomepageSelectionConfig = {
     "murcielago",
     "witches-and-cigarettes",
   ],
+  shelfMangaSlugs: [
+    "ghost-in-the-shell",
+    "murcielago",
+    "gushing-over-magical-girls",
+    "witches-and-cigarettes",
+  ],
+  shelfDoujinshiSlugs: ["a-hard-debut", "frill-no-shita-no-netsu"],
+  shelfImageSetSlugs: ["flou-sona", "ndgd"],
+  artifactSlugs: [
+    "vermis-the-game-that-never-was",
+    "the-ghost-in-the-shell-2026",
+    "strawberry-panic-old-yuri",
+  ],
+  trailSlugs: ["cyberpunk-thread", "ghost-in-the-shell-orbit"],
 };
 
 export function getHomepageSelections<T extends { data: { slug: string } }>(
