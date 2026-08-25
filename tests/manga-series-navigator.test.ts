@@ -48,9 +48,10 @@ test("receives the series artwork for the compact preview", () => {
   expect(navigator).toContain("Open full artwork gallery");
 });
 
-test("adds a compact doujinshi page sampler to the navigator", () => {
+test("uses generated thumbnails for the compact doujinshi page sampler", () => {
   expect(navigator).toContain('class="page-sampler"');
   expect(navigator).toContain('series.data.format === "doujinshi"');
-  expect(navigator).toContain("createMangaPageSrc");
+  expect(navigator).toContain("createDoujinshiThumbnailSrc");
+  expect(navigator).not.toContain("createMangaPageSrc");
   expect(navigator).toContain("View all page previews");
 });

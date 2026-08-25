@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
+import { createDoujinshiThumbnailSrc, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
 
 interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; art: MangaSeriesEntry["data"]["art"]; }
 const { series, chapters, art } = Astro.props;
@@ -43,7 +43,7 @@ const chapterLabel = (chapter: MangaChapterEntry): string => {
   {samplerChapter && samplerPages.length > 0 && <section class="page-sampler" aria-labelledby="page-sampler-heading">
     <h2 id="page-sampler-heading">Page sampler</h2>
     <div class="sampler-grid">
-      {samplerPages.map((page) => <a href={`${chapterHref(samplerChapter)}#page-${page}`}><img src={createMangaPageSrc(samplerChapter.data.pagePath!, page, samplerChapter.data.pageExtension)} alt={`Page ${page} preview`} loading="lazy" decoding="async" /><span>{page}</span></a>)}
+      {samplerPages.map((page) => <a href={`${chapterHref(samplerChapter)}#page-${page}`}><img src={createDoujinshiThumbnailSrc(samplerChapter.data.pagePath!, page)} alt={`Page ${page} preview`} loading="lazy" decoding="async" /><span>{page}</span></a>)}
     </div>
     <a class="sampler-link" href="#doujinshi-page-preview">View all page previews</a>
   </section>}
