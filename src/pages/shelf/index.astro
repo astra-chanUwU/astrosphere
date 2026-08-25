@@ -1,6 +1,7 @@
 ---
 import ImageSetCard from "../../components/ImageSetCard.astro";
 import MangaSeriesCard from "../../components/MangaSeriesCard.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPublishedMangaChapters } from "../../lib/content";
 import { getShelfSelections } from "../../lib/shelf";
@@ -17,11 +18,7 @@ for (const chapter of chapters) {
 
 <BaseLayout title="The Shelf" description="Comics, doujinshi, and image collections kept close at hand.">
   <div class="page-shell">
-    <header>
-      <p class="eyebrow">A visual reading room</p>
-      <h1>The Shelf</h1>
-      <p>Comics, doujinshi, and image collections kept close at hand.</p>
-    </header>
+    <ArchivePageHeader eyebrow="A visual reading room" title="The Shelf" variant="shelf" summary="Comics, doujinshi, and image collections kept close at hand." />
 
     <section aria-labelledby="manga-heading">
       <div class="section-heading">

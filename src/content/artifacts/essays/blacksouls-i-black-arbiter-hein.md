@@ -36,4 +36,4 @@ His path is a useful reminder that *BLACKSOULS I* treats repeated NPC meetings a
 <figure><img src="/media/images/blacksouls-i-black-arbiter-hein/11.webp" alt="Hein fight dialogue three" loading="lazy" decoding="async" /><figcaption>Fight dialogue</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-arbiter-hein/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-arbiter-hein/).

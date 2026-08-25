@@ -1,5 +1,6 @@
 ---
 import ShelfArchive from "../../components/ShelfArchive.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
 import ArchiveRail from "../../components/ArchiveRail.astro";
 import { SHELF_PAGE_SIZE } from "../../config/shelf";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -15,16 +16,12 @@ const lastPage = Math.ceil(entries.length / SHELF_PAGE_SIZE);
 
 <BaseLayout title="Manga" description="The manga archive.">
   <div class="page-shell">
-    <header><p class="eyebrow">Sequential work</p><h1>Manga</h1><p>Published manga in the archive.</p></header>
+    <ArchivePageHeader eyebrow="Sequential work" title="Manga" variant="manga" summary="Published manga in the archive." />
     <div class="archive-layout"><ShelfArchive category="manga" entries={entries.slice(0, SHELF_PAGE_SIZE)} {currentPage} {lastPage} {chapterCountBySeriesSlug} basePath="/manga" /><ArchiveRail active="manga" /></div>
   </div>
 </BaseLayout>
 
 <style>
-  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
-  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
-  h1 { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500; margin: var(--space-1) 0; }
-  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
-  .archive-layout { align-items: start; display: grid; gap: clamp(2rem, 6vw, 6rem); grid-template-columns: minmax(0, 2fr) minmax(13rem, 1fr); }
+  .archive-layout { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 2fr) minmax(13rem, .8fr); }
   @media (max-width: 48rem) { .archive-layout { grid-template-columns: minmax(0, 1fr); } }
 </style>

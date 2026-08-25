@@ -124,4 +124,4 @@ Mary is an anthropomorphic bunny. She has white skin (or fur) and a very develop
 Her face is smug, but also very attractive.
 
 
-This page is part of the [BLACKSOULS II character index](/artifacts/blacksouls-ii-characters) and [BLACKSOULS II thread](/trails/black-souls-ii-thread). Source: [FGGuides’ Bunny Girl Mary guide](https://fgguides.com/blacksouls/bunny-girl-mary/).
+This page is part of the [BLACKSOULS II character index](/articles/blacksouls-ii-characters) and [BLACKSOULS II thread](/guides/black-souls-ii-thread). Source: [FGGuides’ Bunny Girl Mary guide](https://fgguides.com/blacksouls/bunny-girl-mary/).

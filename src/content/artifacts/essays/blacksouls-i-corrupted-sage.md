@@ -26,4 +26,4 @@ The Corrupted Sage appears in a small house on the Valley Checkpoint road after 
 <figure><img src="/media/images/blacksouls-i-corrupted-sage/005.webp" alt="Corrupted Sage dying." loading="lazy" decoding="async" /><figcaption>Defeat</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/corrupted-sage/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/corrupted-sage/).

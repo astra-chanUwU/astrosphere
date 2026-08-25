@@ -133,6 +133,6 @@ Dodo is the thickest character in the game. She has unbelievable curves and a ve
 
 Dodo is honestly the perfect monster girl, something anyone would wish for in his life. Her hair is short and light brown, and she’s undeniably cute.
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Foolish Bird Dodo](https://fgguides.com/blacksouls/foolish-bird-dodo/).

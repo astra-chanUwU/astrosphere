@@ -1,27 +1,9 @@
 ---
-import { render, type CollectionEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import SphereCard from "../../components/SphereCard.astro";
-import ArtifactCard from "../../components/ArtifactCard.astro";
-import SignalCard from "../../components/SignalCard.astro";
-import type { SidebarModel } from "../../config/navigation";
-import { getArtifactsForSphere, getPublishedArtifacts, getPublishedSpheres, getPublishedTrails, getSignalsForSphere } from "../../lib/content";
-export async function getStaticPaths() { const spheres = await getPublishedSpheres(); return spheres.map((sphere) => ({ params: { slug: sphere.data.slug }, props: { sphere } })); }
-interface Props { sphere: CollectionEntry<"spheres">; }
-const { sphere } = Astro.props;
-const [rendered, allSpheres, artifacts, allArtifacts, trails, signals] = await Promise.all([render(sphere), getPublishedSpheres(), getArtifactsForSphere(sphere.data.slug), getPublishedArtifacts(), getPublishedTrails(), getSignalsForSphere(sphere.data.slug)]);
-const { Content } = rendered;
-const children = allSpheres.filter((candidate) => candidate.data.parent === sphere.data.slug);
-const relatedTrails = trails.filter((trail) => trail.data.spheres.includes(sphere.data.slug) || trail.data.items.some((item) => item.kind === "sphere" && item.slug === sphere.data.slug));
-const sidebar: SidebarModel = {
-  heading: sphere.data.title,
-  groups: [
-    { items: [{ href: "/spheres", label: "All spheres" }] },
-    ...(children.length ? [{ label: "Within this sphere", items: children.map((child) => ({ href: `/spheres/${child.data.slug}`, label: child.data.title })) }] : []),
-    { label: "In this sphere", items: [{ href: "#artifacts", label: `Artifacts (${artifacts.length})` }, { href: "#signals", label: `Signals (${signals.length})` }, { href: "#trails", label: `Ways through (${relatedTrails.length})` }] },
-  ],
-};
+import { getPublishedSpheres } from "../../lib/content";
+
+export async function getStaticPaths() {
+  return (await getPublishedSpheres()).map((sphere) => ({ params: { slug: sphere.data.slug } }));
+}
+
+return Astro.redirect(`/topics/${Astro.params.slug}`, 301);
 ---
-<BaseLayout title={sphere.data.title} description={sphere.data.summary} sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "sphere" }, { name: "sphere", value: sphere.data.slug }]}><div class="page-shell territory-dossier" data-palette={sphere.data.palette}><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Spheres", href: "/spheres" }, { label: sphere.data.title }]}/><header class="territory-header"><p class="eyebrow">Territory dossier</p><p class="palette">{sphere.data.palette}</p><h1>{sphere.data.title}</h1><p>{sphere.data.summary}</p></header><article class="prose"><Content/></article>{children.length > 0 && <section><h2>Within this territory</h2><div class="sphere-children">{children.map((child) => <SphereCard sphere={child} childCount={allSpheres.filter((candidate) => candidate.data.parent === child.data.slug).length} artifactCount={allArtifacts.filter((artifact) => artifact.data.spheres.includes(child.data.slug)).length}/>)}</div></section>}<section id="artifacts"><h2>Artifacts in this sphere</h2>{artifacts.length ? artifacts.map((artifact) => <ArtifactCard {artifact}/>) : <p class="empty">This sphere is still gathering its first artifacts.</p>}</section>{signals.length > 0 && <section id="signals"><h2>Signals from this sphere</h2>{signals.map((signal) => <SignalCard {signal}/>)}</section>}{relatedTrails.length > 0 && <section id="trails"><h2>Ways through</h2><ul>{relatedTrails.map((trail) => <li><a href={`/trails/${trail.data.slug}`}><strong>{trail.data.title}</strong></a> — {trail.data.summary}</li>)}</ul></section>}</div></BaseLayout>
-<style>[data-palette="paper"]{--local-accent:var(--color-paper)}[data-palette="moss"]{--local-accent:var(--color-moss)}[data-palette="ember"]{--local-accent:var(--color-ember)}[data-palette="ocean"]{--local-accent:var(--color-ocean)}[data-palette="dusk"]{--local-accent:var(--color-dusk)}[data-palette="mineral"]{--local-accent:var(--color-mineral)}.territory-dossier{max-width:var(--reading-width)}.territory-header{border-left:3px solid var(--local-accent,var(--color-accent));padding:var(--section-space) 0 var(--space-3) var(--space-3)}.eyebrow,.palette{color:var(--local-accent,var(--color-accent));font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--label-tracking);text-transform:uppercase}.eyebrow{color:var(--color-muted);margin:0 0 var(--space-2)}.palette{margin:0 0 var(--space-1)}h1{font-family:var(--font-serif);font-size:clamp(2.5rem,7vw,5rem);font-weight:500;letter-spacing:-.045em;line-height:var(--leading-tight);margin:0}.territory-header>p:last-child{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading);max-width:42rem}section{margin-top:var(--section-space)}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500}.sphere-children{border-top:1px solid var(--color-border)}.empty{color:var(--color-muted)}li{margin-block:var(--space-1)}</style>

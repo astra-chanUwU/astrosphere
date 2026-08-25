@@ -150,5 +150,5 @@ Elma’s match-seller silhouette is warm and fragile at once. Her shop clothes, 
 <figure><img src="/media/images/blacksouls-i-elma/12ad93cf2dab2c81.webp" alt="Hansel, Gretel, Grimm, and Elma" loading="lazy" decoding="async" /><figcaption>Hansel, Gretel, Grimm, and Elma</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides’ Match Seller Elma guide](https://fgguides.com/blacksouls/match-seller-elma/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides’ Match Seller Elma guide](https://fgguides.com/blacksouls/match-seller-elma/).
 

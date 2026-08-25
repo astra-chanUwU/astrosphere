@@ -25,4 +25,4 @@ Clock Croc waits at the Empty Beach, between the Skeleton Maze and Underwater Ci
 <figure><img src="/media/images/blacksouls-i-clock-croc/004.webp" alt="Clock Croc fight continuation." loading="lazy" decoding="async" /><figcaption>Fight continuation</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/clock-croc/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/clock-croc/).

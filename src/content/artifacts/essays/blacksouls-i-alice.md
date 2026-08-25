@@ -244,4 +244,4 @@ The three Alices retain the same silhouette while changing the face and body lan
 <figure><img src="/media/images/blacksouls-i-alice/alice-and-leaf-plushie-420x420.webp" alt="Alice and Leaf plush toys." loading="lazy" decoding="async" /><figcaption>Alice and Leaf as keepsakes.</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters) and the [BLACKSOULS I thread](/trails/black-souls-i-thread). Source: [FGGuides’ Alice guide](https://fgguides.com/blacksouls/alice/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters) and the [BLACKSOULS I thread](/guides/black-souls-i-thread). Source: [FGGuides’ Alice guide](https://fgguides.com/blacksouls/alice/).

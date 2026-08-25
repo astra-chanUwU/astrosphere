@@ -1,25 +1,9 @@
 ---
-import { render, type CollectionEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import type { SidebarModel } from "../../config/navigation";
-import { getPublishedTrails, getTrailItemTargets } from "../../lib/content";
+import { getPublishedTrails } from "../../lib/content";
 
 export async function getStaticPaths() {
-  const trails = await getPublishedTrails();
-  return trails.map((trail) => ({ params: { slug: trail.data.slug }, props: { trail } }));
+  return (await getPublishedTrails()).map((trail) => ({ params: { slug: trail.data.slug } }));
 }
 
-interface Props { trail: CollectionEntry<"trails">; }
-const { trail } = Astro.props;
-const [{ Content }, targets] = await Promise.all([render(trail), getTrailItemTargets(trail)]);
-const sidebar: SidebarModel = {
-  heading: "Trail contents",
-  groups: [
-    { items: [{ href: "/trails", label: "All trails" }] },
-    { label: "In this trail", items: targets.map((target, index) => ({ href: target.href, label: `${index + 1}. ${target.entry.data.title}`, external: target.external })) },
-  ],
-};
+return Astro.redirect(`/guides/${Astro.params.slug}`, 301);
 ---
-<BaseLayout title={trail.data.title} description={trail.data.summary} sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "trail" }, ...trail.data.spheres.map((value) => ({ name: "sphere", value }))]}><div class="page-shell"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Trails", href: "/trails" }, { label: trail.data.title }]}/><header><h1>{trail.data.title}</h1><p>{trail.data.summary}</p>{trail.data.estimatedTime && <span>{trail.data.estimatedTime}</span>}</header><article class="prose"><Content/></article><section aria-labelledby="trail-items-heading"><h2 id="trail-items-heading">Follow the trail</h2><ol>{targets.map((target) => <li>{target.external ? <a href={target.href} target="_blank" rel="noopener noreferrer">{target.entry.data.title} ↗</a> : <a href={target.href}>{target.entry.data.title}</a>}{target.item.note && <p>{target.item.note}</p>}</li>)}</ol></section></div></BaseLayout>
-<style>header{max-width:var(--reading-width);padding-top:var(--section-space)}h1,h2{font-family:var(--font-serif);font-weight:500}h1{font-size:var(--text-2xl);line-height:var(--leading-tight);margin:0}header p{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading)}header span{color:var(--color-muted);font-size:var(--text-sm)}section{margin-top:var(--section-space);max-width:var(--reading-width)}h2{font-size:var(--text-xl)}ol{padding-left:var(--space-3)}li{border-top:var(--border-width) solid var(--color-border);padding:var(--space-2) 0}li p{color:var(--color-muted);line-height:var(--leading-normal);margin-bottom:0}</style>

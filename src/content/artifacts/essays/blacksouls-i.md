@@ -68,7 +68,7 @@ Its world moves between named places such as Holy Forest, Rotten Burg, Skeleton 
 
 Alice, Dorothy, Fairy Leaf, and the Black Goat show the game’s basic trick. They are familiar names or shapes, but their presence is not a promise that the player already understands them. In *BLACKSOULS I*, recognition is the beginning of a question: what has this particular world done with the character, and what will it ask in return?
 
-That is why the character list makes a better next stop than a lore dump. Companions, princesses, Black Trial figures, NPCs, and enemies overlap in ways that make the world feel inhabited rather than neatly sorted. Continue with [BLACKSOULS I: A Cast Built to Be Revisited](/artifacts/blacksouls-i-characters) for that first register.
+That is why the character list makes a better next stop than a lore dump. Companions, princesses, Black Trial figures, NPCs, and enemies overlap in ways that make the world feel inhabited rather than neatly sorted. Continue with [BLACKSOULS I: A Cast Built to Be Revisited](/articles/blacksouls-i-characters) for that first register.
 
 ## Adults-only material is part of the game’s frame
 

@@ -245,7 +245,7 @@ export async function getTrailItemTargets(
         targets.push({
           item,
           entry,
-          href: `/artifacts/${entry.data.slug}`,
+          href: `/articles/${entry.data.slug}`,
           external: false,
         });
       return targets;
@@ -256,7 +256,7 @@ export async function getTrailItemTargets(
         targets.push({
           item,
           entry,
-          href: `/spheres/${entry.data.slug}`,
+          href: `/topics/${entry.data.slug}`,
           external: false,
         });
       return targets;

@@ -32,4 +32,4 @@ The article frames Ezwald as both a decision point and a recurring witness to th
 <figure><img src="/media/images/blacksouls-i-chaplain-ezwald/7.webp" alt="The Gigantic Turnip dialogue" loading="lazy" decoding="async" /><figcaption>Gigantic Turnip dialogue</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/chaplain-ezwald/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/chaplain-ezwald/).

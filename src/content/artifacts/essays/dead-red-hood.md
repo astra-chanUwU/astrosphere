@@ -24,7 +24,7 @@ notes: "Adults only. Contains spoilers, violence, murder, prostitution, coercion
 
 > **Adults-only content warning:** *DEAD RED HOOD* is an eroge. This guide discusses murder, prostitution, coercive choices, rape, nudity, and optional H scenes. Released adults-only CGs appear in a clearly marked gallery below.
 
-*DEAD RED HOOD* is the announced fourth game in the *BLACKSOULS* series and the second title built around [Red Hood](/artifacts/blacksouls-i-red-hood). Unlike the earlier RPGs, it is being developed as a mission-based stealth-assassination game. No release date was listed when the source guide was last updated in May 2025, so every detail below should be read as development-era information rather than a promise about the final build.
+*DEAD RED HOOD* is the announced fourth game in the *BLACKSOULS* series and the second title built around [Red Hood](/articles/blacksouls-i-red-hood). Unlike the earlier RPGs, it is being developed as a mission-based stealth-assassination game. No release date was listed when the source guide was last updated in May 2025, so every detail below should be read as development-era information rather than a promise about the final build.
 
 ## Underground City Agartha
 
@@ -68,7 +68,7 @@ Agartha's inhabitants are not merely scenery. Red Hood can speak with NPCs or ki
 
 ## Optional H scenes and Poro's rescue
 
-H scenes can be disabled. The developers also described a “Rape Cancel System”: if the player reaches an unwanted assault choice, a button summons [Poro](/artifacts/blacksouls-i-poro) to rescue Red Hood. The game is intended to be completable without viewing sexual content and without Red Hood having sex. This is an accessibility and consent-facing option inside a game that still depicts coercive material.
+H scenes can be disabled. The developers also described a “Rape Cancel System”: if the player reaches an unwanted assault choice, a button summons [Poro](/articles/blacksouls-i-poro) to rescue Red Hood. The game is intended to be completable without viewing sexual content and without Red Hood having sex. This is an accessibility and consent-facing option inside a game that still depicts coercive material.
 
 <div class="blacksouls-character-gallery">
 <figure><img src="/media/images/dead-red-hood-overview/71012a91d3a2f51e.webp" alt="Poro saves Red Hood, DRH" loading="lazy" decoding="async" /><figcaption>Poro saves Red Hood, DRH</figcaption></figure>
@@ -216,15 +216,15 @@ The source guide lists 31 characters: one unidentified figure, Ambaba, Assassin 
 <figure><img src="/media/images/dead-red-hood-overview/562f090e1fa735a1.webp" alt="Mysterious Character" loading="lazy" decoding="async" /><figcaption>Mysterious Character</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/72327a09f401f626.webp" alt="Ambaba" loading="lazy" decoding="async" /><figcaption>Ambaba</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/392c66e227d6e46a.webp" alt="Assassin Morgiana" loading="lazy" decoding="async" /><figcaption>Assassin Morgiana</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/68c1c4e9ed25b6db.webp" alt="Black Bailiff Charlotte" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/black-bailiff-charlotte">Black Bailiff Charlotte</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/68c1c4e9ed25b6db.webp" alt="Black Bailiff Charlotte" loading="lazy" decoding="async" /><figcaption><a href="/articles/black-bailiff-charlotte">Black Bailiff Charlotte</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/1169f63d83bd5d60.webp" alt="Black Inquisitor Petero" loading="lazy" decoding="async" /><figcaption>Black Inquisitor Petero</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/6e5cc956d34bb55a.webp" alt="Black Judge Baphomet" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/blacksouls-i-black-judge-baphomet">Black Judge Baphomet</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/6e5cc956d34bb55a.webp" alt="Black Judge Baphomet" loading="lazy" decoding="async" /><figcaption><a href="/articles/blacksouls-i-black-judge-baphomet">Black Judge Baphomet</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/a8154b8c61c023f7.webp" alt="Black Pursuer Claw" loading="lazy" decoding="async" /><figcaption>Black Pursuer Claw</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/c140a1efb4ab7a00.webp" alt="Black Torturer Garm" loading="lazy" decoding="async" /><figcaption>Black Torturer Garm</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/981366d11e62c310.webp" alt="Black Vanguard Lindamea" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/blacksouls-i-black-vanguard-lindamea">Black Vanguard Lindamea</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/981366d11e62c310.webp" alt="Black Vanguard Lindamea" loading="lazy" decoding="async" /><figcaption><a href="/articles/blacksouls-i-black-vanguard-lindamea">Black Vanguard Lindamea</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/62aefdb1f8741f62.webp" alt="Boy Thief Luck" loading="lazy" decoding="async" /><figcaption>Boy Thief Luck</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/cf2840f51d3f584e.webp" alt="Captain Cook" loading="lazy" decoding="async" /><figcaption>Captain Cook</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/2a99e4ba15bd785a.webp" alt="Courtisane the Impaler" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/black-souls-ii-courtisane-the-impaler">Courtisane the Impaler</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/2a99e4ba15bd785a.webp" alt="Courtisane the Impaler" loading="lazy" decoding="async" /><figcaption><a href="/articles/black-souls-ii-courtisane-the-impaler">Courtisane the Impaler</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/6f831aad930e0e51.webp" alt="Detective Falk" loading="lazy" decoding="async" /><figcaption>Detective Falk</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/8e03fae5e93b5a6e.webp" alt="Dismantler Oga" loading="lazy" decoding="async" /><figcaption>Dismantler Oga</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/65cc88c6bb2fbaab.webp" alt="Dog Whistle" loading="lazy" decoding="async" /><figcaption>Dog Whistle</figcaption></figure>
@@ -233,11 +233,11 @@ The source guide lists 31 characters: one unidentified figure, Ambaba, Assassin 
 <figure><img src="/media/images/dead-red-hood-overview/e86d99deacd59367.webp" alt="Great Actress Wednesday" loading="lazy" decoding="async" /><figcaption>Great Actress Wednesday</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/a94fcbb2902acf7f.webp" alt="King Izu" loading="lazy" decoding="async" /><figcaption>King Izu</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/eaf9e3fd768f0edc.webp" alt="Poisonous Snow Princess" loading="lazy" decoding="async" /><figcaption>Poisonous Snow Princess</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/861266fe9c18653e.webp" alt="Poro" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/blacksouls-i-poro">Poro</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/861266fe9c18653e.webp" alt="Poro" loading="lazy" decoding="async" /><figcaption><a href="/articles/blacksouls-i-poro">Poro</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/e497232109ad10f0.webp" alt="Prostitute Crulla the Devil" loading="lazy" decoding="async" /><figcaption>Prostitute Crulla the Devil</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/cad6a2660d4bf0bc.webp" alt="Rape Dog Bongo" loading="lazy" decoding="async" /><figcaption>Rape Dog Bongo</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/f2d02a983ccdbb76.webp" alt="Rape Dog Miz" loading="lazy" decoding="async" /><figcaption>Rape Dog Miz</figcaption></figure>
-<figure><img src="/media/images/dead-red-hood-overview/d1081151886cd8b8.webp" alt="Red Hood" loading="lazy" decoding="async" /><figcaption><a href="/artifacts/blacksouls-i-red-hood">Red Hood</a></figcaption></figure>
+<figure><img src="/media/images/dead-red-hood-overview/d1081151886cd8b8.webp" alt="Red Hood" loading="lazy" decoding="async" /><figcaption><a href="/articles/blacksouls-i-red-hood">Red Hood</a></figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/992baa0e66f597f5.webp" alt="Shahrir" loading="lazy" decoding="async" /><figcaption>Shahrir</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/245c806f4d162845.webp" alt="Sister Boemi" loading="lazy" decoding="async" /><figcaption>Sister Boemi</figcaption></figure>
 <figure><img src="/media/images/dead-red-hood-overview/2028bca7481626ed.webp" alt="Sister Emerald" loading="lazy" decoding="async" /><figcaption>Sister Emerald</figcaption></figure>
@@ -250,4 +250,4 @@ The source guide lists 31 characters: one unidentified figure, Ambaba, Assassin 
 
 Because the source was assembled from translated Japanese development posts, terminology may change once an official English version exists. The useful through-line is firmer than any individual label: *DEAD RED HOOD* recasts Red Hood as a Black Trial operative inside a fast-growing underground city, then builds its play around observation, manipulation, assassination, and escape.
 
-This entry replaces the earlier six-image preview with the complete source gallery and development outline. Continue with [Red Hood’s cross-game character page](/artifacts/blacksouls-i-red-hood) or read the original [FGGuides development compilation](https://fgguides.com/blacksouls/dead-red-hood/).
+This entry replaces the earlier six-image preview with the complete source gallery and development outline. Continue with [Red Hood’s cross-game character page](/articles/blacksouls-i-red-hood) or read the original [FGGuides development compilation](https://fgguides.com/blacksouls/dead-red-hood/).

@@ -1,0 +1,77 @@
+---
+interface Props {
+  label: string;
+  variant: "explore" | "spheres" | "manga" | "doujinshi" | "image-sets" | "trails" | "signals" | "artifacts" | "search" | "dispatches" | "shelf";
+  headingLevel?: 1 | 2;
+}
+
+const { label, variant, headingLevel = 1 } = Astro.props;
+const HeadingTag = headingLevel === 2 ? "h2" : "h1";
+const cellSize = 8;
+const glyphs: Record<string, string[]> = {
+  A: ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+  B: ["11110", "10001", "10001", "11110", "10001", "10001", "11110"],
+  C: ["01111", "10000", "10000", "10000", "10000", "10000", "01111"],
+  D: ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+  E: ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
+  F: ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+  G: ["01110", "10001", "10000", "10111", "10001", "10001", "01110"],
+  H: ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+  I: ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+  J: ["00111", "00010", "00010", "00010", "00010", "10010", "01100"],
+  K: ["10001", "10010", "10100", "11000", "10100", "10010", "10001"],
+  L: ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+  M: ["10001", "11011", "10101", "10101", "10001", "10001", "10001"],
+  N: ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
+  O: ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+  P: ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+  R: ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+  S: ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
+  T: ["11111", "00100", "00100", "00100", "00100", "00100", "00100"],
+  U: ["10001", "10001", "10001", "10001", "10001", "10001", "01110"],
+  V: ["10001", "10001", "10001", "10001", "10001", "01010", "00100"],
+  W: ["10001", "10001", "10001", "10101", "10101", "11011", "10001"],
+  Q: ["01110", "10001", "10001", "10001", "10101", "10010", "01101"],
+  X: ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+  Y: ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
+  Z: ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
+  "-": ["00000", "00000", "00000", "11111", "00000", "00000", "00000"],
+};
+
+const cells: Array<{ x: number; y: number }> = [];
+let cursor = 0;
+for (const character of label.toUpperCase()) {
+  if (character === " ") {
+    cursor += 4;
+    continue;
+  }
+  const rows = glyphs[character];
+  if (!rows) {
+    cursor += 4;
+    continue;
+  }
+  rows.forEach((row, y) => row.split("").forEach((filled, x) => {
+    if (filled === "1") cells.push({ x: cursor + x, y });
+  }));
+  cursor += 6;
+}
+
+const viewBox = `0 0 ${cursor * cellSize} ${7 * cellSize}`;
+---
+
+<HeadingTag class="page-glyph-title">
+  <svg class:list={`page-glyph page-glyph--${variant}`} viewBox={viewBox} role="img" aria-labelledby={`${variant}-glyph-title`} focusable="false">
+    <title id={`${variant}-glyph-title`}>{label}</title>
+    {cells.map((cell) => <rect x={cell.x * cellSize} y={cell.y * cellSize} width={cellSize} height={cellSize} />)}
+  </svg>
+  <span class="visually-hidden">{label}</span>
+</HeadingTag>
+
+<style>
+  .page-glyph-title { margin: 0; }
+  .page-glyph { color: var(--color-astral-blue); display: block; fill: currentColor; height: clamp(2rem, 5vw, 3.6rem); image-rendering: pixelated; width: auto; }
+  .page-glyph--doujinshi, .page-glyph--image-sets { max-width: min(100%, 30rem); }
+  .page-glyph--explore, .page-glyph--spheres, .page-glyph--manga, .page-glyph--shelf { max-width: min(100%, 24rem); }
+  .page-glyph--trails, .page-glyph--signals { max-width: min(100%, 27rem); }
+  .visually-hidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+</style>

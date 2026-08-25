@@ -26,4 +26,4 @@ Automata guards a chest in north-west Rotten Burg, seemingly searching in despai
 <figure><img src="/media/images/blacksouls-i-automata/005.webp" alt="Automata defeated." loading="lazy" decoding="async" /><figcaption>After the fight</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/automata/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/automata/).

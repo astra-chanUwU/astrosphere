@@ -39,4 +39,4 @@ The fight is deliberately punishing early on. If you mean to preserve a normal p
 
 He is referenced again in *BLACKSOULS II* through descendants and hidden-area lore, but his decisive function remains the first game’s: a benign-looking NPC tied directly to both the player’s growth and the setting’s hidden history.
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/prayer-master/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/prayer-master/).

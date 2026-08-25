@@ -93,7 +93,7 @@ const destinationFor = (
   root: string,
   slug: string,
 ): string => {
-  if (type === "essay") return join(root, "src/content/artifacts/essays", `${slug}.md`);
+  if (type === "essay") return join(root, "src/content/articles/essays", `${slug}.md`);
   if (type === "doujinshi") return join(root, "src/content/manga/series", `${slug}.md`);
   return join(root, "src/content/image-sets", `${slug}.md`);
 };

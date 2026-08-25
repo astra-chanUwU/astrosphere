@@ -216,5 +216,5 @@ Red Hood’s visual language shifts from hood, basket, and forest colors to bloo
 <figure><img src="/media/images/blacksouls-i-red-hood/65b4a3c8d1556e11.webp" alt="Red Hood, kiss" loading="lazy" decoding="async" /><figcaption>Red Hood, kiss</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides’ Red Hood guide](https://fgguides.com/blacksouls/red-hood/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides’ Red Hood guide](https://fgguides.com/blacksouls/red-hood/).
 

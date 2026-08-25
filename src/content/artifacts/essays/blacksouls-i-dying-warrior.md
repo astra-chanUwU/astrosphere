@@ -30,4 +30,4 @@ Killing him yields the ore alongside a Soul of a Nameless Soldier, but also incu
 <figure><img src="/media/images/blacksouls-i-dying-warrior/007.webp" alt="Dying Warrior hostile outcome continuation." loading="lazy" decoding="async" /><figcaption>Hostile outcome continuation</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/dying-warrior/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/dying-warrior/).

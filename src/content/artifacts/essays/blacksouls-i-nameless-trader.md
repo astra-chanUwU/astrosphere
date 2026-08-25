@@ -28,4 +28,4 @@ After the purchase, leaving him alive moves him to the Holy Forest. The guide al
 <figure><img src="/media/images/blacksouls-i-nameless-trader/005.webp" alt="Nameless Trader in the Holy Forest, dialogue continuation." loading="lazy" decoding="async" /><figcaption>Holy Forest conversation</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/nameless-trader/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/nameless-trader/).

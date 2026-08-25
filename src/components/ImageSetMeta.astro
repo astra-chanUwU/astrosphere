@@ -7,7 +7,7 @@ const { imageSet } = Astro.props;
 const artists = getImageSetArtists(imageSet.data.author, imageSet.data.credits);
 ---
 
-<section class="meta" aria-label="Image-set information"><dl>{artists.length > 0 && <div><dt>Artists</dt><dd>{artists.map((artist) => <a href={`/tags/${artist.slug}`}>{artist.name}</a>)}</dd></div>}{imageSet.data.spheres.length > 0 && <div><dt>Spheres</dt><dd>{imageSet.data.spheres.map((sphere) => <a href={`/spheres/${sphere}`}>{sphere}</a>)}</dd></div>}{imageSet.data.tags.length > 0 && <div><dt>Tags</dt><dd>{imageSet.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</dd></div>}</dl></section>
+<section class="meta" aria-label="Image-set information"><dl>{artists.length > 0 && <div><dt>Artists</dt><dd>{artists.map((artist) => <a href={`/tags/${artist.slug}`}>{artist.name}</a>)}</dd></div>}{imageSet.data.spheres.length > 0 && <div><dt>Spheres</dt><dd>{imageSet.data.spheres.map((sphere) => <a href={`/topics/${sphere}`}>{sphere}</a>)}</dd></div>}{imageSet.data.tags.length > 0 && <div><dt>Tags</dt><dd>{imageSet.data.tags.map((tag) => <a href={`/tags/${tag}`}>{tag}</a>)}</dd></div>}</dl></section>
 
 <style>
   .meta { max-width: var(--reading-width); }

@@ -24,4 +24,4 @@ Black Drake Caramille blocks the route to Baphomet in the Subterranean Land K’
 <figure><img src="/media/images/blacksouls-i-black-drake-caramille/003.webp" alt="Black Drake Caramille appearing." loading="lazy" decoding="async" /><figcaption>The drake appears</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-drake-caramille/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-drake-caramille/).

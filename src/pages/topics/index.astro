@@ -1,0 +1,34 @@
+---
+import ArchivePagination from "../../components/ArchivePagination.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
+import SphereCard from "../../components/SphereCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
+import { getPublishedArtifacts, getPublishedSpheres } from "../../lib/content";
+
+const [spheres, artifacts] = await Promise.all([getPublishedSpheres(), getPublishedArtifacts()]);
+const roots = spheres.filter((sphere) => !sphere.data.parent);
+const orderedSpheres = roots.flatMap((sphere) => [sphere, ...spheres.filter((child) => child.data.parent === sphere.data.slug)]);
+const currentPage = 1;
+const lastPage = Math.ceil(orderedSpheres.length / ARCHIVE_PAGE_SIZE);
+const countsFor = (sphereSlug: string) => ({ childCount: spheres.filter((child) => child.data.parent === sphereSlug).length, artifactCount: artifacts.filter((artifact) => artifact.data.spheres.includes(sphereSlug)).length });
+---
+
+<BaseLayout title="Topics" description="The thematic territories of AstroSphere.">
+  <div class="page-shell sphere-ledger">
+    <ArchivePageHeader eyebrow="Thematic territories" title="Topics" variant="spheres" summary={`${spheres.length} topics in the archive.`} />
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="territories-heading">All topics</h2><a href="/explore">Explore index →</a></div><section class="sphere-list" aria-labelledby="territories-heading">{orderedSpheres.slice(0, ARCHIVE_PAGE_SIZE).map((sphere) => <div class:list={{ "sphere-child": Boolean(sphere.data.parent) }}><SphereCard {sphere} {...countsFor(sphere.data.slug)} /></div>)}<ArchivePagination basePath="/topics" {currentPage} {lastPage} /></section></main><FieldGuideRail active="spheres" /></div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sphere-ledger { max-width: 96rem; padding-bottom: var(--section-space); }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .sphere-list { border-top: 1px solid var(--color-border); }
+  .sphere-child { margin-left: clamp(1rem, 3vw, 2rem); }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

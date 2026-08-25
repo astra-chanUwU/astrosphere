@@ -1,13 +1,16 @@
 ---
 import ArtifactCard from "../components/ArtifactCard.astro";
+import ArchivePageHeader from "../components/ArchivePageHeader.astro";
+import SignalCard from "../components/SignalCard.astro";
 import SphereCard from "../components/SphereCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getPublishedArtifacts, getPublishedSpheres, getPublishedTrails } from "../lib/content";
+import { getPublishedArtifacts, getPublishedSignals, getPublishedSpheres, getPublishedTrails } from "../lib/content";
 
-const [spheres, artifacts, trails] = await Promise.all([
+const [spheres, artifacts, trails, signals] = await Promise.all([
   getPublishedSpheres(),
   getPublishedArtifacts(),
   getPublishedTrails(),
+  getPublishedSignals(),
 ]);
 
 const roots = spheres.filter((sphere) => !sphere.data.parent);
@@ -15,39 +18,40 @@ const countsFor = (sphereSlug: string) => ({
   childCount: spheres.filter((child) => child.data.parent === sphereSlug).length,
   artifactCount: artifacts.filter((artifact) => artifact.data.spheres.includes(sphereSlug)).length,
 });
-const recentArtifacts = artifacts.slice(0, 4);
-const featuredTrails = trails.filter((trail) => trail.data.featured).slice(0, 4);
+const recentArtifacts = artifacts.slice(0, 3);
+const featuredTrails = trails.filter((trail) => trail.data.featured).slice(0, 3);
+const featuredSignals = signals.slice(0, 3);
 ---
 
-<BaseLayout title="Explore" description="Enter AstroSphere through spheres, artifacts, trails, and signals.">
+<BaseLayout title="Explore" description="Enter AstroSphere through topics, articles, guides, and links.">
   <div class="page-shell explore-page">
-    <header class="explore-header">
-      <p class="eyebrow">Archive index</p>
-      <h1>Explore</h1>
-      <p>Find a way in through territories, objects, and routes.</p>
-    </header>
+    <ArchivePageHeader eyebrow="Archive index" title="Explore" variant="explore" summary="Find a way in through territories, objects, and routes." />
 
     <div class="explore-grid">
       <main class="explore-main">
-        <div class="section-heading"><div><p class="eyebrow">Thematic territories</p><h2>Spheres</h2></div><a href="/spheres">All spheres →</a></div>
+        <div class="section-heading"><div><p class="eyebrow">Thematic territories</p><h2>Topics</h2></div><a href="/topics">All topics →</a></div>
         <div class="sphere-list">{roots.map((sphere) => <SphereCard {sphere} {...countsFor(sphere.data.slug)} />)}</div>
+        <section class="signals-under-spheres" aria-labelledby="signals-heading">
+          <div class="section-heading"><div><p class="eyebrow">Outside references</p><h2 id="signals-heading">Links</h2></div><a href="/links">All links →</a></div>
+          <div class="signal-list">{featuredSignals.map((signal) => <SignalCard {signal} />)}</div>
+        </section>
       </main>
 
       <aside class="explore-rail">
         <nav class="explore-links" aria-labelledby="explore-links-title">
           <p id="explore-links-title" class="eyebrow">Explore by kind</p>
-          <a href="/spheres">Spheres <span>{spheres.length}</span></a>
-          <a href="/artifacts">Artifacts <span>{artifacts.length}</span></a>
-          <a href="/trails">Trails <span>{trails.length}</span></a>
-          <a href="/signals">Signals <span>→</span></a>
+          <a href="/topics">Topics <span>{spheres.length}</span></a>
+          <a href="/articles">Articles <span>{artifacts.length}</span></a>
+          <a href="/guides">Guides <span>{trails.length}</span></a>
+          <a href="/links">Links <span>→</span></a>
         </nav>
 
         <section aria-labelledby="recent-artifacts-title">
-          <div class="rail-heading"><h2 id="recent-artifacts-title">Recent artifacts</h2><a href="/artifacts">All →</a></div>
+          <div class="rail-heading"><h2 id="recent-artifacts-title">Recent articles</h2><a href="/articles">All →</a></div>
           <div class="artifact-list">{recentArtifacts.map((artifact) => <ArtifactCard {artifact} />)}</div>
         </section>
 
-        {featuredTrails.length > 0 && <section aria-labelledby="featured-trails-title"><div class="rail-heading"><h2 id="featured-trails-title">Featured trails</h2><a href="/trails">All →</a></div><ul class="trail-list">{featuredTrails.map((trail) => <li><a href={`/trails/${trail.data.slug}`}>{trail.data.title}</a><span>{trail.data.items.length} stops</span></li>)}</ul></section>}
+        {featuredTrails.length > 0 && <section aria-labelledby="featured-trails-title"><div class="rail-heading"><h2 id="featured-trails-title">Featured guides</h2><a href="/guides">All →</a></div><ul class="trail-list">{featuredTrails.map((trail) => <li><a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a><span>{trail.data.items.length} stops</span></li>)}</ul></section>}
       </aside>
     </div>
   </div>
@@ -60,16 +64,19 @@ const featuredTrails = trails.filter((trail) => trail.data.featured).slice(0, 4)
   h1, h2 { font-family: var(--font-serif); font-weight: 500; line-height: var(--leading-tight); }
   h1 { font-size: clamp(3rem, 7vw, 6rem); letter-spacing: -.06em; margin: 0; }
   .explore-header > p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); margin: var(--space-2) 0 0; }
-  .explore-grid { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .explore-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
   .section-heading, .rail-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); justify-content: space-between; padding-bottom: var(--space-2); }
   .section-heading h2, .rail-heading h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin: 0; }
   .section-heading a, .rail-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   .sphere-list { border-top: 1px solid var(--color-border); }
+  .signals-under-spheres { margin-top: var(--space-5); }
+  .signal-list { border-top: 1px solid var(--color-border); }
+  .signal-list :global(article) { border-top: 0; }
   .explore-rail { border-left: 1px solid var(--color-border); padding-left: var(--space-3); }
-  .explore-links { display: grid; margin-bottom: var(--section-space); }
-  .explore-links a { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; font-family: var(--font-serif); font-size: var(--text-xl); justify-content: space-between; padding: var(--space-2) 0; text-decoration: none; }
+  .explore-links { display: grid; margin-bottom: var(--space-5); }
+  .explore-links a { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; font-family: var(--font-serif); font-size: var(--text-xl); justify-content: space-between; padding: var(--space-1) 0; text-decoration: none; }
   .explore-links a span, .trail-list span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
-  .explore-rail section { margin-top: var(--section-space); }
+  .explore-rail section { margin-top: var(--space-5); }
   .artifact-list { border-top: 1px solid var(--color-border); }
   .artifact-list :global(article) { border-top: 0; }
   .trail-list { border-top: 1px solid var(--color-border); list-style: none; margin: 0; padding: 0; }

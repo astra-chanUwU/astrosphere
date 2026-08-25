@@ -141,6 +141,6 @@ Miranda’s clothing is rough and held together by ropes, with a brown hood shap
 </div>
 
 
-This character page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). The source guide is [FGGuides’ Black Condemner Miranda page](https://fgguides.com/blacksouls/black-condemner-miranda/).
+This character page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). The source guide is [FGGuides’ Black Condemner Miranda page](https://fgguides.com/blacksouls/black-condemner-miranda/).
 
 

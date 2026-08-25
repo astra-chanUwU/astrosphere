@@ -158,5 +158,5 @@ BLACKSOULS’ Jeanne departs from the common dark-haired Joan of Arc image. She 
 <figure><img src="/media/images/blacksouls-i-jeanne/e73cd1aa097c1908.webp" alt="Jeanne, Fluffy Beast, and Llama" loading="lazy" decoding="async" /><figcaption>Jeanne, Fluffy Beast, and Llama</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides’ Holy Knight Jeanne guide](https://fgguides.com/blacksouls/jeanne-of-arc/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides’ Holy Knight Jeanne guide](https://fgguides.com/blacksouls/jeanne-of-arc/).
 

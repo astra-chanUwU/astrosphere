@@ -95,4 +95,4 @@ Lindamea is also set to appear in *DEAD RED HOOD*, which the source guide descri
 <figure><img src="/media/images/blacksouls-i-black-vanguard-lindamea/17.webp" alt="Lindamea on a horse in DEAD RED HOOD." loading="lazy" decoding="async" /><figcaption>Lindamea in DEAD RED HOOD.</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters) and the [BLACKSOULS II character index](/artifacts/blacksouls-ii-characters). Source: [FGGuides’ Black Vanguard Lindamea guide](https://fgguides.com/blacksouls/black-vanguard-lindamea/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters) and the [BLACKSOULS II character index](/articles/blacksouls-ii-characters). Source: [FGGuides’ Black Vanguard Lindamea guide](https://fgguides.com/blacksouls/black-vanguard-lindamea/).

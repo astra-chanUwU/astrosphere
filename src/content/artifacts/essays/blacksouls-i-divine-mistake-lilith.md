@@ -26,4 +26,4 @@ Divine Mistake Lilith is an optional opponent in the Succubus Church beneath the
 <figure><img src="/media/images/blacksouls-i-divine-mistake-lilith/005.webp" alt="Fight with Divine Mistake Lilith." loading="lazy" decoding="async" /><figcaption>The fight</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/divine-mistake-lilith/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/divine-mistake-lilith/).

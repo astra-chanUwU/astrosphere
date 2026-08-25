@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArchivePagination from "../../../components/ArchivePagination.astro";
+import ArtifactCard from "../../../components/ArtifactCard.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../../lib/archive";
+import { getPublishedArtifacts } from "../../../lib/content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const artifacts = await getPublishedArtifacts();
+  return paginate(artifacts, { pageSize: ARCHIVE_PAGE_SIZE })
+    .filter((path) => Number(path.params.page) > 1);
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={`Articles — page ${page.currentPage}`} description="Published writing in the AstroSphere archive.">
+  <div class="page-shell artifact-archive">
+    <header><p class="eyebrow">Field guide / archive 01</p><p>Published objects in the AstroSphere archive.</p></header>
+    <section aria-labelledby="archive-heading"><h1 id="archive-heading">Articles</h1>{page.data.map((artifact) => <ArtifactCard {artifact} />)}<ArchivePagination basePath="/articles" currentPage={page.currentPage} lastPage={page.lastPage} /></section>
+  </div>
+</BaseLayout>
+
+<style>
+  .artifact-archive { max-width: var(--reading-width); padding-bottom: var(--section-space); }
+  header { padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  section { border-top: 1px solid var(--color-border); }
+  h1 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-3) 0 0; }
+</style>

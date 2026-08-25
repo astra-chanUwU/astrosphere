@@ -37,4 +37,4 @@ Her route can move from audience and covenant material into a battle sequence th
 <figure><img src="/media/images/blacksouls-i-snow-white/12.webp" alt="Snow White fight five" loading="lazy" decoding="async" /><figcaption>Fight conclusion</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/snow-white/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/snow-white/).

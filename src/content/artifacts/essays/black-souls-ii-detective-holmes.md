@@ -164,6 +164,6 @@ There aren’t many other wolf-like humanoid characters like him in the game, so
 <figcaption>Isolation Room’s Neighbor</figcaption>
 </figure>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Detective Holmes](https://fgguides.com/blacksouls/detective-holmes/).

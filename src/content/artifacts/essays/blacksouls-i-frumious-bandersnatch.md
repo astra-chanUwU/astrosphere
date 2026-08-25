@@ -103,4 +103,4 @@ Although she looks dangerous, Bandersnatch’s face is notably cute, and her tan
 
 In the first game, Bandersnatch appears as a lion-like creature that may also be read as a griffin; her battle form is a much larger purple monster. The sequel reworks her into a more humanoid design, preserving the frantic movement and creature-like intensity while making her expressions and route interactions more direct.
 
-This page retains all 27 substantive images from [FGGuides’ Frumious Bandersnatch guide](https://fgguides.com/blacksouls/frumious-bandersnatch/). It excludes site chrome, author avatars, and store tiles. Continue with the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters) or the [BLACKSOULS II character index](/artifacts/black-souls-ii-characters).
+This page retains all 27 substantive images from [FGGuides’ Frumious Bandersnatch guide](https://fgguides.com/blacksouls/frumious-bandersnatch/). It excludes site chrome, author avatars, and store tiles. Continue with the [BLACKSOULS I character index](/articles/blacksouls-i-characters) or the [BLACKSOULS II character index](/articles/black-souls-ii-characters).

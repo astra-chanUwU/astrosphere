@@ -170,7 +170,7 @@ At one point of talking to her, she will even tell you you can address her with 
 <figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-560x420.webp" alt="Covenant with Margaret" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant.</figcaption></figure>
 <figure><img src="/media/images/black-souls-ii-duchess-margaret-von-tyrol/Covenant-with-Margaret-2-561x420.webp" alt="Covenant with Margaret, 2" loading="lazy" decoding="async" /><figcaption>Margaret’s covenant, later progression.</figcaption></figure>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Duchess Margaret von Tyrol](https://fgguides.com/blacksouls/duchess-margaret-von-tyrol/).
 

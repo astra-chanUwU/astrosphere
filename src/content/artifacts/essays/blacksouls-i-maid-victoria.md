@@ -151,5 +151,5 @@ Victoria’s maid uniform, pale hair, and restrained expression contrast with th
 <figure><img src="/media/images/blacksouls-i-victoria/54d4750f632b77aa.webp" alt="Excited Maid Victoria" loading="lazy" decoding="async" /><figcaption>Excited Maid Victoria</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides’ Maid Victoria guide](https://fgguides.com/blacksouls/victoria/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides’ Maid Victoria guide](https://fgguides.com/blacksouls/victoria/).
 

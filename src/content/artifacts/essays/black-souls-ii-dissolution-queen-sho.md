@@ -149,6 +149,6 @@ Sho isn’t human and she doesn’t look like one either, if you disregard her h
 <figcaption>Sho’s jealousy.</figcaption>
 </figure>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Dissolution Queen Sho](https://fgguides.com/blacksouls/dissolution-queen-sho/).

@@ -1,0 +1,33 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArchivePagination from "../../../components/ArchivePagination.astro";
+import TrailCard from "../../../components/TrailCard.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../../lib/archive";
+import { getPublishedSpheres, getPublishedTrails } from "../../../lib/content";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const trails = (await getPublishedTrails()).sort((left, right) => Number(right.data.featured) - Number(left.data.featured) || left.data.title.localeCompare(right.data.title));
+  return paginate(trails, { pageSize: ARCHIVE_PAGE_SIZE })
+    .filter((path) => Number(path.params.page) > 1);
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const spheres = await getPublishedSpheres();
+const sphereNames = new Map(spheres.map((sphere) => [sphere.data.slug, sphere.data.title]));
+---
+
+<BaseLayout title={`Guides — page ${page.currentPage}`} description="Hand-made routes through the AstroSphere collection.">
+  <div class="page-shell trail-route-map">
+    <header><p class="eyebrow">Field guide / routes 02</p><h1>Guides</h1><p>Hand-made routes through the AstroSphere collection.</p></header>
+    <section class="trails" aria-label="Available guides">{page.data.map((trail) => <TrailCard {trail} {sphereNames} />)}<ArchivePagination basePath="/guides" currentPage={page.currentPage} lastPage={page.lastPage} /></section>
+  </div>
+</BaseLayout>
+
+<style>
+  .trail-route-map, .trails { max-width: var(--reading-width); }
+  header { padding: var(--section-space) 0 var(--space-4); }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  h1 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-1) 0; }
+  header p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+</style>

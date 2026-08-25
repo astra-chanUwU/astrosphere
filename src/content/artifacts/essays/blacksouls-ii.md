@@ -18,7 +18,7 @@ sourceUrl: https://fgguides.com/blacksouls/blacksouls-ii/
 credits:
   - "Overview facts and screenshot source: FGGuides, BLACKSOULS II."
   - "All BLACKSOULS artwork and screenshots belong to their respective creators and are used here for identification and critical commentary."
-notes: "Archived duplicate retained for source history. The canonical public overview is /artifacts/black-souls-ii. Adults-only content warning: BLACKSOULS II contains explicit sexual content, coercive and violent sexual routes, gore, death, and disturbing fairy-tale horror."
+notes: "Archived duplicate retained for source history. The canonical public overview is /articles/black-souls-ii. Adults-only content warning: BLACKSOULS II contains explicit sexual content, coercive and violent sexual routes, gore, death, and disturbing fairy-tale horror."
 ---
 
 # BLACKSOULS II
@@ -42,7 +42,7 @@ The source galleries show Alice and the three DLC releases, followed by Library 
 Because the sequel has far more endings and conflicts, a blind playthrough can take considerable time. FGGuides links onward to:
 
 - [All Areas in BLACKSOULS II](https://fgguides.com/blacksouls/all-areas-in-blacksouls-ii/)
-- [All Characters in BLACKSOULS II](/artifacts/black-souls-ii-characters)
+- [All Characters in BLACKSOULS II](/articles/black-souls-ii-characters)
 - [All Fairytales in BLACKSOULS II](https://fgguides.com/blacksouls/all-fairytales-in-blacksouls-ii/)
 - [All Spirits in BLACKSOULS II](https://fgguides.com/blacksouls/all-spirits-in-blacksouls-ii/)
 

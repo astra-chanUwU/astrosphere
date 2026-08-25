@@ -31,7 +31,7 @@ author: AstroSphere
 location: North garden
 credits:
   - Field recording by AstroSphere
-canonicalUrl: https://astrosphere.example/artifacts/machine-at-the-edge-of-the-garden
+canonicalUrl: https://astrosphere.example/articles/machine-at-the-edge-of-the-garden
 ---
 
 The machine waits at the garden's edge, where care turns into measurement. Its instruments describe moisture, temperature, and movement; none can account for why the place feels inhabited.

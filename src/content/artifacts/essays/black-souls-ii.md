@@ -42,7 +42,7 @@ The source galleries show Alice and the three DLC releases, followed by Library 
 Because the sequel has far more endings and conflicts, a blind playthrough can take considerable time. FGGuides links onward to:
 
 - [All Areas in BLACKSOULS II](https://fgguides.com/blacksouls/all-areas-in-blacksouls-ii/)
-- [All Characters in BLACKSOULS II](/artifacts/black-souls-ii-characters)
+- [All Characters in BLACKSOULS II](/articles/black-souls-ii-characters)
 - [All Fairytales in BLACKSOULS II](https://fgguides.com/blacksouls/all-fairytales-in-blacksouls-ii/)
 - [All Spirits in BLACKSOULS II](https://fgguides.com/blacksouls/all-spirits-in-blacksouls-ii/)
 

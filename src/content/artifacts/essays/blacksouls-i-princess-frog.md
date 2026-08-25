@@ -31,4 +31,4 @@ The sequence is short but useful as a route checkpoint: dialogue choices establi
 <figure><img src="/media/images/blacksouls-i-princess-frog/6.webp" alt="Princess Frog as a frog two" loading="lazy" decoding="async" /><figcaption>Frog form</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/princess-frog/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/princess-frog/).

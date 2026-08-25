@@ -16,8 +16,8 @@ const steps = targets.map((target, index) => ({
 <section class="trail-progress" aria-labelledby={`trail-progress-${trail.data.slug}`}>
   <div class="trail-progress-heading">
     <div>
-      <p class="eyebrow">Reading trail</p>
-      <h2 id={`trail-progress-${trail.data.slug}`}><a href={`/trails/${trail.data.slug}`}>{trail.data.title}</a></h2>
+      <p class="eyebrow">Reading guide</p>
+      <h2 id={`trail-progress-${trail.data.slug}`}><a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a></h2>
     </div>
     <span class="trail-count">{currentIndex + 1} of {targets.length}</span>
   </div>

@@ -3,35 +3,32 @@ import type { CollectionEntry } from "astro:content";
 
 interface Props {
   trail: CollectionEntry<"trails">;
-  index: number;
   sphereNames: Map<string, string>;
 }
 
-const { trail, index, sphereNames } = Astro.props;
+const { trail, sphereNames } = Astro.props;
 ---
 
 <article class:list={["trail-card", { "trail-card--featured": trail.data.featured }]}>
-  <div class="trail-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</div>
   <div class="trail-content">
     <div class="trail-meta"><span>{trail.data.featured ? "Featured route" : "Route"}</span>{trail.data.estimatedTime && <span>{trail.data.estimatedTime}</span>}<span>{trail.data.items.length} stops</span></div>
-    <h2><a href={`/trails/${trail.data.slug}`}>{trail.data.title}</a></h2>
+    <h2><a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a></h2>
     <p>{trail.data.summary}</p>
-    {trail.data.spheres.length > 0 && <div class="trail-spheres">{trail.data.spheres.map((slug) => <span>{sphereNames.get(slug) ?? slug}</span>)}</div>}
-    <a class="trail-link" href={`/trails/${trail.data.slug}`}>Follow a route →</a>
+    <footer>{trail.data.spheres.length > 0 && <div class="trail-spheres">{trail.data.spheres.map((slug) => <span>{sphereNames.get(slug) ?? slug}</span>)}</div>}<a class="trail-link" href={`/guides/${trail.data.slug}`}>Open guide →</a></footer>
   </div>
 </article>
 
 <style>
-  .trail-card { border-top: 1px solid var(--color-border); display: grid; gap: var(--space-2); grid-template-columns: 2.5rem minmax(0, 1fr); padding: var(--space-3) 0 var(--space-4); }
+  .trail-card { border-top: 1px solid var(--color-border); padding: var(--space-3) 0; }
   .trail-card--featured { border-top: var(--accent-border-width) solid var(--color-accent-warm); }
-  .trail-number, .trail-meta, .trail-spheres { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
-  .trail-number { color: var(--color-accent-warm); padding-top: .2rem; }
+  .trail-meta, .trail-spheres { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   .trail-content { min-width: 0; }
   .trail-meta, .trail-spheres { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
-  h2 { font-family: var(--font-serif); font-size: clamp(1.5rem, 2.8vw, 2.25rem); font-weight: 400; letter-spacing: -.035em; line-height: var(--leading-tight); margin: var(--space-2) 0 var(--space-1); }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
   h2 a { color: inherit; text-decoration: none; }
-  p { line-height: var(--leading-reading); margin: 0 0 var(--space-2); max-width: 34rem; }
-  .trail-spheres { margin-bottom: var(--space-3); }
+  p { line-height: var(--leading-reading); margin: 0 0 var(--space-2); max-width: 42rem; }
+  footer { align-items: baseline; display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: space-between; }
+  .trail-spheres { margin: 0; }
   .trail-spheres span::before { color: var(--color-accent); content: "·"; margin-right: .45rem; }
-  .trail-link { font-size: var(--text-sm); }
+  .trail-link { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
 </style>

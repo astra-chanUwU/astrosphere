@@ -286,6 +286,6 @@ Leaf’s design is immediately legible: short green hair, large green eyes, a ti
 </div>
 
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). The source guide is [FGGuides’ Fairy Leaf page](https://fgguides.com/blacksouls/fairy-leaf/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). The source guide is [FGGuides’ Fairy Leaf page](https://fgguides.com/blacksouls/fairy-leaf/).
 
 

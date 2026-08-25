@@ -74,6 +74,6 @@ Toro’s teaser presents Courtisane as a new *Dead Red Hood* character with a pr
 <figcaption>Courtisane's appearance, 5</figcaption>
 </figure>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Courtisane the Impaler](https://fgguides.com/blacksouls/courtisane-the-impaler/).

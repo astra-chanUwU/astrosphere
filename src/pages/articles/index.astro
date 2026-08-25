@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArtifactCard from "../../components/ArtifactCard.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
+import ArchivePagination from "../../components/ArchivePagination.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
+import { getPublishedArtifacts } from "../../lib/content";
+
+const artifacts = await getPublishedArtifacts();
+const currentPage = 1;
+const lastPage = Math.ceil(artifacts.length / ARCHIVE_PAGE_SIZE);
+---
+<BaseLayout title="Articles" description="All published writing in the AstroSphere archive.">
+  <div class="page-shell artifact-archive">
+    <ArchivePageHeader eyebrow="Published writing" title="Articles" variant="artifacts" summary={`${artifacts.length} articles in the archive.`} />
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="archive-heading">All artifacts</h2><a href="/explore">Explore index →</a></div><section aria-labelledby="archive-heading">{artifacts.slice(0, ARCHIVE_PAGE_SIZE).map((artifact) => <ArtifactCard {artifact} />)}<ArchivePagination basePath="/articles" {currentPage} {lastPage} /></section></main><FieldGuideRail active="artifacts" /></div>
+  </div>
+</BaseLayout>
+<style>
+  .artifact-archive { max-width: 96rem; padding-bottom: var(--section-space); }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  section { border-top: 1px solid var(--color-border); }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

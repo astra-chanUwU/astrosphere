@@ -43,4 +43,4 @@ The encounter has several distinct states: first contact, battle, a second phase
 <figure><img src="/media/images/blacksouls-i-black-judge-baphomet/18.webp" alt="Cute Baphomet" loading="lazy" decoding="async" /><figcaption>Character art</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-judge-baphomet/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/black-judge-baphomet/).

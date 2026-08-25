@@ -3,10 +3,10 @@ type Section = "spheres" | "artifacts" | "trails" | "signals";
 interface Props { active: Section; }
 const { active } = Astro.props;
 const links: Array<{ key: Section; label: string; href: string }> = [
-  { key: "spheres", label: "Spheres", href: "/spheres" },
-  { key: "artifacts", label: "Artifacts", href: "/artifacts" },
-  { key: "trails", label: "Trails", href: "/trails" },
-  { key: "signals", label: "Signals", href: "/signals" },
+  { key: "spheres", label: "Topics", href: "/topics" },
+  { key: "artifacts", label: "Articles", href: "/articles" },
+  { key: "trails", label: "Guides", href: "/guides" },
+  { key: "signals", label: "Links", href: "/links" },
 ];
 ---
 

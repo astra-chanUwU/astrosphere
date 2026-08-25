@@ -208,6 +208,6 @@ FGGuides includes adult-route screenshots alongside the design material. They ar
 <figure><img src="/media/images/blacksouls-i-corpse-dragon-jabberwock/68.webp" alt="Jabberwock" loading="lazy" decoding="async" /><figcaption>Jabberwock</figcaption></figure>
 </div>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Corpse Dragon Jabberwock](https://fgguides.com/blacksouls/corpse-dragon-jabberwock/).

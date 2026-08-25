@@ -138,6 +138,6 @@ Florence’s body is well-built in the right places, and she’s very attractive
 
 <figure><img src="/media/images/black-souls-ii-founding-doctor-florence/Florences-determination.webp" alt="Florence’s determination." loading="lazy" decoding="async" /><figcaption>Florence’s determination.</figcaption></figure>
 
-Related: [All BLACKSOULS II characters](/artifacts/black-souls-ii-characters) · [BLACKSOULS II trail](/trails/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
 
 Source: [FGGuides — Founding Doctor Florence](https://fgguides.com/blacksouls/founding-doctor-florence/).

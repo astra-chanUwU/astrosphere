@@ -1,14 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ArchivePageHeader from "../components/ArchivePageHeader.astro";
 ---
 
 <BaseLayout title="Search" description="Search the AstroSphere archive." indexForSearch={false}>
   <div class="page-shell search-page" data-pagefind-search>
-    <header>
-      <p class="eyebrow">archive discovery</p>
-      <h1>Search AstroSphere</h1>
-      <p>Full-text search across published archive pages. Manga is indexed by series, not chapter.</p>
-    </header>
+    <ArchivePageHeader eyebrow="Archive discovery" title="Search" variant="search" summary="Full-text search across published archive pages. Manga is indexed by series, not chapter." />
     <label class="search-input"><span>Search</span><input type="search" autocomplete="off" placeholder="ghost, cyberpunk, witch, archive..." data-search-input /></label>
     <section class="filters" aria-label="Search filters">
       <div><p>Type</p><div class="kind-filters" data-kind-filters><button type="button" data-kind="all" aria-pressed="true">all</button><button type="button" data-kind="essay" aria-pressed="false">essays</button><button type="button" data-kind="note" aria-pressed="false">notes</button><button type="button" data-kind="manga" aria-pressed="false">manga</button><button type="button" data-kind="image-set" aria-pressed="false">image sets</button><button type="button" data-kind="signals" aria-pressed="false">signals</button><button type="button" data-kind="sphere" aria-pressed="false">spheres</button><button type="button" data-kind="trail" aria-pressed="false">trails</button></div></div>

@@ -88,4 +88,4 @@ She is also lively. The energy of her dialogue contrasts with the broader horror
 
 Cheeky Oyster is always inside her shell. Her body and everything around it are white and slimy, and she is very small. Her hair appears short, her eyes are darker, and her smile is permanently bratty. Her facial expressions are unusually vivid, letting the character’s teasing mood remain visible even when the setting becomes grotesque.
 
-This page is part of the [BLACKSOULS II character index](/artifacts/black-souls-ii-characters) and [BLACKSOULS II thread](/trails/black-souls-ii-thread). Source: [FGGuides’ Cheeky Oyster guide](https://fgguides.com/blacksouls/cheeky-oyster/).
+This page is part of the [BLACKSOULS II character index](/articles/black-souls-ii-characters) and [BLACKSOULS II thread](/guides/black-souls-ii-thread). Source: [FGGuides’ Cheeky Oyster guide](https://fgguides.com/blacksouls/cheeky-oyster/).

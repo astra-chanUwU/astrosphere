@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArchivePagination from "../../components/ArchivePagination.astro";
+import TrailCard from "../../components/TrailCard.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
+import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
+import { getPublishedSpheres, getPublishedTrails } from "../../lib/content";
+
+const [publishedTrails, spheres] = await Promise.all([getPublishedTrails(), getPublishedSpheres()]);
+const trails = [...publishedTrails].sort((left, right) => Number(right.data.featured) - Number(left.data.featured) || left.data.title.localeCompare(right.data.title));
+const sphereNames = new Map(spheres.map((sphere) => [sphere.data.slug, sphere.data.title]));
+const currentPage = 1;
+const lastPage = Math.ceil(trails.length / ARCHIVE_PAGE_SIZE);
+---
+<BaseLayout title="Guides" description="Hand-made routes through Astro Chan's collection of manga, games, images, essays, and strange connections.">
+  <div class="page-shell trail-route-map">
+    <ArchivePageHeader eyebrow="Connected routes" title="Guides" variant="trails" summary={`${trails.length} guides through the archive.`} />
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="trails-heading">All guides</h2><a href="/explore">Explore index →</a></div><section class="trails" aria-labelledby="trails-heading">{trails.slice(0, ARCHIVE_PAGE_SIZE).map((trail) => <TrailCard {trail} {sphereNames} />)}<ArchivePagination basePath="/guides" {currentPage} {lastPage} /></section></main><FieldGuideRail active="trails" /></div>
+  </div>
+</BaseLayout>
+<style>
+  .trail-route-map { max-width: 96rem; }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .trails { border-top: 1px solid var(--color-border); }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>

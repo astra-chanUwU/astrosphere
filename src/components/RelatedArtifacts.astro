@@ -4,5 +4,5 @@ import ArtifactCard from "./ArtifactCard.astro";
 interface Props { artifacts: CollectionEntry<"artifacts">[]; }
 const { artifacts } = Astro.props;
 ---
-<section aria-labelledby="related-heading"><h2 id="related-heading">Related artifacts</h2>{artifacts.length ? <div>{artifacts.map((artifact) => <ArtifactCard {artifact}/>)}</div> : <p>There are no related artifacts in this path yet.</p>}</section>
+<section aria-labelledby="related-heading"><h2 id="related-heading">Related articles</h2>{artifacts.length ? <div>{artifacts.map((artifact) => <ArtifactCard {artifact}/>)}</div> : <p>There are no related articles in this path yet.</p>}</section>
 <style>section{margin-top:var(--section-space)}h2{font-family:var(--font-serif);font-size:var(--text-xl)}p{color:var(--color-muted)}</style>

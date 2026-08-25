@@ -24,4 +24,4 @@ Cowardly Lion stands in the Warehouse between the Witch’s House and the Sewers
 <figure><img src="/media/images/blacksouls-i-cowardly-lion/003.webp" alt="Fight with Cowardly Lion continuation." loading="lazy" decoding="async" /><figcaption>Fight continuation</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/cowardly-lion/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/cowardly-lion/).

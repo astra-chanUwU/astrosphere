@@ -27,4 +27,4 @@ FGGuides also records a visually identical Beloved Dragon later in Red Hood’s 
 <figure><img src="/media/images/blacksouls-i-beloved-white-dragon-shirasu/004.webp" alt="Beloved Dragon encounter in Red Hood’s Woods." loading="lazy" decoding="async" /><figcaption>Later Red Hood’s Woods appearance</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/beloved-white-dragon-shirasu/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/beloved-white-dragon-shirasu/).

@@ -24,4 +24,4 @@ Blacksmith Lops waits at the lowest point of the Path to the Lower Layer. He is 
 <figure><img src="/media/images/blacksouls-i-blacksmith-lops/003.webp" alt="Conversation with Blacksmith Lops." loading="lazy" decoding="async" /><figcaption>Talking to Lops</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/blacksmith-lops/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/blacksmith-lops/).

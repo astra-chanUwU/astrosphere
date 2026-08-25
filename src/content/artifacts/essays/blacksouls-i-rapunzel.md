@@ -41,4 +41,4 @@ The nonviolent route asks for the Phantom Rose in the Helsa Desert. Returning it
 <figure><img src="/media/images/blacksouls-i-rapunzel/16.webp" alt="Behemoth route, Rapunzel is dead" loading="lazy" decoding="async" /><figcaption>Behemoth route outcome</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS I character index](/artifacts/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/rapunzel/).
+This page is part of the [BLACKSOULS I character index](/articles/blacksouls-i-characters). Source: [FGGuides](https://fgguides.com/blacksouls/rapunzel/).
