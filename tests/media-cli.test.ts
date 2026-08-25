@@ -15,7 +15,9 @@ import {
   parseRemoveArgs,
   removeHelp,
   parseSyncArgs,
+  parseThumbnailArgs,
   parseValidateArgs,
+  thumbnailHelp,
 } from "../src/lib/media/cli";
 import {
   exitCodeForMediaError,
@@ -66,6 +68,10 @@ test("parses the shared command vocabulary", () => {
     command: "remove",
     args: ["manga", "series"],
   });
+  expect(parseMediaCommand(["thumbnails", "--dry-run"])).toEqual({
+    command: "thumbnails",
+    args: ["--dry-run"],
+  });
   expect(() => parseMediaCommand(["maintain", "plan"])).toThrow(
     "Unknown media command",
   );
@@ -82,8 +88,36 @@ test("parses the shared command vocabulary", () => {
   expect(optimizeHelp).toContain(
     "media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery>",
   );
+  expect(thumbnailHelp).toContain(
+    "media:thumbnails [--series <slug>] [--dry-run] [--force]",
+  );
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
+});
+
+test("parses safe thumbnail backfill options and rejects ambiguous input", () => {
+  expect(parseThumbnailArgs([])).toEqual({
+    series: undefined,
+    dryRun: false,
+    force: false,
+  });
+  expect(
+    parseThumbnailArgs([
+      "--series",
+      "example-book",
+      "--dry-run",
+      "--force",
+    ]),
+  ).toEqual({ series: "example-book", dryRun: true, force: true });
+  expect(() => parseThumbnailArgs(["--series", "../book"])).toThrow(
+    "lowercase letters, numbers, and hyphens",
+  );
+  expect(() => parseThumbnailArgs(["--force", "--force"])).toThrow(
+    "may only be specified once",
+  );
+  expect(() => parseThumbnailArgs(["unexpected"])).toThrow(
+    "Unexpected thumbnails argument",
+  );
 });
 
 test("parses maintenance planning and application arguments", () => {
@@ -537,6 +571,31 @@ test("exposes the standalone remove alias", async () => {
     new URL("../package.json", import.meta.url),
   ).json();
   expect(pkg.scripts["media:remove"]).toBe("bun scripts/media.ts remove");
+});
+
+test("exposes and dispatches the standalone thumbnail alias", async () => {
+  const pkg = await Bun.file(
+    new URL("../package.json", import.meta.url),
+  ).json();
+  expect(pkg.scripts["media:thumbnails"]).toBe(
+    "bun scripts/media.ts thumbnails",
+  );
+
+  const root = await mkdtemp(join(tmpdir(), "media-thumbnails-cli-"));
+  const mediaRoot = join(root, "media");
+  try {
+    await mkdir(join(root, "src/content/manga"), { recursive: true });
+    await mkdir(mediaRoot);
+    const result = await runMedia(["thumbnails", "--dry-run"], {
+      cwd: root,
+      env: { MEDIA_ROOT: mediaRoot },
+    });
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.stdout).toContain("Selected pages: 0");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test("dispatches manga volume imports through the shared CLI", async () => {

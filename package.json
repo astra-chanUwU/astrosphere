@@ -12,6 +12,7 @@
     "media:add": "bun scripts/media.ts add",
     "media:remove": "bun scripts/media.ts remove",
     "media:optimize": "bun scripts/media.ts optimize",
+    "media:thumbnails": "bun scripts/media.ts thumbnails",
     "media:validate": "bun scripts/media.ts validate",
     "media:sync": "bun scripts/media.ts sync",
     "content:new": "bun scripts/content.ts new",

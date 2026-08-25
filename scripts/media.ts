@@ -7,8 +7,10 @@ import {
   parseOptimizeArgs,
   parseRemoveArgs,
   parseSyncArgs,
+  parseThumbnailArgs,
   parseValidateArgs,
   removeHelp,
+  thumbnailHelp,
 } from "../src/lib/media/cli";
 import {
   requireMediaPort,
@@ -36,6 +38,10 @@ import {
   planMangaChapterUnavailable,
 } from "../src/lib/media/manga-remove";
 import { collectManagedMediaReferences } from "../src/lib/media/references";
+import {
+  collectDoujinshiThumbnailItems,
+  generateDoujinshiThumbnails,
+} from "../src/lib/media/doujinshi-thumbnails";
 import { createBunMediaFetch } from "../src/lib/media/server";
 import {
   confirmPrune,
@@ -178,6 +184,44 @@ const remove = async (args: string[]): Promise<void> => {
   console.log("Chapter media removed; published entry is currently unavailable.");
 };
 
+const thumbnails = async (args: string[]): Promise<void> => {
+  if (args.length === 1 && (args[0] === "--help" || args[0] === "-h")) {
+    console.log(thumbnailHelp);
+    return;
+  }
+  const options = parseThumbnailArgs(args);
+  const root = requireMediaRoot();
+  try {
+    const entries = await loadMediaContentEntries(process.cwd());
+    const items = collectDoujinshiThumbnailItems(entries, root, options.series);
+    const result = await generateDoujinshiThumbnails({
+      items,
+      dryRun: options.dryRun,
+      force: options.force,
+    });
+    console.log(options.dryRun ? "Doujinshi thumbnail dry run:" : "Doujinshi thumbnails complete:");
+    console.log(`  Selected pages: ${items.length}`);
+    if (options.dryRun) {
+      for (const item of result.plan) {
+        console.log(
+          `  ${item.action === "generate" ? "GENERATE" : "SKIP"} ${item.sourcePublicPath} -> ${item.destinationPublicPath} [${item.reason}]`,
+        );
+      }
+    }
+    console.log(`  Generated: ${result.generated} | Skipped: ${result.skipped} | Failed: ${result.failed.length}`);
+    for (const failure of result.failed) {
+      console.log(`  FAILED ${failure.item.sourcePublicPath}: ${failure.message}`);
+    }
+    if (result.failed.length > 0) process.exitCode = mediaExitCodes.optimization;
+  } catch (error) {
+    if (error instanceof MediaError) throw error;
+    throw new MediaError(
+      "optimization",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+};
+
 const validate = async (args: string[]): Promise<void> => {
   parseValidateArgs(args);
   const root = requireMediaRoot();
@@ -278,6 +322,11 @@ const run = async (): Promise<void> => {
 
   if (command === "remove") {
     await remove(args);
+    return;
+  }
+
+  if (command === "thumbnails") {
+    await thumbnails(args);
     return;
   }
 

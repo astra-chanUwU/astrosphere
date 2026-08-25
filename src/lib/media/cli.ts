@@ -6,6 +6,7 @@ import type { MaintainArgs } from "./maintenance-types";
 export type MediaCommand =
   | "serve"
   | "optimize"
+  | "thumbnails"
   | "validate"
   | "sync"
   | "add"
@@ -16,6 +17,7 @@ export const mediaHelp = `Usage:
   bun run media:add manga-volume <source...> --series <slug> [--quality <1..100>] [--draft]
   bun run media:remove manga <series> --chapter <number> --unavailable
   bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
+  bun run media:thumbnails [--series <slug>] [--dry-run] [--force]
   bun run media:validate
   bun run media:sync [--dry-run] [--prune]`;
 
@@ -38,6 +40,15 @@ Options:
   --dry-run           Show the plan without writing output
   -h, --help          Show this help`;
 
+export const thumbnailHelp = `Usage:
+  bun run media:thumbnails [--series <slug>] [--dry-run] [--force]
+
+Options:
+  --series <slug>  Restrict generation to one doujinshi series
+  --dry-run        Show planned generation without writing files
+  --force          Regenerate valid fresh thumbnails
+  -h, --help       Show this help`;
+
 export const addHelp = `Usage:
   bun run media:add manga-volume <source...> --series <slug> [--quality <1..100>] [--draft]
   bun run media:add batch <source-folder> --manifest <file> [--quality <1..100>] [--dry-run] [--draft]
@@ -52,6 +63,7 @@ Removes a chapter's heavy media after confirmation while preserving its publishe
 const commands: MediaCommand[] = [
   "serve",
   "optimize",
+  "thumbnails",
   "validate",
   "sync",
   "add",
@@ -378,6 +390,56 @@ export type AddBatchArgs = {
 export type AddArgs = AddMangaVolumeArgs | AddBatchArgs;
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export type ThumbnailArgs = {
+  series?: string;
+  dryRun: boolean;
+  force: boolean;
+};
+
+export const parseThumbnailArgs = (argv: string[]): ThumbnailArgs => {
+  let series: string | undefined;
+  let dryRun = false;
+  let force = false;
+  const seen = new Set<string>();
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index]!;
+    if (!argument.startsWith("--")) {
+      throw new MediaError("usage", `Unexpected thumbnails argument: ${argument}`);
+    }
+    if (seen.has(argument)) {
+      throw new MediaError("usage", `${argument} may only be specified once`);
+    }
+    seen.add(argument);
+    if (argument === "--dry-run") {
+      dryRun = true;
+      continue;
+    }
+    if (argument === "--force") {
+      force = true;
+      continue;
+    }
+    if (argument === "--series") {
+      const value = argv[index + 1];
+      if (!value || value.startsWith("--")) {
+        throw new MediaError("usage", "--series requires a value");
+      }
+      if (!slugPattern.test(value)) {
+        throw new MediaError(
+          "usage",
+          "--series must use lowercase letters, numbers, and hyphens only",
+        );
+      }
+      series = value;
+      index += 1;
+      continue;
+    }
+    throw new MediaError("usage", `Unknown thumbnails option: ${argument}`);
+  }
+
+  return { series, dryRun, force };
+};
 
 const parseAddBatchArgs = (args: string[]): AddBatchArgs => {
   const sources: string[] = [];
