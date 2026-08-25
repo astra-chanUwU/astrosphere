@@ -9,13 +9,14 @@ async function readRoute(path: string) {
 
 const [shelf, ...archiveRoutes] = await Promise.all([
   readRoute("src/pages/shelf/index.astro"),
-  readRoute("src/pages/shelf/manga/index.astro"),
-  readRoute("src/pages/shelf/doujinshi/index.astro"),
-  readRoute("src/pages/shelf/image-sets/index.astro"),
-  readRoute("src/pages/shelf/manga/page/[page].astro"),
-  readRoute("src/pages/shelf/doujinshi/page/[page].astro"),
-  readRoute("src/pages/shelf/image-sets/page/[page].astro"),
+  readRoute("src/pages/manga/index.astro"),
+  readRoute("src/pages/doujinshi/index.astro"),
+  readRoute("src/pages/image-sets/index.astro"),
+  readRoute("src/pages/manga/page/[page].astro"),
+  readRoute("src/pages/doujinshi/page/[page].astro"),
+  readRoute("src/pages/image-sets/page/[page].astro"),
 ]);
+const archiveRail = await Bun.file(new URL("src/components/ArchiveRail.astro", root)).text().catch(() => "");
 
 const [manga, doujinshi, imageSets, mangaPages, doujinshiPages, imageSetPages] = archiveRoutes;
 
@@ -50,6 +51,17 @@ test("builds every category root as its clean first page", () => {
   }
 });
 
+test("gives category archives a consistent two-column rail", () => {
+  expect(archiveRail).toContain('class="archive-rail"');
+  expect(archiveRail).toContain('href: "/manga"');
+  expect(archiveRail).toContain('href: "/doujinshi"');
+  expect(archiveRail).toContain('href: "/image-sets"');
+  for (const source of archiveRoutes.slice(0, 3).map((route) => route.source)) {
+    expect(source).toContain("archive-layout");
+    expect(source).toContain("<ArchiveRail");
+  }
+});
+
 test("generates only later static pages with the matching category data", () => {
   for (const { path, exists, source, category } of [
     { ...mangaPages, category: "manga" },
@@ -60,7 +72,7 @@ test("generates only later static pages with the matching category data", () => 
     expect(source).toContain("getStaticPaths");
     expect(source).toContain(`getShelfArchive(\"${category}\")`);
     expect(source).toMatch(
-      /return\s+paginate\(\s*entries\s*,\s*\{\s*pageSize:\s*SHELF_PAGE_SIZE\s*\}\s*\)\s*\.filter\(\s*\(\s*path\s*\)\s*=>\s*Number\(\s*path\.params\.page\s*\)\s*>\s*1\s*\)/,
+      /paginate\(await getShelfArchive\([^)]+\),\s*\{\s*pageSize:\s*SHELF_PAGE_SIZE\s*\}\)\.filter\(/,
     );
     expect(source).toContain(`category=\"${category}\"`);
     expect(source).toContain("entries={page.data}");

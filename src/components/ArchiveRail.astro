@@ -1,0 +1,29 @@
+---
+import type { ShelfCategory } from "../lib/shelf";
+
+interface Props { active: ShelfCategory; }
+const { active } = Astro.props;
+const links: Array<{ category: ShelfCategory; label: string; href: string }> = [
+  { category: "manga", label: "Manga", href: "/manga" },
+  { category: "doujinshi", label: "Doujinshi", href: "/doujinshi" },
+  { category: "image-sets", label: "Image sets", href: "/image-sets" },
+];
+---
+
+<aside class="archive-rail" aria-labelledby="archive-rail-title">
+  <p id="archive-rail-title">Archive</p>
+  <nav aria-label="Archive sections">
+    {links.map((link) => <a href={link.href} aria-current={active === link.category ? "page" : undefined}>{link.label}</a>)}
+  </nav>
+  <a class="rail-search" href="/search">Search the archive →</a>
+</aside>
+
+<style>
+  .archive-rail { align-self: start; border-left: 1px solid var(--color-border); padding-left: var(--space-3); position: sticky; top: var(--space-3); }
+  .archive-rail > p { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-2); text-transform: uppercase; }
+  nav { display: grid; gap: var(--space-1); }
+  nav a { font-family: var(--font-serif); font-size: var(--text-xl); text-decoration: none; }
+  nav a[aria-current="page"] { color: var(--color-text); }
+  .rail-search { border-top: 1px solid var(--color-border); display: inline-block; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin-top: var(--space-4); padding-top: var(--space-2); text-transform: uppercase; }
+  @media (max-width: 48rem) { .archive-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; position: static; } }
+</style>
