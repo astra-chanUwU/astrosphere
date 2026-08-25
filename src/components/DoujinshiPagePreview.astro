@@ -1,0 +1,41 @@
+---
+import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
+import { createMangaPageSrc, getMangaChapterPages } from "../lib/manga-reader";
+
+interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; }
+const { series, chapters } = Astro.props;
+const previewChapters = chapters.filter((chapter) => chapter.data.availability !== "unavailable" && chapter.data.pagePath);
+---
+
+{series.data.format === "doujinshi" && previewChapters.length > 0 && <section id="doujinshi-page-preview" class="doujinshi-preview" aria-label="Doujinshi page preview">
+  <header>
+    <p class="eyebrow">Visual check</p>
+    <h2>Page preview</h2>
+    <p>Scan the pages before opening the reader.</p>
+  </header>
+  {previewChapters.map((chapter) => {
+    const pages = getMangaChapterPages(chapter.data);
+    return <section class="chapter-preview" aria-labelledby={`preview-heading-${chapter.data.slug}`}>
+      <h3 id={`preview-heading-${chapter.data.slug}`}><a href={`/manga/${series.data.slug}/${chapter.data.slug}`}>{chapter.data.title || `Doujinshi ${chapter.data.number}`}</a></h3>
+      <ol>
+        {pages.map((page) => <li><a href={`/manga/${series.data.slug}/${chapter.data.slug}#page-${page}`}><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`${series.data.title}, page ${page} preview`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading="lazy" decoding="async" /><span>Page {page}</span></a></li>)}
+      </ol>
+    </section>;
+  })}
+</section>}
+
+<style>
+  .doujinshi-preview { border-top: 1px solid var(--color-border); margin-top: var(--section-space); max-width: var(--reading-width); padding-top: var(--space-3); }
+  header { margin-bottom: var(--space-3); }
+  .eyebrow { color: var(--color-muted); font-size: var(--text-sm); margin: 0; text-transform: uppercase; }
+  h2 { font-size: var(--text-xl); margin: var(--space-1) 0; }
+  header p:last-child { color: var(--color-muted); font-size: var(--text-sm); margin: 0; }
+  .chapter-preview + .chapter-preview { border-top: 1px solid var(--color-border); margin-top: var(--space-4); padding-top: var(--space-3); }
+  h3 { font-size: var(--text-lg); margin: 0 0 var(--space-2); }
+  h3 a { text-decoration: none; }
+  ol { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr)); list-style: none; margin: 0; padding: 0; }
+  li { min-width: 0; }
+  li a { color: var(--color-muted); display: block; font-size: var(--text-xs); text-align: center; text-decoration: none; }
+  img { aspect-ratio: 2 / 3; background: var(--color-surface); display: block; height: auto; margin: 0 auto .2rem; max-height: 10rem; object-fit: contain; width: 100%; }
+  li a:hover, li a:focus-visible { color: var(--color-text); }
+</style>

@@ -9,6 +9,8 @@ import {
 
 const reader = await Bun.file(new URL("../src/components/MangaReader.astro", import.meta.url)).text();
 const chapterList = await Bun.file(new URL("../src/components/MangaChapterList.astro", import.meta.url)).text();
+const navigator = await Bun.file(new URL("../src/components/MangaSeriesNavigator.astro", import.meta.url)).text();
+const seriesPage = await Bun.file(new URL("../src/pages/manga/[slug].astro", import.meta.url)).text();
 const chapterPage = await Bun.file(new URL("../src/pages/manga/[slug]/[chapter].astro", import.meta.url)).text();
 
 test("creates zero-padded manga page URLs", () => {
@@ -62,8 +64,15 @@ test("available chapters expose their page count and reader pages", () => {
 
 test("manga navigation uses the series format for installment labels", () => {
   expect(reader).toContain("getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title)");
-  expect(chapterList).toContain("getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title)");
+  expect(chapterList).toContain("getMangaInstallmentLabel(series.data.format, chapter.data.number, series.data.format === \"doujinshi\" ? undefined : chapter.data.title)");
   expect(chapterList).toContain("series.data.format === \"doujinshi\"");
+});
+
+test("manga detail previews stay inside compact media bounds", () => {
+  expect(navigator).toContain("max-width: 5rem");
+  expect(navigator).toContain("max-height: 8rem");
+  expect(navigator).toContain("overflow: hidden");
+  expect(seriesPage).toContain("max-width: 8rem");
 });
 
 test("manga reader renders previous, series, and next controls at both ends", () => {
