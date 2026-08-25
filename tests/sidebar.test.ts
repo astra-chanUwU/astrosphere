@@ -12,6 +12,7 @@ const dock = await Bun.file(new URL("../src/components/ReaderDock.astro", import
 
 test("navigation defines stable global destinations and contextual archive defaults", () => {
   expect(navigation).toContain('label: "Explore"');
+  expect(navigation).toContain('{ href: "/explore", label: "Explore" }');
   expect(navigation).toContain('{ href: "/manga", label: "Manga" }');
   expect(navigation).toContain('{ href: "/doujinshi", label: "Doujinshi" }');
   expect(navigation).toContain('{ href: "/image-sets", label: "Image sets" }');

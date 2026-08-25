@@ -1,5 +1,6 @@
 ---
 import ArchivePagination from "../../components/ArchivePagination.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
 import SphereCard from "../../components/SphereCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
@@ -15,19 +16,23 @@ const countsFor = (sphereSlug: string) => ({ childCount: spheres.filter((child) 
 
 <BaseLayout title="Spheres" description="The thematic territories of AstroSphere.">
   <div class="page-shell sphere-ledger">
-    <header><p class="eyebrow">Field guide / territories</p><h1>Spheres</h1><p>Places to enter the archive through a shared terrain, question, or atmosphere.</p><span>{spheres.length} territories</span></header>
-    <section aria-labelledby="territories-heading"><h2 id="territories-heading">Territories</h2>{orderedSpheres.slice(0, ARCHIVE_PAGE_SIZE).map((sphere) => <div class:list={{ "sphere-child": Boolean(sphere.data.parent) }}><SphereCard {sphere} {...countsFor(sphere.data.slug)} /></div>)}<ArchivePagination basePath="/spheres" {currentPage} {lastPage} /></section>
+    <header><p class="eyebrow">Thematic territories</p><h1>Spheres</h1><p>{spheres.length} territories in the archive.</p></header>
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="territories-heading">All spheres</h2><a href="/explore">Explore index →</a></div><section aria-labelledby="territories-heading">{orderedSpheres.slice(0, ARCHIVE_PAGE_SIZE).map((sphere) => <div class:list={{ "sphere-child": Boolean(sphere.data.parent) }}><SphereCard {sphere} {...countsFor(sphere.data.slug)} /></div>)}<ArchivePagination basePath="/spheres" {currentPage} {lastPage} /></section></main><FieldGuideRail active="spheres" /></div>
   </div>
 </BaseLayout>
 
 <style>
-  .sphere-ledger { max-width: var(--reading-width); padding-bottom: var(--section-space); }
+  .sphere-ledger { max-width: 96rem; padding-bottom: var(--section-space); }
   header { padding: var(--section-space) 0 var(--space-4); }
   .eyebrow, header span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   h1, h2 { font-family: var(--font-serif); font-weight: 500; line-height: var(--leading-tight); }
   h1 { font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: -.045em; margin: 0; }
-  header > p:last-of-type { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); max-width: 42rem; }
+  header > p:last-of-type { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   section { border-top: 1px solid var(--color-border); }
-  h2 { font-size: var(--text-xl); margin: var(--space-3) 0 0; }
   .sphere-child { margin-left: clamp(1rem, 4vw, 3rem); }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

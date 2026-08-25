@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArtifactCard from "../../components/ArtifactCard.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
 import ArchivePagination from "../../components/ArchivePagination.astro";
 import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
 import { getPublishedArtifacts } from "../../lib/content";
@@ -11,22 +12,22 @@ const lastPage = Math.ceil(artifacts.length / ARCHIVE_PAGE_SIZE);
 ---
 <BaseLayout title="Artifacts" description="All published objects in the AstroSphere archive.">
   <div class="page-shell artifact-archive">
-    <header>
-      <p class="eyebrow">Field guide / archive 01</p><h1>Artifacts</h1><p class="lede">A constellation of essays, notes, recordings, experiments, and durable objects gathered from the edges of curiosity.</p>
-      <p class="archive-count">{artifacts.length} objects in orbit</p>
-    </header>
-    <section aria-labelledby="archive-heading"><h2 id="archive-heading">Browse the archive</h2>{artifacts.slice(0, ARCHIVE_PAGE_SIZE).map((artifact) => <ArtifactCard {artifact} />)}<ArchivePagination basePath="/artifacts" {currentPage} {lastPage} /></section>
+    <header><p class="eyebrow">Published objects</p><h1>Artifacts</h1><p class="archive-count">{artifacts.length} objects in the archive.</p></header>
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="archive-heading">All artifacts</h2><a href="/explore">Explore index →</a></div><section aria-labelledby="archive-heading">{artifacts.slice(0, ARCHIVE_PAGE_SIZE).map((artifact) => <ArtifactCard {artifact} />)}<ArchivePagination basePath="/artifacts" {currentPage} {lastPage} /></section></main><FieldGuideRail active="artifacts" /></div>
   </div>
 </BaseLayout>
 <style>
-  .artifact-archive { max-width: var(--reading-width); padding-bottom: var(--section-space); }
+  .artifact-archive { max-width: 96rem; padding-bottom: var(--section-space); }
   header { padding: var(--section-space) 0 var(--space-4); }
   .eyebrow, .archive-count { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   .eyebrow { margin: 0 0 var(--space-2); }
   h1, h2 { font-family: var(--font-serif); font-weight: 500; line-height: var(--leading-tight); }
   h1 { font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: -.045em; margin: 0; }
-  .lede { font-family: var(--font-serif); font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: var(--leading-reading); margin: var(--space-2) 0 0; max-width: 39rem; }
   .archive-count { margin: var(--space-3) 0 0; }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   section { border-top: 1px solid var(--color-border); }
-  h2 { font-size: var(--text-xl); margin: var(--space-3) 0 0; }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

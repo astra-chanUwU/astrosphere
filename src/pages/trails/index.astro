@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArchivePagination from "../../components/ArchivePagination.astro";
 import TrailCard from "../../components/TrailCard.astro";
+import FieldGuideRail from "../../components/FieldGuideRail.astro";
 import { ARCHIVE_PAGE_SIZE } from "../../lib/archive";
 import { getPublishedSpheres, getPublishedTrails } from "../../lib/content";
 
@@ -13,28 +14,21 @@ const lastPage = Math.ceil(trails.length / ARCHIVE_PAGE_SIZE);
 ---
 <BaseLayout title="Trails" description="Hand-made routes through Astro Chan's collection of manga, games, images, essays, and strange connections.">
   <div class="page-shell trail-route-map">
-    <header class="trail-header">
-      <div><p class="eyebrow">Field guide / routes 02</p><h1>Trails</h1><p>Short routes through the collection, made for following a mood, a subject, or one curious idea into the next.</p></div>
-      <div class="trail-stats"><strong>{trails.length}</strong><span>routes<br/>to wander</span></div>
-    </header>
-    <div class="route-intro"><span class="route-line" aria-hidden="true"></span><p><strong>Choose a starting point.</strong> Each route is a hand-made sequence of connected artifacts, spheres, and signals.</p></div>
-    <section class="trails" aria-label="Available trails">{trails.slice(0, ARCHIVE_PAGE_SIZE).map((trail, index) => <TrailCard {trail} {index} {sphereNames} />)}<ArchivePagination basePath="/trails" {currentPage} {lastPage} /></section>
+    <header class="trail-header"><div><p class="eyebrow">Connected routes</p><h1>Trails</h1><p>{trails.length} routes through the archive.</p></div></header>
+    <div class="field-guide-grid"><main><div class="section-heading"><h2 id="trails-heading">All trails</h2><a href="/explore">Explore index →</a></div><section class="trails" aria-labelledby="trails-heading">{trails.slice(0, ARCHIVE_PAGE_SIZE).map((trail, index) => <TrailCard {trail} {index} {sphereNames} />)}<ArchivePagination basePath="/trails" {currentPage} {lastPage} /></section></main><FieldGuideRail active="trails" /></div>
   </div>
 </BaseLayout>
 <style>
-  .trail-header { align-items: end; display: flex; gap: var(--space-4); justify-content: space-between; max-width: 62rem; padding: var(--section-space) 0 clamp(2rem, 5vw, 4rem); }
+  .trail-header { padding: var(--section-space) 0 var(--section-space); }
   .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   .eyebrow { margin: 0 0 var(--space-2); }
   h1, h2 { font-family: var(--font-serif); font-weight: 400; line-height: var(--leading-tight); }
-  h1 { font-size: clamp(3rem, 8vw, 7.5rem); letter-spacing: -.045em; margin: 0; }
-  .trail-header > div:first-child > p:last-child { font-family: var(--font-serif); font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: var(--leading-reading); margin: var(--space-2) 0 0; max-width: 39rem; }
-  .trail-stats { align-items: center; color: var(--color-muted); display: flex; font-family: var(--font-mono); gap: var(--space-2); text-transform: uppercase; }
-  .trail-stats strong { color: var(--color-accent-warm); font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 6rem); font-weight: 400; letter-spacing: -.08em; line-height: .8; }
-  .trail-stats span { font-size: var(--text-xs); letter-spacing: var(--label-tracking); }
-  .route-intro { align-items: center; border-block: 1px solid var(--color-border); display: flex; gap: var(--space-2); margin-bottom: var(--space-4); padding: var(--space-2) 0; }
-  .route-intro p { margin: 0; }
-  .route-line { background: var(--color-accent-warm); border-radius: 50%; display: block; height: .65rem; position: relative; width: .65rem; }
-  .route-line::after { border-top: 1px dashed var(--color-accent-warm); content: ""; left: .65rem; position: absolute; top: 50%; width: 2.5rem; }
-  .trails { max-width: var(--reading-width); }
-  @media (max-width: 48rem) { .trail-header { align-items: start; flex-direction: column; } }
+  h1 { font-size: clamp(2.5rem, 7vw, 5rem); letter-spacing: -.045em; margin: 0; }
+  .trail-header > div:first-child > p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); margin: var(--space-1) 0 0; }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  .section-heading h2 { font-size: var(--text-xl); margin: 0; }
+  .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .trails { border-top: 1px solid var(--color-border); }
+  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

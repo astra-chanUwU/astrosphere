@@ -1,0 +1,29 @@
+---
+type Section = "spheres" | "artifacts" | "trails" | "signals";
+interface Props { active: Section; }
+const { active } = Astro.props;
+const links: Array<{ key: Section; label: string; href: string }> = [
+  { key: "spheres", label: "Spheres", href: "/spheres" },
+  { key: "artifacts", label: "Artifacts", href: "/artifacts" },
+  { key: "trails", label: "Trails", href: "/trails" },
+  { key: "signals", label: "Signals", href: "/signals" },
+];
+---
+
+<aside class="field-guide-rail" aria-labelledby="field-guide-rail-title">
+  <p id="field-guide-rail-title">Field guide</p>
+  <nav aria-label="Field guide sections">
+    {links.map((link) => <a href={link.href} aria-current={active === link.key ? "page" : undefined}>{link.label}</a>)}
+  </nav>
+  <a class="rail-link" href="/explore">Explore index →</a>
+</aside>
+
+<style>
+  .field-guide-rail { align-self: start; border-left: 1px solid var(--color-border); padding-left: var(--space-3); position: sticky; top: var(--space-3); }
+  .field-guide-rail > p { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-2); text-transform: uppercase; }
+  nav { display: grid; gap: var(--space-1); }
+  nav a { font-family: var(--font-serif); font-size: var(--text-xl); text-decoration: none; }
+  nav a[aria-current="page"] { color: var(--color-text); }
+  .rail-link { border-top: 1px solid var(--color-border); display: inline-block; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin-top: var(--space-4); padding-top: var(--space-2); text-transform: uppercase; }
+  @media (max-width: 48rem) { .field-guide-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; position: static; } }
+</style>

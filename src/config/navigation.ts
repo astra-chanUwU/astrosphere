@@ -17,7 +17,7 @@ export interface SidebarModel {
 }
 
 export const primaryNavigation: NavItem[] = [
-  { href: "/spheres", label: "Explore" },
+  { href: "/explore", label: "Explore" },
   { href: "/manga", label: "Manga" },
   { href: "/doujinshi", label: "Doujinshi" },
   { href: "/image-sets", label: "Image sets" },
@@ -75,7 +75,7 @@ const recoverySidebar: SidebarModel = {
 
 export const resolveSidebar = (pathname: string): SidebarModel => {
   if (pathname === "/") return homeSidebar;
-  if (["/spheres", "/artifacts", "/trails", "/signals"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
+  if (["/explore", "/spheres", "/artifacts", "/trails", "/signals"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
   if (["/manga", "/doujinshi", "/image-sets", "/shelf"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`) || pathname.startsWith(`${path}/`))) return librarySidebar(pathname);
   if (["/work", "/contact", "/support"].includes(pathname)) return withCurrentGroups(studioSidebar, pathname);
   if (["/about", "/now", "/colophon"].includes(pathname)) return withCurrentGroups(aboutSidebar, pathname);
