@@ -30,6 +30,9 @@ test("provides fast chapter navigation controls", () => {
   expect(navigator).toContain('aria-label="Manga chapter navigator"');
   expect(navigator).toContain("position: sticky");
   expect(navigator).toContain("<select");
+  expect(navigator).toContain('class="chapter-index"');
+  expect(navigator).toContain("Browse all chapters");
+  expect(navigator).toContain("<details");
 });
 
 test("puts a numbered chapter grid before the artwork preview", () => {

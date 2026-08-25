@@ -29,9 +29,12 @@ const chapterLabel = (chapter: MangaChapterEntry): string => {
       <option value="">Choose a chapter…</option>
       {chapters.map((chapter) => <option value={chapterHref(chapter)}>{chapterLabel(chapter)}</option>)}
     </select>
-    <div class="chapter-grid" aria-label="Numbered chapters">
-      {chapters.map((chapter) => <a href={chapterHref(chapter)} aria-label={chapterLabel(chapter)}>{chapter.data.number}</a>)}
-    </div>
+    <details class="chapter-index">
+      <summary>Browse all chapters ({chapters.length})</summary>
+      <div class="chapter-grid" aria-label="Numbered chapters">
+        {chapters.map((chapter) => <a href={chapterHref(chapter)} aria-label={chapterLabel(chapter)}>{chapter.data.number}</a>)}
+      </div>
+    </details>
   </> : <p>No chapters yet.</p>}
   {art.length > 0 && <section class="art-preview" aria-labelledby="navigator-art-heading">
     <h2 id="navigator-art-heading">Artwork</h2>
@@ -51,6 +54,8 @@ const chapterLabel = (chapter: MangaChapterEntry): string => {
   nav a { text-decoration: none; }
   label { display: block; font-size: var(--text-sm); margin-bottom: var(--space-1); }
   select { background: var(--color-bg); border: 1px solid var(--color-border); color: var(--color-text); font: inherit; max-width: 100%; padding: .35rem; width: 100%; }
+  .chapter-index { margin-top: var(--space-3); }
+  .chapter-index summary { color: var(--color-accent); cursor: pointer; font-size: var(--text-sm); }
   .chapter-grid { display: grid; gap: .25rem; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: var(--space-3); }
   .chapter-grid a { border: 1px solid var(--color-border); padding: .25rem .1rem; text-align: center; text-decoration: none; }
   .chapter-grid a:hover, .chapter-grid a:focus-visible { border-color: var(--color-text); }
