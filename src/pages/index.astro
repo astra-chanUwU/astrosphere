@@ -46,16 +46,20 @@ const dispatches: Dispatch[] = [
 const newestImageSets = imageSets.slice(0, 5);
 const recommendedManga = shelf.manga.slice(0, 5);
 const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
+const currentManga = recommendedManga[0];
+const currentImageSet = newestImageSets[0];
+const currentDoujinshi = recommendedDoujinshi[0];
 ---
 
 <BaseLayout title="AstroSphere" description="An independent archive of manga, image sets, doujinshi, artifacts, and connected trails.">
   <div class="page-shell home">
     <div class="archive-columns">
       <aside class="recommendations" aria-labelledby="recommendations-title">
-        <header class="column-heading"><h1 id="recommendations-title">AstroSphere</h1><p>Things worth opening.</p></header>
+        <header class="column-heading"><h1 id="recommendations-title">AstroSphere</h1><p>Astro Chan's working archive.</p></header>
 
-        <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Manga</h2><a href="/shelf/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
-        <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Newest image sets</h2><a href="/shelf/image-sets">All →</a></div><div class="recommendation-list">{newestImageSets.map((imageSet) => <ImageSetCard {imageSet} />)}</div></section>
+        <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Current attention</h2><a href="/now">Now →</a></div><ul>{currentManga && <li><span>Read next</span><a href={`/manga/${currentManga.data.slug}`}>{currentManga.data.title}</a></li>}{currentImageSet && <li><span>Recent set</span><a href={`/image-sets/${currentImageSet.data.slug}`}>{currentImageSet.data.title}</a></li>}{currentDoujinshi && <li><span>Adult shelf</span><a href={`/manga/${currentDoujinshi.data.slug}`}>{currentDoujinshi.data.title}</a></li>}</ul></section>
+        <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Read next</h2><a href="/shelf/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
+        <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Recent sets</h2><a href="/shelf/image-sets">All →</a></div><div class="recommendation-list">{newestImageSets.map((imageSet) => <ImageSetCard {imageSet} />)}</div></section>
         <section aria-labelledby="doujinshi-recommendations-title"><div class="feed-heading"><h2 id="doujinshi-recommendations-title">Doujinshi</h2><a href="/shelf/doujinshi">All →</a></div><div class="recommendation-list">{recommendedDoujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
       </aside>
 
@@ -64,10 +68,10 @@ const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
         <div class="dispatch-list">
           {dispatches.map((dispatch) => <article class="dispatch-item">
             <time datetime={dispatch.date.toISOString()}>{dispatch.date.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" })}</time>
-            {dispatch.kind === "artifact" && <ArtifactCard artifact={dispatch.item} visual />}
-            {dispatch.kind === "image-set" && <div class="dispatch-copy"><p class="dispatch-type">Image set</p><h3><a href={`/image-sets/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h3><p>{dispatch.item.data.summary}</p></div>}
-            {dispatch.kind === "chapter" && <div class="dispatch-copy"><p class="dispatch-type">Manga chapter</p><h3><a href={`/manga/${dispatch.item.data.series}/${dispatch.item.data.slug}`}>{dispatch.seriesTitle} — {dispatch.item.data.title}</a></h3><p>Chapter {dispatch.item.data.number} added to the reader.</p></div>}
-            {dispatch.kind === "trail" && <div class="dispatch-copy"><p class="dispatch-type">Trail</p><h3><a href={`/trails/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h3><p>{dispatch.item.data.summary}</p></div>}
+            {dispatch.kind === "artifact" && <div class="dispatch-copy"><p class="dispatch-type">New artifact</p><ArtifactCard artifact={dispatch.item} visual /></div>}
+            {dispatch.kind === "image-set" && <div class="dispatch-copy"><p class="dispatch-type">New image set</p><h3><a href={`/image-sets/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h3><p>{dispatch.item.data.summary}</p></div>}
+            {dispatch.kind === "chapter" && <div class="dispatch-copy"><p class="dispatch-type">New chapter</p><h3><a href={`/manga/${dispatch.item.data.series}/${dispatch.item.data.slug}`}>{dispatch.seriesTitle} — {dispatch.item.data.title}</a></h3><p>Chapter {dispatch.item.data.number} added to the reader.</p></div>}
+            {dispatch.kind === "trail" && <div class="dispatch-copy"><p class="dispatch-type">Updated trail</p><h3><a href={`/trails/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h3><p>{dispatch.item.data.summary}</p></div>}
           </article>)}
         </div>
         <section class="dispatch-notes" aria-labelledby="archive-note-title"><h2 id="archive-note-title">About this place</h2><p>An independent archive of manga, image sets, doujinshi, artifacts, and connected trails.</p><p><a href="/about">More about AstroSphere →</a></p></section>
@@ -83,6 +87,11 @@ const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
   .column-heading h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -.05em; line-height: var(--leading-tight); margin: 0; }
   .column-heading p, .dispatch-header > p:last-child { color: var(--color-muted); font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); margin: var(--space-1) 0 0; }
   .recommendations > section { margin-top: var(--section-space); }
+  .current-attention { margin-top: var(--section-space); }
+  .current-attention ul { border-top: 1px solid var(--color-border); list-style: none; margin: 0; padding: 0; }
+  .current-attention li { border-bottom: 1px solid var(--color-border); display: grid; gap: var(--space-1); padding: var(--space-2) 0; }
+  .current-attention li span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .current-attention li a { font-family: var(--font-serif); font-size: var(--text-lg); text-decoration: none; }
   .feed-heading { align-items: baseline; display: flex; justify-content: space-between; padding-bottom: var(--space-1); }
   .feed-heading h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: 0; }
   .feed-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
@@ -94,6 +103,7 @@ const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
   .dispatch-item { border-bottom: 1px solid var(--color-border); padding: var(--space-3) 0; }
   .dispatch-item > time { color: var(--color-muted); display: block; font-size: var(--text-sm); margin-bottom: var(--space-2); }
   .dispatch-item :global(.artifact-card--visual) { border-top: 0; padding: 0; }
+  .dispatch-copy :global(.artifact-card--visual) { margin-top: var(--space-1); }
   .dispatch-copy { max-width: 48rem; }
   .dispatch-copy h3 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-1) 0; }
   .dispatch-copy h3 a { text-decoration: none; }

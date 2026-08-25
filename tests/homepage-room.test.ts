@@ -66,3 +66,13 @@ test("keeps recommendations and dispatches visually distinct", () => {
   expect(homepage).toContain('class="dispatch-item"');
   expect(homepage).toContain('class="recommendation-list"');
 });
+
+test("gives the archive a present-tense point of view", () => {
+  expect(homepage).toContain('class="current-attention"');
+  expect(homepage).toContain("Current attention");
+  expect(homepage).toContain("Read next");
+  expect(homepage).toContain("Recent sets");
+  expect(homepage).toContain("New chapter");
+  expect(homepage).toContain("New image set");
+  expect(homepage).not.toContain("Things worth opening.");
+});
