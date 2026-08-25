@@ -13,6 +13,15 @@ test("sphere cards render an optional cover image", async () => {
 test("sphere covers use a compact responsive row frame", async () => {
   const component = await Bun.file(`${workspace}/src/components/SphereCard.astro`).text();
 
-  expect(component).toMatch(/height:\s*clamp\(5rem,\s*12vw,\s*7rem\)/);
+  expect(component).toContain("aspect-ratio: 1 / 1");
   expect(component).toMatch(/object-fit:\s*cover/);
+});
+
+test("sphere rows follow the existing collection card pattern", async () => {
+  const component = await Bun.file(`${workspace}/src/components/SphereCard.astro`).text();
+
+  expect(component).toContain("sphere-row--has-cover");
+  expect(component).toMatch(/grid-template-columns:\s*7rem\s+minmax\(0,\s*1fr\)/);
+  expect(component).toContain('class="details"');
+  expect(component).not.toContain("border-left: 3px");
 });
