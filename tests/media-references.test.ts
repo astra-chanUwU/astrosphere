@@ -49,13 +49,19 @@ test("collects managed frontmatter, Markdown, HTML, and reader pages", () => {
   ]);
 });
 
-test("does not create thumbnail references for regular manga chapters", () => {
+test("requires cover artwork and page thumbnails for regular manga", () => {
   const references = collectManagedMediaReferences([
     {
       collection: "mangaSeries",
       path: "book.md",
       body: "",
-      data: { slug: "book", visibility: "published", format: "manga" },
+      data: {
+        slug: "book",
+        visibility: "published",
+        format: "manga",
+        cover: { src: "/manga/book/cover.webp" },
+        art: [{ src: "/media/images/book/art.webp" }],
+      },
     },
     {
       collection: "mangaChapters",
@@ -73,7 +79,12 @@ test("does not create thumbnail references for regular manga chapters", () => {
   ]);
 
   expect(references.map(({ publicPath }) => publicPath)).toEqual([
+    "/media/images/book/art.webp",
+    "/manga/book/cover.webp",
+    "/manga/book/thumbnails/cover.webp",
+    "/manga/book/thumbnails/art/001.webp",
     "/manga/book/chapter-001/001.webp",
+    "/manga/book/chapter-001/thumbnails/001.webp",
   ]);
 });
 

@@ -1,18 +1,21 @@
 import { randomUUID } from "node:crypto";
-import { lstat, mkdir, rename, rm, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
+import { lstat, mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 import sharp, { type Metadata } from "sharp";
 import {
   createDoujinshiThumbnailSrc,
+  createMangaArtworkThumbnailSrc,
+  createMangaCoverThumbnailSrc,
   createMangaPageSrc,
 } from "../manga-reader";
 import type { MediaContentEntry } from "./content-source";
-import { resolveMediaUrl } from "./paths";
+import { isManagedMediaUrl, resolveMediaUrl } from "./paths";
 
 export const doujinshiThumbnailWidth = 320;
 export const doujinshiThumbnailQuality = 70;
 
 export type DoujinshiThumbnailItem = {
+  kind?: "page" | "cover" | "art";
   series: string;
   chapter: string;
   page: number;
@@ -150,8 +153,12 @@ export const generateDoujinshiThumbnails = async (
   };
   if (options.dryRun) return result;
 
-  for (const item of plan) {
-    if (item.action === "skip") continue;
+  const work = plan.filter((item) => item.action === "generate");
+  let next = 0;
+  const processNext = async (): Promise<void> => {
+    const item = work[next];
+    next += 1;
+    if (!item) return;
     let temporary: string | undefined;
     try {
       const output = await (adapters.renderThumbnail ?? renderThumbnail)(item.sourcePath);
@@ -170,7 +177,9 @@ export const generateDoujinshiThumbnails = async (
     } finally {
       if (temporary) await rm(temporary, { force: true });
     }
-  }
+    await processNext();
+  };
+  await Promise.all(Array.from({ length: Math.min(4, work.length) }, () => processNext()));
   return result;
 };
 
@@ -229,4 +238,145 @@ export const collectDoujinshiThumbnailItems = (
   return items.sort((left, right) =>
     left.destinationPublicPath.localeCompare(right.destinationPublicPath),
   );
+};
+
+const supportedThumbnailFormat = (format: string): boolean =>
+  format === "manga" || format === "doujinshi";
+
+export const collectMangaThumbnailItems = (
+  entries: MediaContentEntry[],
+  root: string,
+  seriesFilter?: string,
+): DoujinshiThumbnailItem[] => {
+  const seriesFormats = new Map<string, string>();
+  const items: DoujinshiThumbnailItem[] = [];
+
+  for (const entry of entries) {
+    if (entry.collection !== "mangaSeries") continue;
+    const series = requiredString(entry.data.slug, "series slug", entry.path);
+    const format = requiredString(entry.data.format, "series format", entry.path);
+    seriesFormats.set(series, format);
+    if (!supportedThumbnailFormat(format) || (seriesFilter && series !== seriesFilter)) continue;
+
+    const cover = entry.data.cover as { src?: unknown } | undefined;
+    if (cover?.src !== undefined) {
+      const sourcePublicPath = requiredString(cover.src, "cover source", entry.path);
+      const destinationPublicPath = createMangaCoverThumbnailSrc(series, sourcePublicPath);
+      items.push({
+        kind: "cover",
+        series,
+        chapter: "series",
+        page: 0,
+        sourcePublicPath,
+        destinationPublicPath,
+        sourcePath: resolveMediaUrl(sourcePublicPath, root).filePath,
+        destinationPath: resolveMediaUrl(destinationPublicPath, root).filePath,
+      });
+    }
+
+    const art = Array.isArray(entry.data.art) ? entry.data.art : [];
+    art.forEach((piece, index) => {
+      const sourcePublicPath = requiredString(
+        (piece as { src?: unknown })?.src,
+        `artwork ${index + 1} source`,
+        entry.path,
+      );
+      if (!isManagedMediaUrl(sourcePublicPath)) return;
+      const destinationPublicPath = createMangaArtworkThumbnailSrc(series, index + 1, typeof cover?.src === "string" ? cover.src : undefined);
+      items.push({
+        kind: "art",
+        series,
+        chapter: "series",
+        page: index + 1,
+        sourcePublicPath,
+        destinationPublicPath,
+        sourcePath: resolveMediaUrl(sourcePublicPath, root).filePath,
+        destinationPath: resolveMediaUrl(destinationPublicPath, root).filePath,
+      });
+    });
+  }
+
+  if (seriesFilter !== undefined) {
+    const format = seriesFormats.get(seriesFilter);
+    if (format === undefined) throw new Error(`Manga or doujinshi series not found: ${seriesFilter}`);
+    if (!supportedThumbnailFormat(format)) {
+      throw new Error(`Series does not support thumbnails: ${seriesFilter}`);
+    }
+  }
+
+  for (const entry of entries) {
+    if (entry.collection !== "mangaChapters" || entry.data.availability === "unavailable") continue;
+    const series = requiredString(entry.data.series, "chapter series", entry.path);
+    if (!supportedThumbnailFormat(seriesFormats.get(series) ?? "") || (seriesFilter && series !== seriesFilter)) continue;
+    const chapter = requiredString(entry.data.slug, "chapter slug", entry.path);
+    const pagePath = requiredString(entry.data.pagePath, "page path", entry.path);
+    const pageExtension = requiredString(entry.data.pageExtension, "page extension", entry.path);
+    const pageCount = entry.data.pageCount;
+    if (!Number.isInteger(pageCount) || (pageCount as number) <= 0) {
+      throw new Error(`Invalid page count in ${entry.path}`);
+    }
+    for (let page = 1; page <= (pageCount as number); page += 1) {
+      const sourcePublicPath = createMangaPageSrc(pagePath, page, pageExtension);
+      const destinationPublicPath = createDoujinshiThumbnailSrc(pagePath, page);
+      items.push({
+        kind: "page",
+        series,
+        chapter,
+        page,
+        sourcePublicPath,
+        destinationPublicPath,
+        sourcePath: resolveMediaUrl(sourcePublicPath, root).filePath,
+        destinationPath: resolveMediaUrl(destinationPublicPath, root).filePath,
+      });
+    }
+  }
+
+  return items.sort((left, right) =>
+    left.destinationPublicPath.localeCompare(right.destinationPublicPath),
+  );
+};
+
+export const pruneMangaThumbnails = async (options: {
+  items: DoujinshiThumbnailItem[];
+  root: string;
+  dryRun: boolean;
+}): Promise<{ planned: string[]; removed: string[] }> => {
+  const expected = new Set(options.items.map((item) => item.destinationPath));
+  const seriesRoots = new Set<string>();
+  for (const item of options.items) {
+    const match = item.destinationPublicPath.match(/^\/manga\/([^/]+)\//);
+    if (match?.[1]) seriesRoots.add(join(options.root, "manga", match[1]));
+  }
+
+  const planned: string[] = [];
+  const visit = async (directory: string, insideThumbnails = false): Promise<void> => {
+    let entries;
+    try {
+      entries = await readdir(directory, { withFileTypes: true });
+    } catch (error) {
+      if (missingFile(error)) return;
+      throw error;
+    }
+    for (const entry of entries) {
+      const path = join(directory, entry.name);
+      if (entry.isSymbolicLink()) {
+        if (insideThumbnails || entry.name === "thumbnails") {
+          throw new Error(`Thumbnail cleanup refuses symbolic links: ${path}`);
+        }
+        continue;
+      }
+      if (entry.isDirectory()) {
+        await visit(path, insideThumbnails || entry.name === "thumbnails");
+      } else if (insideThumbnails && entry.isFile() && entry.name.endsWith(".webp") && !expected.has(path)) {
+        planned.push(path);
+      }
+    }
+  };
+
+  for (const seriesRoot of [...seriesRoots].sort()) await visit(seriesRoot);
+  planned.sort();
+  if (!options.dryRun) {
+    for (const path of planned) await rm(path);
+  }
+  return { planned, removed: options.dryRun ? [] : [...planned] };
 };

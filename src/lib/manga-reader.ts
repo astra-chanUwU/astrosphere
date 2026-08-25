@@ -62,6 +62,38 @@ export const createMangaPageSrc = (pagePath: string, page: number, extension = "
 export const createDoujinshiThumbnailSrc = (pagePath: string, page: number): string =>
   `${normalizeMangaPagePath(pagePath)}/thumbnails/${paddedPageNumber(page)}.webp`;
 
+const normalizeSeriesSlug = (slug: string): string => {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(`Expected a safe manga series slug, received "${slug}".`);
+  }
+  return slug;
+};
+
+const mangaSeriesMediaBase = (slug: string, source?: string): string => {
+  const fallback = `/manga/${normalizeSeriesSlug(slug)}`;
+  if (!source?.startsWith("/manga/")) return fallback;
+  const pathname = new URL(source, "http://manga.local").pathname;
+  const segment = pathname.split("/")[2];
+  return segment ? `/manga/${segment}` : fallback;
+};
+
+export const createMangaCoverThumbnailSrc = (slug: string, source?: string): string =>
+  `${mangaSeriesMediaBase(slug, source)}/thumbnails/cover.webp`;
+
+export const createMangaArtworkThumbnailSrc = (slug: string, index: number, seriesSource?: string): string =>
+  `${mangaSeriesMediaBase(slug, seriesSource)}/thumbnails/art/${paddedPageNumber(index)}.webp`;
+
+const supportsGeneratedThumbnails = (format: MangaFormat): boolean =>
+  format === "manga" || format === "doujinshi";
+
+export const createMangaCoverPreviewSrc = (format: MangaFormat, slug: string, source: string): string =>
+  supportsGeneratedThumbnails(format) ? createMangaCoverThumbnailSrc(slug, source) : source;
+
+export const createMangaArtworkPreviewSrc = (format: MangaFormat, slug: string, index: number, source: string, seriesSource?: string): string =>
+  supportsGeneratedThumbnails(format) && (source.startsWith("/manga/") || source.startsWith("/media/images/"))
+    ? createMangaArtworkThumbnailSrc(slug, index, seriesSource)
+    : source;
+
 export const sortMangaChapters = <T extends ChapterOrder>(chapters: T[]) =>
   [...chapters].sort((left, right) => left.data.number - right.data.number);
 

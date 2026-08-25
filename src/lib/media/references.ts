@@ -3,7 +3,7 @@ import {
   isPublishedMediaEntry,
   type MediaContentEntry,
 } from "./content-source";
-import { createDoujinshiThumbnailSrc } from "../manga-reader";
+import { createDoujinshiThumbnailSrc, createMangaArtworkThumbnailSrc, createMangaCoverThumbnailSrc } from "../manga-reader";
 
 export type MediaReference = {
   source: string;
@@ -100,7 +100,7 @@ const collectReaderReferences = (
     publicPath: `${base}/${String(index + 1).padStart(3, "0")}.${extension}`,
   }));
   const series = typeof entry.data.series === "string" ? entry.data.series : undefined;
-  if (!series || seriesFormats.get(series) !== "doujinshi") return pages;
+  if (!series || !["manga", "doujinshi"].includes(seriesFormats.get(series) ?? "")) return pages;
   return [
     ...pages,
     ...Array.from({ length: pageCount as number }, (_, index) => ({
@@ -109,6 +109,28 @@ const collectReaderReferences = (
       publicPath: createDoujinshiThumbnailSrc(base, index + 1),
     })),
   ];
+};
+
+const collectSeriesThumbnailReferences = (entry: MediaContentEntry): MediaReference[] => {
+  if (entry.collection !== "mangaSeries" || !["manga", "doujinshi"].includes(String(entry.data.format))) return [];
+  const slug = typeof entry.data.slug === "string" ? entry.data.slug : undefined;
+  if (!slug) return [];
+  const references: MediaReference[] = [];
+  const cover = entry.data.cover as { src?: unknown } | undefined;
+  if (typeof cover?.src === "string") {
+    references.push({ source: entry.path, field: "thumbnail.cover", publicPath: createMangaCoverThumbnailSrc(slug, cover.src) });
+  }
+  const art = Array.isArray(entry.data.art) ? entry.data.art : [];
+  art.forEach((piece, index) => {
+    const source = (piece as { src?: unknown })?.src;
+    if (typeof source !== "string" || !isManagedMediaUrl(source)) return;
+    references.push({
+      source: entry.path,
+      field: `thumbnail.art[${index + 1}]`,
+      publicPath: createMangaArtworkThumbnailSrc(slug, index + 1, typeof cover?.src === "string" ? cover.src : undefined),
+    });
+  });
+  return references;
 };
 
 export const collectManagedMediaReferences = (
@@ -136,6 +158,7 @@ export const collectManagedMediaReferences = (
         left.publicPath.localeCompare(right.publicPath),
     );
     collected.push(...frontmatter);
+    collected.push(...collectSeriesThumbnailReferences(entry));
     collected.push(
       ...collectBodyMatches(
         entry.body,

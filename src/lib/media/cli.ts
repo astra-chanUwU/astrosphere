@@ -44,7 +44,7 @@ export const thumbnailHelp = `Usage:
   bun run media:thumbnails [--series <slug>] [--dry-run] [--force]
 
 Options:
-  --series <slug>  Restrict generation to one doujinshi series
+  --series <slug>  Restrict generation to one manga or doujinshi series
   --dry-run        Show planned generation without writing files
   --force          Regenerate valid fresh thumbnails
   -h, --help       Show this help`;

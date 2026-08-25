@@ -1,6 +1,10 @@
 import { expect, test } from "bun:test";
 import {
   createDoujinshiThumbnailSrc,
+  createMangaArtworkThumbnailSrc,
+  createMangaArtworkPreviewSrc,
+  createMangaCoverThumbnailSrc,
+  createMangaCoverPreviewSrc,
   createMangaPageSrc,
   getMangaChapterAvailabilityLabel,
   getMangaChapterPages,
@@ -30,6 +34,30 @@ test("creates zero-padded doujinshi thumbnail URLs", () => {
   );
   expect(createDoujinshiThumbnailSrc("/manga/witches-and-cigarettes/chapter-001/", 31)).toBe(
     "/manga/witches-and-cigarettes/chapter-001/thumbnails/031.webp",
+  );
+});
+
+test("creates compact series cover and artwork thumbnail URLs", () => {
+  expect(createMangaCoverThumbnailSrc("lycoris-recoil")).toBe(
+    "/manga/lycoris-recoil/thumbnails/cover.webp",
+  );
+  expect(createMangaCoverThumbnailSrc("sorry-but-im-not-into-yuri", "/manga/sorry-but-Im-not-into-yuri/cover.webp")).toBe(
+    "/manga/sorry-but-Im-not-into-yuri/thumbnails/cover.webp",
+  );
+  expect(createMangaArtworkThumbnailSrc("lycoris-recoil", 2)).toBe(
+    "/manga/lycoris-recoil/thumbnails/art/002.webp",
+  );
+  expect(createMangaArtworkPreviewSrc("manga", "lycoris-recoil", 2, "/media/images/lycoris/art.webp", "/manga/lycoris-recoil/cover.webp")).toBe(
+    "/manga/lycoris-recoil/thumbnails/art/002.webp",
+  );
+  expect(createMangaArtworkPreviewSrc("manga", "lycoris-recoil", 2, "https://example.com/art.jpg")).toBe(
+    "https://example.com/art.jpg",
+  );
+  expect(createMangaCoverPreviewSrc("manga", "lycoris-recoil", "/manga/lycoris-recoil/cover.webp")).toBe(
+    "/manga/lycoris-recoil/thumbnails/cover.webp",
+  );
+  expect(createMangaCoverPreviewSrc("one-shot", "short", "/manga/short/cover.webp")).toBe(
+    "/manga/short/cover.webp",
   );
 });
 
@@ -106,9 +134,16 @@ test("manga reader passes root-relative chapter paths to page URL generation", (
   expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)");
 });
 
-test("doujinshi cover cards keep their existing full cover source", () => {
-  expect(seriesCard).toContain("series.data.cover.src");
-  expect(seriesCard).not.toContain("createDoujinshiThumbnailSrc");
+test("compact manga cards and series headers use cover thumbnails", () => {
+  expect(seriesCard).toContain("createMangaCoverPreviewSrc(series.data.format, series.data.slug, series.data.cover.src)");
+  expect(seriesPage).toContain("createMangaCoverPreviewSrc(series.data.format, series.data.slug, series.data.cover.src)");
+  expect(seriesCard).not.toContain("src={series.data.cover.src}");
+});
+
+test("regular manga readers use page thumbnails without squeezing unpreviewed formats", () => {
+  expect(reader).toContain('series.data.format === "manga" || series.data.format === "doujinshi"');
+  expect(reader).toContain('class:list={["reader-pages", { "has-page-preview": showPagePreview }]}');
+  expect(reader).toContain('.reader-pages.has-page-preview');
 });
 
 test("manga reader and chapter list show unavailable chapters without page images", () => {

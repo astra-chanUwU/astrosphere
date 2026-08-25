@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promis
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { OptimizeOptions, OptimizeResult } from "../src/lib/media/optimizer";
+import type { DoujinshiThumbnailOptions, DoujinshiThumbnailResult } from "../src/lib/media/doujinshi-thumbnails";
 import {
   importMangaVolume,
   importMangaVolumes,
@@ -13,6 +14,19 @@ import {
 } from "../src/lib/media/manga-volume";
 
 const entry = (path: string) => ({ path, isDirectory: false });
+
+const generateThumbnails = async (options: DoujinshiThumbnailOptions): Promise<DoujinshiThumbnailResult> => {
+  for (const item of options.items) {
+    await mkdir(join(item.destinationPath, ".."), { recursive: true });
+    await writeFile(item.destinationPath, `thumbnail-${item.page}`);
+  }
+  return {
+    plan: options.items.map((item) => ({ ...item, action: "generate" as const, reason: "force" as const })),
+    generated: options.items.length,
+    skipped: 0,
+    failed: [],
+  };
+};
 
 test("groups standard and numbered bonus chapters without losing pages", () => {
   const chapters = parseMangaVolumeEntries([
@@ -160,6 +174,7 @@ test("imports every discovered chapter while preserving the source", async () =>
         extractEntry: async (_archive, archiveEntry, destination) =>
           writeFile(destination, archiveEntry.path),
         optimize,
+        generateThumbnails,
         dimensions: async () => ({ width: 1200, height: 1707 }),
       },
     );
@@ -170,7 +185,7 @@ test("imports every discovered chapter while preserving the source", async () =>
     ]);
     expect(
       (await readdir(join(mediaRoot, "manga/android-series/chapter-001"))).sort(),
-    ).toEqual(["001.webp", "002.webp"]);
+    ).toEqual(["001.webp", "002.webp", "thumbnails"]);
     expect(
       await readFile(
         join(projectRoot, "src/content/manga/chapters/android-series-chapter-001-1.md"),
@@ -250,6 +265,7 @@ test("imports every archive discovered in a supplied folder", async () => {
         extractEntry: async (_archive, archiveEntry, destination) =>
           writeFile(destination, archiveEntry.path),
         optimize,
+        generateThumbnails,
         dimensions: async () => ({ width: 1200, height: 1707 }),
       },
     );

@@ -162,6 +162,7 @@ entries:
       "001.webp",
       "002.webp",
     ]);
+    expect(await readFile(join(mediaRoot, "manga/example/thumbnails/cover.webp"), "utf8")).toBe("thumbnail-0");
     expect(await readFile(join(projectRoot, "src/content/manga/series/example.md"), "utf8"))
       .toContain("format: doujinshi");
     const gallery = await readFile(join(projectRoot, "src/content/image-sets/gallery.md"), "utf8");

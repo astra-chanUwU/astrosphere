@@ -22,6 +22,8 @@ import {
   type OptimizeResult,
 } from "./optimizer";
 import { runCommand } from "./process";
+import { generateDoujinshiThumbnails, type DoujinshiThumbnailItem } from "./doujinshi-thumbnails";
+import { createDoujinshiThumbnailSrc, createMangaPageSrc } from "../manga-reader";
 
 export type MangaVolumeChapter = {
   number: number;
@@ -63,6 +65,7 @@ type MangaVolumeImportAdapters = {
     destination: string,
   ) => Promise<void>;
   optimize?: (options: OptimizeOptions) => Promise<OptimizeResult>;
+  generateThumbnails?: typeof generateDoujinshiThumbnails;
   dimensions?: (path: string) => Promise<{ width: number; height: number }>;
 };
 
@@ -284,6 +287,7 @@ export const importMangaVolume = async (
     extractionRoot = await mkdtemp(join(tmpdir(), "astrosphere-volume-"));
     const extractEntry = adapters.extractEntry ?? extractZipEntry;
     const optimize = adapters.optimize ?? optimizeMedia;
+    const generateThumbnails = adapters.generateThumbnails ?? generateDoujinshiThumbnails;
     const dimensions = adapters.dimensions ?? readWebpDimensions;
     const drafts: MangaChapterDraft[] = [];
 
@@ -307,6 +311,27 @@ export const importMangaVolume = async (
         dryRun: false,
         webReader: true,
       });
+      const pagePath = `/manga/${options.series}/${chapter.pathSegment}`;
+      const thumbnailItems: DoujinshiThumbnailItem[] = optimized.plan.items.map((_, index) => {
+        const page = index + 1;
+        const sourcePublicPath = createMangaPageSrc(pagePath, page, "webp");
+        const destinationPublicPath = createDoujinshiThumbnailSrc(pagePath, page);
+        return {
+          kind: "page",
+          series: options.series,
+          chapter: `${options.series}-${chapter.pathSegment}`,
+          page,
+          sourcePublicPath,
+          destinationPublicPath,
+          sourcePath: join(optimizedDirectory, `${String(page).padStart(3, "0")}.webp`),
+          destinationPath: join(optimizedDirectory, "thumbnails", `${String(page).padStart(3, "0")}.webp`),
+        };
+      });
+      const thumbnailResult = await generateThumbnails({ items: thumbnailItems, dryRun: false, force: true });
+      if (thumbnailResult.failed.length > 0) {
+        const failure = thumbnailResult.failed[0]!;
+        throw new Error(`Thumbnail generation failed for ${failure.item.sourcePublicPath}: ${failure.message}`);
+      }
       const size = await dimensions(join(optimizedDirectory, "001.webp"));
       drafts.push({
         series: options.series,

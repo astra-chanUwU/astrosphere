@@ -40,6 +40,7 @@ import {
 } from "./doujinshi-thumbnails";
 import {
   createDoujinshiThumbnailSrc,
+  createMangaCoverThumbnailSrc,
   createMangaPageSrc,
 } from "../manga-reader";
 
@@ -280,6 +281,25 @@ const stageDoujinshi = async (
 
   if (entry.manifest.mode === "create") {
     await copyFile(join(readyMedia, batchChapterSegment(entry.manifest.chapters[0]!.number), "001.webp"), join(readyMedia, "cover.webp"));
+    const coverSource = `/manga/${entry.slug}/cover.webp`;
+    const coverThumbnail = createMangaCoverThumbnailSrc(entry.slug);
+    const coverResult = await generateThumbnails({
+      items: [{
+        kind: "cover",
+        series: entry.slug,
+        chapter: "series",
+        page: 0,
+        sourcePublicPath: coverSource,
+        destinationPublicPath: coverThumbnail,
+        sourcePath: join(readyMedia, "cover.webp"),
+        destinationPath: join(readyMedia, "thumbnails", "cover.webp"),
+      }],
+      dryRun: false,
+      force: true,
+    });
+    if (coverResult.failed.length > 0) {
+      throw new Error(`Thumbnail generation failed for ${coverSource}: ${coverResult.failed[0]!.message}`);
+    }
     content.unshift({
       path: join(plan.projectRoot, "src/content/manga/series", `${entry.slug}.md`),
       source: renderDoujinshiSeries(entry.manifest, firstPage!, plan.status),

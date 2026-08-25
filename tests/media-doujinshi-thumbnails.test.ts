@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import {
   mkdir,
   mkdtemp,
+  readFile,
   readdir,
   rm,
   stat,
@@ -13,8 +14,10 @@ import { join } from "node:path";
 import sharp from "sharp";
 import {
   collectDoujinshiThumbnailItems,
+  collectMangaThumbnailItems,
   generateDoujinshiThumbnails,
   planDoujinshiThumbnails,
+  pruneMangaThumbnails,
   type DoujinshiThumbnailItem,
 } from "../src/lib/media/doujinshi-thumbnails";
 
@@ -149,6 +152,36 @@ test("a failed render leaves no temporary or partial thumbnail", async () => {
   }
 });
 
+test("generates independent thumbnails with a bounded worker pool", async () => {
+  const root = await mkdtemp(join(tmpdir(), "doujinshi-thumbnails-workers-"));
+  const items = Array.from({ length: 6 }, (_, index) => itemFor(root, index + 1));
+  let active = 0;
+  let maximumActive = 0;
+  try {
+    await mkdir(join(root, "manga/example/chapter-001"), { recursive: true });
+    for (const item of items) {
+      await sharp({ create: { width: 600, height: 900, channels: 3, background: "purple" } }).webp().toFile(item.sourcePath);
+    }
+    const output = await sharp({ create: { width: 320, height: 480, channels: 3, background: "purple" } }).webp().toBuffer();
+    const result = await generateDoujinshiThumbnails(
+      { items, dryRun: false, force: false },
+      { renderThumbnail: async () => {
+        active += 1;
+        maximumActive = Math.max(maximumActive, active);
+        await Bun.sleep(15);
+        active -= 1;
+        return output;
+      } },
+    );
+    expect(result.failed).toEqual([]);
+    expect(result.generated).toBe(6);
+    expect(maximumActive).toBeGreaterThan(1);
+    expect(maximumActive).toBeLessThanOrEqual(4);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("discovers only available chapters whose parent series is doujinshi", async () => {
   const root = await mkdtemp(join(tmpdir(), "doujinshi-thumbnails-"));
   try {
@@ -218,6 +251,79 @@ test("discovers only available chapters whose parent series is doujinshi", async
       "not a doujinshi",
     );
     expect((await stat(root)).isDirectory()).toBe(true);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("discovers cover artwork and page thumbnails for manga and doujinshi", () => {
+  const root = "/managed";
+  const entries = [
+    {
+      collection: "mangaSeries" as const,
+      path: "manga.md",
+      body: "",
+      data: {
+        slug: "regular",
+        visibility: "published",
+        format: "manga",
+        cover: { src: "/manga/regular/cover.webp" },
+        art: [{ src: "/media/images/regular/art.webp" }, { src: "https://example.com/remote.jpg" }],
+      },
+    },
+    {
+      collection: "mangaSeries" as const,
+      path: "doujinshi.md",
+      body: "",
+      data: {
+        slug: "book",
+        visibility: "published",
+        format: "doujinshi",
+        cover: { src: "/manga/book/cover.webp" },
+        art: [],
+      },
+    },
+    {
+      collection: "mangaChapters" as const,
+      path: "regular-chapter.md",
+      body: "",
+      data: {
+        slug: "regular-chapter-001",
+        series: "regular",
+        status: "published",
+        pagePath: "/manga/regular/chapter-001",
+        pageExtension: "webp",
+        pageCount: 1,
+      },
+    },
+  ];
+
+  expect(collectMangaThumbnailItems(entries, root).map((item) => item.destinationPublicPath)).toEqual([
+    "/manga/book/thumbnails/cover.webp",
+    "/manga/regular/chapter-001/thumbnails/001.webp",
+    "/manga/regular/thumbnails/art/001.webp",
+    "/manga/regular/thumbnails/cover.webp",
+  ]);
+});
+
+test("prunes only stale files inside reserved thumbnail directories", async () => {
+  const root = await mkdtemp(join(tmpdir(), "manga-thumbnail-prune-"));
+  const item = itemFor(root, 1);
+  const thumbnails = join(root, "manga/example/chapter-001/thumbnails");
+  try {
+    await mkdir(thumbnails, { recursive: true });
+    await writeFile(item.destinationPath, "expected");
+    await writeFile(join(thumbnails, "999.webp"), "stale");
+    await writeFile(join(root, "manga/example/chapter-001/999.webp"), "original");
+
+    const preview = await pruneMangaThumbnails({ items: [item], root, dryRun: true });
+    expect(preview.planned.map((path) => path.endsWith("/999.webp"))).toEqual([true]);
+    expect((await readdir(thumbnails)).sort()).toEqual(["001.webp", "999.webp"]);
+
+    const result = await pruneMangaThumbnails({ items: [item], root, dryRun: false });
+    expect(result.removed).toHaveLength(1);
+    expect(await readdir(thumbnails)).toEqual(["001.webp"]);
+    expect(await readFile(join(root, "manga/example/chapter-001/999.webp"), "utf8")).toBe("original");
   } finally {
     await rm(root, { recursive: true, force: true });
   }

@@ -91,6 +91,7 @@ test("parses the shared command vocabulary", () => {
   expect(thumbnailHelp).toContain(
     "media:thumbnails [--series <slug>] [--dry-run] [--force]",
   );
+  expect(thumbnailHelp).toContain("manga or doujinshi series");
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
 });
@@ -592,7 +593,7 @@ test("exposes and dispatches the standalone thumbnail alias", async () => {
     });
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
-    expect(result.stdout).toContain("Selected pages: 0");
+    expect(result.stdout).toContain("Selected thumbnails: 0");
   } finally {
     await rm(root, { recursive: true, force: true });
   }

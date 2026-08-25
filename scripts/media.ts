@@ -39,8 +39,9 @@ import {
 } from "../src/lib/media/manga-remove";
 import { collectManagedMediaReferences } from "../src/lib/media/references";
 import {
-  collectDoujinshiThumbnailItems,
+  collectMangaThumbnailItems,
   generateDoujinshiThumbnails,
+  pruneMangaThumbnails,
 } from "../src/lib/media/doujinshi-thumbnails";
 import { createBunMediaFetch } from "../src/lib/media/server";
 import {
@@ -193,22 +194,27 @@ const thumbnails = async (args: string[]): Promise<void> => {
   const root = requireMediaRoot();
   try {
     const entries = await loadMediaContentEntries(process.cwd());
-    const items = collectDoujinshiThumbnailItems(entries, root, options.series);
+    const items = collectMangaThumbnailItems(entries, root, options.series);
     const result = await generateDoujinshiThumbnails({
       items,
       dryRun: options.dryRun,
       force: options.force,
     });
-    console.log(options.dryRun ? "Doujinshi thumbnail dry run:" : "Doujinshi thumbnails complete:");
-    console.log(`  Selected pages: ${items.length}`);
+    const cleanup = result.failed.length === 0
+      ? await pruneMangaThumbnails({ items, root, dryRun: options.dryRun })
+      : { planned: [], removed: [] };
+    console.log(options.dryRun ? "Manga thumbnail dry run:" : "Manga thumbnails complete:");
+    console.log(`  Selected thumbnails: ${items.length}`);
     if (options.dryRun) {
       for (const item of result.plan) {
         console.log(
           `  ${item.action === "generate" ? "GENERATE" : "SKIP"} ${item.sourcePublicPath} -> ${item.destinationPublicPath} [${item.reason}]`,
         );
       }
+      for (const path of cleanup.planned) console.log(`  PRUNE ${path}`);
     }
     console.log(`  Generated: ${result.generated} | Skipped: ${result.skipped} | Failed: ${result.failed.length}`);
+    console.log(`  Pruned: ${cleanup.removed.length}`);
     for (const failure of result.failed) {
       console.log(`  FAILED ${failure.item.sourcePublicPath}: ${failure.message}`);
     }

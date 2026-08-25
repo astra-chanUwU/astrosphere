@@ -54,7 +54,7 @@ test("reports extension mismatches and corrupt known image files", async () => {
   expect(corrupt.errors[0]?.code).toBe("corrupt");
 });
 
-test("requires readable doujinshi thumbnails no wider than 320px", async () => {
+test("requires every generated manga thumbnail to be readable and no wider than 320px", async () => {
   const reference = {
     source: "src/content/manga/chapters/book-chapter-001.md",
     field: "thumbnails[1]",
@@ -103,6 +103,11 @@ test("requires readable doujinshi thumbnails no wider than 320px", async () => {
     code: "thumbnail-dimensions",
     publicPath: reference.publicPath,
   });
+
+  const coverReference = { ...reference, field: "thumbnail.cover", publicPath: "/manga/book/thumbnails/cover.webp" };
+  const cover = { ...file, publicPath: coverReference.publicPath, relativePath: "manga/book/thumbnails/cover.webp", filePath: "/media/manga/book/thumbnails/cover.webp", width: 321 };
+  const invalidCover = await validateMedia({ root: "/media", references: [coverReference], snapshot: { root: "/media", files: [cover] } });
+  expect(invalidCover.errors[0]?.code).toBe("thumbnail-dimensions");
 });
 
 test("preserves custom reference inspection when an unsupplied snapshot walk omits the file", async () => {
