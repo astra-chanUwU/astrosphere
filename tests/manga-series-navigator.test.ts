@@ -46,6 +46,9 @@ test("receives the series artwork for the compact preview", () => {
   expect(navigator).toContain("art.map");
   expect(navigator).not.toContain("art.slice");
   expect(navigator).toContain("Open full artwork gallery");
+  expect(navigator).toContain("createMangaArtworkPreviewSrc(series.data.format, series.data.slug, index + 1, piece.src, series.data.cover?.src)");
+  expect(navigator).toContain("href={piece.src}");
+  expect(navigator).not.toContain("<img src={piece.src}");
 });
 
 test("uses generated thumbnails for the compact doujinshi page sampler", () => {

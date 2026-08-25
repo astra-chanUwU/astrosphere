@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createDoujinshiThumbnailSrc, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
+import { createDoujinshiThumbnailSrc, createMangaArtworkPreviewSrc, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
 
 interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; art: MangaSeriesEntry["data"]["art"]; }
 const { series, chapters, art } = Astro.props;
@@ -50,7 +50,7 @@ const chapterLabel = (chapter: MangaChapterEntry): string => {
   {art.length > 0 && <section class="art-preview" aria-labelledby="navigator-art-heading">
     <h2 id="navigator-art-heading">Artwork</h2>
     <div class="art-grid">
-      {art.map((piece) => <a href={piece.src} target="_blank" rel="noopener noreferrer"><img src={piece.src} alt={piece.alt ?? "Manga artwork"} loading="lazy" decoding="async" /></a>)}
+      {art.map((piece, index) => <a href={piece.src} target="_blank" rel="noopener noreferrer"><img src={createMangaArtworkPreviewSrc(series.data.format, series.data.slug, index + 1, piece.src, series.data.cover?.src)} alt={piece.alt ?? "Manga artwork"} loading="lazy" decoding="async" /></a>)}
     </div>
     <a class="art-gallery-link" href="#art-heading">Open full artwork gallery</a>
   </section>}
