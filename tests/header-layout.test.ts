@@ -8,6 +8,14 @@ test("uses one compact horizontal inset for the logo and navigation", () => {
   expect(header).toContain("padding:.3rem var(--header-gutter)");
 });
 
+test("keeps the brand strip distinct from the page background in both themes", async () => {
+  const tokens = await Bun.file(new URL("../src/styles/tokens.css", import.meta.url)).text();
+
+  expect(tokens).toContain("--color-bg: #ffffff; --color-surface: #f4f4f4; --color-header-surface: #e9e9e9;");
+  expect(tokens).toContain("--color-bg: #000000; --color-surface: #1b1b1b; --color-header-surface: #1b1b1b;");
+  expect(header).toContain(".brand-row{align-items:center;background:var(--color-header-surface);");
+});
+
 test("uses shared major destinations instead of archive collection links", () => {
   expect(header).toContain("primaryNavigation");
   expect(header).toContain("{primaryNavigation.map((link)");
