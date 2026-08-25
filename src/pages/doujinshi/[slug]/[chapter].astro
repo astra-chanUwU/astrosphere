@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   const bySlug = new Map(series.map((entry) => [entry.data.slug, entry]));
   return chapters.flatMap((chapter) => {
     const parent = bySlug.get(chapter.data.series);
-    return parent && belongsToMangaPublicRoute(parent.data.format, "manga")
+    return parent && belongsToMangaPublicRoute(parent.data.format, "doujinshi")
       ? [{ params: { slug: parent.data.slug, chapter: chapter.data.slug }, props: { series: parent, chapter } }]
       : [];
   });
@@ -23,20 +23,20 @@ const chapters = await getMangaChaptersForSeries(series.data.slug);
 const chapterIndex = chapters.findIndex((entry) => entry.data.slug === chapter.data.slug);
 const previous = chapterIndex > 0 ? chapters[chapterIndex - 1] : undefined;
 const next = chapterIndex >= 0 ? chapters[chapterIndex + 1] : undefined;
-const previousChapter = previous ? { href: getMangaPublicPath(series.data.format, series.data.slug, previous.data.slug), label: `Chapter ${previous.data.number}` } : undefined;
-const nextChapter = next ? { href: getMangaPublicPath(series.data.format, series.data.slug, next.data.slug), label: `Chapter ${next.data.number}` } : undefined;
+const previousChapter = previous ? { href: getMangaPublicPath(series.data.format, series.data.slug, previous.data.slug), label: `Doujinshi ${previous.data.number}` } : undefined;
+const nextChapter = next ? { href: getMangaPublicPath(series.data.format, series.data.slug, next.data.slug), label: `Doujinshi ${next.data.number}` } : undefined;
 const continuationItems = [
-  previous ? { href: getMangaPublicPath(series.data.format, series.data.slug, previous.data.slug), label: `Previous: chapter ${previous.data.number}` } : undefined,
-  next ? { href: getMangaPublicPath(series.data.format, series.data.slug, next.data.slug), label: `Next: chapter ${next.data.number}` } : undefined,
+  previous ? { href: getMangaPublicPath(series.data.format, series.data.slug, previous.data.slug), label: `Previous: ${previous.data.title}` } : undefined,
+  next ? { href: getMangaPublicPath(series.data.format, series.data.slug, next.data.slug), label: `Next: ${next.data.title}` } : undefined,
 ].filter((item): item is { href: string; label: string } => Boolean(item));
 const sidebar: SidebarModel = {
   heading: series.data.title,
   groups: [
-    { items: [{ href: "/manga", label: "All manga" }, { href: getMangaPublicPath(series.data.format, series.data.slug), label: "Series details" }] },
-    { label: "Chapters", items: chapters.map((entry) => ({ href: getMangaPublicPath(series.data.format, series.data.slug, entry.data.slug), label: `Chapter ${entry.data.number}`, current: entry.data.slug === chapter.data.slug })) },
+    { items: [{ href: "/doujinshi", label: "All doujinshi" }, { href: getMangaPublicPath(series.data.format, series.data.slug), label: "Doujinshi details" }] },
+    { label: "Books", items: chapters.map((entry) => ({ href: getMangaPublicPath(series.data.format, series.data.slug, entry.data.slug), label: entry.data.title, current: entry.data.slug === chapter.data.slug })) },
     ...(continuationItems.length ? [{ label: "Continue reading", items: continuationItems }] : []),
   ],
 };
 ---
 
-<BaseLayout title={`${series.data.title} — Chapter ${chapter.data.number}`} description={`Read chapter ${chapter.data.number} of ${series.data.title}.`} sidebar={sidebar} readerDock><MangaContentWarning rating={series.data.rating}><MangaReader {series} {chapter} previousChapter={previousChapter} nextChapter={nextChapter} /></MangaContentWarning></BaseLayout>
+<BaseLayout title={`${series.data.title} — ${chapter.data.title}`} description={`Read ${series.data.title}.`} sidebar={sidebar} readerDock><MangaContentWarning rating={series.data.rating}><MangaReader {series} {chapter} previousChapter={previousChapter} nextChapter={nextChapter} /></MangaContentWarning></BaseLayout>

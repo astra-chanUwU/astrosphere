@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaChapterAvailabilityLabel, getMangaChapterPages, getMangaInstallmentLabel } from "../lib/manga-reader";
+import { createMangaPageSrc, getMangaChapterAvailabilityLabel, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
 
 interface ChapterLink { href: string; label: string; }
 interface Props {
@@ -14,13 +14,14 @@ const pages = getMangaChapterPages(chapter.data);
 const availabilityLabel = getMangaChapterAvailabilityLabel(chapter.data);
 const unavailable = chapter.data.availability === "unavailable";
 const installmentLabel = getMangaInstallmentLabel(series.data.format, chapter.data.number, chapter.data.title);
+const seriesHref = getMangaPublicPath(series.data.format, series.data.slug);
 ---
 
 <article class="reader">
-  <header data-reader-header><a href={`/manga/${series.data.slug}`}>← {series.data.title}</a><h1>{installmentLabel}</h1><p>{availabilityLabel}</p></header>
+  <header data-reader-header><a href={seriesHref}>← {series.data.title}</a><h1>{installmentLabel}</h1><p>{availabilityLabel}</p></header>
   <nav class="chapter-navigation" aria-label="Chapter navigation">
     {previousChapter && <a href={previousChapter.href}>← {previousChapter.label}</a>}
-    <a href={`/manga/${series.data.slug}`}>Series details</a>
+    <a href={seriesHref}>Series details</a>
     {nextChapter && <a href={nextChapter.href}>{nextChapter.label} →</a>}
   </nav>
   <div class="reader-pages">
@@ -33,7 +34,7 @@ const installmentLabel = getMangaInstallmentLabel(series.data.format, chapter.da
   </div>
   <nav class="chapter-navigation" aria-label="Chapter navigation">
     {previousChapter && <a href={previousChapter.href}>← {previousChapter.label}</a>}
-    <a href={`/manga/${series.data.slug}`}>Series details</a>
+    <a href={seriesHref}>Series details</a>
     {nextChapter && <a href={nextChapter.href}>{nextChapter.label} →</a>}
   </nav>
 </article>

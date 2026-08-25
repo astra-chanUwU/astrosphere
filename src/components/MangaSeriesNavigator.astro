@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaChapterPages, getMangaInstallmentLabel } from "../lib/manga-reader";
+import { createMangaPageSrc, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
 
 interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; art: MangaSeriesEntry["data"]["art"]; }
 const { series, chapters, art } = Astro.props;
@@ -10,7 +10,7 @@ const samplerChapter = series.data.format === "doujinshi"
   ? chapters.find((chapter) => chapter.data.availability !== "unavailable" && chapter.data.pagePath)
   : undefined;
 const samplerPages = samplerChapter ? getMangaChapterPages(samplerChapter.data).slice(0, 6) : [];
-const chapterHref = (chapter: MangaChapterEntry): string => `/manga/${series.data.slug}/${chapter.data.slug}`;
+const chapterHref = (chapter: MangaChapterEntry): string => getMangaPublicPath(series.data.format, series.data.slug, chapter.data.slug);
 const chapterLabel = (chapter: MangaChapterEntry): string => {
   const label = getMangaInstallmentLabel(series.data.format, chapter.data.number, series.data.format === "doujinshi" ? undefined : chapter.data.title);
   return chapter.data.title !== `Chapter ${chapter.data.number}` && !chapter.data.title.startsWith("Volume ") || series.data.format === "doujinshi"

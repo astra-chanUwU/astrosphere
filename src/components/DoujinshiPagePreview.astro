@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaChapterPages } from "../lib/manga-reader";
+import { createMangaPageSrc, getMangaChapterPages, getMangaPublicPath } from "../lib/manga-reader";
 
 interface Props { series: MangaSeriesEntry; chapters: MangaChapterEntry[]; }
 const { series, chapters } = Astro.props;
@@ -16,9 +16,9 @@ const previewChapters = chapters.filter((chapter) => chapter.data.availability !
   {previewChapters.map((chapter) => {
     const pages = getMangaChapterPages(chapter.data);
     return <section class="chapter-preview" aria-labelledby={`preview-heading-${chapter.data.slug}`}>
-      <h3 id={`preview-heading-${chapter.data.slug}`}><a href={`/manga/${series.data.slug}/${chapter.data.slug}`}>{chapter.data.title || `Doujinshi ${chapter.data.number}`}</a></h3>
+      <h3 id={`preview-heading-${chapter.data.slug}`}><a href={getMangaPublicPath(series.data.format, series.data.slug, chapter.data.slug)}>{chapter.data.title || `Doujinshi ${chapter.data.number}`}</a></h3>
       <ol>
-        {pages.map((page) => <li><a href={`/manga/${series.data.slug}/${chapter.data.slug}#page-${page}`}><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`${series.data.title}, page ${page} preview`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading="lazy" decoding="async" /><span>Page {page}</span></a></li>)}
+        {pages.map((page) => <li><a href={`${getMangaPublicPath(series.data.format, series.data.slug, chapter.data.slug)}#page-${page}`}><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`${series.data.title}, page ${page} preview`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading="lazy" decoding="async" /><span>Page {page}</span></a></li>)}
       </ol>
     </section>;
   })}

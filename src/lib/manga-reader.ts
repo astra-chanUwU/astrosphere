@@ -25,6 +25,15 @@ export const getMangaChapterPages = (
     ? []
     : Array.from({ length: availablePageCount(chapter) }, (_, index) => index + 1);
 export type MangaFormat = "manga" | "doujinshi" | "one-shot" | "artbook" | "web-comic";
+export type MangaPublicRoute = "manga" | "doujinshi";
+
+export const belongsToMangaPublicRoute = (format: MangaFormat, route: MangaPublicRoute): boolean =>
+  (format === "doujinshi" ? "doujinshi" : "manga") === route;
+
+export const getMangaPublicPath = (format: MangaFormat, slug: string, chapter?: string): string => {
+  const root = format === "doujinshi" ? "/doujinshi" : "/manga";
+  return chapter ? `${root}/${slug}/${chapter}` : `${root}/${slug}`;
+};
 
 export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") => {
   if (!pagePath.startsWith("/manga/")) {
