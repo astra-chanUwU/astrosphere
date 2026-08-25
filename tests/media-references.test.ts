@@ -14,11 +14,22 @@ test("collects managed frontmatter, Markdown, HTML, and reader pages", () => {
       },
     },
     {
+      collection: "mangaSeries",
+      path: "book.md",
+      body: "",
+      data: {
+        slug: "book",
+        visibility: "published",
+        format: "doujinshi",
+      },
+    },
+    {
       collection: "mangaChapters",
       path: "chapter.md",
       body: "",
       data: {
         slug: "chapter",
+        series: "book",
         status: "published",
         pagePath: "/manga/book/chapter-001",
         pageExtension: "webp",
@@ -33,6 +44,36 @@ test("collects managed frontmatter, Markdown, HTML, and reader pages", () => {
     "/media/images/set/002.webp",
     "/manga/book/chapter-001/001.webp",
     "/manga/book/chapter-001/002.webp",
+    "/manga/book/chapter-001/thumbnails/001.webp",
+    "/manga/book/chapter-001/thumbnails/002.webp",
+  ]);
+});
+
+test("does not create thumbnail references for regular manga chapters", () => {
+  const references = collectManagedMediaReferences([
+    {
+      collection: "mangaSeries",
+      path: "book.md",
+      body: "",
+      data: { slug: "book", visibility: "published", format: "manga" },
+    },
+    {
+      collection: "mangaChapters",
+      path: "chapter.md",
+      body: "",
+      data: {
+        slug: "chapter",
+        series: "book",
+        status: "published",
+        pagePath: "/manga/book/chapter-001",
+        pageExtension: "webp",
+        pageCount: 1,
+      },
+    },
+  ]);
+
+  expect(references.map(({ publicPath }) => publicPath)).toEqual([
+    "/manga/book/chapter-001/001.webp",
   ]);
 });
 

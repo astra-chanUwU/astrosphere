@@ -54,6 +54,57 @@ test("reports extension mismatches and corrupt known image files", async () => {
   expect(corrupt.errors[0]?.code).toBe("corrupt");
 });
 
+test("requires readable doujinshi thumbnails no wider than 320px", async () => {
+  const reference = {
+    source: "src/content/manga/chapters/book-chapter-001.md",
+    field: "thumbnails[1]",
+    publicPath: "/manga/book/chapter-001/thumbnails/001.webp",
+  };
+  const file = {
+    filePath: "/media/manga/book/chapter-001/thumbnails/001.webp",
+    publicPath: "/manga/book/chapter-001/thumbnails/001.webp",
+    relativePath: "manga/book/chapter-001/thumbnails/001.webp",
+    bytes: 1200,
+    mtimeMs: 1,
+    format: "webp" as const,
+    device: 1,
+    inode: 1,
+    width: 320,
+    height: 480,
+    animated: false,
+  };
+
+  const valid = await validateMedia({
+    root: "/media",
+    references: [reference],
+    snapshot: { root: "/media", files: [file] },
+  });
+  expect(valid.errors).toEqual([]);
+
+  const oversized = await validateMedia({
+    root: "/media",
+    references: [reference],
+    snapshot: { root: "/media", files: [{ ...file, width: 321 }] },
+  });
+  expect(oversized.errors[0]).toMatchObject({
+    code: "thumbnail-dimensions",
+    publicPath: reference.publicPath,
+  });
+
+  const unreadable = await validateMedia({
+    root: "/media",
+    references: [reference],
+    snapshot: {
+      root: "/media",
+      files: [{ ...file, width: undefined, height: undefined }],
+    },
+  });
+  expect(unreadable.errors[0]).toMatchObject({
+    code: "thumbnail-dimensions",
+    publicPath: reference.publicPath,
+  });
+});
+
 test("preserves custom reference inspection when an unsupplied snapshot walk omits the file", async () => {
   let inspections = 0;
   const report = await validateMedia({

@@ -3,6 +3,7 @@ import {
   isPublishedMediaEntry,
   type MediaContentEntry,
 } from "./content-source";
+import { createDoujinshiThumbnailSrc } from "../manga-reader";
 
 export type MediaReference = {
   source: string;
@@ -70,6 +71,7 @@ const collectBodyMatches = (
 
 const collectReaderReferences = (
   entry: MediaContentEntry,
+  seriesFormats: Map<string, string>,
 ): MediaReference[] => {
   if (entry.collection !== "mangaChapters") return [];
   const { pagePath, pageExtension, pageCount } = entry.data;
@@ -92,17 +94,37 @@ const collectReaderReferences = (
   }
 
   const base = pagePath.replace(/\/+$/, "");
-  return Array.from({ length: pageCount as number }, (_, index) => ({
+  const pages = Array.from({ length: pageCount as number }, (_, index) => ({
     source: entry.path,
     field: `pages[${index + 1}]`,
     publicPath: `${base}/${String(index + 1).padStart(3, "0")}.${extension}`,
   }));
+  const series = typeof entry.data.series === "string" ? entry.data.series : undefined;
+  if (!series || seriesFormats.get(series) !== "doujinshi") return pages;
+  return [
+    ...pages,
+    ...Array.from({ length: pageCount as number }, (_, index) => ({
+      source: entry.path,
+      field: `thumbnails[${index + 1}]`,
+      publicPath: createDoujinshiThumbnailSrc(base, index + 1),
+    })),
+  ];
 };
 
 export const collectManagedMediaReferences = (
   entries: MediaContentEntry[],
 ): MediaReference[] => {
   const collected: MediaReference[] = [];
+  const seriesFormats = new Map<string, string>();
+  for (const entry of entries) {
+    if (
+      entry.collection === "mangaSeries" &&
+      typeof entry.data.slug === "string" &&
+      typeof entry.data.format === "string"
+    ) {
+      seriesFormats.set(entry.data.slug, entry.data.format);
+    }
+  }
   for (const entry of entries) {
     if (!isPublishedMediaEntry(entry)) continue;
 
@@ -130,7 +152,7 @@ export const collectManagedMediaReferences = (
         "body.html",
       ),
     );
-    collected.push(...collectReaderReferences(entry));
+    collected.push(...collectReaderReferences(entry, seriesFormats));
   }
 
   const seen = new Set<string>();

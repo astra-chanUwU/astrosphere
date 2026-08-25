@@ -10,9 +10,10 @@ import {
 } from "./optimizer";
 import { resolveMediaUrl } from "./paths";
 import type { MediaReference } from "./references";
+import { doujinshiThumbnailWidth } from "./doujinshi-thumbnails";
 
 export type MediaValidationIssue = {
-  code: "missing" | "unsafe" | "unsupported" | "corrupt" | "format-mismatch";
+  code: "missing" | "unsafe" | "unsupported" | "corrupt" | "format-mismatch" | "thumbnail-dimensions";
   source: string;
   field: string;
   publicPath: string;
@@ -223,6 +224,20 @@ const issueForInspection = (
       message: `Expected ${expected} content but detected ${inspection.format}`,
     };
   }
+  if (
+    /^thumbnails\[\d+\]$/.test(reference.field) &&
+    (inspection.width === undefined ||
+      inspection.height === undefined ||
+      inspection.width <= 0 ||
+      inspection.height <= 0 ||
+      inspection.width > doujinshiThumbnailWidth)
+  ) {
+    return {
+      code: "thumbnail-dimensions",
+      ...reference,
+      message: `Thumbnail must be readable and no wider than ${doujinshiThumbnailWidth}px`,
+    };
+  }
   return undefined;
 };
 
@@ -372,7 +387,17 @@ export const validateMedia = async (
   const byFilePath = new Map(files.map((file) => [file.filePath, file]));
   const fallbackInspectionCache = new Map<string, Promise<MediaFileInspection>>();
   const inspectionFor = (file: MediaLibraryFile): MediaFileInspection =>
-    file.issue ?? { kind: "file", format: file.format, bytes: file.bytes };
+    file.issue ?? {
+      kind: "file",
+      format: file.format,
+      bytes: file.bytes,
+      mtimeMs: file.mtimeMs,
+      device: file.device,
+      inode: file.inode,
+      width: file.width,
+      height: file.height,
+      animated: file.animated,
+    };
   const inspectOmittedReference = (filePath: string): Promise<MediaFileInspection> => {
     let inspection = fallbackInspectionCache.get(filePath);
     if (!inspection) {
