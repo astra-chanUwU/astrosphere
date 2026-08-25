@@ -45,6 +45,7 @@ export const thumbnailHelp = `Usage:
 
 Options:
   --series <slug>  Restrict generation to one manga or doujinshi series
+                   Without this option, generates manga, doujinshi, and image-set previews
   --dry-run        Show planned generation without writing files
   --force          Regenerate valid fresh thumbnails
   -h, --help       Show this help`;

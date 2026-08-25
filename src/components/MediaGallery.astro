@@ -7,9 +7,10 @@ interface Props {
   title?: string;
   priorityImageCount?: number;
   linkImagesToFullSize?: boolean;
+  imagePreviewSources?: Array<string | undefined>;
 }
 
-const { media, title = "Media", priorityImageCount = 0, linkImagesToFullSize = false } = Astro.props;
+const { media, title = "Media", priorityImageCount = 0, linkImagesToFullSize = false, imagePreviewSources = [] } = Astro.props;
 const allImages = media.every((item) => item.kind === "image");
 ---
 
@@ -17,7 +18,7 @@ const allImages = media.every((item) => item.kind === "image");
   <section class:list={["gallery", { "gallery--images": allImages }]} aria-labelledby="media-gallery-heading">
     <h2 id="media-gallery-heading">{title}</h2>
     <div class="items">
-      {media.map((item, index) => <MediaFrame media={item} priority={index < priorityImageCount} linkImageToFullSize={linkImagesToFullSize} />)}
+      {media.map((item, index) => <MediaFrame media={item} priority={index < priorityImageCount} linkImageToFullSize={linkImagesToFullSize} imagePreviewSrc={imagePreviewSources[index]} />)}
     </div>
   </section>
 )}

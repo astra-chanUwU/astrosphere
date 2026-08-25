@@ -151,9 +151,9 @@ bun run media:optimize <source> --output <destination> --profile <reader|gallery
 
 Use `reader` for ordered pages and `gallery` for filename-preserving galleries. Do not recompress an already managed WebP library without an explicit request.
 
-### Generate manga and doujinshi preview thumbnails
+### Generate manga, doujinshi, and image-set preview thumbnails
 
-Preview and generate the complete managed manga and doujinshi thumbnail set:
+Preview and generate the complete managed preview-thumbnail set:
 
 ```sh
 bun run media:thumbnails --dry-run
@@ -167,7 +167,7 @@ bun run media:thumbnails --series <slug>
 bun run media:thumbnails --series <slug> --force
 ```
 
-This command applies to regular manga and doujinshi. It writes 320px WebP derivatives for covers, compact artwork previews, and available reader pages beneath reserved `thumbnails/` directories in `MEDIA_ROOT/manga/<series>/`; it never copies them into the repository. Full artwork galleries and reader pages continue to use original media. Run `bun run media:validate` before synchronization.
+This command writes 320px WebP derivatives for manga and doujinshi covers, compact artwork previews, available reader pages, image-set covers, and image-set gallery tiles. Manga derivatives live beneath reserved `thumbnails/` directories in `MEDIA_ROOT/manga/<series>/`; image-set derivatives live in `MEDIA_ROOT/images/<slug>/thumbnails/`. Generated media is never copied into the repository. Full artwork galleries, reader pages, and image-set links continue to use original media. Run `bun run media:validate` before synchronization.
 
 ### Resize oversized managed media for the web reader
 

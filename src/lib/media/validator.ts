@@ -225,7 +225,7 @@ const issueForInspection = (
     };
   }
   if (
-    (/^thumbnails\[\d+\]$/.test(reference.field) || /^thumbnail\.(?:cover|art\[\d+\])$/.test(reference.field)) &&
+    (/^thumbnails\[\d+\]$/.test(reference.field) || /^thumbnail\.(?:cover|hero|art\[\d+\]|media\[\d+\])$/.test(reference.field)) &&
     (inspection.width === undefined ||
       inspection.height === undefined ||
       inspection.width <= 0 ||

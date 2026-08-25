@@ -39,9 +39,9 @@ import {
 } from "../src/lib/media/manga-remove";
 import { collectManagedMediaReferences } from "../src/lib/media/references";
 import {
-  collectMangaThumbnailItems,
+  collectMediaThumbnailItems,
   generateDoujinshiThumbnails,
-  pruneMangaThumbnails,
+  pruneMediaThumbnails,
 } from "../src/lib/media/doujinshi-thumbnails";
 import { createBunMediaFetch } from "../src/lib/media/server";
 import {
@@ -194,16 +194,16 @@ const thumbnails = async (args: string[]): Promise<void> => {
   const root = requireMediaRoot();
   try {
     const entries = await loadMediaContentEntries(process.cwd());
-    const items = collectMangaThumbnailItems(entries, root, options.series);
+    const items = collectMediaThumbnailItems(entries, root, options.series);
     const result = await generateDoujinshiThumbnails({
       items,
       dryRun: options.dryRun,
       force: options.force,
     });
     const cleanup = result.failed.length === 0
-      ? await pruneMangaThumbnails({ items, root, dryRun: options.dryRun })
+      ? await pruneMediaThumbnails({ items, root, dryRun: options.dryRun })
       : { planned: [], removed: [] };
-    console.log(options.dryRun ? "Manga thumbnail dry run:" : "Manga thumbnails complete:");
+    console.log(options.dryRun ? "Media thumbnail dry run:" : "Media thumbnails complete:");
     console.log(`  Selected thumbnails: ${items.length}`);
     if (options.dryRun) {
       for (const item of result.plan) {

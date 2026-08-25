@@ -4,6 +4,7 @@ import {
   type MediaContentEntry,
 } from "./content-source";
 import { createDoujinshiThumbnailSrc, createMangaArtworkThumbnailSrc, createMangaCoverThumbnailSrc } from "../manga-reader";
+import { createImageSetThumbnailSrc } from "../image-set-gallery";
 
 export type MediaReference = {
   source: string;
@@ -133,6 +134,24 @@ const collectSeriesThumbnailReferences = (entry: MediaContentEntry): MediaRefere
   return references;
 };
 
+const collectImageSetThumbnailReferences = (entry: MediaContentEntry): MediaReference[] => {
+  if (entry.collection !== "imageSets" || typeof entry.data.slug !== "string") return [];
+  const items = [
+    { value: entry.data.hero, field: "thumbnail.hero" },
+    ...(Array.isArray(entry.data.media)
+      ? entry.data.media.map((value, index) => ({ value, field: `thumbnail.media[${index + 1}]` }))
+      : []),
+  ];
+  const references: MediaReference[] = [];
+  for (const { value, field } of items) {
+    const media = value as { kind?: unknown; src?: unknown } | undefined;
+    if (media?.kind !== "image" || typeof media.src !== "string" || !isManagedMediaUrl(media.src)) continue;
+    const publicPath = createImageSetThumbnailSrc(entry.data.slug, media.src);
+    if (publicPath !== media.src) references.push({ source: entry.path, field, publicPath });
+  }
+  return references;
+};
+
 export const collectManagedMediaReferences = (
   entries: MediaContentEntry[],
 ): MediaReference[] => {
@@ -159,6 +178,7 @@ export const collectManagedMediaReferences = (
     );
     collected.push(...frontmatter);
     collected.push(...collectSeriesThumbnailReferences(entry));
+    collected.push(...collectImageSetThumbnailReferences(entry));
     collected.push(
       ...collectBodyMatches(
         entry.body,

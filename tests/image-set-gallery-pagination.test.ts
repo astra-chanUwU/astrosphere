@@ -1,6 +1,7 @@
 import { expect, test } from "bun:test";
 import {
   IMAGE_SET_GALLERY_PAGE_SIZE,
+  createImageSetThumbnailSrc,
   getImageSetGalleryPage,
   getImageSetGalleryPageHref,
 } from "../src/lib/image-set-gallery";
@@ -18,6 +19,23 @@ test("splits image-set galleries into stable 24-image pages", () => {
   expect(getImageSetGalleryPage(images, 3)).toEqual({ items: images.slice(48), start: 49, end: 50, lastPage: 3 });
   expect(getImageSetGalleryPageHref("flou-collection-2018-2021", 1)).toBe("/image-sets/flou-collection-2018-2021");
   expect(getImageSetGalleryPageHref("flou-collection-2018-2021", 2)).toBe("/image-sets/flou-collection-2018-2021/page/2");
+});
+
+test("derives managed image-set previews while preserving unsupported sources", () => {
+  expect(createImageSetThumbnailSrc(
+    "gallery",
+    "/media/images/gallery/one.jpg",
+  )).toBe("/media/images/gallery/thumbnails/one.webp");
+  expect(createImageSetThumbnailSrc(
+    "gallery",
+    "/media/images/gallery/nested/two.png",
+  )).toBe("/media/images/gallery/thumbnails/nested/two.webp");
+  expect(createImageSetThumbnailSrc(
+    "gallery",
+    "/media/images/gallery/thumbnails/one.webp",
+  )).toBe("/media/images/gallery/thumbnails/one.webp");
+  expect(createImageSetThumbnailSrc("gallery", "https://example.com/remote.jpg"))
+    .toBe("https://example.com/remote.jpg");
 });
 
 test("renders the first gallery page canonically and generates later pages statically", () => {

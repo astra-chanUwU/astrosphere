@@ -1,13 +1,13 @@
 ---
 import type { Media } from "../types/content";
-interface Props { media: Media; priority?: boolean; linkImageToFullSize?: boolean; }
-const { media, priority = false, linkImageToFullSize = false } = Astro.props;
+interface Props { media: Media; priority?: boolean; linkImageToFullSize?: boolean; imagePreviewSrc?: string; }
+const { media, priority = false, linkImageToFullSize = false, imagePreviewSrc } = Astro.props;
 const label = media.title ?? media.alt ?? "Archive media";
 ---
 <figure>
   {media.kind === "image" && (linkImageToFullSize
-    ? <a class="media-image-link" href={media.src} target="_blank" rel="noopener noreferrer" aria-label={`Open ${label} full size`}><img class="media-image" src={media.src} alt={media.alt ?? ""} width={media.width} height={media.height} loading={priority ? "eager" : "lazy"} decoding="async" /></a>
-    : <img class="media-image" src={media.src} alt={media.alt ?? ""} width={media.width} height={media.height} loading={priority ? "eager" : "lazy"} decoding="async" />)}
+    ? <a class="media-image-link" href={media.src} target="_blank" rel="noopener noreferrer" aria-label={`Open ${label} full size`}><img class="media-image" src={imagePreviewSrc ?? media.src} alt={media.alt ?? ""} width={media.width} height={media.height} loading={priority ? "eager" : "lazy"} decoding="async" /></a>
+    : <img class="media-image" src={imagePreviewSrc ?? media.src} alt={media.alt ?? ""} width={media.width} height={media.height} loading={priority ? "eager" : "lazy"} decoding="async" />)}
   {media.kind === "image" && <a class="full-size-link" href={media.src} target="_blank" rel="noopener noreferrer">{linkImageToFullSize ? "Image opens full size" : "Open full size"}</a>}
   {media.kind === "audio" && <audio controls preload="metadata" src={media.src}>Your browser cannot play this audio. <a href={media.src}>Download {label}</a>.</audio>}
   {media.kind === "video" && <video controls preload="metadata" src={media.src} poster={media.poster} width={media.width} height={media.height} loop={media.loop} muted={media.muted} autoplay={media.autoplay}>Your browser cannot play this video. <a href={media.src}>Download {label}</a>.</video>}

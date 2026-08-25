@@ -1,6 +1,6 @@
 ---
 import type { ImageSetEntry } from "../lib/content";
-import { getImageSetGalleryPage, getImageSetGalleryPageHref } from "../lib/image-set-gallery";
+import { createImageSetThumbnailSrc, getImageSetGalleryPage, getImageSetGalleryPageHref } from "../lib/image-set-gallery";
 import ArchivePagination from "./ArchivePagination.astro";
 import MediaGallery from "./MediaGallery.astro";
 
@@ -10,6 +10,9 @@ const allMedia = [imageSet.data.hero, ...imageSet.data.media].filter((item): ite
 const { items: media, start, end, lastPage } = getImageSetGalleryPage(allMedia, currentPage);
 const basePath = getImageSetGalleryPageHref(imageSet.data.slug, 1);
 const summary = `Images ${start}\u2013${end} of ${allMedia.length}`;
+const imagePreviewSources = media.map((item) =>
+  item.kind === "image" ? createImageSetThumbnailSrc(imageSet.data.slug, item.src) : undefined,
+);
 ---
 
 <section class="image-set-gallery" aria-labelledby="image-set-gallery-heading">
@@ -17,7 +20,7 @@ const summary = `Images ${start}\u2013${end} of ${allMedia.length}`;
     <h2 id="image-set-gallery-heading">Image set gallery</h2>
     <ArchivePagination {basePath} {currentPage} {lastPage} {summary} />
   </header>
-  <MediaGallery {media} priorityImageCount={2} linkImagesToFullSize />
+  <MediaGallery {media} {imagePreviewSources} priorityImageCount={2} linkImagesToFullSize />
   <ArchivePagination {basePath} {currentPage} {lastPage} {summary} />
 </section>
 

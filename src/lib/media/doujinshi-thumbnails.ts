@@ -8,6 +8,7 @@ import {
   createMangaCoverThumbnailSrc,
   createMangaPageSrc,
 } from "../manga-reader";
+import { createImageSetThumbnailSrc } from "../image-set-gallery";
 import type { MediaContentEntry } from "./content-source";
 import { isManagedMediaUrl, resolveMediaUrl } from "./paths";
 
@@ -15,7 +16,7 @@ export const doujinshiThumbnailWidth = 320;
 export const doujinshiThumbnailQuality = 70;
 
 export type DoujinshiThumbnailItem = {
-  kind?: "page" | "cover" | "art";
+  kind?: "page" | "cover" | "art" | "image-set";
   series: string;
   chapter: string;
   page: number;
@@ -336,7 +337,51 @@ export const collectMangaThumbnailItems = (
   );
 };
 
-export const pruneMangaThumbnails = async (options: {
+const collectImageSetThumbnailItems = (
+  entries: MediaContentEntry[],
+  root: string,
+): DoujinshiThumbnailItem[] => {
+  const items: DoujinshiThumbnailItem[] = [];
+  const seen = new Set<string>();
+  for (const entry of entries) {
+    if (entry.collection !== "imageSets") continue;
+    const series = requiredString(entry.data.slug, "image-set slug", entry.path);
+    const media = [entry.data.hero, ...(Array.isArray(entry.data.media) ? entry.data.media : [])];
+    media.forEach((value, index) => {
+      const item = value as { kind?: unknown; src?: unknown } | undefined;
+      if (item?.kind !== "image" || typeof item.src !== "string" || !isManagedMediaUrl(item.src)) return;
+      const destinationPublicPath = createImageSetThumbnailSrc(series, item.src);
+      if (destinationPublicPath === item.src || seen.has(destinationPublicPath)) return;
+      seen.add(destinationPublicPath);
+      items.push({
+        kind: "image-set",
+        series,
+        chapter: "image-set",
+        page: index + 1,
+        sourcePublicPath: item.src,
+        destinationPublicPath,
+        sourcePath: resolveMediaUrl(item.src, root).filePath,
+        destinationPath: resolveMediaUrl(destinationPublicPath, root).filePath,
+      });
+    });
+  }
+  return items.sort((left, right) =>
+    left.destinationPublicPath.localeCompare(right.destinationPublicPath),
+  );
+};
+
+export const collectMediaThumbnailItems = (
+  entries: MediaContentEntry[],
+  root: string,
+  seriesFilter?: string,
+): DoujinshiThumbnailItem[] => [
+  ...collectMangaThumbnailItems(entries, root, seriesFilter),
+  ...(seriesFilter ? [] : collectImageSetThumbnailItems(entries, root)),
+].sort((left, right) =>
+  left.destinationPublicPath.localeCompare(right.destinationPublicPath),
+);
+
+export const pruneMediaThumbnails = async (options: {
   items: DoujinshiThumbnailItem[];
   root: string;
   dryRun: boolean;
@@ -344,8 +389,10 @@ export const pruneMangaThumbnails = async (options: {
   const expected = new Set(options.items.map((item) => item.destinationPath));
   const seriesRoots = new Set<string>();
   for (const item of options.items) {
-    const match = item.destinationPublicPath.match(/^\/manga\/([^/]+)\//);
-    if (match?.[1]) seriesRoots.add(join(options.root, "manga", match[1]));
+    const manga = item.destinationPublicPath.match(/^\/manga\/([^/]+)\//);
+    if (manga?.[1]) seriesRoots.add(join(options.root, "manga", manga[1]));
+    const imageSet = item.destinationPublicPath.match(/^\/media\/images\/([^/]+)\//);
+    if (imageSet?.[1]) seriesRoots.add(join(options.root, "images", imageSet[1]));
   }
 
   const planned: string[] = [];
@@ -380,3 +427,5 @@ export const pruneMangaThumbnails = async (options: {
   }
   return { planned, removed: options.dryRun ? [] : [...planned] };
 };
+
+export const pruneMangaThumbnails = pruneMediaThumbnails;

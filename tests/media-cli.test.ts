@@ -91,7 +91,7 @@ test("parses the shared command vocabulary", () => {
   expect(thumbnailHelp).toContain(
     "media:thumbnails [--series <slug>] [--dry-run] [--force]",
   );
-  expect(thumbnailHelp).toContain("manga or doujinshi series");
+  expect(thumbnailHelp).toContain("manga, doujinshi, and image-set previews");
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
 });

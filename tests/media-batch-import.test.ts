@@ -167,6 +167,10 @@ entries:
       .toContain("format: doujinshi");
     const gallery = await readFile(join(projectRoot, "src/content/image-sets/gallery.md"), "utf8");
     expect(gallery.match(/src: \/media\/images\/gallery\//g)).toHaveLength(2);
+    expect((await readdir(join(mediaRoot, "images/gallery/thumbnails"))).sort()).toEqual([
+      "001.webp",
+      "002.webp",
+    ]);
     expect(await readFile(join(source, "Book.zip"), "utf8")).toBe("original-book");
 
     const rerun = await importMediaBatch(

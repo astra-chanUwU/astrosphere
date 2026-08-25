@@ -14,10 +14,12 @@ import { join } from "node:path";
 import sharp from "sharp";
 import {
   collectDoujinshiThumbnailItems,
+  collectMediaThumbnailItems,
   collectMangaThumbnailItems,
   generateDoujinshiThumbnails,
   planDoujinshiThumbnails,
   pruneMangaThumbnails,
+  pruneMediaThumbnails,
   type DoujinshiThumbnailItem,
 } from "../src/lib/media/doujinshi-thumbnails";
 
@@ -306,6 +308,39 @@ test("discovers cover artwork and page thumbnails for manga and doujinshi", () =
   ]);
 });
 
+test("discovers managed hero and gallery thumbnails for image sets", () => {
+  const root = "/managed";
+  const entries = [{
+    collection: "imageSets" as const,
+    path: "gallery.md",
+    body: "",
+    data: {
+      slug: "gallery",
+      status: "published",
+      hero: { kind: "image", src: "/media/images/gallery/cover.webp" },
+      media: [
+        { kind: "image", src: "/media/images/gallery/nested/one.webp" },
+        { kind: "image", src: "https://example.com/remote.jpg" },
+        { kind: "video", src: "/media/images/gallery/movie.webp" },
+      ],
+    },
+  }];
+
+  expect(collectMediaThumbnailItems(entries, root).map((item) => ({
+    source: item.sourcePublicPath,
+    destination: item.destinationPublicPath,
+  }))).toEqual([
+    {
+      source: "/media/images/gallery/cover.webp",
+      destination: "/media/images/gallery/thumbnails/cover.webp",
+    },
+    {
+      source: "/media/images/gallery/nested/one.webp",
+      destination: "/media/images/gallery/thumbnails/nested/one.webp",
+    },
+  ]);
+});
+
 test("prunes only stale files inside reserved thumbnail directories", async () => {
   const root = await mkdtemp(join(tmpdir(), "manga-thumbnail-prune-"));
   const item = itemFor(root, 1);
@@ -324,6 +359,36 @@ test("prunes only stale files inside reserved thumbnail directories", async () =
     expect(result.removed).toHaveLength(1);
     expect(await readdir(thumbnails)).toEqual(["001.webp"]);
     expect(await readFile(join(root, "manga/example/chapter-001/999.webp"), "utf8")).toBe("original");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("prunes stale image-set derivatives without touching originals", async () => {
+  const root = await mkdtemp(join(tmpdir(), "image-set-thumbnail-prune-"));
+  const sourcePath = join(root, "images/gallery/one.webp");
+  const destinationPath = join(root, "images/gallery/thumbnails/one.webp");
+  const item: DoujinshiThumbnailItem = {
+    kind: "image-set",
+    series: "gallery",
+    chapter: "image-set",
+    page: 1,
+    sourcePublicPath: "/media/images/gallery/one.webp",
+    destinationPublicPath: "/media/images/gallery/thumbnails/one.webp",
+    sourcePath,
+    destinationPath,
+  };
+  try {
+    await mkdir(join(root, "images/gallery/thumbnails"), { recursive: true });
+    await writeFile(sourcePath, "original");
+    await writeFile(destinationPath, "expected");
+    await writeFile(join(root, "images/gallery/thumbnails/stale.webp"), "stale");
+
+    const result = await pruneMediaThumbnails({ items: [item], root, dryRun: false });
+
+    expect(result.removed).toEqual([join(root, "images/gallery/thumbnails/stale.webp")]);
+    expect(await readFile(sourcePath, "utf8")).toBe("original");
+    expect(await readdir(join(root, "images/gallery/thumbnails"))).toEqual(["one.webp"]);
   } finally {
     await rm(root, { recursive: true, force: true });
   }

@@ -43,6 +43,7 @@ import {
   createMangaCoverThumbnailSrc,
   createMangaPageSrc,
 } from "../manga-reader";
+import { createImageSetThumbnailSrc } from "../image-set-gallery";
 
 export type BatchImportOptions = Omit<BatchPlanOptions, "manifest"> & {
   manifest: string;
@@ -318,6 +319,7 @@ const stageImageSet = async (
   if (entry.manifest.type !== "image-set") throw new Error("Expected image-set entry");
   const extract = adapters.extractEntry ?? extractZipEntry;
   const optimize = adapters.optimize ?? optimizeMedia;
+  const generateThumbnails = adapters.generateThumbnails ?? generateDoujinshiThumbnails;
   const dimensions = adapters.dimensions ?? readWebpDimensions;
   const extractedRoot = join(stageRoot, "extracted");
   const readyMedia = join(stageRoot, "ready");
@@ -334,14 +336,40 @@ const stageImageSet = async (
     webReader: true,
   });
   const images: RenderedImage[] = [];
+  const thumbnails: DoujinshiThumbnailItem[] = [];
   for (const item of optimized.plan.items) {
     const output = join(readyMedia, item.outputRelativePath);
     const size = await dimensions(output);
+    const sourcePublicPath = `/media/images/${entry.slug}/${item.outputRelativePath.replaceAll("\\", "/")}`;
+    const destinationPublicPath = createImageSetThumbnailSrc(entry.slug, sourcePublicPath);
     images.push({
-      src: `/media/images/${entry.slug}/${item.outputRelativePath.replaceAll("\\", "/")}`,
+      src: sourcePublicPath,
       width: size.width,
       height: size.height,
     });
+    thumbnails.push({
+      kind: "image-set",
+      series: entry.slug,
+      chapter: "image-set",
+      page: thumbnails.length + 1,
+      sourcePublicPath,
+      destinationPublicPath,
+      sourcePath: output,
+      destinationPath: join(
+        readyMedia,
+        destinationPublicPath.slice(`/media/images/${entry.slug}/`.length),
+      ),
+    });
+  }
+  const thumbnailResult = await generateThumbnails({
+    items: thumbnails,
+    dryRun: false,
+    force: true,
+  });
+  if (thumbnailResult.failed.length > 0) {
+    throw new Error(
+      `Thumbnail generation failed for ${thumbnailResult.failed[0]!.item.sourcePublicPath}: ${thumbnailResult.failed[0]!.message}`,
+    );
   }
   return {
     readyMedia,

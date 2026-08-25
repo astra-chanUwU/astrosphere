@@ -108,6 +108,26 @@ test("requires every generated manga thumbnail to be readable and no wider than 
   const cover = { ...file, publicPath: coverReference.publicPath, relativePath: "manga/book/thumbnails/cover.webp", filePath: "/media/manga/book/thumbnails/cover.webp", width: 321 };
   const invalidCover = await validateMedia({ root: "/media", references: [coverReference], snapshot: { root: "/media", files: [cover] } });
   expect(invalidCover.errors[0]?.code).toBe("thumbnail-dimensions");
+
+  const imageSetReference = {
+    ...reference,
+    source: "src/content/image-sets/set.md",
+    field: "thumbnail.media[1]",
+    publicPath: "/media/images/set/thumbnails/one.webp",
+  };
+  const imageSetThumbnail = {
+    ...file,
+    publicPath: imageSetReference.publicPath,
+    relativePath: "images/set/thumbnails/one.webp",
+    filePath: "/media/images/set/thumbnails/one.webp",
+    width: 321,
+  };
+  const invalidImageSet = await validateMedia({
+    root: "/media",
+    references: [imageSetReference],
+    snapshot: { root: "/media", files: [imageSetThumbnail] },
+  });
+  expect(invalidImageSet.errors[0]?.code).toBe("thumbnail-dimensions");
 });
 
 test("preserves custom reference inspection when an unsupplied snapshot walk omits the file", async () => {

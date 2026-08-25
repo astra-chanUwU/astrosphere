@@ -10,7 +10,8 @@ test("collects managed frontmatter, Markdown, HTML, and reader pages", () => {
       data: {
         slug: "set",
         status: "published",
-        hero: { src: "/media/images/set/cover.webp" },
+        hero: { kind: "image", src: "/media/images/set/cover.webp" },
+        media: [{ kind: "image", src: "/media/images/set/gallery.webp" }],
       },
     },
     {
@@ -40,6 +41,9 @@ test("collects managed frontmatter, Markdown, HTML, and reader pages", () => {
 
   expect(references.map(({ publicPath }) => publicPath)).toEqual([
     "/media/images/set/cover.webp",
+    "/media/images/set/gallery.webp",
+    "/media/images/set/thumbnails/cover.webp",
+    "/media/images/set/thumbnails/gallery.webp",
     "/media/images/set/001.webp",
     "/media/images/set/002.webp",
     "/manga/book/chapter-001/001.webp",

@@ -1,5 +1,6 @@
 ---
 import type { ImageSetEntry } from "../lib/content";
+import { createImageSetThumbnailSrc } from "../lib/image-set-gallery";
 
 interface Props { imageSet: ImageSetEntry; }
 const { imageSet } = Astro.props;
@@ -8,7 +9,7 @@ const hero = imageSet.data.hero;
 
 <article data-image-set-rating={imageSet.data.rating}>
   <a class="cover" href={`/image-sets/${imageSet.data.slug}`}>
-    {hero?.kind === "image" && <img src={hero.src} alt={hero.alt ?? `${imageSet.data.title} cover`} loading="lazy" decoding="async" />}
+    {hero?.kind === "image" && <img src={createImageSetThumbnailSrc(imageSet.data.slug, hero.src)} alt={hero.alt ?? `${imageSet.data.title} cover`} loading="lazy" decoding="async" />}
   </a>
   <div class="details"><p class="type">Image set</p><h3><a href={`/image-sets/${imageSet.data.slug}`}>{imageSet.data.title}</a></h3><p class="summary">{imageSet.data.summary}</p>{imageSet.data.author && <p class="meta">By <a href={`/tags/${imageSet.data.author.toLowerCase()}`}>{imageSet.data.author}</a></p>}<p class="meta">{imageSet.data.media.length + (hero ? 1 : 0)} images</p></div>
 </article>
