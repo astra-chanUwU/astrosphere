@@ -12,6 +12,7 @@ import {
   getPublishedTrails,
 } from "../lib/content";
 import { getShelfSelections } from "../lib/shelf";
+import { createMangaCoverPreviewSrc, getMangaPublicPath } from "../lib/manga-reader";
 
 if (import.meta.env.PROD) await assertPublishingGuardrails();
 
@@ -54,10 +55,8 @@ const currentDoujinshi = recommendedDoujinshi[0];
 <BaseLayout title="AstroSphere" description="An independent archive of manga, image sets, doujinshi, artifacts, and connected trails.">
   <div class="page-shell home">
     <div class="archive-columns">
-      <aside class="recommendations" aria-labelledby="recommendations-title">
-        <header class="column-heading"><h1 id="recommendations-title">AstroSphere</h1><p>Astro Chan's working archive.</p></header>
-
-        <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Current attention</h2><a href="/now">Now →</a></div><ul>{currentManga && <li><span>Read next</span><a href={`/manga/${currentManga.data.slug}`}>{currentManga.data.title}</a></li>}{currentImageSet && <li><span>Recent set</span><a href={`/image-sets/${currentImageSet.data.slug}`}>{currentImageSet.data.title}</a></li>}{currentDoujinshi && <li><span>Adult shelf</span><a href={`/manga/${currentDoujinshi.data.slug}`}>{currentDoujinshi.data.title}</a></li>}</ul></section>
+      <aside class="recommendations">
+        <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Now</h2><a href="/now">All →</a></div>{currentManga && <article class="current-feature" data-manga-rating={currentManga.data.rating}><a class="current-feature-cover" href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.cover && <img src={createMangaCoverPreviewSrc(currentManga.data.format, currentManga.data.slug, currentManga.data.cover.src)} alt={currentManga.data.cover.alt ?? `${currentManga.data.title} cover`} loading="eager" decoding="async" />}</a><div><p class="current-label">Read next</p><h3><a href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.title}</a></h3><p class="current-meta">{currentManga.data.originalTitle}</p></div></article>}{(currentImageSet || currentDoujinshi) && <ul class="current-secondary">{currentImageSet && <li><span>Recent set</span><a href={`/image-sets/${currentImageSet.data.slug}`}>{currentImageSet.data.title}</a></li>}{currentDoujinshi && <li data-manga-rating={currentDoujinshi.data.rating}><span>Adult shelf</span><a href={getMangaPublicPath(currentDoujinshi.data.format, currentDoujinshi.data.slug)}>{currentDoujinshi.data.title}</a></li>}</ul>}</section>
         <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Read next</h2><a href="/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
         <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Recent sets</h2><a href="/image-sets">All →</a></div><div class="recommendation-list">{newestImageSets.map((imageSet) => <ImageSetCard {imageSet} />)}</div></section>
         <section aria-labelledby="doujinshi-recommendations-title"><div class="feed-heading"><h2 id="doujinshi-recommendations-title">Doujinshi</h2><a href="/doujinshi">All →</a></div><div class="recommendation-list">{recommendedDoujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
@@ -82,16 +81,21 @@ const currentDoujinshi = recommendedDoujinshi[0];
 
 <style>
   .home { max-width: 96rem; padding-bottom: var(--section-space); }
-  .archive-columns { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.5fr); padding-top: clamp(2rem, 5vw, 5rem); }
-  .column-heading { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-3); }
-  .column-heading h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -.05em; line-height: var(--leading-tight); margin: 0; }
-  .column-heading p, .dispatch-header > p:last-child { color: var(--color-muted); font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); margin: var(--space-1) 0 0; }
+  .archive-columns { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.5fr); padding-top: var(--space-3); }
+  .dispatch-header > p:last-child { color: var(--color-muted); font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); margin: var(--space-1) 0 0; }
   .recommendations > section { margin-top: var(--section-space); }
-  .current-attention { margin-top: var(--section-space); }
-  .current-attention ul { border-top: 1px solid var(--color-border); list-style: none; margin: 0; padding: 0; }
-  .current-attention li { border-bottom: 1px solid var(--color-border); display: grid; gap: var(--space-1); padding: var(--space-2) 0; }
-  .current-attention li span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
-  .current-attention li a { font-family: var(--font-serif); font-size: var(--text-lg); text-decoration: none; }
+  .recommendations > .current-attention { border-top: 2px solid var(--color-accent); margin-top: 0; padding-top: var(--space-2); }
+  .current-feature { align-items: start; background: var(--color-surface); display: grid; gap: var(--space-2); grid-template-columns: 7rem minmax(0, 1fr); margin-top: var(--space-2); padding: var(--space-2); }
+  .current-feature-cover { align-self: start; background: var(--color-background); display: block; }
+  .current-feature-cover img { display: block; height: auto; width: 100%; }
+  .current-label, .current-secondary span { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
+  .current-feature h3 { font-family: var(--font-serif); font-size: clamp(1.35rem, 2.5vw, 2rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
+  .current-feature h3 a, .current-secondary a { text-decoration: none; }
+  .current-meta { color: var(--color-muted); font-size: var(--text-sm); line-height: var(--leading-normal); margin: 0; }
+  .current-secondary { border-top: 1px solid var(--color-border); list-style: none; margin: var(--space-2) 0 0; padding: 0; }
+  .current-secondary li { border-bottom: 1px solid var(--color-border); display: grid; gap: var(--space-1); padding: var(--space-2) 0; }
+  .current-secondary a { font-family: var(--font-serif); font-size: var(--text-lg); }
+  :global(html[data-sfw="on"]) .current-secondary [data-manga-rating="explicit"] { display: none; }
   .feed-heading { align-items: baseline; display: flex; justify-content: space-between; padding-bottom: var(--space-1); }
   .feed-heading h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: 0; }
   .feed-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
@@ -112,6 +116,6 @@ const currentDoujinshi = recommendedDoujinshi[0];
   .dispatch-notes h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: 0 0 var(--space-1); }
   .dispatch-notes p { line-height: var(--leading-reading); margin: var(--space-1) 0 0; max-width: 44rem; }
   :global(html[data-sfw="on"]) .recommendation-list [data-manga-rating="explicit"], :global(html[data-sfw="on"]) .recommendation-list [data-image-set-rating="explicit"] { display: none; }
-  @media (max-width: 52rem) { .archive-columns { grid-template-columns: minmax(0, 1fr); } .recommendations { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); } .column-heading { grid-column: 1 / -1; } .recommendations > section { margin-top: 0; } }
-  @media (max-width: 36rem) { .recommendations { display: block; } .recommendations > section { margin-top: var(--section-space); } }
+  @media (max-width: 52rem) { .archive-columns { grid-template-columns: minmax(0, 1fr); } .recommendations { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); } .recommendations > section { margin-top: 0; } }
+  @media (max-width: 36rem) { .recommendations { display: block; } .recommendations > section { margin-top: var(--section-space); } .current-attention { margin-top: 0 !important; } .current-feature { grid-template-columns: 5rem minmax(0, 1fr); } }
 </style>
