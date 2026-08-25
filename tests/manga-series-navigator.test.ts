@@ -9,6 +9,20 @@ test("adds the manga navigator to the series page", () => {
   expect(seriesRoute).toContain("<MangaSeriesNavigator");
 });
 
+test("enables the shared reading dock on the manga series page", () => {
+  expect(seriesRoute).toContain("sidebar={sidebar} readerDock");
+});
+
+test("uses the manga sidebar for discovery instead of a full chapter list", () => {
+  expect(seriesRoute).toContain('label: "Similar manga"');
+  expect(seriesRoute).toContain('label: "Tags"');
+  expect(seriesRoute).toContain('label: "Creators"');
+  expect(seriesRoute).toContain("getPublishedMangaSeries");
+  expect(seriesRoute).toContain("/manga/creators/");
+  expect(seriesRoute).toContain("/tags/");
+  expect(seriesRoute).not.toContain('label: "Chapters"');
+});
+
 test("provides fast chapter navigation controls", () => {
   expect(navigator).toContain("Jump to chapter");
   expect(navigator).toContain("First chapter");
