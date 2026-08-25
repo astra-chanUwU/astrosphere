@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import {
+  createDoujinshiThumbnailSrc,
   createMangaPageSrc,
   getMangaChapterAvailabilityLabel,
   getMangaChapterPages,
@@ -20,6 +21,24 @@ test("creates zero-padded manga page URLs", () => {
 
 test("creates WebP manga page URLs when a chapter uses WebP pages", () => {
   expect(createMangaPageSrc("/manga/ghost-in-the-shell/chapter-000", 1, "webp")).toBe("/manga/ghost-in-the-shell/chapter-000/001.webp");
+});
+
+test("creates zero-padded doujinshi thumbnail URLs", () => {
+  expect(createDoujinshiThumbnailSrc("/manga/witches-and-cigarettes/chapter-001", 1)).toBe(
+    "/manga/witches-and-cigarettes/chapter-001/thumbnails/001.webp",
+  );
+  expect(createDoujinshiThumbnailSrc("/manga/witches-and-cigarettes/chapter-001/", 31)).toBe(
+    "/manga/witches-and-cigarettes/chapter-001/thumbnails/031.webp",
+  );
+});
+
+test("rejects unsafe doujinshi thumbnail paths and page numbers", () => {
+  expect(() => createDoujinshiThumbnailSrc("/manga/../media/chapter-001", 1)).toThrow(
+    "Expected a /manga page path",
+  );
+  expect(() => createDoujinshiThumbnailSrc("/manga/book/chapter-001", 0)).toThrow(
+    "positive page number",
+  );
 });
 
 test("rejects manga page paths outside the manga media root", () => {

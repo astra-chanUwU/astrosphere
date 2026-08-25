@@ -35,7 +35,7 @@ export const getMangaPublicPath = (format: MangaFormat, slug: string, chapter?: 
   return chapter ? `${root}/${slug}/${chapter}` : `${root}/${slug}`;
 };
 
-export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") => {
+const normalizeMangaPagePath = (pagePath: string): string => {
   if (!pagePath.startsWith("/manga/")) {
     throw new Error(`Expected a /manga page path, received "${pagePath}".`);
   }
@@ -46,8 +46,21 @@ export const createMangaPageSrc = (pagePath: string, page: number, extension = "
     throw new Error(`Expected a /manga page path, received "${pagePath}".`);
   }
 
-  return `${pathname}/${String(page).padStart(3, "0")}.${extension}`;
+  return pathname.replace(/\/+$/, "");
 };
+
+const paddedPageNumber = (page: number): string => {
+  if (!Number.isInteger(page) || page <= 0) {
+    throw new Error("Expected a positive page number.");
+  }
+  return String(page).padStart(3, "0");
+};
+
+export const createMangaPageSrc = (pagePath: string, page: number, extension = "jpg") =>
+  `${normalizeMangaPagePath(pagePath)}/${paddedPageNumber(page)}.${extension}`;
+
+export const createDoujinshiThumbnailSrc = (pagePath: string, page: number): string =>
+  `${normalizeMangaPagePath(pagePath)}/thumbnails/${paddedPageNumber(page)}.webp`;
 
 export const sortMangaChapters = <T extends ChapterOrder>(chapters: T[]) =>
   [...chapters].sort((left, right) => left.data.number - right.data.number);
