@@ -7,6 +7,7 @@ test("adds a page preview rail for doujinshi readers", () => {
   expect(reader).toContain('class="page-preview"');
   expect(reader).toContain('aria-label="Page previews"');
   expect(reader).toContain('href={`#page-${page}`}');
+  expect(reader).toContain("createDoujinshiThumbnailSrc(chapter.data.pagePath!, page)");
   expect(reader).toContain('id={`page-${page}`}');
   expect(reader).toContain("object-fit: contain");
 });

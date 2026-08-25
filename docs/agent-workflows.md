@@ -26,6 +26,7 @@ This is the execution guide for coding agents handling routine AstroSphere conte
 | “Remove this chapter but keep the page” | `media:remove manga ... --unavailable` |
 | “Delete this entry completely” | exact content/reference audit, exact owned deletion, validate |
 | “Optimize this image/archive/folder” | `media:optimize` |
+| “Generate or repair doujinshi preview thumbnails” | `media:thumbnails` |
 | “Publish/upload media” | validate, sync dry-run, sync |
 
 ## Add an essay
@@ -149,6 +150,24 @@ bun run media:optimize <source> --output <destination> --profile <reader|gallery
 ```
 
 Use `reader` for ordered pages and `gallery` for filename-preserving galleries. Do not recompress an already managed WebP library without an explicit request.
+
+### Generate doujinshi preview thumbnails
+
+Preview and generate the complete managed doujinshi thumbnail set:
+
+```sh
+bun run media:thumbnails --dry-run
+bun run media:thumbnails
+```
+
+Restrict repair to one doujinshi, or force regeneration when timestamps cannot establish freshness:
+
+```sh
+bun run media:thumbnails --series <slug>
+bun run media:thumbnails --series <slug> --force
+```
+
+This command applies only to available doujinshi chapters. It writes 320px WebP derivatives beneath each chapter's `MEDIA_ROOT/manga/<series>/<chapter>/thumbnails/` directory and never copies them into the repository. Run `bun run media:validate` before synchronization.
 
 ### Resize oversized managed media for the web reader
 

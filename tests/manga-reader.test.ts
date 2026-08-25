@@ -13,6 +13,7 @@ const chapterList = await Bun.file(new URL("../src/components/MangaChapterList.a
 const navigator = await Bun.file(new URL("../src/components/MangaSeriesNavigator.astro", import.meta.url)).text();
 const seriesPage = await Bun.file(new URL("../src/pages/manga/[slug].astro", import.meta.url)).text();
 const chapterPage = await Bun.file(new URL("../src/pages/manga/[slug]/[chapter].astro", import.meta.url)).text();
+const seriesCard = await Bun.file(new URL("../src/components/MangaSeriesCard.astro", import.meta.url)).text();
 
 test("creates zero-padded manga page URLs", () => {
   expect(createMangaPageSrc("/manga/witches-and-cigarettes/chapter-001", 1)).toBe("/manga/witches-and-cigarettes/chapter-001/001.jpg");
@@ -103,6 +104,11 @@ test("manga reader renders previous, series, and next controls at both ends", ()
 
 test("manga reader passes root-relative chapter paths to page URL generation", () => {
   expect(reader).toContain("createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)");
+});
+
+test("doujinshi cover cards keep their existing full cover source", () => {
+  expect(seriesCard).toContain("series.data.cover.src");
+  expect(seriesCard).not.toContain("createDoujinshiThumbnailSrc");
 });
 
 test("manga reader and chapter list show unavailable chapters without page images", () => {

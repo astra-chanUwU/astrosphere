@@ -1,6 +1,6 @@
 ---
 import type { MangaChapterEntry, MangaSeriesEntry } from "../lib/content";
-import { createMangaPageSrc, getMangaChapterAvailabilityLabel, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
+import { createDoujinshiThumbnailSrc, createMangaPageSrc, getMangaChapterAvailabilityLabel, getMangaChapterPages, getMangaInstallmentLabel, getMangaPublicPath } from "../lib/manga-reader";
 
 interface ChapterLink { href: string; label: string; }
 interface Props {
@@ -27,7 +27,7 @@ const seriesHref = getMangaPublicPath(series.data.format, series.data.slug);
   <div class="reader-pages">
     {series.data.format === "doujinshi" && !unavailable && <nav class="page-preview" aria-label="Page previews">
       <ol>
-        {pages.map((page) => <li><a href={`#page-${page}`}><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`Preview page ${page}`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading="lazy" decoding="async" /><span>{page}</span></a></li>)}
+        {pages.map((page) => <li><a href={`#page-${page}`}><img src={createDoujinshiThumbnailSrc(chapter.data.pagePath!, page)} alt={`Preview page ${page}`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading="lazy" decoding="async" /><span>{page}</span></a></li>)}
       </ol>
     </nav>}
     {unavailable ? <p class="unavailable">This chapter’s media is currently unavailable.</p> : <ol class="page-stack">{pages.map((page) => <li id={`page-${page}`}><img src={createMangaPageSrc(chapter.data.pagePath!, page, chapter.data.pageExtension)} alt={`${series.data.title}, chapter ${chapter.data.number}, page ${page}`} width={chapter.data.pageWidth!} height={chapter.data.pageHeight!} loading={page === 1 ? "eager" : "lazy"} fetchpriority={page === 1 ? "high" : "auto"} decoding="async" /></li>)}</ol>}
