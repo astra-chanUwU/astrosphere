@@ -11,13 +11,13 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
 <BaseLayout title="Support AstroSphere" description="Help Astro Chan keep this personal corner of the internet online.">
   <div class="page-shell">
     <header>
-      <h1>Support AstroSphere</h1>
-      <p>AstroSphere is a personal project I keep building in the spaces between everything else. If you have found something useful, strange, or worth returning to, you can help me keep the site online and give it more time. Crypto wallets and public contact routes are listed below.</p>
+      <h1>Support the archive</h1>
+      <p>AstroSphere is a personal archive built and maintained in the spaces between everything else. If you have found something useful, strange, or worth returning to, you can help keep it online and give it more time.</p>
     </header>
 
     <section aria-labelledby="anonymous-heading">
       <h2 id="anonymous-heading">Give anonymously</h2>
-      <p>Crypto support is welcome. No wallet connection, form, tracking, or identity is collected here.</p>
+      <p>Crypto support is welcome. No wallet connection, form, tracking, or identity is collected here. Always verify the network before sending.</p>
       <div class="wallets">
         {supportConfig.wallets.map((wallet) => (
           <article>
@@ -37,11 +37,17 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
 
     <section aria-labelledby="credit-heading">
       <h2 id="credit-heading">Want to be credited?</h2>
-      <p>Send a message after donating if you want your name and amount listed. Public credit is opt-in; anonymous support stays anonymous.</p>
+      <p>Public credit is optional. Send a message after donating if you want your name and amount listed; anonymous support stays anonymous.</p>
       <ul class="contacts">
         {supportConfig.contacts.filter((contact) => isConfiguredSupportValue(contact.value)).map((contact) => <li><a href={contactHref(contact)}>{contact.label}</a></li>)}
       </ul>
       {!supportConfig.contacts.some((contact) => isConfiguredSupportValue(contact.value)) && <p class="unconfigured">Contact details are not configured yet.</p>}
+    </section>
+
+    <section aria-labelledby="other-heading">
+      <h2 id="other-heading">Other ways to help</h2>
+      <p>Share a piece with someone who may enjoy it, report a broken link, send a correction, point toward a useful source, or tell me when something here helped you. Those small signals help decide what the archive should become next.</p>
+      <p><a href="/contact">Send a note through Contact →</a></p>
     </section>
 
     {supporters.length > 0 && <section aria-labelledby="supporters-heading"><h2 id="supporters-heading">{supportersTitle}</h2><ul class="supporters">{supporters.map((supporter) => <li><span>{supporter.name}</span><span>{supporter.amount}</span><time>{supporter.date}</time></li>)}</ul></section>}
@@ -82,7 +88,7 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
   section { margin: var(--section-space) 0; max-width: var(--reading-width); }
   p { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
   .wallets { display: grid; gap: var(--space-2); grid-template-columns: 1fr; }
-  article { border-top: 1px solid var(--color-border); padding-top: var(--space-2); }
+  article { background: var(--color-surface); border: 1px solid var(--color-border); padding: var(--space-3); }
   .network, .warning, .unconfigured { color: var(--color-muted); font-family: inherit; font-size: var(--text-sm); }
   .wallet-address { display: flex; align-items: start; gap: var(--space-1); }
   code { flex: 1; font-size: var(--text-sm); overflow-wrap: anywhere; user-select: all; }

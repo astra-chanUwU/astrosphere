@@ -1,15 +1,15 @@
 ---
 slug: about
-title: About AstroSphere
+title: About
 status: published
 pageType: about
-summary: Astro Chan's personal collection of manga, games, images, essays, research, and strange little experiments.
+summary: What AstroSphere is, what belongs here, and how to find your way through it.
 ---
 
-AstroSphere is Astro Chan's corner of the internet.
+AstroSphere is Astro Chan’s personal archive: a place for collecting, reading, looking closely, and making connections between things that do not always arrive together.
 
-It is a place for the things I am reading, watching, playing, studying, making notes about, or returning to for reasons I cannot always explain.
+It holds manga, games, images, essays, research, references, and small experiments. Some entries are finished pieces; some are working notes. The difference matters less than whether the thing has earned a place here.
 
-You will find manga, games, images, art, essays, recordings, references, and small experiments here. Some entries are finished pieces. Others are closer to notes left on a desk. They live together because that is how my interests actually connect.
+The archive is organized by **spheres** and **trails**. Spheres are broad territories of interest. Trails are hand-made routes through related pieces. They are invitations rather than rules: start with a subject, an image, a question, or whatever happens to catch you.
 
-The site is organized into **spheres** and **trails** so you can follow a subject, a mood, or a line of curiosity instead of moving through a timeline. There is no correct route through it. Start wherever something catches you.
+AstroSphere is personal, selective, and still changing. It is not meant to document everything. It is a durable shape for the things I keep returning to.

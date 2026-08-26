@@ -30,6 +30,47 @@ test("separates search and external watchlist utilities from primary navigation"
   expect(header).toContain('class="external-indicator"');
 });
 
+test("shows the current freelance availability as a linked status signal", () => {
+  expect(header).toContain('href="/work"');
+  expect(header).toContain("Available for work");
+  expect(header).toContain('aria-label="Available for freelance work"');
+  expect(header).toContain("status-dot");
+  expect(header).toContain('aria-current={pathname === "/work" ? "page" : undefined}');
+});
+
+test("keeps work utilities pushed to the right of the archive links", () => {
+  expect(header).toContain(".primary-navigation{flex:1}");
+  expect(header).toContain(".utility-navigation{border-left");
+  expect(header).toContain(".appearance-controls{margin-left:auto}");
+});
+
+test("gives preference controls stable labels and visible state hooks", () => {
+  expect(header).toContain('data-control-value="dark"');
+  expect(header).toContain('data-control-value="crt: off"');
+  expect(header).toContain('data-control-value="sfw: on"');
+  expect(header).toContain('class="control-glyph"');
+  expect(header).toContain('classList.toggle("is-active"');
+});
+
+test("keeps contact and support visible as primary destinations", async () => {
+  const navigation = await Bun.file(
+    new URL("../src/config/navigation.ts", import.meta.url),
+  ).text();
+  const personalNavigation = navigation.split("export const personalNavigation")[1]?.split("export const utilityNavigation")[0] ?? "";
+  expect(personalNavigation).toContain('{ href: "/contact", label: "Contact" }');
+  expect(personalNavigation).toContain('{ href: "/support", label: "Support" }');
+});
+
+test("separates personal pages from archive and utility navigation", async () => {
+  const navigation = await Bun.file(
+    new URL("../src/config/navigation.ts", import.meta.url),
+  ).text();
+  expect(navigation).toContain("personalNavigation");
+  expect(navigation).toContain('{ href: "/about", label: "About" }');
+  expect(navigation).toContain('{ href: "/contact", label: "Contact" }');
+  expect(navigation).toContain('{ href: "/support", label: "Support" }');
+});
+
 test("links the anime library from primary navigation", async () => {
   const navigation = await Bun.file(
     new URL("../src/config/navigation.ts", import.meta.url),
@@ -38,7 +79,7 @@ test("links the anime library from primary navigation", async () => {
 });
 
 test("uses visible thumb-first grids on phones", () => {
-  expect(header).toContain("grid-template-columns:repeat(2,minmax(0,1fr))");
-  expect(header).toContain("grid-template-columns:repeat(3,minmax(0,1fr))");
+  expect(header).toContain("mobile-navigation");
+  expect(header).toContain("display:flex;flex-wrap:wrap");
   expect(header).not.toContain("overflow-x:auto");
 });

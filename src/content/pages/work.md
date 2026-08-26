@@ -1,11 +1,13 @@
 ---
 slug: work
-title: "Work with Astro Chan UwU"
+title: Work with Astro
 pageType: work
 status: published
-summary: "Independent AstroJS development for personal sites, blogs, small shops, and experimental web projects."
+summary: "Independent web development for thoughtful personal sites, publishing systems, and small digital projects."
 ---
 
-I’m Astro Chan UwU, an independent solo developer building thoughtful, fast, expressive websites with AstroJS.
+I’m Astro Chan, an independent developer available for focused web projects.
 
-I like making the kind of site that feels specific to the person or project behind it: clear in purpose, calm to use, and durable enough to keep growing without becoming a burden.
+I build personal sites, publishing systems, small shops, and other custom web projects for people who want something more specific than a template and less cumbersome than a platform.
+
+The work is shaped around clarity, speed, accessibility, and a codebase that remains understandable after launch. If you have an idea, an existing site that needs a better shape, or a project that has outgrown its current setup, [send me a note](/contact).

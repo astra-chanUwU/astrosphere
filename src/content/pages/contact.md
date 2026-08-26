@@ -3,9 +3,9 @@ slug: contact
 title: Contact
 status: published
 pageType: contact
-summary: A place to say hello, share a connection, or talk about a project.
+summary: A place to discuss a project, ask about the archive, or send a useful correction.
 ---
 
-If you want to say hello, point me toward something, talk about a piece on the site, or discuss a project, you can reach me here.
+Use this page for freelance project inquiries, questions about something in the archive, corrections, source or credit information, and thoughtful hellos.
 
-I am especially happy to hear from people who find a connection between their work and something in this collection. A short message is enough; it does not need to be polished.
+For project inquiries, include what you are trying to make, what already exists, and what kind of help you need. For archive messages, include the relevant page or title. A short message is enough; it does not need to be polished.

@@ -29,8 +29,12 @@ export const primaryNavigation: NavItem[] = [
   { href: "/guides", label: "Guides" },
   { href: "/topics", label: "Topics" },
   { href: "/links", label: "Links" },
-  { href: "/work", label: "Work" },
+];
+
+export const personalNavigation: NavItem[] = [
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/support", label: "Support" },
 ];
 
 export const utilityNavigation: NavItem[] = [
