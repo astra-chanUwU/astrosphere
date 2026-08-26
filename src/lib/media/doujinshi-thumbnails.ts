@@ -9,14 +9,18 @@ import {
   createMangaPageSrc,
 } from "../manga-reader";
 import { createImageSetThumbnailSrc } from "../image-set-gallery";
-import type { MediaContentEntry } from "./content-source";
+import {
+  collectDenseGalleryImageSources,
+  createManagedImageThumbnailSrc,
+} from "../managed-image-thumbnails";
+import { isPublishedMediaEntry, type MediaContentEntry } from "./content-source";
 import { isManagedMediaUrl, resolveMediaUrl } from "./paths";
 
 export const doujinshiThumbnailWidth = 320;
 export const doujinshiThumbnailQuality = 70;
 
 export type DoujinshiThumbnailItem = {
-  kind?: "page" | "cover" | "art" | "image-set";
+  kind?: "page" | "cover" | "art" | "image-set" | "artifact" | "sphere" | "body";
   series: string;
   chapter: string;
   page: number;
@@ -87,12 +91,12 @@ export const planDoujinshiThumbnails = async (
       source = await lstat(item.sourcePath);
     } catch (error) {
       if (missingFile(error)) {
-        throw new Error(`Missing doujinshi reader page: ${item.sourcePublicPath}`);
+        throw new Error(`Missing thumbnail source: ${item.sourcePublicPath}`);
       }
       throw error;
     }
     if (!source.isFile() || source.isSymbolicLink()) {
-      throw new Error(`Doujinshi reader page must be a regular file: ${item.sourcePublicPath}`);
+      throw new Error(`Thumbnail source must be a regular file: ${item.sourcePublicPath}`);
     }
     const sourceMetadata = await inspectImage(item.sourcePath);
     if (
@@ -101,7 +105,7 @@ export const planDoujinshiThumbnails = async (
       sourceMetadata.width <= 0 ||
       sourceMetadata.height <= 0
     ) {
-      throw new Error(`Unreadable doujinshi reader page: ${item.sourcePublicPath}`);
+      throw new Error(`Unreadable thumbnail source: ${item.sourcePublicPath}`);
     }
 
     let destination;
@@ -370,6 +374,63 @@ const collectImageSetThumbnailItems = (
   );
 };
 
+const collectEditorialThumbnailItems = (
+  entries: MediaContentEntry[],
+  root: string,
+): DoujinshiThumbnailItem[] => {
+  const items: DoujinshiThumbnailItem[] = [];
+  const seen = new Set<string>();
+
+  const add = (
+    entry: MediaContentEntry,
+    sourcePublicPath: string,
+    kind: "artifact" | "sphere" | "body",
+    page: number,
+  ): void => {
+    if (!isManagedMediaUrl(sourcePublicPath) || !sourcePublicPath.startsWith("/media/images/")) return;
+    const destinationPublicPath = createManagedImageThumbnailSrc(sourcePublicPath);
+    if (destinationPublicPath === sourcePublicPath || seen.has(destinationPublicPath)) return;
+    seen.add(destinationPublicPath);
+    items.push({
+      kind,
+      series: requiredString(entry.data.slug, `${entry.collection} slug`, entry.path),
+      chapter: entry.collection,
+      page,
+      sourcePublicPath,
+      destinationPublicPath,
+      sourcePath: resolveMediaUrl(sourcePublicPath, root).filePath,
+      destinationPath: resolveMediaUrl(destinationPublicPath, root).filePath,
+    });
+  };
+
+  for (const entry of entries) {
+    if (!isPublishedMediaEntry(entry)) continue;
+    if (entry.collection === "artifacts") {
+      const media = [entry.data.hero, ...(Array.isArray(entry.data.media) ? entry.data.media : [])];
+      media.forEach((value, index) => {
+        const item = value as { kind?: unknown; src?: unknown } | undefined;
+        if (item?.kind === "image" && typeof item.src === "string") {
+          add(entry, item.src, "artifact", index + 1);
+        }
+      });
+      collectDenseGalleryImageSources(entry.body).forEach((source, index) => {
+        add(entry, source, "body", index + 1);
+      });
+    }
+
+    if (entry.collection === "spheres") {
+      const cover = entry.data.cover as { kind?: unknown; src?: unknown } | undefined;
+      if (cover?.kind === "image" && typeof cover.src === "string") {
+        add(entry, cover.src, "sphere", 1);
+      }
+    }
+  }
+
+  return items.sort((left, right) =>
+    left.destinationPublicPath.localeCompare(right.destinationPublicPath),
+  );
+};
+
 export const collectMediaThumbnailItems = (
   entries: MediaContentEntry[],
   root: string,
@@ -377,6 +438,7 @@ export const collectMediaThumbnailItems = (
 ): DoujinshiThumbnailItem[] => [
   ...collectMangaThumbnailItems(entries, root, seriesFilter),
   ...(seriesFilter ? [] : collectImageSetThumbnailItems(entries, root)),
+  ...(seriesFilter ? [] : collectEditorialThumbnailItems(entries, root)),
 ].sort((left, right) =>
   left.destinationPublicPath.localeCompare(right.destinationPublicPath),
 );

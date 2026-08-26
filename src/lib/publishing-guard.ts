@@ -1,5 +1,6 @@
 import { access } from "node:fs/promises";
 import { resolve } from "node:path";
+import { isManagedMediaUrl } from "./media/paths";
 
 export type PublishingIssue = {
   source: string;
@@ -119,8 +120,7 @@ export const validatePublishingAssetReferences = async (
 
   for (const reference of references) {
     const isManga = reference.src.startsWith("/manga/");
-    const isImageSet = reference.src.startsWith("/media/images/");
-    if (isManga || isImageSet) continue;
+    if (isManga || isManagedMediaUrl(reference.src)) continue;
     const path = resolve(publicRoot, `.${reference.src}`);
 
     if (!(await accessFile(path))) {

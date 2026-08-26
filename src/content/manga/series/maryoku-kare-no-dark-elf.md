@@ -1,8 +1,8 @@
 ---
 slug: maryoku-kare-no-dark-elf
-title: Maryoku Kare no Dark Elf
+title: The Journey of a Dark Elf with Fading Powers
 originalTitle: Maryoku Kare no Dark Elf
-aliases: [The Journey of a Dark Elf with Fading Powers]
+aliases: []
 visibility: published
 status: ongoing
 publicationYear: 2025
@@ -10,7 +10,7 @@ description: "What she saw after losing her powers was the true beauty of the wo
 rating: safe
 format: manga
 origin: original
-tags: [action, adventure, magic, fantasy, monster-girls, seinen]
+tags: [drama, fantasy, magic, monster-girls, seinen, slice-of-life]
 authors:
   - name: Itabashi Daisuke
     slug: itabashi-daisuke
@@ -20,11 +20,11 @@ artists:
 cover:
   kind: image
   src: /manga/maryoku-kare-no-dark-elf/cover.webp
-  alt: Cover art for Maryoku Kare no Dark Elf by Itabashi Daisuke
+  alt: Cover art for The Journey of a Dark Elf with Fading Powers by Itabashi Daisuke
 art:
   - src: /manga/maryoku-kare-no-dark-elf/art/1.webp
-    alt: Artwork from Maryoku Kare no Dark Elf by Itabashi Daisuke
+    alt: Artwork from The Journey of a Dark Elf with Fading Powers by Itabashi Daisuke
 featured: false
 ---
 
-*Maryoku Kare no Dark Elf* is an ongoing manga by Itabashi Daisuke.
+*The Journey of a Dark Elf with Fading Powers* (*Maryoku Kare no Dark Elf*) is an ongoing manga by Itabashi Daisuke.

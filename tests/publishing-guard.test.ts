@@ -100,7 +100,7 @@ test("ordinary publishing validation skips external manga files", async () => {
   ]);
 });
 
-test("ordinary publishing validation skips external image-set files", async () => {
+test("ordinary publishing validation skips external managed media files", async () => {
   const issues = await validatePublishingAssetReferences(
     [
       {
@@ -112,6 +112,11 @@ test("ordinary publishing validation skips external image-set files", async () =
         source: "artifacts:signal",
         field: "hero.src",
         src: "/media/missing.jpg",
+      },
+      {
+        source: "animeTitles:show",
+        field: "art[0].src",
+        src: "/media/anime/show/key-visual.webp",
       },
     ],
     {

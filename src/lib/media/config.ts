@@ -11,7 +11,13 @@ export const requireMediaRoot = (value = Bun.env.MEDIA_ROOT): string => {
 
 export const getMediaLayout = (value = Bun.env.MEDIA_ROOT): MediaLayout => {
   const root = requireMediaRoot(value);
-  return { root, manga: resolve(root, "manga"), images: resolve(root, "images"), operations: resolve(root, ".astrosphere") };
+  return {
+    root,
+    manga: resolve(root, "manga"),
+    images: resolve(root, "images"),
+    anime: resolve(root, "anime"),
+    operations: resolve(root, ".astrosphere"),
+  };
 };
 
 export const requireMediaPort = (value = Bun.env.MEDIA_PORT): number => {

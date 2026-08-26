@@ -31,11 +31,33 @@ test("maps repository content paths and publication fields", () => {
     "mangaChapters",
   );
   expect(collectionForContentPath("image-sets/example.md")).toBe("imageSets");
+  expect(collectionForContentPath("anime/titles/example.md")).toBe(
+    "animeTitles",
+  );
+  expect(collectionForContentPath("anime/videos/example-01.md")).toBe(
+    "animeVideos",
+  );
   expect(
     isPublishedMediaEntry({
       collection: "mangaSeries",
       path: "x",
       data: { slug: "x", visibility: "published" },
+      body: "",
+    }),
+  ).toBe(true);
+  expect(
+    isPublishedMediaEntry({
+      collection: "animeTitles",
+      path: "x",
+      data: { slug: "x", visibility: "published" },
+      body: "",
+    }),
+  ).toBe(true);
+  expect(
+    isPublishedMediaEntry({
+      collection: "animeVideos",
+      path: "x",
+      data: { slug: "x", status: "published" },
       body: "",
     }),
   ).toBe(true);

@@ -1,0 +1,25 @@
+---
+import AnimeWatchPage from "../../../components/AnimeWatchPage.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getAnimeVideoVariant, getPublishedAnimeTitles, getPublishedAnimeVideos, type AnimeTitleEntry, type AnimeVideoEntry } from "../../../lib/content";
+
+export async function getStaticPaths() {
+  const [titles, videos] = await Promise.all([getPublishedAnimeTitles(), getPublishedAnimeVideos()]);
+  const titlesBySlug = new Map(titles.map((title) => [title.data.slug, title]));
+  return videos.flatMap((video) => {
+    const title = titlesBySlug.get(video.data.anime);
+    return title?.data.kind === "series" ? [{ params: { slug: title.data.slug, video: video.data.slug }, props: { title, video } }] : [];
+  });
+}
+
+interface Props { title: AnimeTitleEntry; video: AnimeVideoEntry; }
+const { title, video } = Astro.props;
+const videos = (await getPublishedAnimeVideos()).filter((entry) => entry.data.anime === title.data.slug);
+const index = videos.findIndex((entry) => entry.data.slug === video.data.slug);
+const variant = getAnimeVideoVariant(video);
+if (!variant) throw new Error(`Missing default variant for ${video.data.slug}`);
+---
+
+<BaseLayout title={`${title.data.title} — ${video.data.title}`} description={`Watch ${video.data.title} from ${title.data.title}.`} image={video.data.poster?.src ?? title.data.poster?.src} pagefindFilters={[{ name: "kind", value: "anime" }, ...title.data.tags.map((value) => ({ name: "tag", value }))]}>
+  <AnimeWatchPage {title} {video} {variant} previous={index > 0 ? videos[index - 1] : undefined} next={index >= 0 ? videos[index + 1] : undefined} />
+</BaseLayout>

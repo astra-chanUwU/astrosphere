@@ -11,6 +11,7 @@ import SignalCard from "../../components/SignalCard.astro";
 import TrailProgress from "../../components/TrailProgress.astro";
 import type { SidebarModel } from "../../config/navigation";
 import { getPublishedArtifacts, getRelatedArtifacts, getSignalsForArtifact, getTrailProgressForArtifact, getTrailsForArtifact } from "../../lib/content";
+import { createManagedImageThumbnailSrc } from "../../lib/managed-image-thumbnails";
 
 export async function getStaticPaths() {
   const artifacts = await getPublishedArtifacts();
@@ -20,6 +21,9 @@ export async function getStaticPaths() {
 interface Props { artifact: CollectionEntry<"artifacts">; }
 const { artifact } = Astro.props;
 const [{ Content }, related, signals, trails, trailProgress] = await Promise.all([render(artifact), getRelatedArtifacts(artifact), getSignalsForArtifact(artifact), getTrailsForArtifact(artifact.data.slug), getTrailProgressForArtifact(artifact.data.slug)]);
+const mediaPreviewSources = artifact.data.media.map((item) =>
+  item.kind === "image" ? createManagedImageThumbnailSrc(item.src) : undefined,
+);
 const sidebar: SidebarModel = {
   heading: "Article details",
   groups: [
@@ -38,7 +42,7 @@ const sidebar: SidebarModel = {
       {artifact.data.hero && <div class="hero-frame"><MediaFrame media={artifact.data.hero} priority/></div>}
       <article id="article" class="prose"><Content/></article>
       {trailProgress.map((progress) => <TrailProgress {progress}/>) }
-      {artifact.data.media.length > 0 && <div class="media-wide"><MediaGallery media={artifact.data.media}/></div>}
+      {artifact.data.media.length > 0 && <div class="media-wide"><MediaGallery media={artifact.data.media} imagePreviewSources={mediaPreviewSources} linkImagesToFullSize/></div>}
       {artifact.data.transcript && <section id="transcript" class="transcript"><h2>Transcript</h2><p>{artifact.data.transcript}</p></section>}
       {(artifact.data.externalUrl || artifact.data.sourceUrl) && <section class="links"><h2>Elsewhere</h2>{artifact.data.externalUrl && <a href={artifact.data.externalUrl}>Visit external source</a>}{artifact.data.sourceUrl && <a href={artifact.data.sourceUrl}>View source material</a>}</section>}
       {trails.length > 0 && <section class="links"><h2>Continue with a guide</h2>{trails.map((trail) => <a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a>)}</section>}

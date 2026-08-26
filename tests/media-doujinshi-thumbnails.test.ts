@@ -258,6 +258,57 @@ test("discovers only available chapters whose parent series is doujinshi", async
   }
 });
 
+test("discovers article, topic, supporting-gallery, and dense-grid thumbnails", () => {
+  const root = "/managed";
+  const entries = [
+    {
+      collection: "artifacts" as const,
+      path: "article.md",
+      body: `
+![Editorial](/media/images/article/editorial.webp)
+<div class="art-gallery"><img src="/media/images/article/body.png" alt="Body"></div>`,
+      data: {
+        slug: "article",
+        status: "published",
+        hero: { kind: "image", src: "/media/images/shared/hero.jpg" },
+        media: [
+          { kind: "image", src: "/media/images/article/supporting.webp" },
+          { kind: "video", src: "/media/images/article/movie.webp" },
+        ],
+      },
+    },
+    {
+      collection: "spheres" as const,
+      path: "topic.md",
+      body: "",
+      data: {
+        slug: "topic",
+        status: "published",
+        cover: { kind: "image", src: "/media/images/topic-covers/topic.webp" },
+      },
+    },
+    {
+      collection: "artifacts" as const,
+      path: "draft.md",
+      body: "",
+      data: {
+        slug: "draft",
+        status: "draft",
+        hero: { kind: "image", src: "/media/images/missing/draft.webp" },
+      },
+    },
+  ];
+
+  expect(
+    collectMediaThumbnailItems(entries, root).map((item) => item.destinationPublicPath),
+  ).toEqual([
+    "/media/images/article/thumbnails/body.webp",
+    "/media/images/article/thumbnails/supporting.webp",
+    "/media/images/shared/thumbnails/hero.webp",
+    "/media/images/topic-covers/thumbnails/topic.webp",
+  ]);
+});
+
 test("discovers cover artwork and page thumbnails for manga and doujinshi", () => {
   const root = "/managed";
   const entries = [

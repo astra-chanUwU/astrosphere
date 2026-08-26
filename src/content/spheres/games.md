@@ -9,7 +9,7 @@ accentLabel: Play, preservation, and memory
 shortLabel: Games
 cover:
   kind: image
-  src: /media/spheres/games.webp
+  src: /media/images/topic-covers/games.webp
   alt: "A vintage Ace Combat 3: Electrosphere game cover featuring a fighter jet."
   credit: Image supplied for the AstroSphere sphere cover.
 ---

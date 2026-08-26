@@ -77,9 +77,10 @@ test("builds and parses a deterministic remote inventory", () => {
 
   expect(
     parseRemoteFileList(
-      "120|manga/book/001.webp\n40|images/set/a|b.webp\n0|images/set/\n7|.astrosphere/log\n",
+      "120|manga/book/001.webp\n40|images/set/a|b.webp\n500|anime/show/default.webm\n0|images/set/\n7|.astrosphere/log\n",
     ),
   ).toEqual([
+    { path: "anime/show/default.webm", bytes: 500 },
     { path: "images/set/a|b.webp", bytes: 40 },
     { path: "manga/book/001.webp", bytes: 120 },
   ]);
@@ -103,14 +104,16 @@ test("rejects malformed or unsafe remote inventory entries", () => {
   );
 });
 
-test("walks only regular files in the two local public media trees", async () => {
+test("walks only regular files in the three local public media trees", async () => {
   const root = await mkdtemp(join(tmpdir(), "media-sync-"));
   try {
     await mkdir(join(root, "manga/book"), { recursive: true });
     await mkdir(join(root, "images/set"), { recursive: true });
+    await mkdir(join(root, "anime/show"), { recursive: true });
     await mkdir(join(root, ".astrosphere"));
     await writeFile(join(root, "manga/book/001.webp"), "1234");
     await writeFile(join(root, "images/set/cover.webp"), "123456");
+    await writeFile(join(root, "anime/show/default.webm"), "12345");
     await writeFile(join(root, ".astrosphere/prune.json"), "private");
     await symlink(
       join(root, "manga/book/001.webp"),
@@ -118,6 +121,7 @@ test("walks only regular files in the two local public media trees", async () =>
     );
 
     expect(await listLocalMediaFiles(root)).toEqual([
+      { path: "anime/show/default.webm", bytes: 5 },
       { path: "images/set/cover.webp", bytes: 6 },
       { path: "manga/book/001.webp", bytes: 4 },
     ]);

@@ -3,6 +3,8 @@ import { parse as parseYaml } from "yaml";
 
 export type MediaContentCollection =
   | "artifacts"
+  | "animeTitles"
+  | "animeVideos"
   | "imageSets"
   | "mangaSeries"
   | "mangaChapters"
@@ -59,6 +61,11 @@ export const collectionForContentPath = (
 ): MediaContentCollection => {
   const path = relativePath.replaceAll("\\", "/");
   if (path.startsWith("artifacts/")) return "artifacts";
+  if (path.startsWith("anime/titles/")) return "animeTitles";
+  if (path.startsWith("anime/videos/")) return "animeVideos";
+  if (path.startsWith("anime/")) {
+    throw new Error(`Unexpected anime content path: ${relativePath}`);
+  }
   if (path.startsWith("image-sets/")) return "imageSets";
   if (path.startsWith("manga/series/")) return "mangaSeries";
   if (path.startsWith("manga/chapters/")) return "mangaChapters";
@@ -73,7 +80,7 @@ export const collectionForContentPath = (
 };
 
 export const isPublishedMediaEntry = (entry: MediaContentEntry): boolean =>
-  entry.collection === "mangaSeries"
+  entry.collection === "mangaSeries" || entry.collection === "animeTitles"
     ? entry.data.visibility === "published"
     : entry.data.status === "published";
 

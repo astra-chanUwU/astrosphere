@@ -1,10 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { createManagedImageThumbnailSrc } from "../lib/managed-image-thumbnails";
 interface Props { artifact: CollectionEntry<"artifacts">; visual?: boolean; }
 const { artifact, visual = false } = Astro.props;
+const heroPreview = artifact.data.hero?.kind === "image"
+  ? createManagedImageThumbnailSrc(artifact.data.hero.src)
+  : undefined;
 ---
 <article class:list={{ "artifact-card--visual": visual }}>
-  {visual && artifact.data.hero?.kind === "image" && <a class="artifact-image" href={`/articles/${artifact.data.slug}`}><img src={artifact.data.hero.src} alt={artifact.data.hero.alt ?? artifact.data.title} loading="lazy" decoding="async" /></a>}
+  {visual && artifact.data.hero?.kind === "image" && <a class="artifact-image" href={`/articles/${artifact.data.slug}`}><img src={heroPreview} alt={artifact.data.hero.alt ?? artifact.data.title} loading="lazy" decoding="async" /></a>}
   <p class="type">{artifact.data.type.replace("-", " ")}</p><h2><a href={`/articles/${artifact.data.slug}`}>{artifact.data.title}</a></h2><p class="summary">{artifact.data.summary}</p><time datetime={artifact.data.publishedAt.toISOString()}>{artifact.data.publishedAt.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" })}</time>
 </article>
 <style>article{border-top:1px solid var(--color-border);padding:var(--space-3) 0}.type{color:var(--color-accent);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--label-tracking);margin:0;text-transform:uppercase}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;line-height:var(--leading-tight);margin:var(--space-1) 0}h2 a{text-decoration:none}.summary{line-height:var(--leading-reading);margin:0 0 var(--space-1);max-width:42rem}time{color:var(--color-muted);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--label-tracking);text-transform:uppercase}</style>

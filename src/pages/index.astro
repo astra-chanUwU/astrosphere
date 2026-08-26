@@ -1,11 +1,13 @@
 ---
 import ImageSetCard from "../components/ImageSetCard.astro";
+import AnimeCard from "../components/AnimeCard.astro";
 import MangaSeriesCard from "../components/MangaSeriesCard.astro";
 import PageGlyph from "../components/PageGlyph.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   assertPublishingGuardrails,
   getPublishedArtifacts,
+  getPublishedAnimeVideos,
   getPublishedImageSets,
   getPublishedMangaChapters,
   getPublishedMangaSeries,
@@ -13,17 +15,22 @@ import {
 } from "../lib/content";
 import { getShelfSelections } from "../lib/shelf";
 import { createMangaCoverPreviewSrc, getMangaPublicPath } from "../lib/manga-reader";
+import { createManagedImageThumbnailSrc } from "../lib/managed-image-thumbnails";
 
 if (import.meta.env.PROD) await assertPublishingGuardrails();
 
-const [artifacts, imageSets, mangaSeries, chapters, trails, shelf] = await Promise.all([
+const [artifacts, imageSets, mangaSeries, chapters, trails, shelf, animeVideos] = await Promise.all([
   getPublishedArtifacts(),
   getPublishedImageSets(),
   getPublishedMangaSeries(),
   getPublishedMangaChapters(),
   getPublishedTrails(),
   getShelfSelections(),
+  getPublishedAnimeVideos(),
 ]);
+
+const animeVideosByTitle = new Map<string, typeof animeVideos>();
+for (const video of animeVideos) animeVideosByTitle.set(video.data.anime, [...(animeVideosByTitle.get(video.data.anime) ?? []), video]);
 
 const chapterCountBySeriesSlug = new Map<string, number>();
 const seriesBySlug = new Map(mangaSeries.map((series) => [series.data.slug, series]));
@@ -58,6 +65,7 @@ const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
 const currentManga = recommendedManga[0];
 const currentImageSet = newestImageSets[0];
 const currentDoujinshi = recommendedDoujinshi[0];
+const currentAnime = shelf.anime[0];
 ---
 
 <BaseLayout title="AstroSphere" description="An independent archive of manga, image sets, doujinshi, artifacts, and connected trails.">
@@ -65,6 +73,7 @@ const currentDoujinshi = recommendedDoujinshi[0];
     <div class="archive-columns">
       <aside class="recommendations">
         <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Now</h2><a href="/now">All →</a></div>{currentManga && <article class="current-feature" data-manga-rating={currentManga.data.rating}><a class="current-feature-cover" href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.cover && <img src={createMangaCoverPreviewSrc(currentManga.data.format, currentManga.data.slug, currentManga.data.cover.src)} alt={currentManga.data.cover.alt ?? `${currentManga.data.title} cover`} loading="eager" decoding="async" />}</a><div><p class="current-label">Read next</p><h3><a href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.title}</a></h3><p class="current-meta">{currentManga.data.originalTitle}</p></div></article>}{(currentImageSet || currentDoujinshi) && <ul class="current-secondary">{currentImageSet && <li><span>Recent set</span><a href={`/image-sets/${currentImageSet.data.slug}`}>{currentImageSet.data.title}</a></li>}{currentDoujinshi && <li data-manga-rating={currentDoujinshi.data.rating}><span>Adult shelf</span><a href={getMangaPublicPath(currentDoujinshi.data.format, currentDoujinshi.data.slug)}>{currentDoujinshi.data.title}</a></li>}</ul>}</section>
+        {currentAnime && <section class="anime-home" aria-labelledby="anime-home-title"><div class="feed-heading"><div><p class="current-label">Native WebM cinema</p><h2 id="anime-home-title">Watch anime</h2></div><a href="/anime">All →</a></div><div class="anime-home-grid"><AnimeCard title={currentAnime} videos={animeVideosByTitle.get(currentAnime.data.slug) ?? []} /></div></section>}
         <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Read next</h2><a href="/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
         <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Recent sets</h2><a href="/image-sets">All →</a></div><div class="recommendation-list">{newestImageSets.map((imageSet) => <ImageSetCard {imageSet} />)}</div></section>
         <section aria-labelledby="doujinshi-recommendations-title"><div class="feed-heading"><h2 id="doujinshi-recommendations-title">Doujinshi</h2><a href="/doujinshi">All →</a></div><div class="recommendation-list">{recommendedDoujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
@@ -76,7 +85,7 @@ const currentDoujinshi = recommendedDoujinshi[0];
           {dispatchGroups.map((group) => <section class="dispatch-group" aria-labelledby={`dispatch-date-${group.date.toISOString().slice(0, 10)}`}>
             <h3 class="dispatch-date" id={`dispatch-date-${group.date.toISOString().slice(0, 10)}`}><time datetime={group.date.toISOString()}>{group.date.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" })}</time></h3>
             {group.items.map((dispatch) => <article class="dispatch-item">
-              {dispatch.kind === "artifact" && <div class="dispatch-entry dispatch-entry--artifact">{dispatch.item.data.hero?.kind === "image" && <a class="dispatch-thumb" href={`/articles/${dispatch.item.data.slug}`}><img src={dispatch.item.data.hero.src} alt={dispatch.item.data.hero.alt ?? dispatch.item.data.title} loading="lazy" decoding="async" /></a>}<div class="dispatch-copy"><p class="dispatch-type">{dispatch.item.data.type.replace("-", " ")}</p><h4><a href={`/articles/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
+              {dispatch.kind === "artifact" && <div class="dispatch-entry dispatch-entry--artifact">{dispatch.item.data.hero?.kind === "image" && <a class="dispatch-thumb" href={`/articles/${dispatch.item.data.slug}`}><img src={createManagedImageThumbnailSrc(dispatch.item.data.hero.src)} alt={dispatch.item.data.hero.alt ?? dispatch.item.data.title} loading="lazy" decoding="async" /></a>}<div class="dispatch-copy"><p class="dispatch-type">{dispatch.item.data.type.replace("-", " ")}</p><h4><a href={`/articles/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
               {dispatch.kind === "image-set" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Image set</p><h4><a href={`/image-sets/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
               {dispatch.kind === "chapter" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Chapter</p><h4><a href={`/manga/${dispatch.item.data.series}/${dispatch.item.data.slug}`}>{dispatch.seriesTitle} — {dispatch.item.data.title}</a></h4><p>Chapter {dispatch.item.data.number}</p></div></div>}
               {dispatch.kind === "trail" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Trail</p><h4><a href={`/guides/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
@@ -94,6 +103,10 @@ const currentDoujinshi = recommendedDoujinshi[0];
   .archive-columns { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.5fr); padding-top: var(--space-3); }
   .recommendations > section { margin-top: var(--section-space); }
   .recommendations > .current-attention { border-top: 2px solid var(--color-accent); margin-top: 0; padding-top: var(--space-2); }
+  .recommendations > .anime-home { border-top: 2px solid var(--color-accent-warm); padding-top: var(--space-2); }
+  .anime-home .feed-heading { align-items: end; }
+  .anime-home .feed-heading h2 { margin-top: .2rem; }
+  .anime-home-grid { display: grid; gap: var(--space-3); padding-top: var(--space-2); }
   .current-feature { align-items: start; background: var(--color-surface); display: grid; gap: var(--space-2); grid-template-columns: 7rem minmax(0, 1fr); margin-top: var(--space-2); padding: var(--space-2); }
   .current-feature-cover { align-self: start; background: var(--color-background); display: block; }
   .current-feature-cover img { display: block; height: auto; width: 100%; }

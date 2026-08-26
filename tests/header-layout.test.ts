@@ -30,6 +30,13 @@ test("separates search and external watchlist utilities from primary navigation"
   expect(header).toContain('class="external-indicator"');
 });
 
+test("links the anime library from primary navigation", async () => {
+  const navigation = await Bun.file(
+    new URL("../src/config/navigation.ts", import.meta.url),
+  ).text();
+  expect(navigation).toContain('{ href: "/anime", label: "Anime" }');
+});
+
 test("uses visible thumb-first grids on phones", () => {
   expect(header).toContain("grid-template-columns:repeat(2,minmax(0,1fr))");
   expect(header).toContain("grid-template-columns:repeat(3,minmax(0,1fr))");

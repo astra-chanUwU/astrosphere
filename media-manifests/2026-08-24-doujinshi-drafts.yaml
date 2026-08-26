@@ -1567,25 +1567,6 @@ entries:
     chapters:
       - { number: 1, title: Doujinshi, pages: all, body: "Draft import. Verify metadata before publishing." }
   - type: doujinshi
-    archive: "Futa SoraxExusiai Doujinshi.zip"
-    mode: create
-    series:
-      slug: futa-soraxexusiai-doujinshi
-      title: "Futa SoraxExusiai Doujinshi"
-      originalTitle: "Futa SoraxExusiai Doujinshi"
-      aliases: []
-      status: completed
-      publicationYear: 2026
-      description: "An explicit English-translated Arknights doujinshi illustrated by Kataokasan."
-      rating: explicit
-      origin: original
-      tags: [arknights, exusiai, sora, angel, bunny-girl, defloration, femdom, fingering, futanari, kemonomimi, mind-control, nakadashi, rape, sole-dickgirl, squirting, stockings, tail, uncensored, wolf-girl, x-ray, english, translated]
-      authors: [{ name: Unknown, slug: unknown }]
-      artists: [{ name: Kataokasan, slug: kataokasan }]
-      featured: false
-    chapters:
-      - { number: 1, title: Doujinshi, pages: all, body: "Draft import. Verify metadata before publishing." }
-  - type: doujinshi
     archive: "Sleepless Night.zip"
     mode: create
     series:

@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { animeTitleSchema, animeVideoSchema } from "./lib/anime-schema";
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})?)?$/;
@@ -315,6 +316,24 @@ const imageSets = defineCollection({
   schema: imageSetSchema,
 });
 
+const animeTitles = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/anime/titles",
+    generateId: slugFromFrontmatter,
+  }),
+  schema: animeTitleSchema,
+});
+
+const animeVideos = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/anime/videos",
+    generateId: slugFromFrontmatter,
+  }),
+  schema: animeVideoSchema,
+});
+
 export const collections = {
   artifacts,
   spheres,
@@ -324,4 +343,6 @@ export const collections = {
   mangaChapters,
   signals,
   imageSets,
+  animeTitles,
+  animeVideos,
 };

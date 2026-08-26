@@ -1,12 +1,13 @@
 ---
 import ImageSetCard from "../../components/ImageSetCard.astro";
 import MangaSeriesCard from "../../components/MangaSeriesCard.astro";
+import AnimeCard from "../../components/AnimeCard.astro";
 import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedMangaChapters } from "../../lib/content";
+import { getPublishedAnimeVideos, getPublishedMangaChapters } from "../../lib/content";
 import { getShelfSelections } from "../../lib/shelf";
 
-const [selections, chapters] = await Promise.all([getShelfSelections(), getPublishedMangaChapters()]);
+const [selections, chapters, animeVideos] = await Promise.all([getShelfSelections(), getPublishedMangaChapters(), getPublishedAnimeVideos()]);
 const chapterCountBySeriesSlug = new Map<string, number>();
 for (const chapter of chapters) {
   chapterCountBySeriesSlug.set(
@@ -14,11 +15,23 @@ for (const chapter of chapters) {
     (chapterCountBySeriesSlug.get(chapter.data.series) ?? 0) + 1,
   );
 }
+const animeVideosByTitle = new Map<string, typeof animeVideos>();
+for (const video of animeVideos) animeVideosByTitle.set(video.data.anime, [...(animeVideosByTitle.get(video.data.anime) ?? []), video]);
 ---
 
 <BaseLayout title="The Shelf" description="Comics, doujinshi, and image collections kept close at hand.">
   <div class="page-shell">
     <ArchivePageHeader eyebrow="A visual reading room" title="The Shelf" variant="shelf" summary="Comics, doujinshi, and image collections kept close at hand." />
+
+    <section aria-labelledby="anime-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Native WebM cinema</p><h2 id="anime-heading">Anime</h2></div>
+        <a href="/anime">Browse all anime →</a>
+      </div>
+      {selections.anime.length
+        ? <div class="anime-grid">{selections.anime.map((title) => <AnimeCard {title} videos={animeVideosByTitle.get(title.data.slug) ?? []} />)}</div>
+        : <p>No anime is curated on the Shelf yet.</p>}
+    </section>
 
     <section aria-labelledby="manga-heading">
       <div class="section-heading">
@@ -59,9 +72,12 @@ for (const chapter of chapters) {
   h1 { font-size: var(--text-2xl); margin: 0; }
   header > p:last-child { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
   section { max-width: var(--reading-width); margin-bottom: var(--section-space); }
+  section:first-of-type { max-width: var(--content-width); }
+  .anime-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: var(--space-3); }
   .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); justify-content: space-between; padding-bottom: var(--space-2); }
   .section-heading .eyebrow { margin: 0 0 var(--space-1); }
   .section-heading a { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin: 0; }
+  @media (max-width: 54rem) { .anime-grid { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 38rem) { .section-heading { align-items: start; flex-direction: column; } }
 </style>

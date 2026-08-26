@@ -9,7 +9,7 @@ accentLabel: Animation, memory, and small worlds
 shortLabel: Anime
 cover:
   kind: image
-  src: /media/spheres/anime.webp
+  src: /media/images/topic-covers/anime.webp
   alt: A retro-styled Ghost in the Shell poster in muted teal and cream.
   credit: Image supplied for the AstroSphere sphere cover.
 ---

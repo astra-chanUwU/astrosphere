@@ -28,6 +28,7 @@ import {
   optimizeMediaInPlace,
   type OptimizeResult,
 } from "../src/lib/media/optimizer";
+import { optimizeVideoManifest } from "../src/lib/media/video-optimizer";
 import { importMangaVolumes } from "../src/lib/media/manga-volume";
 import {
   formatBatchImportResult,
@@ -72,7 +73,7 @@ const serve = (args: string[]): void => {
   console.log(
     `Serving external media from ${root} at http://127.0.0.1:${server.port}`,
   );
-  console.log("Public routes: /manga/* and /media/images/*");
+  console.log("Public routes: /manga/*, /media/images/*, and /media/anime/*");
 };
 
 const optimize = async (args: string[]): Promise<void> => {
@@ -81,6 +82,23 @@ const optimize = async (args: string[]): Promise<void> => {
     return;
   }
   const options = parseOptimizeArgs(args);
+  if (options.kind === "video") {
+    const result = await optimizeVideoManifest({
+      sourceRoot: options.sourceRoot,
+      manifestPath: options.manifest,
+      mediaRoot: requireMediaRoot(),
+      dryRun: options.dryRun,
+    });
+    console.log(options.dryRun ? "Video optimization dry run:" : "Video optimization complete:");
+    for (const item of result.items) {
+      console.log(`  ${item.action.toUpperCase()} ${item.label}: ${item.sourcePath} -> ${item.outputPublicPath}`);
+    }
+    console.log(`  Files: ${result.items.length}`);
+    console.log(`  Original bytes: ${result.originalBytes}`);
+    console.log(`  Output bytes: ${result.outputBytes}`);
+    if (result.operationRecord) console.log(`  Operation record: ${result.operationRecord}`);
+    return;
+  }
   const showPreparedReplacement = async (
     result: OptimizeResult,
   ): Promise<boolean> => {

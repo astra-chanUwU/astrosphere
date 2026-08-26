@@ -1,8 +1,10 @@
 import { shelfConfig } from "../config/shelf";
 import {
   getPublishedImageSets,
+  getPublishedAnimeTitles,
   getPublishedMangaSeries,
   type ImageSetEntry,
+  type AnimeTitleEntry,
   type MangaSeriesEntry,
 } from "./content";
 
@@ -37,16 +39,19 @@ export async function getShelfSelections(): Promise<{
   manga: MangaSeriesEntry[];
   doujinshi: MangaSeriesEntry[];
   imageSets: ImageSetEntry[];
+  anime: AnimeTitleEntry[];
 }> {
-  const [manga, doujinshi, imageSets] = await Promise.all([
+  const [manga, doujinshi, imageSets, anime] = await Promise.all([
     getShelfArchive("manga"),
     getShelfArchive("doujinshi"),
     getShelfArchive("image-sets"),
+    getPublishedAnimeTitles(),
   ]);
 
   return {
     manga: selectConfigured(manga, shelfConfig.mangaSlugs),
     doujinshi: selectConfigured(doujinshi, shelfConfig.doujinshiSlugs),
     imageSets: selectConfigured(imageSets, shelfConfig.imageSetSlugs),
+    anime: selectConfigured(anime, shelfConfig.animeSlugs),
   };
 }

@@ -1,0 +1,44 @@
+---
+import type { AnimeTitleEntry, AnimeVideoEntry } from "../lib/content";
+import { getAnimeWatchPath } from "../lib/anime-routes";
+
+interface Props { title: AnimeTitleEntry; videos: AnimeVideoEntry[]; }
+const { title, videos } = Astro.props;
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainder = Math.round(seconds % 60);
+  return `${minutes}:${String(remainder).padStart(2, "0")}`;
+};
+---
+
+<section class="episode-list" aria-labelledby="episodes-heading">
+  <header><p>Available now</p><h2 id="episodes-heading">Episodes and extras</h2></header>
+  <ol>
+    {videos.map((video) => <li>
+      <a href={getAnimeWatchPath(title.data.slug, video.data.slug)}>
+        <span class="number">{video.data.kind === "episode" ? String(video.data.number).padStart(2, "0") : "Extra"}</span>
+        <span class="episode-copy"><strong>{video.data.title}</strong>{video.data.originalTitle && <small>{video.data.originalTitle}</small>}</span>
+        <span class="media"><span class="duration">{formatDuration(video.data.durationSeconds)}</span><small>{video.data.variants.length} {video.data.variants.length === 1 ? "version" : "versions"}</small></span>
+        <span class="play" aria-hidden="true">▶</span>
+      </a>
+    </li>)}
+  </ol>
+</section>
+
+<style>
+  .episode-list { margin-top: var(--section-space); }
+  header { border-bottom: 2px solid var(--color-text); padding-bottom: var(--space-2); }
+  header p { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.65rem, 3vw, 2.5rem); font-weight: 500; margin: var(--space-1) 0 0; }
+  ol { display: grid; gap: var(--space-1); list-style: none; margin: var(--space-2) 0 0; padding: 0; }
+  li { background: var(--color-surface); border: 1px solid transparent; }
+  li:hover { border-color: var(--color-accent); }
+  li a { align-items: center; color: var(--color-text); display: grid; gap: var(--space-2); grid-template-columns: 3.5rem minmax(0, 1fr) auto 1.5rem; min-height: 5rem; padding: var(--space-2); text-decoration: none; }
+  .number { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-lg); }
+  .episode-copy strong { color: var(--color-astral-blue); display: block; font-size: var(--text-lg); }
+  small { color: var(--color-muted); display: block; font-size: var(--text-xs); margin-top: .2rem; }
+  .media { text-align: right; }
+  .duration { font-family: var(--font-mono); font-size: var(--text-xs); }
+  .play { color: var(--color-accent); font-size: var(--text-xs); text-align: right; }
+  @media (max-width: 34rem) { li a { grid-template-columns: 2.5rem minmax(0, 1fr) 1rem; } .media { grid-column: 2; grid-row: 2; text-align: left; } .play { grid-column: 3; grid-row: 1 / span 2; } }
+</style>

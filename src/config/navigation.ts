@@ -16,8 +16,12 @@ export interface SidebarModel {
   groups: SidebarGroup[];
 }
 
+export const isNavigationItemCurrent = (href: string, pathname: string): boolean =>
+  href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+
 export const primaryNavigation: NavItem[] = [
   { href: "/explore", label: "Explore" },
+  { href: "/anime", label: "Anime" },
   { href: "/manga", label: "Manga" },
   { href: "/doujinshi", label: "Doujinshi" },
   { href: "/image-sets", label: "Image-set" },
@@ -35,7 +39,10 @@ export const utilityNavigation: NavItem[] = [
 ];
 
 const withCurrent = (items: NavItem[], pathname: string) =>
-  items.map((item) => ({ ...item, current: item.href === pathname }));
+  items.map((item) => ({
+    ...item,
+    current: item.href ? isNavigationItemCurrent(item.href, pathname) : false,
+  }));
 
 const archiveItems: NavItem[] = [
   { href: "/topics", label: "Topics" },
@@ -48,13 +55,13 @@ const archiveSidebar = (pathname: string): SidebarModel => ({
   heading: "Explore the archive",
   groups: [
     { items: withCurrent(archiveItems, pathname) },
-    { label: "Elsewhere", items: [{ href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }, { href: "/search", label: "Search" }] },
+    { label: "Elsewhere", items: [{ href: "/anime", label: "Anime" }, { href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }, { href: "/search", label: "Search" }] },
   ],
 });
 
 const homeSidebar: SidebarModel = {
   heading: "Start exploring",
-  groups: [{ items: [...archiveItems, { href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }] }],
+  groups: [{ items: [...archiveItems, { href: "/anime", label: "Anime" }, { href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }] }],
 };
 
 const studioSidebar: SidebarModel = {
@@ -69,7 +76,7 @@ const aboutSidebar: SidebarModel = {
 
 const librarySidebar = (pathname: string): SidebarModel => ({
   heading: "Reading archive",
-  groups: [{ items: withCurrent([{ href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }, { href: "/search", label: "Search the archive" }], pathname) }],
+  groups: [{ items: withCurrent([{ href: "/anime", label: "Anime" }, { href: "/manga", label: "Manga" }, { href: "/doujinshi", label: "Doujinshi" }, { href: "/image-sets", label: "Image-set" }, { href: "/search", label: "Search the archive" }], pathname) }],
 });
 
 const recoverySidebar: SidebarModel = {
@@ -80,7 +87,7 @@ const recoverySidebar: SidebarModel = {
 export const resolveSidebar = (pathname: string): SidebarModel => {
   if (pathname === "/") return homeSidebar;
   if (["/explore", "/topics", "/articles", "/guides", "/links"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
-  if (["/manga", "/doujinshi", "/image-sets", "/shelf"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`) || pathname.startsWith(`${path}/`))) return librarySidebar(pathname);
+  if (["/anime", "/manga", "/doujinshi", "/image-sets", "/shelf"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`) || pathname.startsWith(`${path}/`))) return librarySidebar(pathname);
   if (["/work", "/contact", "/support"].includes(pathname)) return withCurrentGroups(studioSidebar, pathname);
   if (["/about", "/now", "/colophon"].includes(pathname)) return withCurrentGroups(aboutSidebar, pathname);
   return recoverySidebar;

@@ -10,14 +10,17 @@ test("Caddy serves manga images externally without intercepting manga pages", as
   );
   const mangaHandler = lines.indexOf("handle @mangaMedia {");
   const imageHandler = lines.indexOf("handle_path /media/images/* {");
+  const animeHandler = lines.indexOf("handle_path /media/anime/* {");
   const siteHandler = lines.indexOf("handle {");
 
   expect(mangaMatcher).toBeGreaterThanOrEqual(0);
   expect(mangaHandler).toBeGreaterThan(mangaMatcher);
   expect(imageHandler).toBeGreaterThan(mangaHandler);
-  expect(siteHandler).toBeGreaterThan(imageHandler);
+  expect(animeHandler).toBeGreaterThan(imageHandler);
+  expect(siteHandler).toBeGreaterThan(animeHandler);
   expect(caddyfile).toContain("root * /srv/astrosphere/media/manga");
   expect(caddyfile).toContain("uri strip_prefix /manga");
   expect(caddyfile).toContain("root * /srv/astrosphere/media/images");
-  expect(caddyfile.match(/max-age=31536000, immutable/g)).toHaveLength(2);
+  expect(caddyfile).toContain("root * /srv/astrosphere/media/anime");
+  expect(caddyfile.match(/max-age=31536000, immutable/g)).toHaveLength(3);
 });

@@ -1,0 +1,38 @@
+---
+import type { AnimeTitleEntry } from "../lib/content";
+
+interface Props { title: AnimeTitleEntry; }
+const { title } = Astro.props;
+---
+
+<section class="anime-meta" aria-labelledby="anime-details-heading">
+  <p class="eyebrow">Catalog record</p>
+  <h2 id="anime-details-heading">Details</h2>
+  {title.data.contentWarnings.length > 0 && <p class="warning"><strong>Content notes:</strong> {title.data.contentWarnings.join(", ")}</p>}
+  <dl>
+    <div><dt>Format</dt><dd>{title.data.format.replaceAll("-", " ")}</dd></div>
+    <div><dt>Release</dt><dd>{title.data.releaseYear}</dd></div>
+    <div><dt>Status</dt><dd>{title.data.status}</dd></div>
+    <div><dt>Studio</dt><dd>{title.data.studios.join(", ")}</dd></div>
+    <div><dt>Director</dt><dd>{title.data.directors.join(", ")}</dd></div>
+  </dl>
+  <p class="tags">{title.data.tags.map((tag) => <a href={`/tags/${tag}`}>#{tag}</a>)}</p>
+  <details><summary>Sources and credits</summary><ul>{title.data.sources.map((source) => <li><a href={source.url}>{source.label}</a>{source.credit && ` — ${source.credit}`}</li>)}</ul></details>
+</section>
+
+<style>
+  .anime-meta { border-top: 3px solid var(--color-accent-warm); margin-top: var(--section-space); max-width: var(--reading-width); padding: var(--space-3); background: var(--color-surface); }
+  .eyebrow { color: var(--color-accent-warm); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
+  h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-1) 0 var(--space-3); }
+  dl { display: grid; gap: var(--space-1); }
+  dl div { border-top: 1px solid var(--color-border); display: grid; gap: var(--space-2); grid-template-columns: 5.5rem 1fr; padding: var(--space-1) 0; }
+  dt { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  dd { margin: 0; text-transform: capitalize; }
+  .warning { border-left: .25rem solid var(--color-accent); padding-left: var(--space-2); }
+  .tags { display: flex; flex-wrap: wrap; gap: .35rem .7rem; }
+  .tags a { font-size: var(--text-sm); }
+  details { border-top: 1px solid var(--color-border); margin-top: var(--space-3); padding-top: var(--space-2); }
+  summary { cursor: pointer; font-size: var(--text-sm); }
+  ul { padding-left: var(--space-3); }
+  li { font-size: var(--text-sm); margin-block: var(--space-1); }
+</style>

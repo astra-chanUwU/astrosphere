@@ -32,6 +32,7 @@ Options:
 
 export const optimizeHelp = `Usage:
   bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
+  bun run media:optimize video <source-root> --manifest <file> [--dry-run]
 
 Options:
   --quality <1..100>  WebP quality (default: 85)
@@ -45,7 +46,7 @@ export const thumbnailHelp = `Usage:
 
 Options:
   --series <slug>  Restrict generation to one manga or doujinshi series
-                   Without this option, generates manga, doujinshi, and image-set previews
+                   Without this option, generates all managed preview thumbnails
   --dry-run        Show planned generation without writing files
   --force          Regenerate valid fresh thumbnails
   -h, --help       Show this help`;
@@ -240,6 +241,7 @@ const requireUniqueOptimizeOption = (
 };
 
 export type OptimizeCommandOptions = {
+  kind?: undefined;
   source: string;
   destination?: string;
   profile: OptimizerProfile;
@@ -249,7 +251,59 @@ export type OptimizeCommandOptions = {
   inPlace?: true;
 };
 
-export const parseOptimizeArgs = (argv: string[]): OptimizeCommandOptions => {
+export type VideoOptimizeCommandOptions = {
+  kind: "video";
+  sourceRoot: string;
+  manifest: string;
+  dryRun: boolean;
+  source?: never;
+  destination?: never;
+  profile?: never;
+  quality?: never;
+  webReader?: never;
+  inPlace?: never;
+};
+
+const parseVideoOptimizeArgs = (argv: string[]): VideoOptimizeCommandOptions => {
+  const sources: string[] = [];
+  let manifest: string | undefined;
+  let dryRun = false;
+  const seen = new Set<string>();
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index]!;
+    if (!argument.startsWith("--")) {
+      sources.push(argument);
+      continue;
+    }
+    if (seen.has(argument)) {
+      throw new MediaError("usage", `${argument} may only be specified once`);
+    }
+    seen.add(argument);
+    if (argument === "--dry-run") {
+      dryRun = true;
+      continue;
+    }
+    if (argument === "--manifest") {
+      manifest = resolve(requireOptimizeValue(argv, index, argument));
+      index += 1;
+      continue;
+    }
+    throw new MediaError("usage", `Unknown video optimize option: ${argument}`);
+  }
+  if (sources.length !== 1) {
+    throw new MediaError("usage", "Video optimization requires exactly one source root");
+  }
+  if (!manifest) throw new MediaError("usage", "--manifest is required");
+  return {
+    kind: "video",
+    sourceRoot: resolve(sources[0]!),
+    manifest,
+    dryRun,
+  };
+};
+
+export const parseOptimizeArgs = (argv: string[]): OptimizeCommandOptions | VideoOptimizeCommandOptions => {
+  if (argv[0] === "video") return parseVideoOptimizeArgs(argv.slice(1));
   let source: string | undefined;
   let destination: string | undefined;
   let profile: OptimizerProfile | undefined;

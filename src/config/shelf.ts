@@ -17,4 +17,5 @@ export const shelfConfig = {
     "mav-dachiex",
   ],
   imageSetSlugs: ["flou-sona", "ndgd"],
+  animeSlugs: ["space-patrol-luluco", "burn-up-w"],
 } as const;

@@ -92,6 +92,86 @@ test("requires cover artwork and page thumbnails for regular manga", () => {
   ]);
 });
 
+test("collects published anime artwork, posters, and every WebM variant", () => {
+  const references = collectManagedMediaReferences([
+    {
+      collection: "animeTitles",
+      path: "src/content/anime/titles/show.md",
+      body: "",
+      data: {
+        slug: "show",
+        visibility: "published",
+        poster: { src: "/media/anime/show/poster.webp" },
+        banner: { src: "/media/anime/show/banner.webp" },
+      },
+    },
+    {
+      collection: "animeVideos",
+      path: "src/content/anime/videos/show-01.md",
+      body: "",
+      data: {
+        slug: "show-01",
+        status: "published",
+        title: "show",
+        poster: "/media/anime/show/episodes/01.webp",
+        variants: [
+          {
+            label: "Japanese audio · English subtitles",
+            src: "/media/anime/show/videos/01/japanese-english-subs.webm",
+          },
+          {
+            label: "English audio",
+            src: "/media/anime/show/videos/01/english.webm",
+          },
+        ],
+      },
+    },
+  ]);
+
+  expect(references.map(({ publicPath }) => publicPath)).toEqual([
+    "/media/anime/show/banner.webp",
+    "/media/anime/show/poster.webp",
+    "/media/anime/show/episodes/01.webp",
+    "/media/anime/show/videos/01/japanese-english-subs.webm",
+    "/media/anime/show/videos/01/english.webm",
+  ]);
+});
+
+test("requires managed previews for article cards, topic cards, supporting media, and dense grids", () => {
+  const references = collectManagedMediaReferences([
+    {
+      collection: "artifacts",
+      path: "article.md",
+      body: `
+![Editorial](/media/images/article/editorial.webp)
+<div class="art-gallery"><img src="/media/images/article/body.webp" alt="Body"></div>`,
+      data: {
+        slug: "article",
+        status: "published",
+        hero: { kind: "image", src: "/media/images/shared/hero.webp" },
+        media: [{ kind: "image", src: "/media/images/article/supporting.webp" }],
+      },
+    },
+    {
+      collection: "spheres",
+      path: "topic.md",
+      body: "",
+      data: {
+        slug: "topic",
+        status: "published",
+        cover: { kind: "image", src: "/media/images/topic-covers/topic.webp" },
+      },
+    },
+  ]);
+
+  expect(references.filter(({ field }) => field.startsWith("thumbnail.")).map(({ field, publicPath }) => ({ field, publicPath }))).toEqual([
+    { field: "thumbnail.hero", publicPath: "/media/images/shared/thumbnails/hero.webp" },
+    { field: "thumbnail.media[1]", publicPath: "/media/images/article/thumbnails/supporting.webp" },
+    { field: "thumbnail.body[1]", publicPath: "/media/images/article/thumbnails/body.webp" },
+    { field: "thumbnail.cover", publicPath: "/media/images/topic-covers/thumbnails/topic.webp" },
+  ]);
+});
+
 test("does not require media referenced only by archived entries", () => {
   expect(
     collectManagedMediaReferences([

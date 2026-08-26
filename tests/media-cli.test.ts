@@ -91,7 +91,7 @@ test("parses the shared command vocabulary", () => {
   expect(thumbnailHelp).toContain(
     "media:thumbnails [--series <slug>] [--dry-run] [--force]",
   );
-  expect(thumbnailHelp).toContain("manga, doujinshi, and image-set previews");
+  expect(thumbnailHelp).toContain("all managed preview thumbnails");
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
 });
@@ -397,6 +397,30 @@ test("parses required optimization options with resolved paths and defaults", ()
     quality: 85,
     dryRun: false,
   });
+});
+
+test("parses a manifest-driven video optimization", () => {
+  expect(
+    parseOptimizeArgs([
+      "video",
+      "/sources/luluco",
+      "--manifest",
+      "manifest.yaml",
+      "--dry-run",
+    ]),
+  ).toEqual({
+    kind: "video",
+    sourceRoot: "/sources/luluco",
+    manifest: resolve("manifest.yaml"),
+    dryRun: true,
+  });
+});
+
+test("rejects incomplete or ambiguous video optimization arguments", () => {
+  expect(() => parseOptimizeArgs(["video", "/sources/luluco"])).toThrow("--manifest is required");
+  expect(() => parseOptimizeArgs(["video", "/sources/luluco", "--manifest", "one.yaml", "--manifest", "two.yaml"])).toThrow("--manifest may only be specified once");
+  expect(() => parseOptimizeArgs(["video", "/sources/luluco", "extra", "--manifest", "one.yaml"])).toThrow("exactly one source root");
+  expect(() => parseOptimizeArgs(["video", "/sources/luluco", "--manifest", "one.yaml", "--quality", "80"])).toThrow("Unknown video optimize option");
 });
 
 test("parses optional optimization quality and dry-run", () => {

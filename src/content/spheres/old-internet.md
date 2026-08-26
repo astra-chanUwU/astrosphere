@@ -9,7 +9,7 @@ accentLabel: Network memory
 shortLabel: Web
 cover:
   kind: image
-  src: /media/spheres/old-internet.webp
+  src: /media/images/topic-covers/old-internet.webp
   alt: Vintage computers and CRT monitors glowing in a dark room.
   credit: Image supplied for the AstroSphere sphere cover.
 ---

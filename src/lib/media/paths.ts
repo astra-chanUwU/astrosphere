@@ -3,19 +3,14 @@ import { getMediaLayout } from "./config";
 import { MediaError } from "./errors";
 import type { MediaLayout } from "./types";
 
-export type MediaNamespace = "manga" | "images";
+export type MediaNamespace = "manga" | "images" | "anime";
 export type ResolvedMediaPath = {
   namespace: MediaNamespace;
   publicPath: string;
   filePath: string;
 };
 
-const routes = [
-  { prefix: "/manga/", namespace: "manga" as const },
-  { prefix: "/media/images/", namespace: "images" as const },
-];
-
-const managedMediaExtensions = new Set([
+const imageExtensions = new Set([
   ".avif",
   ".gif",
   ".jpg",
@@ -23,6 +18,12 @@ const managedMediaExtensions = new Set([
   ".png",
   ".webp",
 ]);
+
+const routes = [
+  { prefix: "/manga/", namespace: "manga" as const, extensions: imageExtensions },
+  { prefix: "/media/images/", namespace: "images" as const, extensions: imageExtensions },
+  { prefix: "/media/anime/", namespace: "anime" as const, extensions: new Set([...imageExtensions, ".webm", ".mp3", ".mp4"]) },
+];
 
 const relationEscapesRoot = (value: string): boolean =>
   value === ".." ||
@@ -47,8 +48,9 @@ const relationIsInside = (root: string, candidate: string): boolean => {
 };
 
 export const isManagedMediaUrl = (source: string): boolean =>
-  routes.some(({ prefix }) => source.startsWith(prefix)) &&
-  managedMediaExtensions.has(extname(source).toLowerCase());
+  routes.some(({ prefix, extensions }) =>
+    source.startsWith(prefix) && extensions.has(extname(source).toLowerCase()),
+  );
 
 export const resolveMediaUrl = (source: string, root: string): ResolvedMediaPath => {
   const route = routes.find(({ prefix }) => source.startsWith(prefix));
@@ -95,6 +97,12 @@ export const contentTypeForMediaFile = (pathname: string): string => {
       return "image/png";
     case ".webp":
       return "image/webp";
+    case ".webm":
+      return "video/webm";
+    case ".mp3":
+      return "audio/mpeg";
+    case ".mp4":
+      return "video/mp4";
     default:
       return "application/octet-stream";
   }

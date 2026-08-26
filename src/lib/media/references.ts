@@ -5,6 +5,10 @@ import {
 } from "./content-source";
 import { createDoujinshiThumbnailSrc, createMangaArtworkThumbnailSrc, createMangaCoverThumbnailSrc } from "../manga-reader";
 import { createImageSetThumbnailSrc } from "../image-set-gallery";
+import {
+  collectDenseGalleryImageSources,
+  createManagedImageThumbnailSrc,
+} from "../managed-image-thumbnails";
 
 export type MediaReference = {
   source: string;
@@ -152,6 +156,34 @@ const collectImageSetThumbnailReferences = (entry: MediaContentEntry): MediaRefe
   return references;
 };
 
+const collectEditorialThumbnailReferences = (entry: MediaContentEntry): MediaReference[] => {
+  const references: MediaReference[] = [];
+  const add = (source: unknown, field: string): void => {
+    if (typeof source !== "string" || !isManagedMediaUrl(source) || !source.startsWith("/media/images/")) return;
+    const publicPath = createManagedImageThumbnailSrc(source);
+    if (publicPath !== source) references.push({ source: entry.path, field, publicPath });
+  };
+
+  if (entry.collection === "artifacts") {
+    const hero = entry.data.hero as { kind?: unknown; src?: unknown } | undefined;
+    if (hero?.kind === "image") add(hero.src, "thumbnail.hero");
+    const media = Array.isArray(entry.data.media) ? entry.data.media : [];
+    media.forEach((value, index) => {
+      const item = value as { kind?: unknown; src?: unknown } | undefined;
+      if (item?.kind === "image") add(item.src, `thumbnail.media[${index + 1}]`);
+    });
+    collectDenseGalleryImageSources(entry.body).forEach((source, index) => {
+      add(source, `thumbnail.body[${index + 1}]`);
+    });
+  }
+
+  if (entry.collection === "spheres") {
+    const cover = entry.data.cover as { kind?: unknown; src?: unknown } | undefined;
+    if (cover?.kind === "image") add(cover.src, "thumbnail.cover");
+  }
+  return references;
+};
+
 export const collectManagedMediaReferences = (
   entries: MediaContentEntry[],
 ): MediaReference[] => {
@@ -179,6 +211,7 @@ export const collectManagedMediaReferences = (
     collected.push(...frontmatter);
     collected.push(...collectSeriesThumbnailReferences(entry));
     collected.push(...collectImageSetThumbnailReferences(entry));
+    collected.push(...collectEditorialThumbnailReferences(entry));
     collected.push(
       ...collectBodyMatches(
         entry.body,

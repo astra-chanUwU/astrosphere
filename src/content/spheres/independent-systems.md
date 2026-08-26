@@ -10,7 +10,7 @@ accentLabel: Code, tools, and durable systems
 shortLabel: Code
 cover:
   kind: image
-  src: /media/spheres/code-sphere.webp
+  src: /media/images/topic-covers/code-sphere.webp
   alt: A dark code editor showing Go source code across multiple panes.
   credit: Image supplied for the AstroSphere sphere cover.
 ---

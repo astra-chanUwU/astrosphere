@@ -1,0 +1,54 @@
+---
+import type { AnimeTitleEntry, AnimeVideoEntry } from "../lib/content";
+import type { AnimeVariant } from "../types/content";
+import { getAnimeWatchPath } from "../lib/anime-routes";
+
+interface Props {
+  title: AnimeTitleEntry;
+  video: AnimeVideoEntry;
+  variant: AnimeVariant;
+  embeddedMovie?: boolean;
+}
+
+const { title, video, variant, embeddedMovie = false } = Astro.props;
+const poster = video.data.poster?.src ?? title.data.poster?.src;
+const variantHref = (slug: string) => embeddedMovie
+  ? getAnimeWatchPath(title.data.slug, video.data.slug, slug, video.data.defaultVariant)
+  : getAnimeWatchPath(title.data.slug, video.data.slug, slug, video.data.defaultVariant);
+---
+
+<section class="anime-player" aria-labelledby="player-heading">
+  <header><p>{video.data.kind === "episode" ? `Episode ${String(video.data.number).padStart(2, "0")}` : "Feature presentation"}</p><h2 id="player-heading">{video.data.title}</h2>{video.data.originalTitle && <span>{video.data.originalTitle}</span>}</header>
+  <div class="screen"><video controls preload="metadata" poster={poster}>
+      <source src={variant.src} type="video/webm" />
+      <p>Your browser cannot play this WebM video. <a href={variant.src} download>Download the WebM file</a>.</p>
+    </video></div>
+  <div class="player-controls">
+    <div><p class="current-version">Now playing</p><p class="version-copy">{variant.label}</p></div>
+    <a class="download" href={variant.src} download>Download WebM ↓</a>
+  </div>
+  {video.data.variants.length > 1 && <nav aria-label="Audio and subtitle versions">
+    {video.data.variants.map((item) => <a href={variantHref(item.slug)} aria-current={item.slug === variant.slug ? "page" : undefined}><span>{item.language}</span><small>{item.subtitles} subtitles</small></a>)}
+  </nav>}
+</section>
+
+<style>
+  .anime-player { max-width: 70rem; }
+  header p { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 3.25rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
+  header > span { color: var(--color-muted); display: block; margin-bottom: var(--space-2); }
+  .screen { background: #000; border: 1px solid color-mix(in srgb, var(--color-border) 70%, #000); box-shadow: 0 1.2rem 3rem rgba(0,0,0,.2); padding: clamp(.2rem, .7vw, .5rem); }
+  video { aspect-ratio: 16 / 9; background: #000; height: auto; max-height: min(75vh, 1080px); object-fit: contain; width: 100%; }
+  .player-controls { align-items: center; background: var(--color-surface); border: 1px solid var(--color-border); border-top: 0; display: flex; gap: var(--space-3); justify-content: space-between; padding: var(--space-2); }
+  .player-controls p { margin: 0; }
+  .current-version { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .version-copy { font-size: var(--text-sm); }
+  .download { white-space: nowrap; }
+  nav { display: grid; gap: var(--space-1); grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: var(--space-2); }
+  nav a { background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text); padding: .65rem .75rem; text-decoration: none; }
+  nav a span, nav a small { display: block; }
+  nav a small { color: var(--color-muted); margin-top: .2rem; }
+  nav a[aria-current="page"] { background: var(--color-astral-blue); border-color: var(--color-astral-blue); color: #fff; }
+  nav a[aria-current="page"] small { color: rgba(255,255,255,.78); }
+  @media (max-width: 32rem) { .player-controls { align-items: start; flex-direction: column; } nav { grid-template-columns: minmax(0, 1fr); } }
+</style>

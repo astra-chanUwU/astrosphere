@@ -1,12 +1,13 @@
 // @ts-check
-import { createReadStream } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 
 import { siteConfig } from './src/config/site.ts';
-import { planMediaResponse } from './src/lib/media/server.ts';
+import { createMediaDevMiddleware } from './src/lib/media/server.ts';
+import { managedImageThumbnailRemarkPlugin } from './src/lib/managed-image-thumbnails.ts';
 
 /** @param {string | undefined} root */
 const mediaDevServer = (root) => ({
@@ -14,31 +15,9 @@ const mediaDevServer = (root) => ({
 	hooks: {
 		/** @param {{ server: import('vite').ViteDevServer }} options */
 		'astro:server:setup'(options) {
-		const { server } = options;
-		if (!root) return;
-
-		/**
-		 * @param {import('node:http').IncomingMessage} request
-		 * @param {import('node:http').ServerResponse} response
-		 * @param {(error?: unknown) => void} next
-		 */
-		const serveMedia = async (request, response, next) => {
-			const plan = await planMediaResponse({
-				method: request.method ?? 'GET',
-				pathname: new URL(request.url ?? '/', 'http://localhost').pathname,
-				root,
-			});
-			if (plan.kind === 'next') return next();
-			if (plan.kind === 'error') {
-				response.statusCode = plan.status;
-				return response.end(plan.message);
-			}
-
-			Object.entries(plan.headers).forEach(([name, value]) => response.setHeader(name, value));
-			if (request.method === 'HEAD') return response.end();
-			return createReadStream(plan.filePath).pipe(response);
-		};
-		server.middlewares.use(serveMedia);
+			const { server } = options;
+			if (!root) return;
+			server.middlewares.use(createMediaDevMiddleware(root));
 		},
 	},
 });
@@ -49,4 +28,7 @@ const env = loadEnv('development', process.cwd(), '');
 export default defineConfig({
 	site: siteConfig.siteUrl,
 	integrations: [mdx(), sitemap(), mediaDevServer(env.MEDIA_ROOT)],
+	markdown: {
+		processor: unified({ remarkPlugins: [managedImageThumbnailRemarkPlugin] }),
+	},
 });

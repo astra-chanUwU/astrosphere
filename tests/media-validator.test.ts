@@ -10,6 +10,9 @@ import {
 
 const webp = new TextEncoder().encode("RIFF1234WEBP");
 const gif = new TextEncoder().encode("GIF89a");
+const webm = Uint8Array.from([0x1a, 0x45, 0xdf, 0xa3, 0x9f, 0x42, 0x86, 0x81]);
+const mp3 = Uint8Array.from([0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00]);
+const mp4 = Uint8Array.from([0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70]);
 
 test("reports missing referenced files once per source field", async () => {
   const reference = {
@@ -205,6 +208,83 @@ test("reports only valid unreferenced managed files as orphans", async () => {
   } finally {
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test("recognizes referenced and orphaned WebM files by their EBML header", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-validator-webm-"));
+  try {
+    const used = join(root, "anime/show/videos/01/default.webm");
+    const orphan = join(root, "anime/show/videos/02/default.webm");
+    await mkdir(join(root, "anime/show/videos/01"), { recursive: true });
+    await mkdir(join(root, "anime/show/videos/02"), { recursive: true });
+    await writeFile(used, webm);
+    await writeFile(orphan, webm);
+
+    const report = await validateMedia({
+      root,
+      references: [
+        {
+          source: "src/content/anime/videos/show-01.md",
+          field: "variants[0].src",
+          publicPath: "/media/anime/show/videos/01/default.webm",
+        },
+      ],
+    });
+
+    expect(report.errors).toEqual([]);
+    expect(report.orphans).toEqual([
+      {
+        publicPath: "/media/anime/show/videos/02/default.webm",
+        filePath: orphan,
+        bytes: webm.byteLength,
+      },
+    ]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("recognizes legacy MP3 and MP4 files in the managed anime namespace", async () => {
+  const root = await mkdtemp(join(tmpdir(), "media-validator-anime-legacy-"));
+  try {
+    const audio = join(root, "anime/legacy/theme.mp3");
+    const clip = join(root, "anime/legacy/clip.mp4");
+    await mkdir(join(root, "anime/legacy"), { recursive: true });
+    await writeFile(audio, mp3);
+    await writeFile(clip, mp4);
+
+    const report = await validateMedia({
+      root,
+      references: [
+        { source: "legacy.md", field: "audio.src", publicPath: "/media/anime/legacy/theme.mp3" },
+        { source: "legacy.md", field: "video.src", publicPath: "/media/anime/legacy/clip.mp4" },
+      ],
+    });
+
+    expect(report.errors).toEqual([]);
+    expect(report.orphans).toEqual([]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("rejects an image disguised with a WebM extension", async () => {
+  const report = await validateMedia({
+    root: "/media",
+    references: [
+      {
+        source: "show.md",
+        field: "variants[0].src",
+        publicPath: "/media/anime/show/videos/default.webm",
+      },
+    ],
+    walkManagedFiles: async () => [
+      "/media/anime/show/videos/default.webm",
+    ],
+    inspectFile: async () => ({ kind: "file", format: "png", bytes: 10 }),
+  });
+
+  expect(report.errors[0]?.code).toBe("format-mismatch");
 });
 
 test("rejects unsafe discovered entries and does not call them orphans", async () => {

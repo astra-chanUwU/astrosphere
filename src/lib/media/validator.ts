@@ -12,6 +12,8 @@ import { resolveMediaUrl } from "./paths";
 import type { MediaReference } from "./references";
 import { doujinshiThumbnailWidth } from "./doujinshi-thumbnails";
 
+type ManagedMediaFormat = ImageFormat | "webm" | "mp3" | "mp4";
+
 export type MediaValidationIssue = {
   code: "missing" | "unsafe" | "unsupported" | "corrupt" | "format-mismatch" | "thumbnail-dimensions";
   source: string;
@@ -49,7 +51,7 @@ export type MediaLibraryFile = {
   relativePath: string;
   bytes: number;
   mtimeMs: number;
-  format: ImageFormat;
+  format: ManagedMediaFormat;
   device: number;
   inode: number;
   width?: number;
@@ -69,7 +71,7 @@ export type MediaFileInspection =
   | { kind: "unsafe"; message?: string }
   | {
       kind: "file";
-      format: ImageFormat;
+      format: ManagedMediaFormat;
       bytes: number;
       mtimeMs?: number;
       device?: number;
@@ -110,12 +112,19 @@ const inspectMediaFile = async (path: string): Promise<MediaFileInspection> => {
   const header = new Uint8Array(
     await Bun.file(path).slice(0, 32).arrayBuffer(),
   );
-  const format = detectImageFormatFromBytes(header);
+  const format: ManagedMediaFormat =
+    header[0] === 0x1a && header[1] === 0x45 && header[2] === 0xdf && header[3] === 0xa3
+      ? "webm"
+      : header[0] === 0x49 && header[1] === 0x44 && header[2] === 0x33
+        ? "mp3"
+        : header[4] === 0x66 && header[5] === 0x74 && header[6] === 0x79 && header[7] === 0x70
+          ? "mp4"
+          : detectImageFormatFromBytes(header);
   let dimensions: Pick<
     MediaLibraryFile,
     "width" | "height" | "animated"
   > = {};
-  if (format !== "unknown") {
+  if (!["unknown", "webm", "mp3", "mp4"].includes(format)) {
     try {
       const metadata = await sharp(path).metadata();
       dimensions = {
@@ -161,11 +170,12 @@ const walkManagedMediaFiles = async (root: string): Promise<string[]> => {
   const paths = [
     ...(await walkMediaTree(layout.manga)),
     ...(await walkMediaTree(layout.images)),
+    ...(await walkMediaTree(layout.anime)),
   ];
   return paths.sort();
 };
 
-const expectedFormat = (publicPath: string): ImageFormat | undefined => {
+const expectedFormat = (publicPath: string): ManagedMediaFormat | undefined => {
   switch (extname(publicPath).toLowerCase()) {
     case ".jpg":
     case ".jpeg":
@@ -178,6 +188,12 @@ const expectedFormat = (publicPath: string): ImageFormat | undefined => {
       return "webp";
     case ".avif":
       return "avif";
+    case ".webm":
+      return "webm";
+    case ".mp3":
+      return "mp3";
+    case ".mp4":
+      return "mp4";
     default:
       return undefined;
   }
@@ -225,7 +241,7 @@ const issueForInspection = (
     };
   }
   if (
-    (/^thumbnails\[\d+\]$/.test(reference.field) || /^thumbnail\.(?:cover|hero|art\[\d+\]|media\[\d+\])$/.test(reference.field)) &&
+    (/^thumbnails\[\d+\]$/.test(reference.field) || /^thumbnail\.(?:cover|hero|art\[\d+\]|media\[\d+\]|body\[\d+\])$/.test(reference.field)) &&
     (inspection.width === undefined ||
       inspection.height === undefined ||
       inspection.width <= 0 ||
@@ -248,7 +264,11 @@ const publicPathForFile = (root: string, filePath: string): string => {
     return `/manga/${mangaPath.replaceAll("\\", "/")}`;
   }
   const imagePath = relative(layout.images, filePath);
-  return `/media/images/${imagePath.replaceAll("\\", "/")}`;
+  if (imagePath !== "" && !imagePath.startsWith("..")) {
+    return `/media/images/${imagePath.replaceAll("\\", "/")}`;
+  }
+  const animePath = relative(layout.anime, filePath);
+  return `/media/anime/${animePath.replaceAll("\\", "/")}`;
 };
 
 const oversizedMediaWarnings = (
@@ -286,6 +306,7 @@ const oversizedMediaWarnings = (
       profile = inReaderDirectory ? "reader" : "gallery";
     } else {
       const imageRelative = relative(layout.images, file.filePath);
+      if (imageRelative === "" || imageRelative.startsWith("..")) continue;
       const slug = imageRelative.split(/[\\/]/)[0]!;
       directory = join(layout.images, slug);
       profile = "gallery";
@@ -318,7 +339,7 @@ export const scanManagedMedia = async (
 ): Promise<MediaLibrarySnapshot> => {
   if (!adapters.walkManagedFiles) {
     const layout = getMediaLayout(root);
-    for (const directory of [layout.manga, layout.images]) {
+    for (const directory of [layout.manga, layout.images, layout.anime]) {
       let info;
       try {
         info = await lstat(directory);

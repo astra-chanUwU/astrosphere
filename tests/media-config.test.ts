@@ -9,6 +9,7 @@ test("requires one absolute media root and derives private and public trees", ()
     root: "/srv/astrosphere/media",
     manga: "/srv/astrosphere/media/manga",
     images: "/srv/astrosphere/media/images",
+    anime: "/srv/astrosphere/media/anime",
     operations: "/srv/astrosphere/media/.astrosphere",
   });
 });

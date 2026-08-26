@@ -1,7 +1,7 @@
 ---
 interface Props {
   label: string;
-  variant: "explore" | "spheres" | "manga" | "doujinshi" | "image-sets" | "trails" | "signals" | "artifacts" | "search" | "dispatches" | "shelf";
+  variant: "explore" | "spheres" | "manga" | "anime" | "doujinshi" | "image-sets" | "trails" | "signals" | "artifacts" | "search" | "dispatches" | "shelf";
   headingLevel?: 1 | 2;
 }
 
@@ -71,7 +71,7 @@ const viewBox = `0 0 ${cursor * cellSize} ${7 * cellSize}`;
   .page-glyph-title { margin: 0; }
   .page-glyph { color: var(--color-astral-blue); display: block; fill: currentColor; height: clamp(2rem, 5vw, 3.6rem); image-rendering: pixelated; width: auto; }
   .page-glyph--doujinshi, .page-glyph--image-sets { max-width: min(100%, 30rem); }
-  .page-glyph--explore, .page-glyph--spheres, .page-glyph--manga, .page-glyph--shelf { max-width: min(100%, 24rem); }
+  .page-glyph--explore, .page-glyph--spheres, .page-glyph--manga, .page-glyph--anime, .page-glyph--shelf { max-width: min(100%, 24rem); }
   .page-glyph--trails, .page-glyph--signals { max-width: min(100%, 27rem); }
   .visually-hidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
 </style>

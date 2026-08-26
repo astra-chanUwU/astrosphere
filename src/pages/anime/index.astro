@@ -1,0 +1,38 @@
+---
+import AnimeCard from "../../components/AnimeCard.astro";
+import ArchivePageHeader from "../../components/ArchivePageHeader.astro";
+import ArchiveRail from "../../components/ArchiveRail.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedAnimeTitles, getPublishedAnimeVideos } from "../../lib/content";
+
+const [titles, videos] = await Promise.all([
+  getPublishedAnimeTitles(),
+  getPublishedAnimeVideos(),
+]);
+const videosByTitle = new Map<string, typeof videos>();
+for (const video of videos) videosByTitle.set(video.data.anime, [...(videosByTitle.get(video.data.anime) ?? []), video]);
+---
+
+<BaseLayout title="Anime" description="The WebM anime library.">
+  <div class="page-shell">
+    <ArchivePageHeader eyebrow="Native WebM cinema" title="Anime" variant="anime" summary="Series, OVAs, and films served through the browser's native player." />
+    <div class="archive-layout">
+      <section class="anime-archive" aria-labelledby="anime-archive-heading">
+        <header><h2 id="anime-archive-heading">All anime</h2><p>{titles.length} {titles.length === 1 ? "title" : "titles"}</p></header>
+        {titles.length ? <div class="anime-grid">{titles.map((title) => <AnimeCard {title} videos={videosByTitle.get(title.data.slug) ?? []} />)}</div> : <p>No anime is published yet.</p>}
+      </section>
+      <ArchiveRail active="anime" />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-layout { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 2fr) minmax(13rem, .8fr); }
+  .anime-archive { min-width: 0; }
+  section > header { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; margin: 0; }
+  section > header p { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }
+  .anime-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: var(--space-3); }
+  @media (max-width: 68rem) { .anime-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 48rem) { .archive-layout { grid-template-columns: minmax(0, 1fr); } }
+</style>

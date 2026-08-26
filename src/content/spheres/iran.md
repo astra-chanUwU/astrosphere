@@ -9,7 +9,7 @@ accentLabel: Persia, memory, and modern Iran
 shortLabel: Iran
 cover:
   kind: image
-  src: /media/spheres/iran.webp
+  src: /media/images/topic-covers/iran.webp
   alt: A colorful historical Iranian emblem on a bright blue field, with an older tricolor flag inset.
   credit: Image supplied for the AstroSphere sphere cover.
 ---

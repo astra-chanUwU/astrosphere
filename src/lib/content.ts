@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import type { TrailItem } from "../types/content";
 import { validateMangaReferences } from "./manga-references";
 import { sortMangaChapters } from "./manga-reader";
+import { sortAnimeVideos, validateAnimeReferences } from "./anime-references";
 import {
   collectPublishingAssetReferences,
   collectPublishingUrlReferences,
@@ -20,6 +21,8 @@ export type MangaSeriesEntry = CollectionEntry<"mangaSeries">;
 export type MangaChapterEntry = CollectionEntry<"mangaChapters">;
 export type SignalEntry = CollectionEntry<"signals">;
 export type ImageSetEntry = CollectionEntry<"imageSets">;
+export type AnimeTitleEntry = CollectionEntry<"animeTitles">;
+export type AnimeVideoEntry = CollectionEntry<"animeVideos">;
 
 type ReferenceEntry = ArtifactEntry | SphereEntry | TrailEntry;
 
@@ -105,6 +108,32 @@ export async function getPublishedImageSets(): Promise<ImageSetEntry[]> {
   );
 }
 
+export async function getPublishedAnimeTitles(): Promise<AnimeTitleEntry[]> {
+  return (await getCollection(
+    "animeTitles",
+    (entry) => entry.data.visibility === "published",
+  )).sort((left, right) => left.data.title.localeCompare(right.data.title));
+}
+
+export async function getPublishedAnimeVideos(): Promise<AnimeVideoEntry[]> {
+  return sortAnimeVideos(await getCollection("animeVideos", isPublished));
+}
+
+export async function getAnimeTitleBySlug(slug: string): Promise<AnimeTitleEntry | undefined> {
+  return (await getPublishedAnimeTitles()).find((entry) => entry.data.slug === slug);
+}
+
+export async function getAnimeVideosForTitle(slug: string): Promise<AnimeVideoEntry[]> {
+  return (await getPublishedAnimeVideos()).filter((entry) => entry.data.anime === slug);
+}
+
+export const getAnimeVideoVariant = (
+  video: AnimeVideoEntry,
+  variantSlug?: string,
+) => video.data.variants.find(
+  (variant) => variant.slug === (variantSlug ?? video.data.defaultVariant),
+);
+
 export async function getImageSetBySlug(
   slug: string,
 ): Promise<ImageSetEntry | undefined> {
@@ -114,16 +143,17 @@ export async function getImageSetBySlug(
 }
 
 export async function getPublishedTags(): Promise<string[]> {
-  const [artifacts, manga, signals, imageSets] = await Promise.all([
+  const [artifacts, manga, signals, imageSets, anime] = await Promise.all([
     getPublishedArtifacts(),
     getPublishedMangaSeries(),
     getPublishedSignals(),
     getPublishedImageSets(),
+    getPublishedAnimeTitles(),
   ]);
 
   return [
     ...new Set(
-      [...artifacts, ...manga, ...signals, ...imageSets].flatMap(
+      [...artifacts, ...manga, ...signals, ...imageSets, ...anime].flatMap(
         (entry) => entry.data.tags,
       ),
     ),
@@ -135,12 +165,14 @@ export async function getContentForTag(tag: string): Promise<{
   manga: MangaSeriesEntry[];
   signals: SignalEntry[];
   imageSets: ImageSetEntry[];
+  anime: AnimeTitleEntry[];
 }> {
-  const [artifacts, manga, signals, imageSets] = await Promise.all([
+  const [artifacts, manga, signals, imageSets, anime] = await Promise.all([
     getPublishedArtifacts(),
     getPublishedMangaSeries(),
     getPublishedSignals(),
     getPublishedImageSets(),
+    getPublishedAnimeTitles(),
   ]);
 
   return {
@@ -148,6 +180,7 @@ export async function getContentForTag(tag: string): Promise<{
     manga: manga.filter((series) => series.data.tags.includes(tag)),
     signals: signals.filter((signal) => signal.data.tags.includes(tag)),
     imageSets: imageSets.filter((imageSet) => imageSet.data.tags.includes(tag)),
+    anime: anime.filter((title) => title.data.tags.includes(tag)),
   };
 }
 
@@ -370,6 +403,8 @@ export async function assertPublishingGuardrails(): Promise<void> {
     mangaChapters,
     signals,
     imageSets,
+    animeTitles,
+    animeVideos,
   ] = await Promise.all([
     getCollection("artifacts"),
     getCollection("spheres"),
@@ -379,6 +414,8 @@ export async function assertPublishingGuardrails(): Promise<void> {
     getCollection("mangaChapters"),
     getCollection("signals"),
     getCollection("imageSets"),
+    getCollection("animeTitles"),
+    getCollection("animeVideos"),
   ]);
   const allEntries = [
     ...artifacts,
@@ -389,9 +426,11 @@ export async function assertPublishingGuardrails(): Promise<void> {
     ...mangaChapters,
     ...signals,
     ...imageSets,
+    ...animeTitles,
+    ...animeVideos,
   ];
   const publishedEntries = allEntries.filter((entry) =>
-    entry.collection === "mangaSeries"
+    entry.collection === "mangaSeries" || entry.collection === "animeTitles"
       ? entry.data.visibility === "published"
       : entry.data.status === "published",
   );
@@ -407,6 +446,10 @@ export async function assertPublishingGuardrails(): Promise<void> {
       mangaChapters: mangaChapters.filter(isPublished),
     }),
   ];
+  const animeReferenceIssues = validateAnimeReferences({
+    titles: animeTitles,
+    videos: animeVideos.filter(isPublished),
+  });
   const assetIssues = await validatePublishingAssetReferences(
     collectPublishingAssetReferences(publishedEntries),
   );
@@ -504,6 +547,7 @@ export async function assertPublishingGuardrails(): Promise<void> {
 
   if (
     referenceIssues.length > 0 ||
+    animeReferenceIssues.length > 0 ||
     assetIssues.length > 0 ||
     urlIssues.length > 0 ||
     publishedIssues.length > 0
@@ -512,6 +556,9 @@ export async function assertPublishingGuardrails(): Promise<void> {
       ...referenceIssues.map(
         (issue) =>
           `- ${issue.source}.${issue.field} references missing ${issue.expectedCollection} slug "${issue.target}".`,
+      ),
+      ...animeReferenceIssues.map(
+        (issue) => `- ${issue.source}.${issue.field}: ${issue.message}.`,
       ),
       ...[...assetIssues, ...urlIssues, ...publishedIssues].map(
         (issue) => `- ${issue.source}.${issue.field}: ${issue.message}.`,

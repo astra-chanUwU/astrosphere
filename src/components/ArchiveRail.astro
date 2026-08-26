@@ -1,9 +1,10 @@
 ---
 import type { ShelfCategory } from "../lib/shelf";
 
-interface Props { active: ShelfCategory; }
+interface Props { active: ShelfCategory | "anime"; }
 const { active } = Astro.props;
-const links: Array<{ category: ShelfCategory; label: string; href: string }> = [
+const links: Array<{ category: ShelfCategory | "anime"; label: string; href: string }> = [
+  { category: "anime", label: "Anime", href: "/anime" },
   { category: "manga", label: "Manga", href: "/manga" },
   { category: "doujinshi", label: "Doujinshi", href: "/doujinshi" },
   { category: "image-sets", label: "Image-set", href: "/image-sets" },

@@ -1,0 +1,55 @@
+---
+import type { AnimeTitleEntry, AnimeVideoEntry } from "../lib/content";
+import { getAnimePublicPath } from "../lib/anime-routes";
+import { getAnimeTitlePresentation } from "../lib/anime-presentation";
+
+interface Props {
+  title: AnimeTitleEntry;
+  videos: AnimeVideoEntry[];
+}
+
+const { title, videos } = Astro.props;
+const href = getAnimePublicPath(title.data.slug);
+const presentation = getAnimeTitlePresentation(title.data.kind, title.data.slug, videos);
+---
+
+<article data-anime-rating={title.data.rating}>
+  <a class="poster" {href}>
+    {title.data.poster && <img src={title.data.poster.src} alt={title.data.poster.alt} loading="lazy" decoding="async" />}
+    <span class="poster-label">{title.data.kind === "movie" ? "Feature presentation" : "Series"}</span>
+  </a>
+  <div class="details">
+    <p class="format">{title.data.format.replaceAll("-", " ")} · {title.data.releaseYear}</p>
+    <h2><a {href}>{title.data.title}</a></h2>
+    <p class="original">{title.data.originalTitle}</p>
+    <p class="description">{title.data.description}</p>
+    <p class="availability"><span>{presentation.itemCountLabel}</span><span>{presentation.variantCountLabel}</span><span>{title.data.status}</span></p>
+    <p class="staff">{title.data.studios.join(", ")} · Directed by {title.data.directors.join(", ")}</p>
+    <div class="card-actions"><a class="watch" href={presentation.startHref}>{presentation.startLabel} <span aria-hidden="true">→</span></a><a class="details-link" {href}>View details</a></div>
+  </div>
+</article>
+
+<style>
+  article { background: var(--color-surface); border: 1px solid var(--color-border); display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+  .poster { aspect-ratio: 16 / 10; background: #05070c; display: block; overflow: hidden; position: relative; }
+  img { height: 100%; object-fit: cover; object-position: center 24%; transition: transform .18s ease; width: 100%; }
+  .poster:hover img { transform: scale(1.025); }
+  .poster::after { background: linear-gradient(180deg, transparent 48%, rgba(0,0,0,.78)); content: ""; inset: 0; position: absolute; }
+  .poster-label { bottom: var(--space-2); color: #fff; font-family: var(--font-mono); font-size: var(--text-xs); left: var(--space-2); letter-spacing: var(--label-tracking); position: absolute; text-transform: uppercase; z-index: 1; }
+  .details { display: flex; flex-direction: column; padding: var(--space-3); }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.45rem, 3vw, 2rem); line-height: var(--leading-tight); margin: 0; }
+  h2 a { text-decoration: none; }
+  p { margin: var(--space-1) 0; }
+  .format { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .original, .staff { color: var(--color-muted); font-size: var(--text-sm); }
+  .description { line-height: var(--leading-normal); }
+  .availability { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: var(--space-2); }
+  .availability span { border: 1px solid var(--color-border); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); padding: .25rem .4rem; text-transform: capitalize; }
+  .staff { border-top: 1px solid var(--color-border); margin-top: var(--space-2); padding-top: var(--space-2); }
+  .card-actions { align-items: center; display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: auto; padding-top: var(--space-3); }
+  .watch { background: var(--color-astral-blue); color: #fff; font-weight: 600; padding: .65rem .8rem; text-decoration: none; }
+  .watch:hover { background: var(--color-nebula-purple); color: #fff; }
+  .details-link { color: var(--color-muted); font-size: var(--text-sm); }
+  :global(html[data-sfw="on"]) article[data-anime-rating="explicit"] { display: none; }
+  @media (prefers-reduced-motion: reduce) { img { transition: none; } }
+</style>

@@ -3,8 +3,9 @@ import ArtifactCard from "../../components/ArtifactCard.astro";
 import MangaSeriesCard from "../../components/MangaSeriesCard.astro";
 import SignalCard from "../../components/SignalCard.astro";
 import ImageSetCard from "../../components/ImageSetCard.astro";
+import AnimeCard from "../../components/AnimeCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getContentForTag, getPublishedMangaChapters, getPublishedTags } from "../../lib/content";
+import { getContentForTag, getPublishedAnimeVideos, getPublishedMangaChapters, getPublishedTags } from "../../lib/content";
 
 export async function getStaticPaths() {
   const tags = await getPublishedTags();
@@ -12,17 +13,20 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-const [{ artifacts, manga, signals, imageSets }, chapters] = await Promise.all([
+const [{ artifacts, manga, signals, imageSets, anime }, chapters, animeVideos] = await Promise.all([
   getContentForTag(tag),
   getPublishedMangaChapters(),
+  getPublishedAnimeVideos(),
 ]);
 const chapterCounts = new Map<string, number>();
 for (const chapter of chapters) {
   chapterCounts.set(chapter.data.series, (chapterCounts.get(chapter.data.series) ?? 0) + 1);
 }
-const count = artifacts.length + manga.length + signals.length + imageSets.length;
+const animeVideosByTitle = new Map<string, typeof animeVideos>();
+for (const video of animeVideos) animeVideosByTitle.set(video.data.anime, [...(animeVideosByTitle.get(video.data.anime) ?? []), video]);
+const count = artifacts.length + manga.length + signals.length + imageSets.length + anime.length;
 ---
 
-<BaseLayout title={`Tag: ${tag}`} description={`Published items tagged ${tag}.`}><div class="page-shell"><header><p class="eyebrow">Tag archive</p><h1>Tag: {tag}</h1><p>{count} {count === 1 ? "item" : "items"} in the archive.</p></header>{artifacts.length > 0 && <section aria-labelledby="artifacts-heading"><h2 id="artifacts-heading">Artifacts</h2><div>{artifacts.map((artifact) => <ArtifactCard {artifact}/>)}</div></section>}{manga.length > 0 && <section aria-labelledby="manga-heading"><h2 id="manga-heading">Manga</h2><div>{manga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCounts.get(series.data.slug) ?? 0}/>)}</div></section>}{imageSets.length > 0 && <section aria-labelledby="image-sets-heading"><h2 id="image-sets-heading">Image sets</h2><div>{imageSets.map((imageSet) => <ImageSetCard {imageSet}/>)}</div></section>}{signals.length > 0 && <section aria-labelledby="signals-heading"><h2 id="signals-heading">Signals</h2><div>{signals.map((signal) => <SignalCard {signal}/>)}</div></section>}</div></BaseLayout>
+<BaseLayout title={`Tag: ${tag}`} description={`Published items tagged ${tag}.`}><div class="page-shell"><header><p class="eyebrow">Tag archive</p><h1>Tag: {tag}</h1><p>{count} {count === 1 ? "item" : "items"} in the archive.</p></header>{anime.length > 0 && <section class="anime-section" aria-labelledby="anime-heading"><h2 id="anime-heading">Anime</h2><div class="anime-grid">{anime.map((title) => <AnimeCard {title} videos={animeVideosByTitle.get(title.data.slug) ?? []}/>)}</div></section>}{artifacts.length > 0 && <section aria-labelledby="artifacts-heading"><h2 id="artifacts-heading">Artifacts</h2><div>{artifacts.map((artifact) => <ArtifactCard {artifact}/>)}</div></section>}{manga.length > 0 && <section aria-labelledby="manga-heading"><h2 id="manga-heading">Manga</h2><div>{manga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCounts.get(series.data.slug) ?? 0}/>)}</div></section>}{imageSets.length > 0 && <section aria-labelledby="image-sets-heading"><h2 id="image-sets-heading">Image sets</h2><div>{imageSets.map((imageSet) => <ImageSetCard {imageSet}/>)}</div></section>}{signals.length > 0 && <section aria-labelledby="signals-heading"><h2 id="signals-heading">Signals</h2><div>{signals.map((signal) => <SignalCard {signal}/>)}</div></section>}</div></BaseLayout>
 
-<style>header{max-width:var(--reading-width);padding:var(--section-space) 0 var(--space-4)}.eyebrow{color:var(--color-accent);font-size:var(--text-xs);letter-spacing:.1em;margin:0;text-transform:uppercase}h1{font-family:var(--font-serif);font-size:var(--text-2xl);font-weight:500;margin:var(--space-1) 0}header p:last-child{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading)}section{margin:var(--section-space) 0}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;margin:0}</style>
+<style>header{max-width:var(--reading-width);padding:var(--section-space) 0 var(--space-4)}.eyebrow{color:var(--color-accent);font-size:var(--text-xs);letter-spacing:.1em;margin:0;text-transform:uppercase}h1{font-family:var(--font-serif);font-size:var(--text-2xl);font-weight:500;margin:var(--space-1) 0}header p:last-child{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-reading)}section{margin:var(--section-space) 0}h2{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:500;margin:0}.anime-section{max-width:var(--content-width)}.anime-grid{display:grid;gap:var(--space-3);grid-template-columns:repeat(2,minmax(0,1fr));padding-top:var(--space-3)}@media(max-width:54rem){.anime-grid{grid-template-columns:minmax(0,1fr)}}</style>

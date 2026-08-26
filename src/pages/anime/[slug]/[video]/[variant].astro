@@ -1,0 +1,28 @@
+---
+import AnimeWatchPage from "../../../../components/AnimeWatchPage.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getAnimeVideoVariant, getPublishedAnimeTitles, getPublishedAnimeVideos, type AnimeTitleEntry, type AnimeVideoEntry } from "../../../../lib/content";
+
+export async function getStaticPaths() {
+  const [titles, videos] = await Promise.all([getPublishedAnimeTitles(), getPublishedAnimeVideos()]);
+  const titlesBySlug = new Map(titles.map((title) => [title.data.slug, title]));
+  return videos.flatMap((video) => {
+    const title = titlesBySlug.get(video.data.anime);
+    if (title?.data.kind !== "series") return [];
+    return video.data.variants
+      .filter((variant) => variant.slug !== video.data.defaultVariant)
+      .map((variant) => ({ params: { slug: title.data.slug, video: video.data.slug, variant: variant.slug }, props: { title, video, variantSlug: variant.slug } }));
+  });
+}
+
+interface Props { title: AnimeTitleEntry; video: AnimeVideoEntry; variantSlug: string; }
+const { title, video, variantSlug } = Astro.props;
+const videos = (await getPublishedAnimeVideos()).filter((entry) => entry.data.anime === title.data.slug);
+const index = videos.findIndex((entry) => entry.data.slug === video.data.slug);
+const variant = getAnimeVideoVariant(video, variantSlug);
+if (!variant) throw new Error(`Missing variant ${variantSlug} for ${video.data.slug}`);
+---
+
+<BaseLayout title={`${title.data.title} — ${video.data.title} — ${variant.label}`} description={`Watch ${video.data.title} from ${title.data.title}: ${variant.label}.`} image={video.data.poster?.src ?? title.data.poster?.src} indexForSearch={false}>
+  <AnimeWatchPage {title} {video} {variant} previous={index > 0 ? videos[index - 1] : undefined} next={index >= 0 ? videos[index + 1] : undefined} />
+</BaseLayout>

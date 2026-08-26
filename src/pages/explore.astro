@@ -4,13 +4,14 @@ import ArchivePageHeader from "../components/ArchivePageHeader.astro";
 import SignalCard from "../components/SignalCard.astro";
 import SphereCard from "../components/SphereCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getPublishedArtifacts, getPublishedSignals, getPublishedSpheres, getPublishedTrails } from "../lib/content";
+import { getPublishedAnimeTitles, getPublishedArtifacts, getPublishedSignals, getPublishedSpheres, getPublishedTrails } from "../lib/content";
 
-const [spheres, artifacts, trails, signals] = await Promise.all([
+const [spheres, artifacts, trails, signals, anime] = await Promise.all([
   getPublishedSpheres(),
   getPublishedArtifacts(),
   getPublishedTrails(),
   getPublishedSignals(),
+  getPublishedAnimeTitles(),
 ]);
 
 const roots = spheres.filter((sphere) => !sphere.data.parent);
@@ -43,6 +44,7 @@ const featuredSignals = signals.slice(0, 3);
           <a href="/topics">Topics <span>{spheres.length}</span></a>
           <a href="/articles">Articles <span>{artifacts.length}</span></a>
           <a href="/guides">Guides <span>{trails.length}</span></a>
+          <a class="anime-link" href="/anime">Anime <span>{anime.length} titles →</span></a>
           <a href="/links">Links <span>→</span></a>
         </nav>
 
@@ -76,6 +78,7 @@ const featuredSignals = signals.slice(0, 3);
   .explore-links { display: grid; margin-bottom: var(--space-5); }
   .explore-links a { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; font-family: var(--font-serif); font-size: var(--text-xl); justify-content: space-between; padding: var(--space-1) 0; text-decoration: none; }
   .explore-links a span, .trail-list span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
+  .explore-links .anime-link { border-left: 3px solid var(--color-accent-warm); padding-left: var(--space-2); }
   .explore-rail section { margin-top: var(--space-5); }
   .artifact-list { border-top: 1px solid var(--color-border); }
   .artifact-list :global(article) { border-top: 0; }

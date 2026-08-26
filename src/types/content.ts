@@ -13,6 +13,7 @@ import type {
   trailItemSchema,
   trailSchema,
 } from "../content.config";
+import type { animeTitleSchema, animeVideoSchema, animeVariantSchema } from "../lib/anime-schema";
 
 export type ContentStatus = z.infer<typeof statusSchema>;
 export type ArtifactType = z.infer<typeof artifactTypeSchema>;
@@ -26,3 +27,6 @@ export type Trail = z.infer<typeof trailSchema>;
 export type Page = z.infer<typeof pageSchema>;
 export type Signal = z.infer<typeof signalSchema>;
 export type ImageSet = z.infer<typeof imageSetSchema>;
+export type AnimeTitle = z.infer<typeof animeTitleSchema>;
+export type AnimeVideo = z.infer<typeof animeVideoSchema>;
+export type AnimeVariant = z.infer<typeof animeVariantSchema>;

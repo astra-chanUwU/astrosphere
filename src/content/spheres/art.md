@@ -9,7 +9,7 @@ accentLabel: Images, objects, and visual worlds
 shortLabel: Art
 cover:
   kind: image
-  src: /media/spheres/art.webp
+  src: /media/images/topic-covers/art.webp
   alt: A richly painted red-clad jester standing against a black background.
   credit: Image supplied for the AstroSphere sphere cover.
 ---

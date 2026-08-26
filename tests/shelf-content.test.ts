@@ -20,7 +20,10 @@ test("configures a personal Shelf and classifies Futa Maid as doujinshi", () => 
   expect(shelfConfig).toContain('"mav-dachiex"');
   expect(shelfConfig).toContain('"flou-sona"');
   expect(shelfConfig).toContain('"ndgd"');
+  expect(shelfConfig).toContain('animeSlugs: ["space-patrol-luluco", "burn-up-w"]');
   expect(futaMaid).toContain("format: doujinshi");
   expect(shelfLibrary).toContain("getShelfSelections");
   expect(shelfLibrary).toContain("getShelfArchiveHref");
+  expect(shelfLibrary).toContain("getPublishedAnimeTitles");
+  expect(shelfLibrary).toContain("anime:");
 });

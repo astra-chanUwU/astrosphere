@@ -1,0 +1,137 @@
+version: 1
+title: space-patrol-luluco
+variants:
+  - label: Episode 1 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 01 [90B6862A].mkv"
+    output: /media/anime/space-patrol-luluco/videos/01/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 1 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 01 [90B6862A].mkv"
+    output: /media/anime/space-patrol-luluco/videos/01/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 2 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 02 [5392BEA6].mkv"
+    output: /media/anime/space-patrol-luluco/videos/02/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 2 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 02 [5392BEA6].mkv"
+    output: /media/anime/space-patrol-luluco/videos/02/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 3 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 03 [6F580A86].mkv"
+    output: /media/anime/space-patrol-luluco/videos/03/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 3 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 03 [6F580A86].mkv"
+    output: /media/anime/space-patrol-luluco/videos/03/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 4 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 04 [5167D133].mkv"
+    output: /media/anime/space-patrol-luluco/videos/04/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 4 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 04 [5167D133].mkv"
+    output: /media/anime/space-patrol-luluco/videos/04/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 5 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 05 [F583321A].mkv"
+    output: /media/anime/space-patrol-luluco/videos/05/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 5 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 05 [F583321A].mkv"
+    output: /media/anime/space-patrol-luluco/videos/05/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 6 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 06 [14995A95].mkv"
+    output: /media/anime/space-patrol-luluco/videos/06/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 6 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 06 [14995A95].mkv"
+    output: /media/anime/space-patrol-luluco/videos/06/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 7 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 07 [BA1F8D68].mkv"
+    output: /media/anime/space-patrol-luluco/videos/07/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 7 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 07 [BA1F8D68].mkv"
+    output: /media/anime/space-patrol-luluco/videos/07/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 8 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 08 [1BCF41A3].mkv"
+    output: /media/anime/space-patrol-luluco/videos/08/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 8 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 08 [1BCF41A3].mkv"
+    output: /media/anime/space-patrol-luluco/videos/08/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 9 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 09 [1F6E72A0].mkv"
+    output: /media/anime/space-patrol-luluco/videos/09/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 9 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 09 [1F6E72A0].mkv"
+    output: /media/anime/space-patrol-luluco/videos/09/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 10 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 10 [FA5E5402].mkv"
+    output: /media/anime/space-patrol-luluco/videos/10/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 10 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 10 [FA5E5402].mkv"
+    output: /media/anime/space-patrol-luluco/videos/10/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 11 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 11 [1D15FEE8].mkv"
+    output: /media/anime/space-patrol-luluco/videos/11/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 11 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 11 [1D15FEE8].mkv"
+    output: /media/anime/space-patrol-luluco/videos/11/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 12 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 12 [508B4375].mkv"
+    output: /media/anime/space-patrol-luluco/videos/12/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 12 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 12 [508B4375].mkv"
+    output: /media/anime/space-patrol-luluco/videos/12/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Episode 13 — Japanese audio with English subtitles
+    source: "[RH] Uchuu Patrol Luluco - 13 [A8F7F0C8].mkv"
+    output: /media/anime/space-patrol-luluco/videos/13/japanese-subbed.webm
+    audio: { index: 2 }
+    subtitle: { index: 4, mode: burn }
+  - label: Episode 13 — English dub
+    source: "[RH] Uchuu Patrol Luluco - 13 [A8F7F0C8].mkv"
+    output: /media/anime/space-patrol-luluco/videos/13/english-dub.webm
+    audio: { index: 1 }
+    subtitle: { index: 3, mode: burn }
+  - label: Clean ending — Japanese audio
+    source: "[RH] Uchuu Patrol Luluco - NCED [BD97F57F].mkv"
+    output: /media/anime/space-patrol-luluco/videos/nced/japanese.webm
+    audio: { index: 1 }

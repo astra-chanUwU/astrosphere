@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { createManagedImageThumbnailSrc } from "../lib/managed-image-thumbnails";
 
 interface Props {
   sphere: CollectionEntry<"spheres">;
@@ -8,10 +9,13 @@ interface Props {
 }
 
 const { sphere, childCount = 0, artifactCount = 0 } = Astro.props;
+const coverPreview = sphere.data.cover?.kind === "image"
+  ? createManagedImageThumbnailSrc(sphere.data.cover.src)
+  : undefined;
 ---
 
 <article class:list={["sphere-row", { "sphere-row--has-cover": sphere.data.cover?.kind === "image" }]} data-palette={sphere.data.palette}>
-  {sphere.data.cover?.kind === "image" && <a class="cover" href={`/topics/${sphere.data.slug}`} aria-label={`Enter ${sphere.data.title}`}><img src={sphere.data.cover.src} alt={sphere.data.cover.alt ?? sphere.data.title} width={sphere.data.cover.width} height={sphere.data.cover.height} loading="lazy" decoding="async" /></a>}
+  {sphere.data.cover?.kind === "image" && <a class="cover" href={`/topics/${sphere.data.slug}`} aria-label={`Enter ${sphere.data.title}`}><img src={coverPreview} alt={sphere.data.cover.alt ?? sphere.data.title} width={sphere.data.cover.width} height={sphere.data.cover.height} loading="lazy" decoding="async" /></a>}
   <div class="details">
     <p class="marker">{sphere.data.palette}</p>
     <h2><a href={`/topics/${sphere.data.slug}`}>{sphere.data.title}</a></h2>

@@ -1,0 +1,40 @@
+---
+import Breadcrumbs from "./Breadcrumbs.astro";
+import AnimePlayer from "./AnimePlayer.astro";
+import type { AnimeTitleEntry, AnimeVideoEntry } from "../lib/content";
+import type { AnimeVariant } from "../types/content";
+import { getAnimePublicPath, getAnimeWatchPath } from "../lib/anime-routes";
+
+interface Props {
+  title: AnimeTitleEntry;
+  video: AnimeVideoEntry;
+  variant: AnimeVariant;
+  previous?: AnimeVideoEntry;
+  next?: AnimeVideoEntry;
+}
+const { title, video, variant, previous, next } = Astro.props;
+---
+
+<div class="page-shell watch-page">
+  <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Anime", href: "/anime" }, { label: title.data.title, href: getAnimePublicPath(title.data.slug) }, { label: video.data.title }]} />
+  <div class="watch-context"><a href={getAnimePublicPath(title.data.slug)}>← {title.data.title}</a><p>Native WebM · {variant.language} · {variant.subtitles} subtitles</p></div>
+  <div class="theater"><AnimePlayer {title} {video} {variant} /></div>
+  {(previous || next) && <nav class="episode-navigation" aria-label="Episode navigation">
+    {previous ? <a href={getAnimeWatchPath(title.data.slug, previous.data.slug)}><small>Previous episode</small><span>← {previous.data.title}</span></a> : <span />}
+    {next && <a href={getAnimeWatchPath(title.data.slug, next.data.slug)}><small>Next episode</small><span>{next.data.title} →</span></a>}
+  </nav>}
+</div>
+
+<style>
+  .watch-page { max-width: 80rem; padding-bottom: var(--section-space); }
+  .watch-context { align-items: center; border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); justify-content: space-between; margin-bottom: var(--space-3); padding-bottom: var(--space-2); }
+  .watch-context a { font-weight: 600; text-decoration: none; }
+  .watch-context p { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); margin: 0; text-align: right; }
+  .theater { background: color-mix(in srgb, var(--color-surface) 58%, var(--color-bg)); border-inline: 1px solid var(--color-border); padding: clamp(1rem, 3vw, 2rem); }
+  .episode-navigation { display: grid; gap: var(--space-2); grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-3); }
+  .episode-navigation > a { background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text); min-height: 5rem; padding: var(--space-2); text-decoration: none; }
+  .episode-navigation a:last-child { text-align: right; }
+  .episode-navigation small { color: var(--color-accent); display: block; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin-bottom: var(--space-1); text-transform: uppercase; }
+  .episode-navigation span { color: var(--color-astral-blue); font-weight: 600; }
+  @media (max-width: 36rem) { .watch-context { align-items: start; flex-direction: column; } .watch-context p { text-align: left; } .theater { margin-inline: calc(var(--space-3) * -1); padding-inline: var(--space-2); } .episode-navigation { grid-template-columns: minmax(0, 1fr); } }
+</style>

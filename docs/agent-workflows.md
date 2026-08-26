@@ -26,7 +26,8 @@ This is the execution guide for coding agents handling routine AstroSphere conte
 | “Remove this chapter but keep the page” | `media:remove manga ... --unavailable` |
 | “Delete this entry completely” | exact content/reference audit, exact owned deletion, validate |
 | “Optimize this image/archive/folder” | `media:optimize` |
-| “Generate or repair manga/doujinshi preview thumbnails” | `media:thumbnails` |
+| “Add anime from video sources” | Follow `docs/anime-agent-guide.md`; preview and apply `media:optimize video` |
+| “Generate or repair managed preview thumbnails” | `media:thumbnails` |
 | “Publish/upload media” | validate, sync dry-run, sync |
 
 ## Add an essay
@@ -151,7 +152,18 @@ bun run media:optimize <source> --output <destination> --profile <reader|gallery
 
 Use `reader` for ordered pages and `gallery` for filename-preserving galleries. Do not recompress an already managed WebP library without an explicit request.
 
-### Generate manga, doujinshi, and image-set preview thumbnails
+### Add anime video
+
+Follow [the anime agent guide](./anime-agent-guide.md). Inspect every stream, create a reviewed versioned manifest, then preview and apply the create-only transaction:
+
+```sh
+bun run media:optimize video <source-root> --manifest <manifest.yaml> --dry-run
+bun run media:optimize video <source-root> --manifest <manifest.yaml>
+```
+
+Keep videos and artwork beneath `MEDIA_ROOT/anime/<title>/`, use `/media/anime/...` in content, and preserve the work’s real release format. This workflow does not include synchronization, deployment, replacement, pruning, source deletion, or Git operations.
+
+### Generate managed preview thumbnails
 
 Preview and generate the complete managed preview-thumbnail set:
 
@@ -167,7 +179,7 @@ bun run media:thumbnails --series <slug>
 bun run media:thumbnails --series <slug> --force
 ```
 
-This command writes 320px WebP derivatives for manga and doujinshi covers, compact artwork previews, available reader pages, image-set covers, and image-set gallery tiles. Manga derivatives live beneath reserved `thumbnails/` directories in `MEDIA_ROOT/manga/<series>/`; image-set derivatives live in `MEDIA_ROOT/images/<slug>/thumbnails/`. Generated media is never copied into the repository. Full artwork galleries, reader pages, and image-set links continue to use original media. Run `bun run media:validate` before synchronization.
+This command writes 320px WebP derivatives for manga and doujinshi covers, compact artwork previews, available reader pages, image-set tiles, article-card heroes, article supporting galleries, opted-in dense article grids, and topic covers. Derivatives live beneath reserved `thumbnails/` directories alongside their managed owner in `MEDIA_ROOT/manga/<series>/` or `MEDIA_ROOT/images/<owner>/`. Generated media is never copied into the repository. Article detail heroes and ordinary prose images keep using the originals; supporting galleries and opted-in dense grids link preview images back to their full-size originals. Run `bun run media:validate` before synchronization.
 
 ### Resize oversized managed media for the web reader
 

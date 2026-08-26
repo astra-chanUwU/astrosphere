@@ -101,7 +101,11 @@ const assertSafeMediaPath = (path: string): void => {
     path.includes("\\") ||
     /[\0\r\n\t]/.test(path) ||
     parts.some((part) => part === "" || part === "." || part === "..") ||
-    !(path.startsWith("manga/") || path.startsWith("images/"))
+    !(
+      path.startsWith("manga/") ||
+      path.startsWith("images/") ||
+      path.startsWith("anime/")
+    )
   ) {
     throw new MediaError(
       "synchronization",
@@ -170,6 +174,7 @@ export const listLocalMediaFiles = async (
 
   await walk(layout.manga);
   await walk(layout.images);
+  await walk(layout.anime);
   return files.sort((left, right) => left.path.localeCompare(right.path));
 };
 

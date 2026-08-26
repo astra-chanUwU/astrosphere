@@ -1,0 +1,25 @@
+version: 1
+defaults:
+  ignoreEntries:
+    - ReadMe.txt
+    - final.jpg
+entries:
+  - type: doujinshi
+    archive: Pulchra х Burnice Hon.zip
+    mode: create
+    series:
+      slug: pulchra-burnice-hon
+      title: Pulchra х Burnice Hon
+      originalTitle: Pulchra х Burnice Hon
+      aliases: []
+      status: completed
+      publicationYear: 2026
+      description: A completed explicit English-translated Zenless Zone Zero yuri doujinshi by ouichi from ponkanshou featuring Burnice White and Pulchra Fellini.
+      rating: explicit
+      origin: fanwork
+      tags: [zenless-zone-zero, burnice-white, pulchra-fellini, catgirl, females-only, fingering, furry, human-on-furry, kemonomimi, masturbation, nipple-stimulation, rough-translation, sex-toys, tail, twintails, yuri, english, translated]
+      authors: [{ name: ponkanshou, slug: ponkanshou }]
+      artists: [{ name: ouichi, slug: ouichi }]
+      featured: false
+    chapters:
+      - { number: 1, title: Pulchra х Burnice Hon, pages: all, body: "The complete doujinshi of *Pulchra х Burnice Hon*." }
