@@ -27,12 +27,12 @@ test("presents a series with a direct first-episode action and published WebM co
 });
 
 test("keeps a movie-style compilation player on its title page", () => {
-  const presentation = getAnimeTitlePresentation("movie", "burn-up-w", [
+  const presentation = getAnimeTitlePresentation("movie", "test-movie", [
     { data: { slug: "compilation", kind: "movie", variants: [{}] } },
   ]);
 
   expect(presentation).toEqual({
-    startHref: "/anime/burn-up-w#watch",
+    startHref: "/anime/test-movie#watch",
     startLabel: "Watch compilation",
     itemCountLabel: "1 compilation",
     variantCountLabel: "1 WebM",

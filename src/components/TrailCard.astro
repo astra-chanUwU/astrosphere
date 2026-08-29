@@ -12,9 +12,9 @@ const { trail, sphereNames } = Astro.props;
 <article class:list={["trail-card", { "trail-card--featured": trail.data.featured }]}>
   <div class="trail-content">
     <div class="trail-meta"><span>{trail.data.featured ? "Featured route" : "Route"}</span>{trail.data.estimatedTime && <span>{trail.data.estimatedTime}</span>}<span>{trail.data.items.length} stops</span></div>
-    <h2><a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a></h2>
+    <h2><a href={`/paths/${trail.data.slug}`}>{trail.data.title}</a></h2>
     <p>{trail.data.summary}</p>
-    <footer>{trail.data.spheres.length > 0 && <div class="trail-spheres">{trail.data.spheres.map((slug) => <span>{sphereNames.get(slug) ?? slug}</span>)}</div>}<a class="trail-link" href={`/guides/${trail.data.slug}`}>Open guide →</a></footer>
+    <footer>{trail.data.spheres.length > 0 && <div class="trail-spheres">{trail.data.spheres.map((slug) => <span>{sphereNames.get(slug) ?? slug}</span>)}</div>}<a class="trail-link" href={`/paths/${trail.data.slug}`}>Open path →</a></footer>
   </div>
 </article>
 

@@ -45,7 +45,7 @@ const sidebar: SidebarModel = {
       {artifact.data.media.length > 0 && <div class="media-wide"><MediaGallery media={artifact.data.media} imagePreviewSources={mediaPreviewSources} linkImagesToFullSize/></div>}
       {artifact.data.transcript && <section id="transcript" class="transcript"><h2>Transcript</h2><p>{artifact.data.transcript}</p></section>}
       {(artifact.data.externalUrl || artifact.data.sourceUrl) && <section class="links"><h2>Elsewhere</h2>{artifact.data.externalUrl && <a href={artifact.data.externalUrl}>Visit external source</a>}{artifact.data.sourceUrl && <a href={artifact.data.sourceUrl}>View source material</a>}</section>}
-      {trails.length > 0 && <section class="links"><h2>Continue with a guide</h2>{trails.map((trail) => <a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a>)}</section>}
+      {trails.length > 0 && <section class="links"><h2>Continue with a path</h2>{trails.map((trail) => <a href={`/paths/${trail.data.slug}`}>{trail.data.title}</a>)}</section>}
       {signals.length > 0 && <section class="signals"><h2>Links to follow</h2>{signals.map((signal) => <SignalCard {signal}/>)}</section>}
       <RelatedArtifacts artifacts={related}/>
     </main><aside class="artifact-rail"><p class="rail-label">Article details</p><ArtifactMeta {artifact}/><nav aria-label="Artifact sections"><a href="#article">Article</a>{artifact.data.media.length > 0 && <a href="#media-gallery-heading">Media</a>}{artifact.data.transcript && <a href="#transcript">Transcript</a>}</nav></aside></div>

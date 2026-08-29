@@ -34,7 +34,7 @@ const sidebar: SidebarModel = {
 };
 ---
 
-<BaseLayout title={`${imageSet.data.title} — page ${currentPage}`} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} pagefindFilters={[{ name: "kind", value: "image-set" }, ...imageSet.data.tags.map((value) => ({ name: "tag", value }))]}>
+<BaseLayout title={`${imageSet.data.title} — page ${currentPage}`} description={imageSet.data.summary} image={imageSet.data.hero?.src} type="article" sidebar={sidebar} indexForSearch={false}>
   <MangaContentWarning rating={imageSet.data.rating}><div class="page-shell">
     <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Image sets", href: "/image-sets" }, { label: imageSet.data.title, href: `/image-sets/${imageSet.data.slug}` }, { label: `Page ${currentPage}` }]}/>
     <header><p class="eyebrow">Image set</p><h1>{imageSet.data.title}</h1><p class="summary">{imageSet.data.summary}</p></header>

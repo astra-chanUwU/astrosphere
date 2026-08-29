@@ -7,7 +7,7 @@ Use this workflow to add a source-backed anime series, film, OVA, or OVA compila
 - Treat source files as read-only. Never rename, move, overwrite, or delete them.
 - Delivery is WebM-only: VP9 Profile 0, 8-bit `yuv420p`, and stereo Opus. Do not add MP4, HLS, DASH, or a JavaScript player.
 - Use the native player and ordinary anchors. Do not store client-side watch progress.
-- Optimization is create-only. Existing managed `videos` destinations are collisions, not implicit updates.
+- Optimization is create-only by default. Existing managed `videos` destinations are collisions unless explicit resume verifies and reuses every declared existing output.
 - Keep `MEDIA_ROOT/.astrosphere/` private; it contains staging and operation records.
 - An import does not authorize synchronization, deployment, pruning, replacement, Git operations, or source deletion.
 - Preserve the actual release form. Burn-Up W is a four-part OVA; a joined local file is an `ova-compilation`, not a theatrical movie.
@@ -58,7 +58,16 @@ bun run media:optimize video "/absolute/path/to/source-folder" --manifest media-
 bun run media:optimize video "/absolute/path/to/source-folder" --manifest media-manifests/YYYY-MM-DD-title-video.yaml
 ```
 
-Review every source, selected stream, action, and destination before apply. Confirm disk space can hold the full staged output. Transcodes use the approved VP9/Opus profile; a compliant source with no requested subtitle rendering may be losslessly remuxed. The transaction verifies every staged output before installing the complete public `videos` directory. On failure, investigate the single cause and confirm no final directory was installed before retrying that title.
+To continue a partial title without replacing completed outputs, preview and then apply with the same explicit flag:
+
+```sh
+bun run media:optimize video "/absolute/path/to/source-folder" --manifest media-manifests/YYYY-MM-DD-title-video.yaml --resume --dry-run
+bun run media:optimize video "/absolute/path/to/source-folder" --manifest media-manifests/YYYY-MM-DD-title-video.yaml --resume
+```
+
+Resume re-probes all sources, fully verifies declared existing WebM outputs, reuses valid files, and creates only missing files. An invalid or undeclared existing file stops the transaction; resume never overwrites it. Omit `--resume` for a fresh create-only title.
+
+Review every source, selected stream, action, and destination before apply. Confirm disk space can hold the full staged output. Transcodes use the approved VP9/Opus profile; a compliant source with no requested subtitle rendering may be losslessly remuxed. A fresh transaction verifies every staged output before installing the complete public `videos` directory. On a fresh-run failure, investigate the single cause and confirm no final directory was installed before retrying that title. On an interrupted partial title, rerun the reviewed command with `--resume`; verified public outputs are preserved and counted as reused.
 
 ## 5. Create content
 

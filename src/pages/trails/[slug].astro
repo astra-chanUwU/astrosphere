@@ -5,5 +5,5 @@ export async function getStaticPaths() {
   return (await getPublishedTrails()).map((trail) => ({ params: { slug: trail.data.slug } }));
 }
 
-return Astro.redirect(`/guides/${Astro.params.slug}`, 301);
+return Astro.redirect(`/paths/${Astro.params.slug}`, 301);
 ---

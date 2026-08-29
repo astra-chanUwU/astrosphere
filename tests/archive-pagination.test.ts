@@ -5,11 +5,11 @@ const root = new URL("../", import.meta.url);
 const pager = await Bun.file(new URL("src/components/ArchivePagination.astro", root)).text().catch(() => "");
 const archive = await Bun.file(new URL("src/lib/archive.ts", root)).text().catch(() => "");
 const shelfArchive = await Bun.file(new URL("src/components/ShelfArchive.astro", root)).text();
-const artifactIndex = await Bun.file(new URL("src/pages/artifacts/index.astro", root)).text();
-const artifactPages = await Bun.file(new URL("src/pages/artifacts/page/[page].astro", root)).text().catch(() => "");
+const artifactIndex = await Bun.file(new URL("src/pages/articles/index.astro", root)).text();
+const artifactPages = await Bun.file(new URL("src/pages/articles/page/[page].astro", root)).text().catch(() => "");
 const artifactCard = await Bun.file(new URL("src/components/ArtifactCard.astro", root)).text();
-const trailIndex = await Bun.file(new URL("src/pages/trails/index.astro", root)).text();
-const trailPages = await Bun.file(new URL("src/pages/trails/page/[page].astro", root)).text().catch(() => "");
+const trailIndex = await Bun.file(new URL("src/pages/paths/index.astro", root)).text();
+const trailPages = await Bun.file(new URL("src/pages/paths/page/[page].astro", root)).text().catch(() => "");
 const trailCard = await Bun.file(new URL("src/components/TrailCard.astro", root)).text().catch(() => "");
 
 test("uses one accessible route-neutral archive pager", () => {
@@ -31,11 +31,16 @@ test("keeps first archive pages canonical", () => {
   expect(getArchivePageHref("/trails", 3)).toBe("/trails/page/3");
 });
 
+test("supports canonical Paths pagination", () => {
+  expect(getArchivePageHref("/paths", 1)).toBe("/paths");
+  expect(getArchivePageHref("/paths", 3)).toBe("/paths/page/3");
+});
+
 test("builds Artifacts as a uniform static row archive", () => {
   expect(artifactIndex).toContain("getPublishedArtifacts");
   expect(artifactIndex).toContain("ARCHIVE_PAGE_SIZE");
   expect(artifactIndex).toContain("artifacts.slice(0, ARCHIVE_PAGE_SIZE)");
-  expect(artifactIndex).toContain('basePath="/artifacts"');
+  expect(artifactIndex).toContain('basePath="/articles"');
   expect(artifactIndex).not.toContain("featured-artifact");
   expect(artifactIndex).not.toContain("artifact-grid");
   expect(artifactPages).toMatch(/return\s+paginate\(artifacts,\s*\{\s*pageSize:\s*ARCHIVE_PAGE_SIZE\s*\}\)\s*\.filter\(\(path\)\s*=>\s*Number\(path\.params\.page\)\s*>\s*1\)/s);
@@ -44,14 +49,13 @@ test("builds Artifacts as a uniform static row archive", () => {
   expect(artifactCard).toContain("publishedAt");
 });
 
-test("builds Trails as a globally numbered static row archive", () => {
+test("builds Paths as a globally numbered static row archive", () => {
   expect(trailIndex).toContain("ARCHIVE_PAGE_SIZE");
   expect(trailIndex).toContain("TrailCard");
   expect(trailIndex).toContain("trails.slice(0, ARCHIVE_PAGE_SIZE)");
-  expect(trailIndex).toContain('basePath="/trails"');
+  expect(trailIndex).toContain('basePath="/paths"');
   expect(trailPages).toMatch(/return\s+paginate\(trails,\s*\{\s*pageSize:\s*ARCHIVE_PAGE_SIZE\s*\}\)\s*\.filter\(\(path\)\s*=>\s*Number\(path\.params\.page\)\s*>\s*1\)/s);
-  expect(trailPages).toContain("(page.currentPage - 1) * ARCHIVE_PAGE_SIZE");
   expect(trailCard).toContain("estimatedTime");
   expect(trailCard).toContain("items.length");
-  expect(trailCard).toContain("Follow a route");
+  expect(trailCard).toContain("Open path");
 });

@@ -17,7 +17,7 @@ const lulucoProbeJson = JSON.stringify({
   format: { duration: "472.014000", size: "362528317", format_name: "matroska,webm" },
 });
 
-const burnUpProbeJson = JSON.stringify({
+const compatibleWebmProbeJson = JSON.stringify({
   streams: [
     { index: 0, codec_name: "vp9", profile: "Profile 0", codec_type: "video", width: 1920, height: 1080, pix_fmt: "yuv420p" },
     { index: 1, codec_name: "opus", codec_type: "audio", channels: 2, tags: { language: "eng" } },
@@ -34,6 +34,19 @@ test("parses real ffprobe shapes and selects tagged or indexed streams", () => {
   expect(selectVideoStream(probe, "subtitle", { language: "eng", title: "Signs & Songs" }).index).toBe(3);
 });
 
+test("ignores embedded MKV attachment streams", () => {
+  const probe = parseVideoProbe(JSON.stringify({
+    streams: [
+      { index: 0, codec_name: "hevc", profile: "Main 10", codec_type: "video", width: 1920, height: 1080, pix_fmt: "yuv420p10le" },
+      { index: 1, codec_name: "opus", codec_type: "audio", channels: 2 },
+      { index: 2, codec_name: "ass", codec_type: "subtitle", tags: { language: "eng", title: "Dialogue" } },
+      { index: 3, codec_name: "unknown", codec_type: "attachment" },
+    ],
+    format: { duration: "120", size: "1000", format_name: "matroska" },
+  }), "episode.mkv");
+  expect(probe.streams.map((stream) => stream.index)).toEqual([0, 1, 2]);
+});
+
 test("rejects missing, ambiguous, and wrong-type stream selectors", () => {
   const probe = parseVideoProbe(lulucoProbeJson, "episode.mkv");
   expect(() => selectVideoStream(probe, "subtitle", { language: "eng" })).toThrow("ambiguous");
@@ -42,12 +55,12 @@ test("rejects missing, ambiguous, and wrong-type stream selectors", () => {
 });
 
 test("uses stream-copy only for compatible WebM without burned subtitles", () => {
-  const burnUp = parseVideoProbe(burnUpProbeJson, "burn-up-w.webm");
+  const compatibleWebm = parseVideoProbe(compatibleWebmProbeJson, "compatible.webm");
   const luluco = parseVideoProbe(lulucoProbeJson, "episode.mkv");
   expect(shouldRemuxVideo(
-    burnUp,
-    selectVideoStream(burnUp, "video", { index: 0 }),
-    selectVideoStream(burnUp, "audio", { index: 1 }),
+    compatibleWebm,
+    selectVideoStream(compatibleWebm, "video", { index: 0 }),
+    selectVideoStream(compatibleWebm, "audio", { index: 1 }),
     undefined,
   )).toBe(true);
   expect(shouldRemuxVideo(
@@ -75,13 +88,13 @@ test("builds explicit VP9 burn and WebM remux commands", () => {
   expect(transcode).toContain("160k");
   expect(transcode.at(-1)).toBe("/stage/japanese.webm");
 
-  const burnUp = parseVideoProbe(burnUpProbeJson, "burn-up-w.webm");
+  const compatibleWebm = parseVideoProbe(compatibleWebmProbeJson, "compatible.webm");
   const remux = createVideoCommand({
     ffmpeg: "/tools/ffmpeg",
-    input: "/source/burn-up-w.webm",
+    input: "/source/compatible.webm",
     output: "/stage/compilation.webm",
-    video: selectVideoStream(burnUp, "video", { index: 0 }),
-    audio: selectVideoStream(burnUp, "audio", { index: 1 }),
+    video: selectVideoStream(compatibleWebm, "video", { index: 0 }),
+    audio: selectVideoStream(compatibleWebm, "audio", { index: 1 }),
     remux: true,
   });
   expect(remux).toContain("copy");

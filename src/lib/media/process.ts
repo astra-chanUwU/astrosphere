@@ -15,6 +15,7 @@ export type CommandOptions = {
   stdoutDescriptor?: number;
   /** Compatibility alias for older callers. */
   readableDescriptors?: number[];
+  onProgress?: (progress: { seconds?: number; complete?: boolean }) => void;
 };
 export type CommandRunner = (
   argv: string[],
@@ -39,11 +40,38 @@ export const runCommand: CommandRunner = async (argv, options) => {
     stdin.write(options.stdin);
     stdin.end();
   }
+  const readStderr = async (): Promise<string> => {
+    const reader = child.stderr.getReader();
+    const decoder = new TextDecoder();
+    let text = "";
+    let pending = "";
+    while (true) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      const value = decoder.decode(chunk.value, { stream: true });
+      text += value;
+      if (options?.onProgress) {
+        pending += value;
+        const lines = pending.split(/\r?\n/);
+        pending = lines.pop() ?? "";
+        for (const line of lines) {
+          const [key, rawValue] = line.split("=", 2);
+          if (key === "out_time_ms" || key === "out_time_us") {
+            const microseconds = Number(rawValue);
+            if (Number.isFinite(microseconds)) options.onProgress({ seconds: microseconds / 1_000_000 });
+          } else if (key === "progress" && rawValue === "end") {
+            options.onProgress({ complete: true });
+          }
+        }
+      }
+    }
+    return text;
+  };
   const [stdout, stderr, exitCode] = await Promise.all([
     options?.stdoutDescriptor === undefined
       ? new Response(child.stdout as ReadableStream<Uint8Array>).bytes()
       : Promise.resolve(new Uint8Array()),
-    new Response(child.stderr).text(),
+    readStderr(),
     child.exited,
   ]);
   return { stdout, stderr, exitCode };

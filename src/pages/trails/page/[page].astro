@@ -7,5 +7,5 @@ export async function getStaticPaths() {
   return Array.from({ length: Math.max(0, lastPage - 1) }, (_, index) => ({ params: { page: String(index + 2) } }));
 }
 
-return Astro.redirect(`/guides/page/${Astro.params.page}`, 301);
+return Astro.redirect(`/paths/page/${Astro.params.page}`, 301);
 ---

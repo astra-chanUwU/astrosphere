@@ -103,4 +103,4 @@ In the background during the whole ordeal, you will hear a soundtrack with the f
 “Voiceless, mindless swaying”
 
 
-This page is part of the [BLACKSOULS II character index](/articles/blacksouls-ii-characters) and [BLACKSOULS II thread](/guides/black-souls-ii-thread). Source: [FGGuides’ Azathoth guide](https://fgguides.com/blacksouls/azathoth/).
+This page is part of the [BLACKSOULS II character index](/articles/blacksouls-ii-characters) and [BLACKSOULS II path](/paths/black-souls-ii-thread). Source: [FGGuides’ Azathoth guide](https://fgguides.com/blacksouls/azathoth/).

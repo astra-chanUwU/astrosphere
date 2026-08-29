@@ -8,7 +8,7 @@ For a copyable, agent-facing authoring contract, see [Content agent guide](./con
 
 - **Artifact:** A durable published object: an essay, note, image set, audio piece, video, link, experiment, or reference. Its Markdown/MDX body is the main content.
 - **Sphere:** A thematic territory that can contain many artifacts and can nest beneath another sphere. A sphere is broader than a tag.
-- **Trail:** A curated, ordered route through artifacts and spheres. Its body is optional introductory editorial text.
+- **Path (internal collection: Trail):** A curated, ordered route through artifacts and spheres. Its body is optional introductory editorial text.
 - **Page:** A singleton or utility page such as About, Now, Colophon, or Contact.
 
 ## IDs and relationships

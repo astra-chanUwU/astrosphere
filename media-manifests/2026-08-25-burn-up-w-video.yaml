@@ -1,7 +1,0 @@
-version: 1
-title: burn-up-w
-variants:
-  - label: Four-part OVA compilation — Japanese audio with hard English subtitles
-    source: "Burn UP W MOVIE Complete OVA Serie UnCut JP DUB & Eng SUB [qGuDBN7nJqg].webm"
-    output: /media/anime/burn-up-w/videos/compilation/japanese-subbed.webm
-    audio: { index: 1 }

@@ -154,7 +154,7 @@ export const pageSchema = z.object({
   slug: slugSchema,
   title: z.string().min(1),
   status: statusSchema,
-  pageType: z.enum(["about", "now", "colophon", "contact", "work", "custom"]),
+  pageType: z.enum(["about", "philosophy", "manifest", "contact", "work", "custom"]),
   summary: z.string().optional(),
   updatedAt: isoDateSchema.optional(),
   featured: z.boolean().default(false),

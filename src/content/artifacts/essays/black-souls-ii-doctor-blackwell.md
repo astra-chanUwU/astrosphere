@@ -144,6 +144,6 @@ If you take her mask off you will see how she has black hair of medium length an
 <figcaption>Blackwell's letter, 4</figcaption>
 </figure>
 
-Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II path](/paths/black-souls-ii-thread)
 
 Source: [FGGuides — Doctor Blackwell](https://fgguides.com/blacksouls/doctor-blackwell/).

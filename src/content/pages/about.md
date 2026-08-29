@@ -3,13 +3,33 @@ slug: about
 title: About
 status: published
 pageType: about
-summary: What AstroSphere is, what belongs here, and how to find your way through it.
+summary: The person behind AstroSphere, and the archive I am building here.
 ---
 
-AstroSphere is Astro Chan’s personal archive: a place for collecting, reading, looking closely, and making connections between things that do not always arrive together.
+## About me
 
-It holds manga, games, images, essays, research, references, and small experiments. Some entries are finished pieces; some are working notes. The difference matters less than whether the thing has earned a place here.
+I am Astro Chan. I make websites, collect references, and spend a lot of time with manga, images, games, anime, and independent projects.
 
-The archive is organized by **spheres** and **trails**. Spheres are broad territories of interest. Trails are hand-made routes through related pieces. They are invitations rather than rules: start with a subject, an image, a question, or whatever happens to catch you.
+AstroSphere brings those interests together in one place.
 
-AstroSphere is personal, selective, and still changing. It is not meant to document everything. It is a durable shape for the things I keep returning to.
+## About AstroSphere
+
+AstroSphere is a personal archive and workspace. It contains things to read, look at, watch, follow, and think about, along with the notes and connections that give them context.
+
+It is organized as a collection rather than a feed. Some things are finished, some are being studied, and some are here simply because I want to find them again.
+
+## Why it exists
+
+Useful things are easy to lose. A bookmark breaks, a title gets forgotten, or a good reference disappears into an open tab.
+
+I built AstroSphere to make returning easier: keep the thing, keep enough context around it, and make the next related thing easier to reach.
+
+## How I work
+
+I prefer small, readable systems over large platforms. I use plain materials, clear labels, managed media, and only as much interaction as a page needs.
+
+The same approach shapes the collection: keep what is useful, describe it honestly, preserve its context, and remove what only adds noise.
+
+## What to explore
+
+Start wherever something catches your attention. Browse the shelves for manga, doujinshi, image sets, and anime. Visit Explore for topics, articles, paths, and links. Use search when you remember a fragment but not where it belongs.

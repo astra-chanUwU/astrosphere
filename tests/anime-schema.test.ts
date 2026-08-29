@@ -66,17 +66,17 @@ test("rejects non-WebM and cross-title video sources", () => {
   }).success).toBe(false);
 });
 
-test("keeps movie-style OVA compilations distinct from numbered episodes", () => {
-  expect(animeTitleSchema.safeParse({ ...title, slug: "burn-up-w", kind: "movie", format: "ova-compilation" }).success).toBe(true);
+test("keeps movie-style compilations distinct from numbered episodes", () => {
+  expect(animeTitleSchema.safeParse({ ...title, slug: "test-movie", kind: "movie", format: "ova-compilation" }).success).toBe(true);
   expect(animeVideoSchema.safeParse({
     ...episode,
-    slug: "burn-up-w-compilation",
-    anime: "burn-up-w",
+    slug: "test-movie-compilation",
+    anime: "test-movie",
     kind: "movie",
     number: undefined,
     variants: [{
       ...episode.variants[0],
-      src: "/media/anime/burn-up-w/videos/compilation/japanese-subbed.webm",
+      src: "/media/anime/test-movie/videos/compilation/japanese-subbed.webm",
     }],
   }).success).toBe(true);
 });

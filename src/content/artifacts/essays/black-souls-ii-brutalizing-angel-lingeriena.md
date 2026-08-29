@@ -115,4 +115,4 @@ Her hair is short, colorful, and carefully styled. Her face stays bright and che
 <figure class="lingeriena-design-feature"><img src="/media/images/black-souls-ii-brutalizing-angel-lingeriena/lingerienas-design.webp" alt="Lingeriena’s character design." loading="lazy" decoding="async" /><figcaption>The angelic disguise and demonic details.</figcaption></figure>
 </div>
 
-This page is part of the [BLACKSOULS II character index](/articles/black-souls-ii-characters) and [BLACKSOULS II thread](/guides/black-souls-ii-thread). Source: [FGGuides’ Brutalizing Angel Lingeriena guide](https://fgguides.com/blacksouls/brutalizing-angel-lingeriena/).
+This page is part of the [BLACKSOULS II character index](/articles/black-souls-ii-characters) and [BLACKSOULS II path](/paths/black-souls-ii-thread). Source: [FGGuides’ Brutalizing Angel Lingeriena guide](https://fgguides.com/blacksouls/brutalizing-angel-lingeriena/).

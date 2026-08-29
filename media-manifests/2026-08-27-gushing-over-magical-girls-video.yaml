@@ -1,0 +1,68 @@
+version: 1
+title: gushing-over-magical-girls
+variants:
+  - label: Episode 1 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E01 - A Villain Is Born!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/01/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 2 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E02 - Her Name Is Magia Baiser!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/02/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 3 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E03 - The Explosive Leopard!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/03/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 4 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E04 - Everyone Loves The Tres Magia!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/04/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 5 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E05 - Neroalice In Wonderland.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/05/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 6 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E06 - The Tres Magia's Secret Backstory.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/06/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 7 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E07 - Azure In Trouble!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/07/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 8 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E08 - Here Comes The Lord Squad!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/08/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 9 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E09 - Gushing Over Pop Idols!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/09/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 10 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E10 - Loco X Leber.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/10/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 11 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E11 - Gushing Over World Domination!.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/11/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 12 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E12 - Supreme Commander Magia Baiser Calls The Shots.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/12/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 13 — Japanese audio with English subtitles
+    source: Season 1/Gushing Over Magical Girls - S01E13 - Still Gushing Over Magical Girls.mkv
+    output: /media/anime/gushing-over-magical-girls/videos/13/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }

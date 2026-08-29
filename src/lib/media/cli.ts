@@ -19,7 +19,10 @@ export const mediaHelp = `Usage:
   bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
   bun run media:thumbnails [--series <slug>] [--dry-run] [--force]
   bun run media:validate
-  bun run media:sync [--dry-run] [--prune]`;
+  bun run media:sync [--dry-run] [--prune]
+
+Global option:
+  --plain  Disable animation, color, and cursor movement`;
 
 export const maintenanceHelp = `Usage:
   bun run media:maintain plan [--quality <1..100>]
@@ -32,12 +35,13 @@ Options:
 
 export const optimizeHelp = `Usage:
   bun run media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery> [options]
-  bun run media:optimize video <source-root> --manifest <file> [--dry-run]
+  bun run media:optimize video <source-root> --manifest <file> [--resume] [--dry-run]
 
 Options:
   --quality <1..100>  WebP quality (default: 85)
   --web-reader         Resize stills to 2400px portrait / 4000px landscape (default quality: 90)
   --in-place           Replace verified managed WebP files after confirmation
+  --resume             Verify and reuse existing manifest video outputs
   --dry-run           Show the plan without writing output
   -h, --help          Show this help`;
 
@@ -256,6 +260,7 @@ export type VideoOptimizeCommandOptions = {
   sourceRoot: string;
   manifest: string;
   dryRun: boolean;
+  resume: boolean;
   source?: never;
   destination?: never;
   profile?: never;
@@ -268,6 +273,7 @@ const parseVideoOptimizeArgs = (argv: string[]): VideoOptimizeCommandOptions => 
   const sources: string[] = [];
   let manifest: string | undefined;
   let dryRun = false;
+  let resume = false;
   const seen = new Set<string>();
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index]!;
@@ -281,6 +287,10 @@ const parseVideoOptimizeArgs = (argv: string[]): VideoOptimizeCommandOptions => 
     seen.add(argument);
     if (argument === "--dry-run") {
       dryRun = true;
+      continue;
+    }
+    if (argument === "--resume") {
+      resume = true;
       continue;
     }
     if (argument === "--manifest") {
@@ -299,6 +309,7 @@ const parseVideoOptimizeArgs = (argv: string[]): VideoOptimizeCommandOptions => 
     sourceRoot: resolve(sources[0]!),
     manifest,
     dryRun,
+    resume,
   };
 };
 

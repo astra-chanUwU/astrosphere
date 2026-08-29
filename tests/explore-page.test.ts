@@ -8,8 +8,8 @@ test("builds Explore as the thematic archive entry point", () => {
   expect(explore).toContain('class="explore-grid"');
   expect(explore).toContain('class="explore-rail"');
   expect(explore).toContain("SphereCard");
-  expect(explore).toContain("Recent artifacts");
-  expect(explore).toContain("Featured trails");
+  expect(explore).toContain("Recent articles");
+  expect(explore).toContain("Featured paths");
   expect(navigation).toContain('{ href: "/explore", label: "Explore" }');
 });
 

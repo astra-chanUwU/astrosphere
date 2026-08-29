@@ -66,6 +66,6 @@ Shisha is a monster girl whose pale human torso, arms, and legs join a large cya
 <figure><img src="/media/images/black-souls-ii-caterpillar-shisha/neat-shisha-art.webp" alt="Shisha’s character design, showing her human and caterpillar features." loading="lazy" decoding="async" /><figcaption>Shisha’s human and caterpillar design.</figcaption></figure>
 </div>
 
-Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II path](/paths/black-souls-ii-thread)
 
 Source: [FGGuides — Caterpillar Shisha](https://fgguides.com/blacksouls/caterpillar-shisha/).

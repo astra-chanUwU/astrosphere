@@ -10,15 +10,11 @@ const readFrontmatter = async (path: string) => {
   return parse(match[1]!);
 };
 
-test("publishes the two source-backed anime titles", async () => {
+test("publishes the source-backed anime title", async () => {
   const luluco = animeTitleSchema.parse(await readFrontmatter("src/content/anime/titles/space-patrol-luluco.md"));
-  const burnUp = animeTitleSchema.parse(await readFrontmatter("src/content/anime/titles/burn-up-w.md"));
 
   expect(luluco).toMatchObject({ kind: "series", format: "tv-short", releaseYear: 2016, visibility: "published" });
-  expect(burnUp).toMatchObject({ kind: "movie", format: "ova-compilation", releaseYear: 1996, visibility: "published" });
   expect(luluco.poster?.src.startsWith("/media/anime/space-patrol-luluco/")).toBe(true);
-  expect(burnUp.poster?.src.startsWith("/media/anime/burn-up-w/")).toBe(true);
-  expect(burnUp.description).toMatch(/four-part|four episodes/i);
 });
 
 test("retains the complete Luluco catalog while publishing only available WebMs", async () => {
@@ -41,11 +37,4 @@ test("retains the complete Luluco catalog while publishing only available WebMs"
   expect(episodes.slice(4).every((episode) => episode.status === "draft")).toBe(true);
   expect(extras[0]?.status).toBe("draft");
   expect(extras[0]?.variants).toHaveLength(1);
-});
-
-test("publishes Burn-Up W as one WebM compilation record", async () => {
-  const video = animeVideoSchema.parse(await readFrontmatter("src/content/anime/videos/burn-up-w-compilation.md"));
-  expect(video).toMatchObject({ anime: "burn-up-w", kind: "movie", status: "published" });
-  expect(video.variants).toHaveLength(1);
-  expect(video.variants[0]?.src).toBe("/media/anime/burn-up-w/videos/compilation/japanese-subbed.webm");
 });

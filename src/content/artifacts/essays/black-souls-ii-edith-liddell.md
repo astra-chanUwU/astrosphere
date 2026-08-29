@@ -164,10 +164,9 @@ Edith is a small and fragile girl. She has long blonde hair and blue eyes. Her s
 
 <figure><img src="/media/images/black-souls-ii-edith-liddell/Ediths-design-560x420.webp" alt="Edith’s character design." loading="lazy" decoding="async" /><figcaption>Edith’s design.</figcaption></figure>
 
-Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II path](/paths/black-souls-ii-thread)
 
 Source: [FGGuides — Edith Liddell](https://fgguides.com/blacksouls/edith-liddell/).
-
 
 
 

@@ -21,10 +21,13 @@ test("exposes content:new and creates an essay draft", async () => {
   expect(packageJson.scripts["content:new"]).toBe("bun scripts/content.ts new");
   const root = await mkdtemp(join(tmpdir(), "content-cli-"));
   try {
-    const result = await runContent(["new", "essay", "my-essay"], root);
+    const result = await runContent(["new", "essay", "my-essay", "--plain"], root);
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("Created draft:");
-    expect(await readFile(join(root, "src/content/artifacts/essays/my-essay.md"), "utf8"))
+    expect(result.stdout).toContain("◆ content new");
+    expect(result.stdout).toContain("Draft created");
+    expect(result.stdout).toContain("Elapsed");
+    expect(result.stdout).not.toContain("\u001b[");
+    expect(await readFile(join(root, "src/content/articles/essays/my-essay.md"), "utf8"))
       .toContain("slug: my-essay");
   } finally {
     await rm(root, { recursive: true, force: true });

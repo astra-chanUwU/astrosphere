@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content";
+import ArchivePageHeader from "../components/ArchivePageHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import WorkContactCta from "../components/WorkContactCta.astro";
 import { getPublishedPages } from "../lib/content";
@@ -7,5 +8,26 @@ const contact = (await getPublishedPages()).find((page) => page.data.pageType ==
 if (!contact) throw new Error("A published page with pageType: contact is required for /contact.");
 const { Content } = await render(contact);
 ---
-<BaseLayout title={contact.data.title} description={contact.data.summary}><div class="page-shell"><article class="prose"><h1>{contact.data.title}</h1><Content/></article><WorkContactCta heading="Start a conversation" copy="A few details about the project, its current state, and what you need help with are enough to begin."/></div></BaseLayout>
-<style>article{padding-top:var(--section-space)}h1{font-size:var(--text-2xl);font-weight:500;line-height:var(--leading-tight)}</style>
+<BaseLayout title={contact.data.title} description={contact.data.summary}>
+  <div class="page-shell contact-page">
+    <ArchivePageHeader eyebrow="Get in touch" title={contact.data.title} variant="contact" summary={contact.data.summary} />
+    <div class="contact-grid">
+      <main>
+        <div class="section-heading"><div><p class="eyebrow">A short note</p><h2 id="contact-heading">Start with the useful details</h2></div></div>
+        <article class="prose contact-copy" aria-labelledby="contact-heading"><Content/></article>
+      </main>
+      <aside class="contact-rail"><WorkContactCta heading="Start a conversation" copy="A few details about the project, its current state, and what you need help with are enough to begin."/></aside>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .contact-page { max-width: 96rem; padding-bottom: var(--section-space); }
+  .contact-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .section-heading { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
+  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-1); text-transform: uppercase; }
+  .contact-copy { border-top: 1px solid var(--color-border); max-width: var(--reading-width); padding-top: var(--space-3); }
+  .contact-rail { border-left: 1px solid var(--color-border); padding-left: var(--space-3); }
+  .contact-rail :global(.cta) { margin-top: 0; }
+  @media (max-width: 52rem) { .contact-grid { grid-template-columns: minmax(0, 1fr); } .contact-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
+</style>

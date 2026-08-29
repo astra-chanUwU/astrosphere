@@ -572,6 +572,6 @@ The most immersive part of her design is her bratty smile and sharp cat-like eye
 <figcaption>Cheshire Cat on the phone</figcaption>
 </figure>
 
-Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II trail](/guides/black-souls-ii-thread)
+Related: [All BLACKSOULS II characters](/articles/black-souls-ii-characters) · [BLACKSOULS II path](/paths/black-souls-ii-thread)
 
 Source: [FGGuides — Cheshire Cat](https://fgguides.com/blacksouls/cheshire-cat/).

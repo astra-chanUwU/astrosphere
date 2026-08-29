@@ -107,6 +107,95 @@ test("refuses an existing final videos directory before transcoding", async () =
   });
 });
 
+test("resume dry-run verifies and reuses existing outputs while planning missing outputs", async () => {
+  await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
+    const existing = join(mediaRoot, "anime", "example-show", "videos", "01", "japanese-subbed.webm");
+    await mkdir(join(existing, ".."), { recursive: true });
+    await writeFile(existing, "verified-existing");
+    const verified: string[] = [];
+    const result = await optimizeVideoManifest(
+      { sourceRoot, mediaRoot, manifestPath, dryRun: true, resume: true },
+      {
+        ...adapters(async () => { throw new Error("runner must not be called"); }),
+        verify: async (path) => { verified.push(path); },
+      },
+    );
+    expect(result.items.map((item) => item.action)).toEqual(["reuse", "transcode"]);
+    expect(result.reused).toBe(1);
+    expect(result.created).toBe(0);
+    expect(verified).toEqual([existing]);
+  });
+});
+
+test("resume refuses an invalid existing output before encoding", async () => {
+  await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
+    const existing = join(mediaRoot, "anime", "example-show", "videos", "01", "japanese-subbed.webm");
+    await mkdir(join(existing, ".."), { recursive: true });
+    await writeFile(existing, "invalid");
+    let calls = 0;
+    await expectOptimizationError(
+      optimizeVideoManifest(
+        { sourceRoot, mediaRoot, manifestPath, dryRun: false, resume: true },
+        {
+          ...adapters(async () => {
+            calls += 1;
+            return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+          }),
+          verify: async () => { throw new Error("duration drift"); },
+        },
+      ),
+      "Existing video output failed verification",
+    );
+    expect(calls).toBe(0);
+    expect(await readFile(existing, "utf8")).toBe("invalid");
+  });
+});
+
+test("resume refuses files not declared by the manifest", async () => {
+  await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
+    const unknown = join(mediaRoot, "anime", "example-show", "videos", "bonus.webm");
+    await mkdir(join(unknown, ".."), { recursive: true });
+    await writeFile(unknown, "unknown");
+    await expectOptimizationError(
+      optimizeVideoManifest(
+        { sourceRoot, mediaRoot, manifestPath, dryRun: true, resume: true },
+        adapters(async () => { throw new Error("runner must not be called"); }),
+      ),
+      "not declared by the manifest",
+    );
+  });
+});
+
+test("resume installs only missing outputs and preserves reused bytes", async () => {
+  await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
+    const existing = join(mediaRoot, "anime", "example-show", "videos", "01", "japanese-subbed.webm");
+    await mkdir(join(existing, ".."), { recursive: true });
+    await writeFile(existing, "verified-existing");
+    let calls = 0;
+    const runner: CommandRunner = async (argv) => {
+      calls += 1;
+      await mkdir(join(argv.at(-1)!, ".."), { recursive: true }).catch(() => undefined);
+      await writeFile(argv.at(-1)!, "new-output");
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+    const result = await optimizeVideoManifest(
+      { sourceRoot, mediaRoot, manifestPath, dryRun: false, resume: true },
+      adapters(runner),
+    );
+    expect(calls).toBe(1);
+    expect(result.reused).toBe(1);
+    expect(result.created).toBe(1);
+    expect(await readFile(existing, "utf8")).toBe("verified-existing");
+    expect(await readFile(join(mediaRoot, "anime", "example-show", "videos", "01", "english-dub.webm"), "utf8"))
+      .toBe("new-output");
+    expect(JSON.parse(await readFile(result.operationRecord!, "utf8"))).toMatchObject({
+      ok: true,
+      reused: 1,
+      created: 1,
+    });
+  });
+});
+
 test("rejects insufficient staging space before creating public output", async () => {
   await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
     await expectOptimizationError(
@@ -174,5 +263,32 @@ test("installs the complete verified videos tree and a private result record", a
     expect(await Bun.file(join(mediaRoot, "anime", "example-show", "videos", "01", "english-dub.webm")).exists()).toBe(true);
     expect(await readFile(sourcePath, "utf8")).toBe("original");
     expect(JSON.parse(await readFile(result.operationRecord!, "utf8"))).toMatchObject({ ok: true, title: "example-show", files: 2 });
+  });
+});
+
+test("reports the active video and completed count while converting", async () => {
+  await withFixture(async ({ sourceRoot, mediaRoot, manifestPath }) => {
+    const updates: string[] = [];
+    const runner: CommandRunner = async (argv) => {
+      await mkdir(join(argv.at(-1)!, ".."), { recursive: true }).catch(() => undefined);
+      await writeFile(argv.at(-1)!, Uint8Array.from([0x1a, 0x45, 0xdf, 0xa3, 1]));
+      return { exitCode: 0, stdout: new Uint8Array(), stderr: "" };
+    };
+    await optimizeVideoManifest(
+      {
+        sourceRoot,
+        mediaRoot,
+        manifestPath,
+        dryRun: false,
+        onProgress: (update) => updates.push(`${update.completed}/${update.total} ${update.current} ${update.detail}`),
+      },
+      adapters(runner),
+    );
+    expect(updates).toEqual([
+      "0/2 Japanese with English subtitles transcoding",
+      "1/2 Japanese with English subtitles verified",
+      "1/2 English dub transcoding",
+      "2/2 English dub verified",
+    ]);
   });
 });

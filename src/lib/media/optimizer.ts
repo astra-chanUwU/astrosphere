@@ -89,6 +89,12 @@ export type OptimizeOptions = {
   quality: number;
   dryRun: boolean;
   webReader?: boolean;
+  onProgress?: (update: {
+    current: string;
+    completed: number;
+    total: number;
+    detail: string;
+  }) => void;
 };
 
 export type OptimizeResult = {
@@ -1006,7 +1012,13 @@ export const optimizeMedia = async (
     let converted = 0;
     let copied = 0;
     let resized = 0;
-    for (const output of stagedOutputs) {
+    for (const [index, output] of stagedOutputs.entries()) {
+      options.onProgress?.({
+        current: output.item.sourceRelativePath,
+        completed: index,
+        total: stagedOutputs.length,
+        detail: output.item.action,
+      });
       try {
         if (output.item.action === "copy") {
           if (!output.retainedInput) {
@@ -1014,6 +1026,7 @@ export const optimizeMedia = async (
           }
           copyRetainedFile(output.retainedInput, output.outputFile);
           copied += 1;
+          options.onProgress?.({ current: output.item.sourceRelativePath, completed: index + 1, total: stagedOutputs.length, detail: output.item.action });
           continue;
         }
 
@@ -1032,6 +1045,7 @@ export const optimizeMedia = async (
             plan.quality,
           );
           resized += 1;
+          options.onProgress?.({ current: output.item.sourceRelativePath, completed: index + 1, total: stagedOutputs.length, detail: output.item.action });
           continue;
         }
 
@@ -1070,6 +1084,12 @@ export const optimizeMedia = async (
           );
         }
         converted += 1;
+        options.onProgress?.({
+          current: output.item.sourceRelativePath,
+          completed: index + 1,
+          total: stagedOutputs.length,
+          detail: output.item.action,
+        });
       } catch (error) {
         throw new Error(
           `Unable to optimize "${output.item.sourceRelativePath}": ${errorMessage(error)}`,

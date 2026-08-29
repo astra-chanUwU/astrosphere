@@ -48,7 +48,7 @@ Use the existing card components before creating a new card style:
 - `ImageSetCard` for image sets.
 - `ArtifactCard` for artifacts.
 - `SphereCard` for thematic territories.
-- `TrailCard` for connected routes.
+- `TrailCard` for connected paths.
 
 Cards should have a visible image when one exists, a consistent media column, a clear title, and only useful metadata. Keep borders horizontal and light. Avoid double rules and avoid repeating the same label in adjacent components.
 
@@ -67,7 +67,7 @@ The homepage is a two-column archive feed:
 
 ## Explore
 
-Explore is the entry point to the archive’s thematic layer. It should connect Spheres, Artifacts, Trails, and Signals. The page can be denser than the homepage, but it should still use the same two-column archive grid and direct labels.
+Explore is the entry point to the archive’s thematic layer. It should connect Spheres, Artifacts, Paths, and Signals. The page can be denser than the homepage, but it should still use the same two-column archive grid and direct labels.
 
 ## Agent checklist
 

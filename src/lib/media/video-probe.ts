@@ -48,9 +48,10 @@ export const parseVideoProbe = (source: string, path: string): ProbedVideo => {
   if (!Array.isArray(root.streams) || root.streams.length === 0) {
     throw new Error(`ffprobe found no streams in ${path}`);
   }
-  const streams = root.streams.map((value, streamIndex): ProbedVideoStream => {
+  const streams = root.streams.map((value, streamIndex): ProbedVideoStream | undefined => {
     const stream = record(value, `ffprobe stream ${streamIndex} for ${path}`);
     const codecType = stream.codec_type;
+    if (codecType === "attachment") return undefined;
     if (codecType !== "video" && codecType !== "audio" && codecType !== "subtitle") {
       throw new Error(`Unsupported ffprobe stream type in ${path}: ${String(codecType)}`);
     }
@@ -73,7 +74,7 @@ export const parseVideoProbe = (source: string, path: string): ProbedVideo => {
       ...(typeof tags.language === "string" ? { language: tags.language } : {}),
       ...(typeof tags.title === "string" ? { title: tags.title } : {}),
     };
-  });
+  }).filter((stream): stream is ProbedVideoStream => stream !== undefined);
   const durationSeconds = finiteNumber(format.duration, `ffprobe duration for ${path}`);
   const bytes = finiteNumber(format.size, `ffprobe size for ${path}`);
   if (durationSeconds <= 0 || bytes <= 0) throw new Error(`ffprobe reported an empty video: ${path}`);
@@ -164,6 +165,8 @@ export const createVideoCommand = (options: {
     "-nostdin",
     "-hide_banner",
     "-loglevel", "error",
+    "-progress", "pipe:2",
+    "-nostats",
     "-n",
     "-i", options.input,
   ];

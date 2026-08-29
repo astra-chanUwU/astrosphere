@@ -38,7 +38,7 @@ const sidebar: SidebarModel = {
     <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Anime", href: "/anime" }, { label: title.data.title }]} />
     <header class="anime-hero">
       {heroArt && <img class="hero-art" src={heroArt.src} alt="" fetchpriority="high" decoding="async" />}
-      <div class="hero-content">
+      <div class:list={["hero-content", { "hero-content--text-only": !title.data.poster }]}>
         {title.data.poster && <img class="hero-poster" src={title.data.poster.src} alt={title.data.poster.alt} fetchpriority="high" decoding="async" />}
         <div class="hero-copy">
           <p class="eyebrow">{title.data.format.replaceAll("-", " ")} · {title.data.releaseYear} · {title.data.studios.join(", ")}</p>
@@ -68,6 +68,7 @@ const sidebar: SidebarModel = {
   .hero-art { height: 100%; inset: 0; object-fit: cover; opacity: .55; position: absolute; width: 100%; }
   .anime-hero::after { background: linear-gradient(90deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.76) 45%, rgba(0,0,0,.2) 100%), linear-gradient(0deg, rgba(0,0,0,.65), transparent 55%); content: ""; inset: 0; position: absolute; }
   .hero-content { align-items: end; display: grid; gap: clamp(1rem, 3vw, 2.5rem); grid-template-columns: minmax(8rem, 12rem) minmax(0, 40rem); min-height: 26rem; padding: clamp(1rem, 4vw, 3rem); position: relative; z-index: 1; }
+  .hero-content--text-only { grid-template-columns: minmax(0, 60rem); }
   .hero-poster { border: 1px solid rgba(255,255,255,.55); box-shadow: 0 1.25rem 3rem rgba(0,0,0,.45); height: auto; width: 100%; }
   .hero-copy { padding-bottom: var(--space-1); }
   .eyebrow { color: #a9dfff; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-2); text-transform: uppercase; }
@@ -89,6 +90,6 @@ const sidebar: SidebarModel = {
   figure img { height: auto; width: 100%; }
   figcaption { color: var(--color-muted); font-size: var(--text-sm); }
   @media (max-width: 64rem) { .title-layout { grid-template-columns: minmax(0, 1fr); } .title-meta { max-width: var(--reading-width); position: static; } }
-  @media (max-width: 38rem) { .hero-content { align-items: end; grid-template-columns: 6.5rem minmax(0, 1fr); min-height: 30rem; padding: var(--space-3); } h1 { font-size: clamp(2rem, 10vw, 3.3rem); } .description { grid-column: 1 / -1; } .anime-hero::after { background: linear-gradient(0deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.25) 100%); } }
+  @media (max-width: 38rem) { .hero-content { align-items: end; grid-template-columns: 6.5rem minmax(0, 1fr); min-height: 30rem; padding: var(--space-3); } .hero-content--text-only { display: block; padding-top: var(--space-4); } h1 { font-size: clamp(2rem, 10vw, 3.3rem); } .description { grid-column: 1 / -1; } .anime-hero::after { background: linear-gradient(0deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.82) 62%, rgba(0,0,0,.25) 100%); } }
   @media (max-width: 28rem) { .hero-content { display: block; padding-top: 8rem; } .hero-poster { margin-bottom: var(--space-3); width: 6rem; } }
 </style>

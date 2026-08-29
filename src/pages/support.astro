@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ArchivePageHeader from "../components/ArchivePageHeader.astro";
 import { isConfiguredSupportValue, supportConfig, type SupportContact } from "../config/support";
 
 const contactHref = (contact: SupportContact) =>
@@ -9,15 +10,14 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
 ---
 
 <BaseLayout title="Support AstroSphere" description="Help Astro Chan keep this personal corner of the internet online.">
-  <div class="page-shell">
-    <header>
-      <h1>Support the archive</h1>
-      <p>AstroSphere is a personal archive built and maintained in the spaces between everything else. If you have found something useful, strange, or worth returning to, you can help keep it online and give it more time.</p>
-    </header>
+  <div class="page-shell support-page">
+    <ArchivePageHeader eyebrow="Keep the archive online" title="Support" variant="support" summary="AstroSphere is a personal archive built and maintained in the spaces between everything else. If you have found something useful, strange, or worth returning to, you can help keep it online and give it more time." />
 
-    <section aria-labelledby="anonymous-heading">
-      <h2 id="anonymous-heading">Give anonymously</h2>
-      <p>Crypto support is welcome. No wallet connection, form, tracking, or identity is collected here. Always verify the network before sending.</p>
+    <div class="support-grid">
+      <main>
+        <section aria-labelledby="anonymous-heading">
+          <div class="section-heading"><div><p class="eyebrow">Private support</p><h2 id="anonymous-heading">Give anonymously</h2></div></div>
+          <p>Crypto support is welcome. No wallet connection, form, tracking, or identity is collected here. Always verify the network before sending.</p>
       <div class="wallets">
         {supportConfig.wallets.map((wallet) => (
           <article>
@@ -32,25 +32,28 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
           </article>
         ))}
       </div>
-      <p class="warning">Always verify the network before sending. Never send seed phrases, private keys, or exchange login details.</p>
-    </section>
+          <p class="warning">Always verify the network before sending. Never send seed phrases, private keys, or exchange login details.</p>
+        </section>
 
-    <section aria-labelledby="credit-heading">
-      <h2 id="credit-heading">Want to be credited?</h2>
-      <p>Public credit is optional. Send a message after donating if you want your name and amount listed; anonymous support stays anonymous.</p>
+        <section aria-labelledby="credit-heading">
+          <div class="section-heading"><div><p class="eyebrow">Optional attribution</p><h2 id="credit-heading">Want to be credited?</h2></div></div>
+          <p>Public credit is optional. Send a message after donating if you want your name and amount listed; anonymous support stays anonymous.</p>
       <ul class="contacts">
         {supportConfig.contacts.filter((contact) => isConfiguredSupportValue(contact.value)).map((contact) => <li><a href={contactHref(contact)}>{contact.label}</a></li>)}
       </ul>
       {!supportConfig.contacts.some((contact) => isConfiguredSupportValue(contact.value)) && <p class="unconfigured">Contact details are not configured yet.</p>}
-    </section>
+        </section>
 
-    <section aria-labelledby="other-heading">
-      <h2 id="other-heading">Other ways to help</h2>
-      <p>Share a piece with someone who may enjoy it, report a broken link, send a correction, point toward a useful source, or tell me when something here helped you. Those small signals help decide what the archive should become next.</p>
-      <p><a href="/contact">Send a note through Contact →</a></p>
-    </section>
+        <section aria-labelledby="other-heading">
+          <div class="section-heading"><div><p class="eyebrow">No payment required</p><h2 id="other-heading">Other ways to help</h2></div></div>
+          <p>Share a piece with someone who may enjoy it, report a broken link, send a correction, point toward a useful source, or tell me when something here helped you. Those small signals help decide what the archive should become next.</p>
+          <p><a href="/contact">Send a note through Contact →</a></p>
+        </section>
 
-    {supporters.length > 0 && <section aria-labelledby="supporters-heading"><h2 id="supporters-heading">{supportersTitle}</h2><ul class="supporters">{supporters.map((supporter) => <li><span>{supporter.name}</span><span>{supporter.amount}</span><time>{supporter.date}</time></li>)}</ul></section>}
+        {supporters.length > 0 && <section aria-labelledby="supporters-heading"><div class="section-heading"><div><p class="eyebrow">Community support</p><h2 id="supporters-heading">{supportersTitle}</h2></div></div><ul class="supporters">{supporters.map((supporter) => <li><span>{supporter.name}</span><span>{supporter.amount}</span><time>{supporter.date}</time></li>)}</ul></section>}
+      </main>
+      <aside class="support-rail"><p class="eyebrow">A small note</p><p>Support keeps the archive online, but it is not required to participate. Reading, sharing, correcting, and sending useful references all help.</p></aside>
+    </div>
   </div>
 </BaseLayout>
 
@@ -81,11 +84,13 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
 </script>
 
 <style>
-  header { max-width: var(--reading-width); padding: var(--section-space) 0 var(--space-4); }
-  h1 { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500; margin: 0; }
-  h2 { font-size: var(--text-xl); margin: 0 0 var(--space-2); }
+  .support-page { max-width: 96rem; padding-bottom: var(--section-space); }
+  .support-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  section { border-top: 1px solid var(--color-border); margin: 0 0 var(--section-space); max-width: var(--reading-width); padding-top: var(--space-3); }
+  .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
+  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-1); text-transform: uppercase; }
   h3 { font-size: var(--text-lg); margin: 0; }
-  section { margin: var(--section-space) 0; max-width: var(--reading-width); }
   p { font-family: var(--font-serif); font-size: var(--text-lg); line-height: var(--leading-reading); }
   .wallets { display: grid; gap: var(--space-2); grid-template-columns: 1fr; }
   article { background: var(--color-surface); border: 1px solid var(--color-border); padding: var(--space-3); }
@@ -98,4 +103,7 @@ const supportersTitle = import.meta.env.DEV ? "Example supporters — developmen
   .contacts { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .supporters li { border-top: 1px solid var(--color-border); display: grid; gap: var(--space-2); grid-template-columns: 1fr auto auto; padding: var(--space-1) 0; }
   time { color: var(--color-muted); font-size: var(--text-sm); }
+  .support-rail { border-left: 1px solid var(--color-border); padding-left: var(--space-3); }
+  .support-rail p:not(.eyebrow) { margin-top: 0; max-width: 18rem; }
+  @media (max-width: 52rem) { .support-grid { grid-template-columns: minmax(0, 1fr); } .support-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
 </style>

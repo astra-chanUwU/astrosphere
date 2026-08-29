@@ -19,11 +19,20 @@ import {
   parseValidateArgs,
   thumbnailHelp,
 } from "../src/lib/media/cli";
+import { formatProgressBar, MediaProgress } from "../src/lib/media/progress";
+import {
+  extractTerminalOptions,
+  formatBytes,
+  formatCommandHeader,
+  formatDuration,
+  formatSummary,
+} from "../src/lib/media/terminal";
 import {
   exitCodeForMediaError,
   mediaExitCodes,
   MediaError,
 } from "../src/lib/media/errors";
+import { TerminalSession } from "../src/lib/terminal/session";
 import type {
   MaintenanceEnvelope,
   MaintenanceErrorEnvelope,
@@ -32,6 +41,172 @@ import type {
 const pngHeader = Uint8Array.from([
   0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
 ]);
+
+test("formats terminal summaries with readable labels and bytes", () => {
+  expect(formatCommandHeader("media", "optimize", { color: false })).toBe(
+    "◆ media optimize",
+  );
+  expect(formatBytes(1536)).toBe("1.5 KiB");
+  expect(formatSummary([[
+    "Saved",
+    formatBytes(1536),
+  ], ["Files", "12"]])).toBe("  Saved  1.5 KiB\n  Files  12");
+});
+
+test("uses semantic terminal marks without coloring non-TTY output", () => {
+  expect(formatCommandHeader("media", "validate", { color: true })).toContain(
+    "\u001b[",
+  );
+  expect(formatSummary([["Status", "OK"]], { marker: "success", color: false })).toBe(
+    "✓ Status  OK",
+  );
+});
+
+test("formats a terminal progress bar with the active file and counts", () => {
+  expect(formatProgressBar(3, 10, 12)).toBe("[████░░░░░░░░] 30%");
+  const progress = new MediaProgress({ output: () => undefined, isTTY: true });
+  progress.start("Converting videos", 2);
+  progress.update({ current: "episode-01.mkv", completed: 1, detail: "transcode" });
+  const rendered = progress.render();
+  expect(rendered).toContain("Converting videos");
+  expect(rendered).toContain("episode-01.mkv");
+  expect(rendered).toContain("1/2");
+  expect(rendered).toContain("transcode");
+});
+
+test("renders a separate per-file progress bar", () => {
+  const progress = new MediaProgress({ output: () => undefined, isTTY: true });
+  progress.start("Converting videos", 13);
+  progress.update({
+    current: "1.webm",
+    completed: 2,
+    detail: "transcoding",
+    filePercent: 55,
+  });
+  expect(progress.render()).toContain("Overall [████░░░░░░░░░░░░░░░░░░░░] 15% 2/13");
+  expect(progress.render()).toContain("File     ");
+  expect(progress.render()).toContain("55% 1.webm");
+});
+
+test("renders measured elapsed time and approximate ETA", () => {
+  let now = 0;
+  const progress = new MediaProgress({
+    output: () => undefined,
+    isTTY: true,
+    animate: false,
+    now: () => now,
+  });
+  progress.start("Converting videos", 4);
+  now = 10_000;
+  progress.update({
+    current: "episode-01.webm",
+    completed: 1,
+    detail: "transcoding",
+    filePercent: 0,
+  });
+  expect(progress.render()).toContain("Elapsed 10s");
+  expect(progress.render()).toContain("ETA ~30s");
+  expect(formatDuration(3_725_000)).toBe("1h 2m");
+});
+
+test("renders measured processing speed and an ASCII fallback", () => {
+  let now = 0;
+  const progress = new MediaProgress({
+    output: () => undefined,
+    isTTY: true,
+    animate: false,
+    unicode: false,
+    now: () => now,
+  });
+  progress.start("Converting videos", 2);
+  progress.update({ current: "episode.webm", completed: 0, filePercent: 0 });
+  now = 10_000;
+  progress.update({
+    current: "episode.webm",
+    completed: 0,
+    filePercent: 50,
+    processedSeconds: 5,
+  });
+  expect(progress.render()).toMatch(/^[-\\|/] /);
+  expect(progress.render()).toContain("[#");
+  expect(progress.render()).toContain("Speed 0.50×");
+});
+
+test("uses an orbit spinner and restores the cursor after interactive progress", () => {
+  let now = 0;
+  const writes: string[] = [];
+  const progress = new MediaProgress({
+    output: (text) => writes.push(text),
+    isTTY: true,
+    animate: false,
+    now: () => now,
+  });
+  progress.start("Inspecting sources", 1);
+  now = 160;
+  expect(progress.render()).toMatch(/^[⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏] /);
+  progress.finish();
+  expect(writes.join("")).toContain("\u001b[?25l");
+  expect(writes.join("")).toContain("\u001b[?25h");
+});
+
+test("plain progress is stable and global plain flags are removed before parsing", () => {
+  const writes: string[] = [];
+  const progress = new MediaProgress({
+    output: (text) => writes.push(text),
+    isTTY: false,
+    animate: false,
+  });
+  progress.start("Converting videos", 2);
+  progress.update({ current: "episode-01.webm", completed: 1, detail: "verified" });
+  progress.finish();
+  expect(writes.join("")).not.toContain("\u001b[");
+  expect(writes.join("")).toContain("Converting videos: 1/2");
+  expect(extractTerminalOptions(["optimize", "video", "/source", "--plain", "--resume"]))
+    .toEqual({ args: ["optimize", "video", "/source", "--resume"], plain: true });
+});
+
+test("terminal sessions give commands a shared named lifecycle", () => {
+  let now = 0;
+  const writes: string[] = [];
+  const session = new TerminalSession({
+    scope: "media",
+    command: "validate",
+    plain: true,
+    output: (text) => writes.push(text),
+    now: () => now,
+  });
+  session.start({ title: "AstroSphere media library" });
+  session.phase("Inspecting references");
+  now = 2_500;
+  session.phaseDone("38 references");
+  session.complete("Media validation passed", [["Errors", 0]]);
+  const output = writes.join("");
+  expect(output).toContain("◆ media validate");
+  expect(output).toContain("AstroSphere media library");
+  expect(output).toContain("Inspecting references");
+  expect(output).toContain("38 references");
+  expect(output).toContain("Elapsed 3s");
+});
+
+test("terminal sessions send failures to the error stream", () => {
+  const output: string[] = [];
+  const errors: string[] = [];
+  const session = new TerminalSession({
+    scope: "media",
+    command: "sync",
+    plain: false,
+    isTTY: true,
+    output: (text) => output.push(text),
+    errorOutput: (text) => errors.push(text),
+  });
+  session.start();
+  session.progress().start("Synchronizing", 2);
+  session.fail("Connection failed");
+  expect(output.join("")).toContain("media");
+  expect(output.join("")).toContain("\u001b[?25h");
+  expect(errors.join("")).toContain("Connection failed");
+  expect(errors.join("")).toContain("\u001b[31m");
+});
 
 const runMedia = async (
   args: string[],
@@ -88,12 +263,32 @@ test("parses the shared command vocabulary", () => {
   expect(optimizeHelp).toContain(
     "media:optimize <source> (--output <destination> | --in-place) --profile <reader|gallery>",
   );
+  expect(optimizeHelp).toContain("--resume");
   expect(thumbnailHelp).toContain(
     "media:thumbnails [--series <slug>] [--dry-run] [--force]",
   );
   expect(thumbnailHelp).toContain("all managed preview thumbnails");
   expect(mediaHelp).not.toContain("media:maintain");
   expect(maintenanceHelp).toContain("media:maintain plan");
+});
+
+test("parses explicit video resume without weakening the default", () => {
+  const resumed = parseOptimizeArgs([
+    "video",
+    "/sources/show",
+    "--manifest",
+    "manifest.yaml",
+    "--resume",
+    "--dry-run",
+  ]);
+  expect(resumed).toMatchObject({ kind: "video", resume: true, dryRun: true });
+  const fresh = parseOptimizeArgs([
+    "video",
+    "/sources/show",
+    "--manifest",
+    "manifest.yaml",
+  ]);
+  expect(fresh).toMatchObject({ kind: "video", resume: false });
 });
 
 test("parses safe thumbnail backfill options and rejects ambiguous input", () => {
@@ -413,6 +608,7 @@ test("parses a manifest-driven video optimization", () => {
     sourceRoot: "/sources/luluco",
     manifest: resolve("manifest.yaml"),
     dryRun: true,
+    resume: false,
   });
 });
 
@@ -611,13 +807,15 @@ test("exposes and dispatches the standalone thumbnail alias", async () => {
   try {
     await mkdir(join(root, "src/content/manga"), { recursive: true });
     await mkdir(mediaRoot);
-    const result = await runMedia(["thumbnails", "--dry-run"], {
+    const result = await runMedia(["thumbnails", "--plain", "--dry-run"], {
       cwd: root,
       env: { MEDIA_ROOT: mediaRoot },
     });
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
-    expect(result.stdout).toContain("Selected thumbnails: 0");
+    expect(result.stdout).toContain("◆ media thumbnails");
+    expect(result.stdout).not.toContain("\u001b[");
+    expect(result.stdout).toContain("Selected thumbnails  0");
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -732,7 +930,8 @@ test("dispatches media optimization dry runs without creating an output director
 
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
-    expect(result.stdout.startsWith("Media optimization dry run:\n")).toBe(
+    expect(result.stdout).toContain("Media optimization dry run");
+    expect(result.stdout.startsWith("◆ media optimize\n")).toBe(
       true,
     );
     expect(result.stdout).toContain("001.png -> 001.webp");

@@ -161,6 +161,15 @@ bun run media:optimize video <source-root> --manifest <manifest.yaml> --dry-run
 bun run media:optimize video <source-root> --manifest <manifest.yaml>
 ```
 
+For an interrupted title with a partial managed `videos` tree, use explicit resume for both preview and apply:
+
+```sh
+bun run media:optimize video <source-root> --manifest <manifest.yaml> --resume --dry-run
+bun run media:optimize video <source-root> --manifest <manifest.yaml> --resume
+```
+
+Resume verifies and reuses valid declared outputs, creates missing outputs, and refuses invalid or undeclared existing files without overwriting them.
+
 Keep videos and artwork beneath `MEDIA_ROOT/anime/<title>/`, use `/media/anime/...` in content, and preserve the work’s real release format. This workflow does not include synchronization, deployment, replacement, pruning, source deletion, or Git operations.
 
 ### Generate managed preview thumbnails

@@ -1,0 +1,103 @@
+version: 1
+title: lucky-star
+variants:
+  - label: Episode 1 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (1).mkv"
+    output: /media/anime/lucky-star/videos/01/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 2 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (2).mkv"
+    output: /media/anime/lucky-star/videos/02/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 3 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (3).mkv"
+    output: /media/anime/lucky-star/videos/03/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 4 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (4).mkv"
+    output: /media/anime/lucky-star/videos/04/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 5 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (5).mkv"
+    output: /media/anime/lucky-star/videos/05/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 6 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (6).mkv"
+    output: /media/anime/lucky-star/videos/06/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 7 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (7).mkv"
+    output: /media/anime/lucky-star/videos/07/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 8 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (8).mkv"
+    output: /media/anime/lucky-star/videos/08/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 9 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (9).mkv"
+    output: /media/anime/lucky-star/videos/09/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 10 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (10).mkv"
+    output: /media/anime/lucky-star/videos/10/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 11 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (11).mkv"
+    output: /media/anime/lucky-star/videos/11/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 12 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (12).mkv"
+    output: /media/anime/lucky-star/videos/12/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 13 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (13).mkv"
+    output: /media/anime/lucky-star/videos/13/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 14 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (14).mkv"
+    output: /media/anime/lucky-star/videos/14/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 15 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (15).mkv"
+    output: /media/anime/lucky-star/videos/15/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 16 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (16).mkv"
+    output: /media/anime/lucky-star/videos/16/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 17 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (17).mkv"
+    output: /media/anime/lucky-star/videos/17/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 18 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (18).mkv"
+    output: /media/anime/lucky-star/videos/18/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 19 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (19).mkv"
+    output: /media/anime/lucky-star/videos/19/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 20 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (20).mkv"
+    output: /media/anime/lucky-star/videos/20/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 21 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (21).mkv"
+    output: /media/anime/lucky-star/videos/21/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 22 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (22).mkv"
+    output: /media/anime/lucky-star/videos/22/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 23 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (23).mkv"
+    output: /media/anime/lucky-star/videos/23/japanese.webm
+    audio: { index: 1 }
+  - label: Episode 24 — Japanese audio · Clean picture
+    source: "Lucky☆Star  - (24).mkv"
+    output: /media/anime/lucky-star/videos/24/japanese.webm
+    audio: { index: 1 }
+  - label: OVA — Japanese audio · Clean picture
+    source: "Lucky☆Star OVA  - (1).mkv"
+    output: /media/anime/lucky-star/videos/ova/japanese.webm
+    audio: { index: 1 }

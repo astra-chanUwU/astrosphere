@@ -26,7 +26,7 @@ export const primaryNavigation: NavItem[] = [
   { href: "/doujinshi", label: "Doujinshi" },
   { href: "/image-sets", label: "Image-set" },
   { href: "/articles", label: "Articles" },
-  { href: "/guides", label: "Guides" },
+  { href: "/paths", label: "Paths" },
   { href: "/topics", label: "Topics" },
   { href: "/links", label: "Links" },
 ];
@@ -51,7 +51,7 @@ const withCurrent = (items: NavItem[], pathname: string) =>
 const archiveItems: NavItem[] = [
   { href: "/topics", label: "Topics" },
   { href: "/articles", label: "Articles" },
-  { href: "/guides", label: "Guides" },
+  { href: "/paths", label: "Paths" },
   { href: "/links", label: "Links" },
 ];
 
@@ -75,7 +75,7 @@ const studioSidebar: SidebarModel = {
 
 const aboutSidebar: SidebarModel = {
   heading: "About AstroSphere",
-  groups: [{ items: [{ href: "/about", label: "About" }, { href: "/now", label: "Now" }, { href: "/colophon", label: "Colophon" }, { href: "/rss.xml", label: "RSS" }] }],
+  groups: [{ items: [{ href: "/about", label: "About" }, { href: "/rss.xml", label: "RSS" }] }],
 };
 
 const librarySidebar = (pathname: string): SidebarModel => ({
@@ -90,10 +90,10 @@ const recoverySidebar: SidebarModel = {
 
 export const resolveSidebar = (pathname: string): SidebarModel => {
   if (pathname === "/") return homeSidebar;
-  if (["/explore", "/topics", "/articles", "/guides", "/links"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
+  if (["/explore", "/topics", "/articles", "/paths", "/links"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`))) return archiveSidebar(pathname);
   if (["/anime", "/manga", "/doujinshi", "/image-sets", "/shelf"].some((path) => pathname === path || pathname.startsWith(`${path}/page/`) || pathname.startsWith(`${path}/`))) return librarySidebar(pathname);
   if (["/work", "/contact", "/support"].includes(pathname)) return withCurrentGroups(studioSidebar, pathname);
-  if (["/about", "/now", "/colophon"].includes(pathname)) return withCurrentGroups(aboutSidebar, pathname);
+  if (pathname === "/about") return withCurrentGroups(aboutSidebar, pathname);
   return recoverySidebar;
 };
 

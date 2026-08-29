@@ -24,7 +24,7 @@ const featuredTrails = trails.filter((trail) => trail.data.featured).slice(0, 3)
 const featuredSignals = signals.slice(0, 3);
 ---
 
-<BaseLayout title="Explore" description="Enter AstroSphere through topics, articles, guides, and links.">
+<BaseLayout title="Explore" description="Enter AstroSphere through topics, articles, paths, and links.">
   <div class="page-shell explore-page">
     <ArchivePageHeader eyebrow="Archive index" title="Explore" variant="explore" summary="Find a way in through territories, objects, and routes." />
 
@@ -43,7 +43,7 @@ const featuredSignals = signals.slice(0, 3);
           <p id="explore-links-title" class="eyebrow">Explore by kind</p>
           <a href="/topics">Topics <span>{spheres.length}</span></a>
           <a href="/articles">Articles <span>{artifacts.length}</span></a>
-          <a href="/guides">Guides <span>{trails.length}</span></a>
+          <a href="/paths">Paths <span>{trails.length}</span></a>
           <a class="anime-link" href="/anime">Anime <span>{anime.length} titles →</span></a>
           <a href="/links">Links <span>→</span></a>
         </nav>
@@ -53,7 +53,7 @@ const featuredSignals = signals.slice(0, 3);
           <div class="artifact-list">{recentArtifacts.map((artifact) => <ArtifactCard {artifact} />)}</div>
         </section>
 
-        {featuredTrails.length > 0 && <section aria-labelledby="featured-trails-title"><div class="rail-heading"><h2 id="featured-trails-title">Featured guides</h2><a href="/guides">All →</a></div><ul class="trail-list">{featuredTrails.map((trail) => <li><a href={`/guides/${trail.data.slug}`}>{trail.data.title}</a><span>{trail.data.items.length} stops</span></li>)}</ul></section>}
+        {featuredTrails.length > 0 && <section aria-labelledby="featured-trails-title"><div class="rail-heading"><h2 id="featured-trails-title">Featured paths</h2><a href="/paths">All →</a></div><ul class="trail-list">{featuredTrails.map((trail) => <li><a href={`/paths/${trail.data.slug}`}>{trail.data.title}</a><span>{trail.data.items.length} stops</span></li>)}</ul></section>}
       </aside>
     </div>
   </div>

@@ -1,0 +1,13 @@
+version: 1
+title: valkyrie-choukyou-semen-tank-no-ikusa-otome-10-nin-shimai
+variants:
+  - label: Episode 1 — Japanese audio with English subtitles
+    source: "[SubDesu-H]_Valkyrie_Choukyou_Semen_Tank_no_Ikusa_Otome_10-nin_Shimai_-_1_[5FB5D02F].mkv"
+    output: /media/anime/valkyrie-choukyou-semen-tank-no-ikusa-otome-10-nin-shimai/videos/01/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
+  - label: Episode 2 — Japanese audio with English subtitles
+    source: "[SubDesu-H]_Valkyrie_Choukyou_Semen_Tank_no_Ikusa_Otome_10-nin_Shimai_-_2_[A7A26307].mkv"
+    output: /media/anime/valkyrie-choukyou-semen-tank-no-ikusa-otome-10-nin-shimai/videos/02/japanese-subbed.webm
+    audio: { index: 1 }
+    subtitle: { index: 2, mode: burn }
