@@ -36,4 +36,4 @@ sources:
     credit: English titles and romanizations cross-checked against official Japanese story pages
 ---
 
-The first four chapters of Luluco's first love, space crime, and maximalist adventure are currently available here. The remaining episode records are retained as drafts for later WebM conversion.
+All thirteen episodes of Luluco's first love, space crime, and maximalist adventure are available here, along with the clean ending sequence.

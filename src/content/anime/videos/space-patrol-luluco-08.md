@@ -7,7 +7,7 @@ title: The Trap of the Mystical Power
 originalTitle: Fushigi na Chikara no Wana
 releasedAt: 2016-05-20
 durationSeconds: 471.972
-status: draft
+status: published
 defaultVariant: japanese-subbed
 variants:
   - { slug: japanese-subbed, label: Japanese audio · English subtitles, language: Japanese, subtitles: English, src: /media/anime/space-patrol-luluco/videos/08/japanese-subbed.webm, width: 1920, height: 1080 }
