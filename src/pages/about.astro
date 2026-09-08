@@ -33,9 +33,9 @@ const { Content } = await render(about);
 
 <style>
   .about-page { max-width: 96rem; padding-bottom: var(--section-space); }
-  .about-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .about-grid { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
   .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
-  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3cqi, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
   .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-1); text-transform: uppercase; }
   .about-copy { border-top: 1px solid var(--color-border); max-width: var(--reading-width); padding-top: var(--space-3); }
   .about-copy :global(h2) { border-top: 2px solid var(--color-accent); font-size: var(--text-xl); font-weight: 500; margin: var(--space-5) 0 var(--space-2); padding-top: var(--space-2); scroll-margin-top: var(--space-3); }
@@ -46,5 +46,5 @@ const { Content } = await render(about);
   .about-links a { align-items: baseline; border-bottom: 1px solid var(--color-border); color: var(--color-text); display: flex; font-family: var(--font-serif); font-size: var(--text-xl); justify-content: space-between; padding: var(--space-1) 0; text-decoration: none; }
   .about-links a span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); }
   .about-links a:hover { color: var(--color-accent); }
-  @media (max-width: 52rem) { .about-grid { grid-template-columns: minmax(0, 1fr); } .about-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
+  @container content (max-width: 52rem) { .about-grid { grid-template-columns: minmax(0, 1fr); } .about-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
 </style>

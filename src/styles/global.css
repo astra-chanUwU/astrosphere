@@ -4,7 +4,7 @@
 @font-face { font-display: swap; font-family: "Consola Mono"; font-style: normal; font-weight: 400; src: url("/fonts/consola-mono.woff2") format("woff2"); }
 * { box-sizing: border-box; }
 html { background: var(--color-bg); color: var(--color-text); font-family: var(--font-sans); }
-body { margin: 0; min-width: 20rem; overflow-x: clip; }
+body { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 #crt-shader { height: 100vh; inset: 0; opacity: 0; pointer-events: none; position: fixed; transition: opacity .12s linear; width: 100vw; z-index: 20; }
 html[data-crt="on"] #crt-shader { opacity: 1; }
 a { color: var(--color-astral-blue); text-decoration-thickness: 1px; text-underline-offset: .14em; }
@@ -13,15 +13,18 @@ a:hover { color: var(--color-nebula-purple); }
 img, video { display: block; max-width: 100%; }
 .skip-link { background: var(--color-text); color: var(--color-bg); left: var(--gutter); padding: var(--space-1) var(--space-2); position: fixed; top: -4rem; z-index: 10; }
 .skip-link:focus { top: var(--space-1); }
-.site-layout { display:grid; grid-template-columns:12.5rem minmax(0, 1fr); min-height:calc(100vh - 5rem); }
-.site-content { min-width:0; }
-.page-shell { margin-inline:0; max-width:var(--content-width); padding-inline:var(--space-3); }
+.site-layout { margin-inline:auto; max-width:112rem; display:grid; grid-template-columns:12.5rem minmax(0, 1fr); min-height:calc(100vh - 5rem); }
+.site-content { container: content / inline-size; min-width:0; }
+.page-shell { margin-inline:auto; max-width:var(--content-width); padding-inline:var(--space-3); }
 .prose { font-family: var(--font-sans); font-size: var(--text-lg); line-height: var(--leading-reading); max-width: var(--reading-width); }
 .prose :is(h2,h3) { font-family: var(--font-sans); line-height: var(--leading-tight); margin: var(--space-4) 0 var(--space-2); }
 .prose h2 { font-size: var(--text-xl); }
 .prose h3 { font-size: var(--text-lg); }
 .prose :is(p,ul,ol) { margin-block: 0 var(--space-2); }
 .prose img { margin-inline: auto; max-inline-size: min(100%, 42rem); }
+.prose pre { max-width: 100%; overflow-x: auto; overflow-wrap: normal; }
+.prose table { display: block; max-width: 100%; overflow-x: auto; }
+.prose iframe { max-width: 100%; }
 code, kbd, pre, samp { font-family: var(--font-mono); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; } }
 @media (max-width:48rem) { :root { --gutter: var(--space-2); } .site-layout { display:block; } }

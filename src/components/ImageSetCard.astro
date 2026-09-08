@@ -2,21 +2,25 @@
 import type { ImageSetEntry } from "../lib/content";
 import { createImageSetThumbnailSrc } from "../lib/image-set-gallery";
 
-interface Props { imageSet: ImageSetEntry; }
-const { imageSet } = Astro.props;
+interface Props { imageSet: ImageSetEntry; compact?: boolean; }
+const { imageSet, compact = false } = Astro.props;
 const hero = imageSet.data.hero;
 ---
 
-<article data-image-set-rating={imageSet.data.rating}>
+<article class:list={{ compact }} data-image-set-rating={imageSet.data.rating}>
   <a class="cover" href={`/image-sets/${imageSet.data.slug}`}>
     {hero?.kind === "image" && <img src={createImageSetThumbnailSrc(imageSet.data.slug, hero.src)} alt={hero.alt ?? `${imageSet.data.title} cover`} loading="lazy" decoding="async" />}
   </a>
-  <div class="details"><p class="type">Image set</p><h3><a href={`/image-sets/${imageSet.data.slug}`}>{imageSet.data.title}</a></h3><p class="summary">{imageSet.data.summary}</p>{imageSet.data.author && <p class="meta">By <a href={`/tags/${imageSet.data.author.toLowerCase()}`}>{imageSet.data.author}</a></p>}<p class="meta">{imageSet.data.media.length + (hero ? 1 : 0)} images</p></div>
+  <div class="details">{!compact && <p class="type">Image set</p>}<h3><a href={`/image-sets/${imageSet.data.slug}`}>{imageSet.data.title}</a></h3>{!compact && <p class="summary">{imageSet.data.summary}</p>}{imageSet.data.author && <p class="meta">By <a href={`/tags/${imageSet.data.author.toLowerCase()}`}>{imageSet.data.author}</a></p>}<p class="meta">{imageSet.data.media.length + (hero ? 1 : 0)} images</p></div>
 </article>
 
 <style>
   article { border-top: 1px solid var(--color-border); display: grid; gap: var(--space-3); grid-template-columns: 7rem minmax(0, 1fr); padding: var(--space-3) 0; }
-  .cover { align-self: start; background: var(--color-surface); display: block; min-height: 5rem; }
+  article.compact { display: flex; flex-direction: column; gap: var(--space-2); border-top: 0; padding: 0; min-width: 0; }
+  .compact .cover { width: 100%; }
+  .compact img { aspect-ratio: 3 / 2; }
+  .compact h3 { font-size: 1rem; line-height: var(--leading-tight); }
+  .cover { align-self: start; background: var(--color-surface); display: block; }
   img { aspect-ratio: 4 / 3; display: block; height: auto; object-fit: cover; width: 100%; }
   .type, .meta { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
   h3 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: var(--space-1) 0; }
@@ -24,5 +28,5 @@ const hero = imageSet.data.hero;
   .summary { line-height: var(--leading-normal); margin: 0 0 var(--space-1); max-width: 40rem; }
   .meta + .meta { margin-top: .25rem; }
   :global(html[data-sfw="on"]) article[data-image-set-rating="explicit"] { display: none; }
-  @media (max-width: 34rem) { article { grid-template-columns: 5rem minmax(0, 1fr); } }
+  @container content (max-width: 34rem) { article { grid-template-columns: 5rem minmax(0, 1fr); } }
 </style>

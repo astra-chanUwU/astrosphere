@@ -28,9 +28,9 @@ const sections = [
 
 <style>
   .signals-page { max-width: 96rem; }
-  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
   .signal-section { margin: 0 0 var(--space-5); }
   .signal-section h2 { align-items: baseline; border-bottom: 1px solid var(--color-border); display: flex; font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; justify-content: space-between; line-height: var(--leading-tight); margin: 0; padding-bottom: var(--space-1); }
   .signal-section h2 span { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 400; letter-spacing: var(--label-tracking); }
-  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
+  @container content (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

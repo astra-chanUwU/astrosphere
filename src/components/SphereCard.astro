@@ -36,5 +36,5 @@ const coverPreview = sphere.data.cover?.kind === "image"
   footer { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
   .cover { align-self: start; background: var(--color-surface); display: block; }
   .cover img { aspect-ratio: 1 / 1; display: block; height: auto; object-fit: cover; width: 100%; }
-  @media (max-width: 32rem) { .sphere-row--has-cover { grid-template-columns: 5rem minmax(0, 1fr); } }
+  @container content (max-width: 32rem) { .sphere-row--has-cover { grid-template-columns: 5rem minmax(0, 1fr); } }
 </style>

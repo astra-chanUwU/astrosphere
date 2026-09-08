@@ -22,12 +22,12 @@ const { Content } = await render(contact);
 </BaseLayout>
 <style>
   .contact-page { max-width: 96rem; padding-bottom: var(--section-space); }
-  .contact-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .contact-grid { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
   .section-heading { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
-  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
+  .section-heading h2 { font-family: var(--font-serif); font-size: clamp(1.6rem, 3cqi, 2.5rem); font-weight: 500; line-height: var(--leading-tight); margin: 0; }
   .eyebrow { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-1); text-transform: uppercase; }
   .contact-copy { border-top: 1px solid var(--color-border); max-width: var(--reading-width); padding-top: var(--space-3); }
   .contact-rail { border-left: 1px solid var(--color-border); padding-left: var(--space-3); }
   .contact-rail :global(.cta) { margin-top: 0; }
-  @media (max-width: 52rem) { .contact-grid { grid-template-columns: minmax(0, 1fr); } .contact-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
+  @container content (max-width: 52rem) { .contact-grid { grid-template-columns: minmax(0, 1fr); } .contact-rail { border-left: 0; border-top: 1px solid var(--color-border); padding: var(--space-3) 0 0; } }
 </style>

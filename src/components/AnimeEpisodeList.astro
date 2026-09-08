@@ -29,7 +29,7 @@ const formatDuration = (seconds: number) => {
   .episode-list { margin-top: var(--section-space); }
   header { border-bottom: 2px solid var(--color-text); padding-bottom: var(--space-2); }
   header p { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
-  h2 { font-family: var(--font-serif); font-size: clamp(1.65rem, 3vw, 2.5rem); font-weight: 500; margin: var(--space-1) 0 0; }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.65rem, 3cqi, 2.5rem); font-weight: 500; margin: var(--space-1) 0 0; }
   ol { display: grid; gap: var(--space-1); list-style: none; margin: var(--space-2) 0 0; padding: 0; }
   li { background: var(--color-surface); border: 1px solid transparent; }
   li:hover { border-color: var(--color-accent); }
@@ -40,5 +40,5 @@ const formatDuration = (seconds: number) => {
   .media { text-align: right; }
   .duration { font-family: var(--font-mono); font-size: var(--text-xs); }
   .play { color: var(--color-accent); font-size: var(--text-xs); text-align: right; }
-  @media (max-width: 34rem) { li a { grid-template-columns: 2.5rem minmax(0, 1fr) 1rem; } .media { grid-column: 2; grid-row: 2; text-align: left; } .play { grid-column: 3; grid-row: 1 / span 2; } }
+  @container content (max-width: 34rem) { li a { grid-template-columns: 2.5rem minmax(0, 1fr) 1rem; } .media { grid-column: 2; grid-row: 2; text-align: left; } .play { grid-column: 3; grid-row: 1 / span 2; } }
 </style>

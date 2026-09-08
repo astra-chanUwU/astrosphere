@@ -22,12 +22,14 @@ const { model } = Astro.props;
 </aside>
 
 <script>
+  const compactSidebar = window.matchMedia("(max-width: 48rem)");
   const syncSidebarDisclosure = () => {
     const disclosure = document.querySelector<HTMLDetailsElement>(".sidebar details");
     if (!disclosure) return;
-    disclosure.open = !window.matchMedia("(max-width: 48rem)").matches;
+    disclosure.open = !compactSidebar.matches;
   };
   document.addEventListener("astro:page-load", syncSidebarDisclosure);
+  compactSidebar.addEventListener("change", syncSidebarDisclosure);
 </script>
 
 <style>

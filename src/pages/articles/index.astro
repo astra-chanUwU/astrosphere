@@ -19,10 +19,10 @@ const lastPage = Math.ceil(artifacts.length / ARCHIVE_PAGE_SIZE);
 </BaseLayout>
 <style>
   .artifact-archive { max-width: 96rem; padding-bottom: var(--section-space); }
-  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
+  .field-guide-grid { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(16rem, .75fr); }
   .section-heading { align-items: end; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; padding-bottom: var(--space-2); }
   .section-heading h2 { font-size: var(--text-xl); margin: 0; }
   .section-heading a { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
   section { border-top: 1px solid var(--color-border); }
-  @media (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
+  @container content (max-width: 52rem) { .field-guide-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

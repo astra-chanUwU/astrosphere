@@ -33,12 +33,12 @@ const variantHref = (slug: string) => embeddedMovie
 </section>
 
 <style>
-  .anime-player { max-width: 70rem; }
+  .anime-player { margin-inline: auto; max-width: 90rem; }
   header p { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
-  h2 { font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 3.25rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.8rem, 4cqi, 3.25rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
   header > span { color: var(--color-muted); display: block; margin-bottom: var(--space-2); }
-  .screen { background: #000; border: 1px solid color-mix(in srgb, var(--color-border) 70%, #000); box-shadow: 0 1.2rem 3rem rgba(0,0,0,.2); padding: clamp(.2rem, .7vw, .5rem); }
-  video { aspect-ratio: 16 / 9; background: #000; height: auto; max-height: min(75vh, 1080px); object-fit: contain; width: 100%; }
+  .screen { background: #000; border: 1px solid color-mix(in srgb, var(--color-border) 70%, #000); box-shadow: 0 1.2rem 3rem rgba(0,0,0,.2); padding: clamp(.2rem, .7cqi, .5rem); }
+  video { aspect-ratio: 16 / 9; background: #000; height: auto; max-height: 80svh; object-fit: contain; width: 100%; }
   .player-controls { align-items: center; background: var(--color-surface); border: 1px solid var(--color-border); border-top: 0; display: flex; gap: var(--space-3); justify-content: space-between; padding: var(--space-2); }
   .player-controls p { margin: 0; }
   .current-version { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); text-transform: uppercase; }
@@ -50,5 +50,5 @@ const variantHref = (slug: string) => embeddedMovie
   nav a small { color: var(--color-muted); margin-top: .2rem; }
   nav a[aria-current="page"] { background: var(--color-astral-blue); border-color: var(--color-astral-blue); color: #fff; }
   nav a[aria-current="page"] small { color: rgba(255,255,255,.78); }
-  @media (max-width: 32rem) { .player-controls { align-items: start; flex-direction: column; } nav { grid-template-columns: minmax(0, 1fr); } }
+  @container content (max-width: 32rem) { .player-controls { align-items: start; flex-direction: column; } nav { grid-template-columns: minmax(0, 1fr); } }
 </style>

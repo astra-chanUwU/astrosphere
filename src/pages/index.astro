@@ -67,12 +67,10 @@ const truncateDispatchTitle = (title: string): string => {
     : title;
 };
 
-const newestImageSets = imageSets.slice(0, 5);
-const recommendedManga = shelf.manga.slice(0, 5);
-const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
-const currentManga = recommendedManga[0];
-const currentImageSet = newestImageSets[0];
-const currentDoujinshi = recommendedDoujinshi[0];
+const newestImageSets = imageSets.slice(0, 2);
+const recommendedManga = shelf.manga.slice(1, 3);
+const recommendedDoujinshi = shelf.doujinshi.slice(0, 2);
+const currentManga = shelf.manga[0];
 const currentAnime = shelf.anime[0];
 ---
 
@@ -80,11 +78,15 @@ const currentAnime = shelf.anime[0];
   <div class="page-shell home">
     <div class="archive-columns">
       <aside class="recommendations">
-        <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Now</h2><a href="/about">About →</a></div>{currentManga && <article class="current-feature" data-manga-rating={currentManga.data.rating}><a class="current-feature-cover" href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.cover && <img src={createMangaCoverPreviewSrc(currentManga.data.format, currentManga.data.slug, currentManga.data.cover.src)} alt={currentManga.data.cover.alt ?? `${currentManga.data.title} cover`} loading="eager" decoding="async" />}</a><div><p class="current-label">Read next</p><h3><a href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.title}</a></h3><p class="current-meta">{currentManga.data.originalTitle}</p></div></article>}{(currentImageSet || currentDoujinshi) && <ul class="current-secondary">{currentImageSet && <li><span>Recent set</span><a href={`/image-sets/${currentImageSet.data.slug}`}>{currentImageSet.data.title}</a></li>}{currentDoujinshi && <li data-manga-rating={currentDoujinshi.data.rating}><span>Adult shelf</span><a href={getMangaPublicPath(currentDoujinshi.data.format, currentDoujinshi.data.slug)}>{currentDoujinshi.data.title}</a></li>}</ul>}</section>
+        <div class="recommendation-column">
+        <section class="current-attention" aria-labelledby="current-attention-title"><div class="feed-heading"><h2 id="current-attention-title">Now</h2><a href="/about">About →</a></div>{currentManga && <article class="current-feature" data-manga-rating={currentManga.data.rating}><a class="current-feature-cover" href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.cover && <img src={createMangaCoverPreviewSrc(currentManga.data.format, currentManga.data.slug, currentManga.data.cover.src)} alt={currentManga.data.cover.alt ?? `${currentManga.data.title} cover`} loading="eager" decoding="async" />}</a><div><p class="current-label">Read next</p><h3><a href={getMangaPublicPath(currentManga.data.format, currentManga.data.slug)}>{currentManga.data.title}</a></h3><p class="current-meta">{currentManga.data.originalTitle}</p></div></article>}</section>
+        <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Read next</h2><a href="/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard compact {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
+        <section aria-labelledby="doujinshi-recommendations-title"><div class="feed-heading"><h2 id="doujinshi-recommendations-title">Doujinshi</h2><a href="/doujinshi">All →</a></div><div class="recommendation-list">{recommendedDoujinshi.map((series) => <MangaSeriesCard compact {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
+        </div>
+        <div class="recommendation-column">
         {currentAnime && <section class="anime-home" aria-labelledby="anime-home-title"><div class="feed-heading"><div><p class="current-label">Native WebM cinema</p><h2 id="anime-home-title">Watch anime</h2></div><a href="/anime">All →</a></div><div class="anime-home-grid"><AnimeCard title={currentAnime} videos={animeVideosByTitle.get(currentAnime.data.slug) ?? []} /></div></section>}
-        <section aria-labelledby="manga-recommendations-title"><div class="feed-heading"><h2 id="manga-recommendations-title">Read next</h2><a href="/manga">All →</a></div><div class="recommendation-list">{recommendedManga.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
-        <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Recent sets</h2><a href="/image-sets">All →</a></div><div class="recommendation-list">{newestImageSets.map((imageSet) => <ImageSetCard {imageSet} />)}</div></section>
-        <section aria-labelledby="doujinshi-recommendations-title"><div class="feed-heading"><h2 id="doujinshi-recommendations-title">Doujinshi</h2><a href="/doujinshi">All →</a></div><div class="recommendation-list">{recommendedDoujinshi.map((series) => <MangaSeriesCard {series} chapterCount={chapterCountBySeriesSlug.get(series.data.slug) ?? 0} />)}</div></section>
+        <section aria-labelledby="image-set-recommendations-title"><div class="feed-heading"><h2 id="image-set-recommendations-title">Recent sets</h2><a href="/image-sets">All →</a></div><div class="recommendation-list image-set-tiles">{newestImageSets.map((imageSet) => <ImageSetCard compact {imageSet} />)}</div></section>
+        </div>
       </aside>
 
       <main class="dispatches" aria-labelledby="dispatches-title">
@@ -108,10 +110,13 @@ const currentAnime = shelf.anime[0];
 
 <style>
   .home { max-width: 96rem; padding-bottom: var(--section-space); }
-  .archive-columns { align-items: start; display: grid; gap: clamp(3rem, 7vw, 8rem); grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.5fr); padding-top: var(--space-3); }
-  .recommendations > section { margin-top: var(--section-space); }
-  .recommendations > .current-attention { border-top: 2px solid var(--color-accent); margin-top: 0; padding-top: var(--space-2); }
-  .recommendations > .anime-home { border-top: 2px solid var(--color-accent-warm); padding-top: var(--space-2); }
+  .archive-columns { align-items: start; display: grid; gap: clamp(1.5rem, 3cqi, 3rem); grid-template-columns: minmax(18rem, .9fr) minmax(0, 1.5fr); padding-top: var(--space-3); }
+  .recommendations, .recommendation-column { display: grid; align-content: start; gap: var(--space-4); min-width: 0; }
+  .recommendation-column > section { min-width: 0; }
+  .recommendation-list { container: cards / inline-size; }
+  .image-set-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); padding-top: var(--space-3); }
+  .recommendation-column > .current-attention { border-top: 2px solid var(--color-accent); margin-top: 0; padding-top: var(--space-2); }
+  .recommendation-column > .anime-home { border-top: 2px solid var(--color-accent-warm); padding-top: var(--space-2); }
   .anime-home .feed-heading { align-items: end; }
   .anime-home .feed-heading h2 { margin-top: .2rem; }
   .anime-home-grid { display: grid; gap: var(--space-3); padding-top: var(--space-2); }
@@ -119,7 +124,7 @@ const currentAnime = shelf.anime[0];
   .current-feature-cover { align-self: start; background: var(--color-background); display: block; }
   .current-feature-cover img { display: block; height: auto; width: 100%; }
   .current-label, .current-secondary span { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
-  .current-feature h3 { font-family: var(--font-serif); font-size: clamp(1.35rem, 2.5vw, 2rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
+  .current-feature h3 { font-family: var(--font-serif); font-size: clamp(1.35rem, 2.5cqi, 2rem); font-weight: 500; line-height: var(--leading-tight); margin: var(--space-1) 0; }
   .current-feature h3 a, .current-secondary a { text-decoration: none; }
   .current-meta { color: var(--color-muted); font-size: var(--text-sm); line-height: var(--leading-normal); margin: 0; }
   .current-secondary { border-top: 1px solid var(--color-border); list-style: none; margin: var(--space-2) 0 0; padding: 0; }
@@ -133,7 +138,7 @@ const currentAnime = shelf.anime[0];
   .recommendation-list :global(article:first-child) { border-top: 0; }
   .dispatch-header { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-3); }
   .eyebrow, .dispatch-type { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0; text-transform: uppercase; }
-  .dispatch-header h2 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; letter-spacing: -.05em; line-height: var(--leading-tight); margin: var(--space-1) 0 0; }
+  .dispatch-header h2 { font-family: var(--font-serif); font-size: clamp(2.5rem, 5cqi, 5rem); font-weight: 400; letter-spacing: -.05em; line-height: var(--leading-tight); margin: var(--space-1) 0 0; }
   .dispatch-group + .dispatch-group { border-top: 1px solid var(--color-border); }
   .dispatch-date { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 400; letter-spacing: var(--label-tracking); margin: 0; padding: var(--space-3) 0 var(--space-1); text-transform: uppercase; }
   .dispatch-item { border-bottom: 1px solid var(--color-border); padding: var(--space-2) 0 var(--space-3); }
@@ -149,6 +154,7 @@ const currentAnime = shelf.anime[0];
   .dispatch-notes h2 { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; margin: 0 0 var(--space-1); }
   .dispatch-notes p { line-height: var(--leading-reading); margin: var(--space-1) 0 0; max-width: 44rem; }
   :global(html[data-sfw="on"]) .recommendation-list [data-manga-rating="explicit"], :global(html[data-sfw="on"]) .recommendation-list [data-image-set-rating="explicit"] { display: none; }
-  @media (max-width: 52rem) { .archive-columns { grid-template-columns: minmax(0, 1fr); } .recommendations { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); } .recommendations > section { margin-top: 0; } }
-  @media (max-width: 36rem) { .recommendations { display: block; } .recommendations > section { margin-top: var(--section-space); } .current-attention { margin-top: 0 !important; } .current-feature { grid-template-columns: 5rem minmax(0, 1fr); } }
+  @container content (min-width: 76rem) { .archive-columns { grid-template-columns: minmax(0, .9fr) minmax(0, .9fr) minmax(0, 1.2fr); } .recommendations { display: contents; } }
+  @container content (max-width: 52rem) { .archive-columns { grid-template-columns: minmax(0, 1fr); } .recommendations { display: grid; gap: var(--space-4); grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container content (max-width: 36rem) { .recommendations { grid-template-columns: minmax(0, 1fr); } .current-attention { margin-top: 0 !important; } .current-feature { grid-template-columns: 5rem minmax(0, 1fr); } }
 </style>

@@ -53,7 +53,7 @@ const sidebar: SidebarModel = {
 </BaseLayout>
 
 <style>
-  .artifact-layout { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(13rem, .65fr); }
+  .artifact-layout { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 1.5fr) minmax(13rem, .65fr); }
   .artifact-layout main { min-width: 0; }
   .artifact-rail { align-self: start; border-left: 2px solid var(--color-accent); padding-left: var(--space-3); position: sticky; top: var(--space-3); }
   .rail-label { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: var(--label-tracking); margin: 0 0 var(--space-2); text-transform: uppercase; }
@@ -71,7 +71,7 @@ const sidebar: SidebarModel = {
   .transcript p { line-height: var(--leading-reading); white-space: pre-line; }
   #article { scroll-margin-top: var(--space-3); }
   #transcript { scroll-margin-top: var(--space-3); }
-  @media (max-width: 52rem) { .artifact-layout { grid-template-columns: minmax(0, 1fr); } .artifact-rail { border-left: 0; border-top: 2px solid var(--color-accent); padding: var(--space-3) 0 0; position: static; } }
+  @container content (max-width: 52rem) { .artifact-layout { grid-template-columns: minmax(0, 1fr); } .artifact-rail { border-left: 0; border-top: 2px solid var(--color-accent); padding: var(--space-3) 0 0; position: static; } }
 
   .page-shell:is([data-slug="blacksouls-i-characters"], [data-slug="black-souls-ii-characters"]) .prose :global(.character-grid) {
     display: grid;
@@ -123,10 +123,10 @@ const sidebar: SidebarModel = {
     line-height: var(--leading-normal);
     margin: auto 0 0;
   }
-  @media (max-width: 52rem) {
+  @container content (max-width: 52rem) {
     .page-shell:is([data-slug="blacksouls-i-characters"], [data-slug="black-souls-ii-characters"]) .prose :global(.character-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (max-width: 34rem) {
+  @container content (max-width: 34rem) {
     .page-shell:is([data-slug="blacksouls-i-characters"], [data-slug="black-souls-ii-characters"]) .prose :global(.character-grid) { grid-template-columns: 1fr; }
   }
 
@@ -156,10 +156,10 @@ const sidebar: SidebarModel = {
     line-height: var(--leading-normal);
     margin-top: var(--space-1);
   }
-  @media (max-width: 52rem) {
+  @container content (max-width: 52rem) {
     .page-shell[data-slug="blacksouls-i-black-condemner-miranda"] .prose :global(.miranda-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (max-width: 34rem) {
+  @container content (max-width: 34rem) {
     .page-shell[data-slug="blacksouls-i-black-condemner-miranda"] .prose :global(.miranda-gallery) { grid-template-columns: 1fr; }
   }
 
@@ -204,16 +204,16 @@ const sidebar: SidebarModel = {
 }
 .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery figure) { margin: 0; min-width: 0; }
 .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery img) { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--color-bg); border: 1px solid var(--color-border); }
-@media (max-width: 52rem) { .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 34rem) { .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery) { grid-template-columns: 1fr; } }
+@container content (max-width: 52rem) { .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container content (max-width: 34rem) { .page-shell[data-slug="blacksouls-i-red-hood"] .prose :global(.red-hood-gallery) { grid-template-columns: 1fr; } }
 
 .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery figure) { margin: 0; min-width: 0; }
 .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery img) {
   display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain;
   background: var(--color-bg); border: 1px solid var(--color-border);
 }
-@media (max-width: 52rem) { .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 34rem) { .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery) { grid-template-columns: 1fr; } }
+@container content (max-width: 52rem) { .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container content (max-width: 34rem) { .page-shell[data-slug="blacksouls-i-match-seller-elma"] .prose :global(.elma-gallery) { grid-template-columns: 1fr; } }
 
 .page-shell[data-slug="blacksouls-i-maid-victoria"] .prose :global(.victoria-gallery figure) {
   margin: 0;
@@ -229,13 +229,13 @@ const sidebar: SidebarModel = {
   border: 1px solid var(--color-border);
 }
 
-@media (max-width: 52rem) {
+@container content (max-width: 52rem) {
   .page-shell[data-slug="blacksouls-i-maid-victoria"] .prose :global(.victoria-gallery) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 34rem) {
+@container content (max-width: 34rem) {
   .page-shell[data-slug="blacksouls-i-maid-victoria"] .prose :global(.victoria-gallery) {
     grid-template-columns: 1fr;
   }
@@ -255,13 +255,13 @@ const sidebar: SidebarModel = {
   border: 1px solid var(--color-border);
 }
 
-@media (max-width: 52rem) {
+@container content (max-width: 52rem) {
   .page-shell[data-slug="blacksouls-i-holy-knight-jeanne"] .prose :global(.jeanne-gallery) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 34rem) {
+@container content (max-width: 34rem) {
   .page-shell[data-slug="blacksouls-i-holy-knight-jeanne"] .prose :global(.jeanne-gallery) {
     grid-template-columns: 1fr;
   }
@@ -282,10 +282,10 @@ const sidebar: SidebarModel = {
     line-height: var(--leading-normal);
     margin-top: var(--space-1);
   }
-  @media (max-width: 52rem) {
+  @container content (max-width: 52rem) {
     .page-shell[data-slug="blacksouls-i-fairy-leaf"] .prose :global(.fairy-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (max-width: 34rem) {
+  @container content (max-width: 34rem) {
     .page-shell[data-slug="blacksouls-i-fairy-leaf"] .prose :global(.fairy-gallery) { grid-template-columns: 1fr; }
   }
 
@@ -325,11 +325,11 @@ const sidebar: SidebarModel = {
   .page-shell[data-slug="black-souls-ii-bunny-girl-mary"] .prose :global(.blacksouls-character-gallery) {
     grid-template-columns: 1fr;
   }
-  @media (max-width: 52rem) {
+  @container content (max-width: 52rem) {
     .prose :global(.blacksouls-character-gallery) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .page-shell[data-slug="black-souls-ii-brutalizing-angel-lingeriena"] .prose :global(.lingeriena-design-feature) { grid-column: span 2; }
   }
-  @media (max-width: 34rem) {
+  @container content (max-width: 34rem) {
     .prose :global(.blacksouls-character-gallery) { grid-template-columns: 1fr; }
     .page-shell[data-slug="black-souls-ii-brutalizing-angel-lingeriena"] .prose :global(.lingeriena-design-feature) { grid-column: span 1; }
   }

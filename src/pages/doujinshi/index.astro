@@ -22,6 +22,6 @@ const lastPage = Math.ceil(entries.length / SHELF_PAGE_SIZE);
 </BaseLayout>
 
 <style>
-  .archive-layout { align-items: start; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 2fr) minmax(13rem, .8fr); }
-  @media (max-width: 48rem) { .archive-layout { grid-template-columns: minmax(0, 1fr); } }
+  .archive-layout { align-items: start; display: grid; gap: clamp(2rem, 4cqi, 4rem); grid-template-columns: minmax(0, 2fr) minmax(13rem, .8fr); }
+  @container content (max-width: 48rem) { .archive-layout { grid-template-columns: minmax(0, 1fr); } }
 </style>
