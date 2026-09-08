@@ -83,3 +83,9 @@ test("uses visible thumb-first grids on phones", () => {
   expect(header).toContain("display:flex;flex-wrap:wrap");
   expect(header).not.toContain("overflow-x:auto");
 });
+
+test("keeps archive links together on compact desktop widths", () => {
+  expect(header).toContain("@media (max-width:72rem) and (min-width:48.01rem)");
+  expect(header).toContain(".primary-navigation{border-bottom");
+  expect(header).toContain("flex-basis:100%;");
+});

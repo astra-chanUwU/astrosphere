@@ -10,6 +10,7 @@ const steps = targets.map((target, index) => ({
   target,
   index,
   complete: index <= currentIndex,
+  connectorComplete: index < currentIndex,
   current: index === currentIndex,
 }));
 ---
@@ -24,7 +25,7 @@ const steps = targets.map((target, index) => ({
   <nav aria-label={`${trail.data.title} progress`}>
     {previous && <a class="trail-arrow" href={previous.href} aria-label={`Previous: ${previous.entry.data.title}`} title={`Previous: ${previous.entry.data.title}`} target={previous.external ? "_blank" : undefined} rel={previous.external ? "noopener noreferrer" : undefined}>←<span class="sr-only">Previous: {previous.entry.data.title}</span></a>}
     <ol>
-      {steps.map((step) => <li class={`${step.complete ? "list-complete" : ""} ${step.current ? "list-current" : ""}`}>
+      {steps.map((step) => <li class={`${step.connectorComplete ? "connector-complete" : ""} ${step.complete ? "list-complete" : ""} ${step.current ? "list-current" : ""}`}>
           <a
             href={step.target.href}
             aria-current={step.current ? "page" : undefined}
@@ -50,7 +51,7 @@ const steps = targets.map((target, index) => ({
   li { align-items: center; display: flex; flex: 1; }
   li:last-child { flex: 0 1 auto; }
   li::after { background: var(--color-border); content: ""; display: block; flex: 1; height: var(--border-width); margin: 0 var(--space-1); }
-  li.list-complete::after { background: var(--color-accent); }
+  li.connector-complete::after { background: var(--color-accent); }
   li:last-child::after { display: none; }
   a { color: var(--color-muted); display: block; }
   .trail-arrow { color: var(--color-text); font-size: var(--text-lg); line-height: 1; text-decoration: none; }
