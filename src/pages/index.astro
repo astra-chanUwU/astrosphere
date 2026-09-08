@@ -59,6 +59,14 @@ for (const dispatch of dispatches) {
   else dispatchGroups.push({ date: dispatch.date, items: [dispatch] });
 }
 
+const dispatchTitleLimit = 72;
+const truncateDispatchTitle = (title: string): string => {
+  const characters = Array.from(title);
+  return characters.length > dispatchTitleLimit
+    ? `${characters.slice(0, dispatchTitleLimit - 1).join("").trimEnd()}…`
+    : title;
+};
+
 const newestImageSets = imageSets.slice(0, 5);
 const recommendedManga = shelf.manga.slice(0, 5);
 const recommendedDoujinshi = shelf.doujinshi.slice(0, 5);
@@ -85,10 +93,10 @@ const currentAnime = shelf.anime[0];
           {dispatchGroups.map((group) => <section class="dispatch-group" aria-labelledby={`dispatch-date-${group.date.toISOString().slice(0, 10)}`}>
             <h3 class="dispatch-date" id={`dispatch-date-${group.date.toISOString().slice(0, 10)}`}><time datetime={group.date.toISOString()}>{group.date.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" })}</time></h3>
             {group.items.map((dispatch) => <article class="dispatch-item">
-              {dispatch.kind === "artifact" && <div class="dispatch-entry dispatch-entry--artifact">{dispatch.item.data.hero?.kind === "image" && <a class="dispatch-thumb" href={`/articles/${dispatch.item.data.slug}`}><img src={createManagedImageThumbnailSrc(dispatch.item.data.hero.src)} alt={dispatch.item.data.hero.alt ?? dispatch.item.data.title} loading="lazy" decoding="async" /></a>}<div class="dispatch-copy"><p class="dispatch-type">{dispatch.item.data.type.replace("-", " ")}</p><h4><a href={`/articles/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
-              {dispatch.kind === "image-set" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Image set</p><h4><a href={`/image-sets/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
-              {dispatch.kind === "chapter" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Chapter</p><h4><a href={`/manga/${dispatch.item.data.series}/${dispatch.item.data.slug}`}>{dispatch.seriesTitle} — {dispatch.item.data.title}</a></h4><p>Chapter {dispatch.item.data.number}</p></div></div>}
-              {dispatch.kind === "trail" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Path</p><h4><a href={`/paths/${dispatch.item.data.slug}`}>{dispatch.item.data.title}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
+              {dispatch.kind === "artifact" && <div class:list={["dispatch-entry", { "dispatch-entry--artifact": dispatch.item.data.hero?.kind === "image" }]}>{dispatch.item.data.hero?.kind === "image" && <a class="dispatch-thumb" href={`/articles/${dispatch.item.data.slug}`}><img src={createManagedImageThumbnailSrc(dispatch.item.data.hero.src)} alt={dispatch.item.data.hero.alt ?? dispatch.item.data.title} loading="lazy" decoding="async" /></a>}<div class="dispatch-copy"><p class="dispatch-type">{dispatch.item.data.type.replace("-", " ")}</p><h4><a href={`/articles/${dispatch.item.data.slug}`} aria-label={dispatch.item.data.title} title={dispatch.item.data.title}>{truncateDispatchTitle(dispatch.item.data.title)}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
+              {dispatch.kind === "image-set" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Image set</p><h4><a href={`/image-sets/${dispatch.item.data.slug}`} aria-label={dispatch.item.data.title} title={dispatch.item.data.title}>{truncateDispatchTitle(dispatch.item.data.title)}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
+              {dispatch.kind === "chapter" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Chapter</p><h4><a href={`/manga/${dispatch.item.data.series}/${dispatch.item.data.slug}`} aria-label={`${dispatch.seriesTitle} — ${dispatch.item.data.title}`} title={`${dispatch.seriesTitle} — ${dispatch.item.data.title}`}>{truncateDispatchTitle(`${dispatch.seriesTitle} — ${dispatch.item.data.title}`)}</a></h4><p>Chapter {dispatch.item.data.number}</p></div></div>}
+              {dispatch.kind === "trail" && <div class="dispatch-entry"><div class="dispatch-copy"><p class="dispatch-type">Path</p><h4><a href={`/paths/${dispatch.item.data.slug}`} aria-label={dispatch.item.data.title} title={dispatch.item.data.title}>{truncateDispatchTitle(dispatch.item.data.title)}</a></h4><p>{dispatch.item.data.summary}</p></div></div>}
             </article>)}
           </section>)}
         </div>
